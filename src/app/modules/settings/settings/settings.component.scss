@@ -1,0 +1,143 @@
+@import '../../../../assets/scss/varialbles.scss';
+.settings{
+    padding: 2rem 1rem 2rem 1rem;
+    width: 80%;
+    position: relative;
+    margin: auto;
+    border-radius: 6px;
+    background-color: $white-color;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    margin-top: 2rem;
+    font-family: myfont-bold, myfont-ar-bold;
+    @media(max-width:767px){
+      width: 100%;
+    }
+
+
+    &:lang(ar){
+        padding: 1rem 1rem 1rem 1rem;
+    }
+    #edit{
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      color: $secoundary-color;
+      cursor: pointer;
+    }
+    #tittle{
+
+        text-align: center;
+        width: 80%;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        margin: auto;
+        span{
+          font-weight: bold;
+          font-size: 2rem;
+          color:$primary-color ;
+        }
+    }
+        .settings-info {
+          padding: 1rem 0;
+        }
+
+        .setting-item {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .setting-item__label {
+          font-weight: 600;
+          margin-bottom: 0.25rem;
+          font-size: 0.95rem;
+        }
+
+        .setting-item__value {
+          font-size: 1rem;
+          color: #333;
+        }
+
+        .setting-item--icon {
+          flex-direction: row;
+          align-items: center;
+        }
+
+        .setting-item--icon i {
+          margin-right: 0.5rem;
+          font-size: 1.2rem;
+          color: #555;
+        }
+
+        .setting-item--image img {
+          cursor: pointer;
+          max-height: 100px;
+          object-fit: contain;
+        }
+
+}
+.image_container{
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  width: 50%;
+  span{
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: $primary-color;
+  }
+  .img{
+    border: none;
+    img{
+      border: none;
+    }
+  }
+}
+
+.add-button {
+    width: 60px;
+    height: 60px;
+    font-size: $large-icon;
+    border-radius: 50%;
+    color: $white-color;
+    border: none;
+    position: fixed;
+    top: calc(100vh - 85px);
+    right: 1.5rem;
+    background-color: $primary-color;
+
+    &:lang(ar){
+      right: unset;
+      left: 1.5rem;
+    }
+  }
+    img {
+      width: 50%;
+      height: 50%;
+      border-radius: 10px;
+
+    }
+    .settings-card__qr-block {
+          text-align: center;
+          margin-top: 3rem;
+
+          qrcode {
+            display: block;
+            margin: 0 auto 0.5rem;
+          }
+
+          .settings-card__qr-download {
+            background: $primary-color;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 4rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+          } }

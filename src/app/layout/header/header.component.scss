@@ -1,0 +1,204 @@
+@import "../../../assets/scss/varialbles.scss";
+
+.header{
+    background-color: $white-color;
+    height: 57px;
+    border-bottom: 1px solid $lighter-gray;
+    position: relative;
+    z-index: 1;
+
+    &__container{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        
+        & .company-name{
+            font-family: myfont-bold, myfont-ar-bold;
+            color: $primary-color;
+            display: flex;
+            align-content: center;
+            flex-wrap: wrap;
+            font-size: $h5-size;
+            margin-inline-start: 1rem;
+            height: 57px;
+            width: 30%;
+
+            & .branch-name{
+                color: $black-color;
+                border-inline-start: 1px solid $lighter-gray;
+                padding-inline-start: 1rem;
+                margin-inline-start: 1rem;
+                font-size: $normal-font;
+                font-family: myfont-bold, myfont-ar-bold;
+                height: 24px;
+                top: .25rem;
+                position: relative;
+            }
+        }
+    }
+
+    &__tools{
+            display: flex;
+            width: 46%;
+            align-items: center;
+
+            & span{
+                padding: .2rem;
+                
+            }
+
+            & .material-symbols-outlined{
+                margin-inline-start: .5rem;
+                cursor: pointer;
+                transition: .2s;
+                color: $primary-color;
+                border: 1px solid $lighter-gray;
+                border-radius: 6px;
+                padding: .4rem;
+                top: 0;
+
+                &:hover{
+                    opacity: .7;
+                }
+            }
+
+            & .search__item{
+                width: 50%;
+            }
+
+            & .p-input-icon-left{
+                &::ng-deep .p-component{
+                    padding: .5rem 2.5rem;
+                    background-color: $bg-color;
+                }
+            }
+    }
+
+    & .profile{
+        display: flex;
+        width: 22%;
+        justify-content: flex-end;
+        padding: .5rem 1rem .5rem 0;
+        height: 55px;
+        align-items: center;
+
+        &:lang(ar){
+            padding: .5rem 0 .5rem 1rem;
+        }
+
+        & .material-symbols-outlined{
+            color: $blue-color;
+            padding-inline-end: .5rem;
+            height: 20px;
+            cursor: pointer;
+            transition: .2s;
+
+            &.fill{
+                border: none;
+                padding: unset;
+                margin: unset;
+            }
+
+            &:hover{
+                opacity: .6;
+            }
+
+            &.cart{
+                margin-inline-end: 0.5rem;
+            }
+        }
+
+        & .registered-user{
+            margin-inline-start: .25rem;
+        }
+
+        & .cart-container{
+            position: relative;
+            display: none;
+            border-inline-end: 1px solid $lighter-gray;
+            margin-inline-end: 1rem;
+        }
+
+        & .language__icon{
+            border-inline-end: 1px solid $lighter-gray;
+            margin-inline-end: 1rem;
+        }
+
+        & .counter{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            color: $white-color;
+            background-color: $red-color;
+            text-align: center;
+            top: -5px;
+            left: 8px;
+
+            &:lang(ar){
+                left: unset;
+                right: 8px;
+            }
+        }
+    }
+
+    &:lang(ar){
+        padding: 0;
+    }
+
+    
+}
+
+//responsive
+@media screen and (max-width: 1151px) {
+    .profile{
+        width: 26% !important;
+    }
+
+    .header__tools{
+        width: 42%;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .cart-container{
+        display: inline-block !important;
+    }
+
+    .header{
+        height: 120px;
+    }
+    .company-name{
+        width: 100% !important;
+    }
+
+    .header__tools{
+        width: 60%;
+        padding: 0 1rem;
+        & .search__item{
+            width: 70%;
+        }
+    }
+
+    .profile{
+        width: 40% !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header{
+        height: 150px;
+    }
+
+    .header__tools{
+        width: 100%;
+        padding: 0 1rem;
+        & .search__item{
+            width: 70%;
+        }
+    }
+
+    .profile{
+        width: 100% !important;
+    }
+}

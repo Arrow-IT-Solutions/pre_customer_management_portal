@@ -1,0 +1,129 @@
+<div class="header__tools">
+  <button (click)="changeLang(langCode)">{{unCurrentlang}}</button>
+</div>
+
+<form [formGroup]="dataForm" action="" class="forms">
+  <div class="logo-container mb-5">
+    <img src="../../../../assets/images/Fill Logo.svg" alt="">
+  </div>
+  <div class="fields">
+    <div class="col-12 mb-3 field_container">
+      <label>{{ 'userName_forms' | translate }}:</label>
+      <div class="p-float-label">
+        <input pInputText type="text" formControlName="userName" />
+        <span *ngIf="submitted && dataForm.controls['userName']?.hasError('required')" class="error-validation">{{
+          'Field_Required' |
+          translate }}</span>
+      </div>
+    </div>
+
+    <div class="col-12 mb-3 field_container">
+      <label>{{ 'maritalStatus_forms' | translate }}:</label>
+      <div class="p-float-label dropdown">
+        <p-dropdown [options]="martialStatus" optionLabel="value" optionValue="key" formControlName="maritalStatus"
+          appendTo="body"></p-dropdown>
+        <span *ngIf="submitted && dataForm.controls['maritalStatus']?.hasError('required')" class="error-validation">{{
+          'Field_Required' |
+          translate }}</span>
+      </div>
+
+    </div>
+    <div class="col-12 mb-3 field_container">
+      <label>{{ 'dateOfBirth_forms' | translate }}:</label>
+      <div class="p-float-label">
+        <div class="birthdate">
+
+          <input pInputText type="text" formControlName="year" placeholder="{{ 'yearOfBirth_forms' | translate }}" />
+          <div class="p-float-label dropdown">
+            <p-dropdown [options]="monthOptions" optionLabel="label" optionValue="value" formControlName="month"
+              [filter]="false"></p-dropdown>
+            <label>{{ 'monthOfDate_forms' | translate }}</label>
+          </div>
+          <div class="p-float-label dropdown">
+            <p-dropdown [options]="dayOptions" optionLabel="value" optionValue="key" formControlName="day"
+              [filter]="false"></p-dropdown>
+            <label>{{ 'dayOfDate_forms' | translate }}</label>
+          </div>
+
+        </div>
+        <span *ngIf="
+                  submitted &&
+                  (dataForm.get('year')?.hasError('required') ||
+                    dataForm.get('year')?.hasError('pattern') ||
+                    dataForm.get('month')?.hasError('required') ||
+                    dataForm.get('day')?.hasError('required'))
+                " class="error-validation">
+          {{ 'Field_Required' | translate }}
+        </span>
+      </div>
+
+    </div>
+    <div class="col-12 mb-3 field_container">
+      <label>{{ 'phoneNumber_forms' | translate }}:</label>
+      <div class="p-float-label d-flex gap-2">
+        <span *ngIf="submitted && dataForm.controls['phoneNumber']?.hasError('required')" class="error-validation">{{
+          'Field_Required' |
+          translate }}</span>
+        <input pInputText type="text" formControlName="phoneNumber" />
+      </div>
+
+    </div>
+    <div class="col-12 mb-3 field_container">
+      <label>{{ 'email_forms' | translate }}:</label>
+      <div class="p-float-label">
+        <input pInputText type="text" formControlName="email" />
+        <span *ngIf="submitted && dataForm.controls['email']?.hasError('required')" class="error-validation">{{
+          'Field_Required' |
+          translate }}</span>
+      </div>
+
+    </div>
+    <div class="col-12 mb-3 field_container">
+      <label>{{ 'country_forms' | translate }}:</label>
+      <div class="p-float-label">
+        <input pInputText type="text" formControlName="country" />
+        <span *ngIf="submitted && dataForm.controls['country']?.hasError('required')" class="error-validation">{{
+          'Field_Required' |
+          translate }}</span>
+      </div>
+
+    </div>
+    <div class="col-12 mb-3 field_container">
+      <label>{{ 'infoforms_forms' | translate }}</label>
+      <div class="p-float-label">
+        <textarea pInputText formControlName="info"></textarea>
+        <span *ngIf="submitted && dataForm.controls['info']?.hasError('required')" class="error-validation">{{
+          'Field_Required' |
+          translate }}</span>
+      </div>
+
+    </div>
+    <div class="col-12 mb-3 field_container">
+      <label>{{ 'sendOffers_forms' | translate }}</label>
+      <div class="radio-wrapper">
+        <span *ngIf="submitted && dataForm.controls['sendOffers']?.hasError('required')" class="error-validation">
+          {{ 'Field_Required' | translate }}
+        </span>
+
+        <div class="radio_options">
+          <div class="radio-wrapper-6">
+            <input id="sendOffersYes" formControlName="sendOffers" type="radio" name="sendOffers" [value]="1">
+            <label for="sendOffersYes">{{'acceptOffers_forms' | translate}}</label>
+          </div>
+          <div class="radio-wrapper-6">
+            <input id="sendOffersNo" formControlName="sendOffers" type="radio" name="sendOffers" [value]="0">
+            <label for="sendOffersNo">{{'notAcceptOffers_forms' | translate}}</label>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <img src="../../../../assets/images/Logo ICON Transparant.svg" alt="" id="vector">
+
+  </div>
+  <div class="col-xs-12 mt-4 ">
+
+  </div>
+
+</form>

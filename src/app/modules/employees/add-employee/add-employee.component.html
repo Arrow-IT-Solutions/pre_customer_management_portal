@@ -1,0 +1,93 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="add-employee">
+  <div class="add-employee">
+    <div class="box-shadow mb-3">
+      <div class="row">
+        <div class="col-12 side-icon">
+          <span class="material-symbols-outlined">info</span>
+          <span>{{ 'Basic_Info_Employee' | translate }}</span>
+        </div>
+        <div class="col-12 row m-0 p-0">
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="firstNameAr" />
+              <label>{{ 'FirstNameAr_Employee' | translate }}</label>
+              <span *ngIf="submitted && form['firstNameAr'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="lastNameAr" />
+              <label>{{ 'LastNameAr_Employee' | translate }}</label>
+              <span *ngIf="submitted && form['lastNameAr'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="firstNameEn" />
+              <label>{{ 'FirstNameEn_Employee' | translate }}</label>
+              <span *ngIf="submitted && form['firstNameEn'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="lastNameEn" />
+              <label>{{ 'LastNameEn_Employee' | translate }}</label>
+              <span *ngIf="submitted && form['lastNameEn'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="clientPhone" />
+              <label>{{ 'Employee-phone' | translate }}</label>
+              <span *ngIf="submitted && form['clientPhone'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="username" />
+              <label>{{ 'Employee-username' | translate }}</label>
+              <span *ngIf="submitted && form['username'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <p-dropdown [options]="gender" optionLabel="value" optionValue="key"
+                formControlName="clientGender"></p-dropdown>
+              <label id="month">{{ 'Employee-gender' | translate }}</label>
+              <span *ngIf="submitted && form['clientGender'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <p-calendar [showIcon]="true" formControlName="birthDate"></p-calendar>
+              <label>{{ 'Birthdate_Employee' | translate }}</label>
+              <span *ngIf="submitted && form['birthDate'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
+            </div>
+          </div>
+          <div>
+            <app-img-control (onSelected)="OnSelectFile($event)" [fileInput]="fileInput"></app-img-control>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="col-xs-12 text-end mt-4">
+      <p-button type="Submit" class="btn-primary" label="Save" [loading]="btnLoading"></p-button>
+    </div>
+  </div>
+</form>
+
+<p-toast key="toast"></p-toast>

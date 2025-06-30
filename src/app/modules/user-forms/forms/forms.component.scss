@@ -1,0 +1,276 @@
+@import "../../../../assets/scss/varialbles.scss";
+.header__tools{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    
+    button{
+     border: none;
+     padding:0.5rem 1.5rem;
+     background-color: $primary-color;
+     text-align: center;
+     border-radius: 6px;
+     color: #FFFFFF;
+    }
+}
+.forms{
+    width: 70%;
+    background-color: white;
+    border-radius: 6px;
+    padding: 1rem;
+    margin: auto;
+    margin-top: 2rem;
+    position: relative;
+  
+    @media (max-width:767px) {
+        width: 90%;
+    }
+    @media (max-width: 991px) and (min-width: 768px) {
+        width: 90%;
+    }
+
+    .logo-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+
+        img{
+            width: 12rem;
+
+        }
+    }
+    .fields{
+        width: 70%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        
+        .field_container{
+            label{
+                font-weight: 300;
+                font-size: 1rem;
+
+             }
+            input{
+                width: 100%;
+            }
+            .dropdown{
+                width: 100%;
+                z-index: 999;
+            }
+            .radio_options{
+                display: flex;
+                flex-direction: column;
+                margin-top: 0.5rem;
+                // row-gap: 1rem;
+//    label {
+// 	display: flex;
+// 	cursor: pointer;
+// 	font-weight: 500;
+// 	position: relative;
+// 	overflow: hidden;
+// 	// margin-bottom: 0.375em;
+//     width: 70%;
+//     column-gap: 0.5rem;
+// 	input {
+// 		position: absolute;
+// 		left: -9999px;
+// 		&:checked + span {
+// 			background-color: mix(#fff, #2BB65F, 84%);
+// 			&:before {
+// 				box-shadow: inset 0 0 0 0.4375em #2BB65F;
+// 			}
+// 		}
+// 	}
+// 	span {
+// 		display: flex;
+// 		align-items: center;
+// 		padding: 0.375em 0.75em 0.375em 0.375em;
+// 		border-radius: 99em; // or something higher...
+// 		transition: 0.25s ease;
+//         color: #9C9C9C;
+
+// 		&:hover {
+// 			// background-color: mix(#fff, $primary-color, 84%);
+// 		}
+// 		&:before {
+// 			display: flex;
+// 			flex-shrink: 0;
+// 			content: "";
+// 			background-color: #fff;
+// 			width: 1.5em;
+// 			height: 1.5em;
+// 			border-radius: 50%;
+// 			margin-right: 0.375em;
+// 			transition: 0.25s ease;
+// 			box-shadow: inset 0 0 0 0.125em #9C9C9C;
+// 		}
+// 	}
+// }
+
+.radio-wrapper-6 {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+   
+    
+  }
+
+  @supports (-webkit-appearance: none) or (-moz-appearance: none) {
+    .radio-wrapper-6 input[type=radio] {
+      --active: #dd8e60;
+      --active-inner: #fff;
+      --focus: 2px #fff ;
+      --border: #A75422;
+      --border-hover: #A75422;
+      --background: #fff;
+      --disabled: #F6F8FF;
+      --disabled-inner: #E1E6F9;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      height: 21px;
+      outline: none;
+      display: inline-block;
+      vertical-align: top;
+      position: relative;
+      margin: 0;
+      cursor: pointer;
+      border: 1px solid var(--bc, var(--border));
+      background: var(--b, var(--background));
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+    }
+    .radio-wrapper-6 input[type=radio]:after {
+      content: "";
+      display: block;
+      left: 0;
+      top: 0;
+      position: absolute;
+      transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
+    }
+    .radio-wrapper-6 input[type=radio]:checked {
+      --b: var(--active);
+      --bc: var(--active);
+      --d-o: .3s;
+      --d-t: .6s;
+      --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+    }
+    .radio-wrapper-6 input[type=radio]:disabled {
+      --b: var(--disabled);
+      cursor: not-allowed;
+      opacity: 0.9;
+    }
+    .radio-wrapper-6 input[type=radio]:disabled:checked {
+      --b: var(--disabled-inner);
+      --bc: var(--border);
+    }
+    .radio-wrapper-6 input[type=radio]:disabled + label {
+      cursor: allowed;
+      color: #8A91B4;
+    }
+    .radio-wrapper-6 input[type=radio]:hover:not(:checked):not(:disabled) {
+      --bc: var(--border-hover);
+    }
+    .radio-wrapper-6 input[type=radio]:focus {
+      box-shadow: 0 0 0 var(--focus);
+    }
+    .radio-wrapper-6 input[type=radio]:not(.switch) {
+      width: 21px;
+    }
+    .radio-wrapper-6 input[type=radio]:not(.switch):after {
+      opacity: var(--o, 0);
+    }
+    .radio-wrapper-6 input[type=radio]:not(.switch):checked {
+      --o: 1;
+    }
+    .radio-wrapper-6 input[type=radio] + label {
+      font-size: 14px;
+      line-height: 21px;
+      display: inline-block;
+      vertical-align: top;
+      cursor: pointer;
+      margin-left: .5em;
+    }
+    label{
+      padding: 0.5rem 0.8rem;
+      border-radius: 16px;
+    }
+    .radio-wrapper-6 input[type=radio]:checked + label {
+      background-color: #dd8e60;
+    }
+
+    .radio-wrapper-6 input[type=radio] {
+      border-radius: 50%;
+    }
+    .radio-wrapper-6 input[type=radio]:after {
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: var(--active-inner);
+      opacity: 0;
+      transform: scale(var(--s, 0.7));
+    }
+    .radio-wrapper-6 input[type=radio]:checked {
+      --s: .5;
+    }
+  }
+
+            }
+
+        }
+    }
+
+
+        .btn-primary{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+
+        }
+
+
+}
+.radio-wrapper {
+  position: relative;
+
+  .error-validation {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .radio_options {
+    display: flex;
+    flex-direction: column;
+    
+   
+  }
+}
+.birthdate{
+  display: flex;
+  justify-content: space-between;
+  column-gap: 1.5rem;
+  @media(max-width:767px){
+    row-gap: 1rem;
+    flex-direction: column;
+  }
+ 
+}
+#vector{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 20rem;
+  @media(max-width:767px){
+    width: 12rem;
+  }
+ 
+}
+#vector:lang(ar){
+  right: unset;
+  left: 0;
+  transform: rotateY(180deg); 
+}

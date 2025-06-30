@@ -1,0 +1,90 @@
+@import "../../../assets/scss/varialbles.scss";
+
+.layout{
+
+    &:lang(ar){
+        direction: rtl;
+    }
+
+    &__main-menu{
+        transition: .5s;
+    }
+
+    &__header{
+        transition: .5s;
+
+        & .company-name{
+            font-family: myfont-bold, myfont-ar-bold;
+            color: $primary-color;
+            display: flex;
+            align-content: center;
+            flex-wrap: wrap;
+            font-size: $h3-size;
+            margin-inline-start: 1rem;
+            height: 57px;
+
+            & .branch-name{
+                color: $black-color;
+                border-inline-start: 1px solid $lighter-gray;
+                padding-inline-start: 1rem;
+                margin-inline-start: 1rem;
+                font-size: $normal-font;
+                font-family: myfont-bold, myfont-ar-bold;
+                height: 24px;
+                top: 10px;
+                position: relative;
+            }
+        }
+    }
+
+    &__contents{
+        transition: .5s;
+    }
+
+    &--full{
+        & .layout__main-menu{
+            width: 90px;
+            white-space: nowrap;
+        }
+
+        & .layout__contents{
+            width: calc(100% - 90px);
+        }
+    }
+    
+    &__page-contents{
+
+        &:lang(ar){
+            direction: rtl;
+        }
+    }
+}
+
+//responsive
+
+@media screen and (max-width: 991px) {
+    .layout__main-menu{
+        width: 90px;
+        white-space: nowrap;
+    }
+
+    .layout__contents{
+        width: calc(100% - 90px);
+    }
+}
+
+@media screen and (max-width: 768px){
+    .layout--full{
+
+        & .layout__main-menu{
+            width: 90px;
+        }
+
+        & .layout__contents {
+            width: calc(100% - 90px);
+        }
+    }
+}
+
+
+

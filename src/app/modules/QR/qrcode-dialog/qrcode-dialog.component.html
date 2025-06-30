@@ -1,0 +1,17 @@
+<h2 mat-dialog-title class="qr-title">{{ header }}</h2>
+
+<mat-dialog-content class="qr-content">
+  <div class="qr-container">
+    <!-- placeholder for qr-code-styling -->
+    <div #qrCodeElement></div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center" class="qr-actions">
+  <button class="download-button" (click)="download()">
+    {{ 'Download_QR' | translate }}
+  </button>
+  <button mat-button mat-dialog-close>
+    {{ 'Close_QR' | translate }}
+  </button>
+</mat-dialog-actions>

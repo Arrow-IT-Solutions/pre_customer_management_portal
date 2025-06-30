@@ -1,0 +1,119 @@
+@import "../../../assets/scss/varialbles.scss";
+
+.main-menu {
+  min-height: 100%;
+  background-color: $white-color;
+  // position: absolute;
+  width: 16%;
+  transition: 0.2s;
+  color: $primary-color;
+  overflow: auto;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+
+  & .logo {
+    width: 65px;
+    text-align: center;
+    transition: 0.2s;
+  }
+
+  &__items {
+    background-color: $dark-secondary;
+
+    & ul {
+      padding: 0.5rem 0;
+      margin: 0;
+    }
+
+    & li {
+      list-style: none;
+      padding: 0.1rem 0.75rem 0.25rem;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-block-end: 0.5rem;
+      color: $lighter-gray;
+
+      & .material-symbols-outlined {
+        margin-inline-end: 0.5rem;
+
+        &:lang(ar) {
+          margin-inline-end: unset;
+          margin-inline-start: 0.5rem;
+        }
+      }
+
+      &:hover,
+      &.active {
+        background-color: rgba($primary-color,.15);
+        font-family: myfont-semibold, myfont-ar-semibold;
+        border-inline-start: 6px solid $primary-color;
+      }
+    }
+  }
+
+  &__logo {
+    margin: 1rem 0 2rem;
+  }
+
+  & .discription {
+    display: block;
+    font-size: $small-font;
+    color: $black-color;
+    padding-bottom: .25rem;
+    font-family: myfont-semibold, myfont-ar-semibold;
+  }
+
+  & .short-description {
+    display: none;
+    transition: 0.2s;
+  }
+
+  & .main-menu__item {
+    transition: 0.2s;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 6px;
+    margin: .5rem;
+    border-inline-start: 6px solid $white-color;
+    padding: 0.25rem 0;
+
+    &:hover,
+    &.active {
+      background-color: rgba($primary-color,.15);
+      font-family: myfont-semibold, myfont-ar-semibold;
+      border-inline-start: 6px solid $primary-color;
+    }
+
+    & .material-symbols-outlined {
+      top: 6px;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+::ng-deep .layout--full {
+  & .main-menu {
+    width: 90px;
+    transition: 0.2s;
+  }
+
+  & .main-menu__items {
+    & li {
+      padding: 0.1rem 0.75rem 0.25rem !important;
+      text-align: center;
+    }
+  }
+
+  & .user-name {
+    &--full {
+      display: none;
+    }
+
+    &--short {
+      display: block !important;
+    }
+  }
+}

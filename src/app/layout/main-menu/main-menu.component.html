@@ -1,0 +1,29 @@
+<div class="main-menu">
+  <div *ngFor="let data of navData">
+    <nav [ngClass]="getClassNoItemClass(data)" class="main-menu__item">
+      <div>
+        <div data-bs-toggle="collapse" [attr.data-bs-target]="'#' + data.id" [pTooltip]="data.label"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="material-symbols-outlined" (click)="ExpandItem(data)">{{
+            data.icon
+            }}</span>
+          <span class="discription">{{ data.label }}</span>
+          <!-- <span class="short-description">{{ data.char }}</span> -->
+          <!-- <span class="material-symbols-outlined" *ngIf="data.items != null">expand_more</span> -->
+        </div>
+      </div>
+    </nav>
+    <!-- <div class="collapse" [id]="data.id" *ngIf="data.items != null">
+      <div class="main-menu__items">
+        <ul>
+          <div *ngFor="let item of data.items">
+            <li [routerLink]="[item.routeLink]" (click)="(item)" [ngClass]="getActiveClass(item)">
+              <span class="material-symbols-outlined" [pTooltip]="item.label">{{ item.icon }}</span><span
+                class="discription">{{ item.label }}</span>
+            </li>
+          </div>
+        </ul>
+      </div>
+    </div>  -->
+  </div>
+</div>

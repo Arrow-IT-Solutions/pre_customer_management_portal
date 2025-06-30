@@ -1,0 +1,788 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../src/assets/scss/varialbles.scss";
+@import "../src/assets/scss/fonts.scss";
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: $bg-color;
+  font-size: 14px;
+
+  &:lang(ar) {
+    text-align: right;
+  }
+}
+
+* {
+  font-family: IPM Plex sans arabic;
+  &:lang(ar) {
+    font-family: IPM Plex sans arabic;
+  }
+}
+
+.text-end {
+  text-align: left;
+
+  &:lang(ar) {
+    text-align: left !important;
+  }
+}
+
+.errorValidation {
+  color: red;
+  // font-weight: bold;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.fill {
+  font-variation-settings: "FILL" 1, "wght" 700, "GRAD" 0, "opsz" 48;
+}
+
+.p-tooltip-text{
+  white-space: nowrap;
+}
+
+////////shared styles\\\\\\\\\
+
+.material-symbols-outlined {
+  position: relative;
+  top: 5px;
+}
+
+//buttons
+
+p-speeddial-button,
+.p-speeddial-button {
+  @extend %gradient-background;
+  border-radius: 50%;
+  border: none;
+}
+
+p-button {
+  margin-inline-end: 0.5rem;
+
+  &:last-child {
+    margin-inline-end: unset;
+  }
+}
+
+p-inputnumber,
+.p-inputnumber {
+  width: 100%;
+}
+
+.p-inputnumber-buttons-stacked
+  .p-inputnumber-button-group
+  .p-button.p-inputnumber-button {
+  background-color: $lighter-gray-2;
+  border: 1px solid $lighter-gray;
+  margin-inline-start: -1px;
+
+  &:first-child {
+    border-radius: 0 6px 0 0;
+
+    &:lang(ar) {
+      border-radius: 6px 0 0 0;
+    }
+  }
+
+  &:last-child {
+    border-radius: 0 0 6px 0;
+
+    &:lang(ar) {
+      border-radius: 0 0 0 6px;
+    }
+  }
+
+  & .p-icon-wrapper {
+    color: $primary-color;
+  }
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.btn-link {
+  color: $blue-color !important;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.btn-text {
+  color: $gray-color !important;
+  cursor: pointer;
+  font-family: myfont-semibold, myfont-ar-semibold;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+//input number left icon (-)
+.p-button.p-button-danger,
+.p-buttonset.p-button-danger > .p-button,
+.p-splitbutton.p-button-danger > .p-button {
+  background-color: $bg-color;
+  color: $blue-color;
+  border-right: none;
+  border-left: 1px solid $lighter-gray;
+  border-top: 1px solid $lighter-gray;
+  border-bottom: 1px solid $lighter-gray;
+  border-radius: 6px 0px 0px 6px;
+  z-index: 1;
+
+  &:lang(ar) {
+    border-left: none;
+    border-right: 1px solid $lighter-gray;
+    border-radius: 0px 6px 6px 0px;
+  }
+}
+//input number right icon (+)
+.p-button.p-button-success,
+.p-buttonset.p-button-success > .p-button,
+.p-splitbutton.p-button-success > .p-button {
+  background-color: $bg-color;
+  color: $blue-color;
+  border-left: none;
+  border-right: 1px solid $lighter-gray;
+  border-top: 1px solid $lighter-gray;
+  border-bottom: 1px solid $lighter-gray;
+  border-radius: 0px 6px 6px 0px;
+
+  &:lang(ar) {
+    border-left: 1px solid $lighter-gray;
+    border-right: none;
+    border-radius: 6px 0px 0px 6px;
+  }
+}
+
+.p-button-label {
+  font-weight: normal !important;
+  font-size: $normal-font;
+  font-family: myfont;
+}
+
+.btn-primary {
+  & .p-button {
+    transition: 0.2s;
+    border-radius: 6px;
+    border: none;
+    background-color: $primary-color;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+.btn-sec {
+  & .p-button {
+    background: $primary-color;
+    border: 1px solid $primary-color;
+    transition: 0.2s;
+    border-radius: 6px;
+
+    &:hover {
+      background: $primary-color-hover !important;
+      border: 1px solid $primary-color-hover !important;
+    }
+  }
+}
+
+.btn-sec-2 {
+  & .p-button {
+    background: $dark-secondary;
+    border: 1px solid $secondary-color;
+    transition: 0.2s;
+    border-radius: 6px;
+
+    &:hover {
+      opacity: .6;
+    }
+  }
+}
+
+.p-checkbox{
+  & .p-checkbox-box.p-highlight{
+    border-color: $blue-color;
+    background: $blue-color;
+    box-shadow: none;
+    &:hover {
+      border-color: $blue-color;
+  }
+  }
+
+  &:not(.p-checkbox-disabled) .p-checkbox-box{
+    &:hover{
+      border-color: $blue-color;
+    }
+  }
+}
+
+
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover{
+  border-color: $blue-color;
+}
+
+.p-inputgroup {
+  position: relative;
+
+  & .p-button {
+    background: $secondary-color;
+    border-color: $secondary-color;
+
+    &:hover {
+      background: $dark-secondary !important;
+      border: 1px solid $dark-secondary !important;
+    }
+  }
+
+  & button {
+    &:last-child:lang(ar) {
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  & input {
+    border: 1px solid $lighter-gray;
+    width: 100%;
+    outline: unset;
+
+    &:first-child:lang(ar) {
+      border-top-right-radius: 6px;
+      border-bottom-right-radius: 6px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:last-child:lang(ar) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+    }
+  }
+
+  &-addon {
+    &:lang(ar) {
+      border-right: 1px solid $lighter-gray;
+      border-left: unset;
+    }
+
+    &:first-child:lang(ar) {
+      border-top-right-radius: 6px;
+      border-bottom-right-radius: 6px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+
+//select buttons
+.p-selectbutton .p-button.p-highlight {
+  background: $primary-color;
+  border-color: $primary-color;
+}
+
+.p-buttonset .p-button:first-of-type:lang(ar) {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.p-buttonset .p-button:not(:last-child):lang(ar) {
+  border-right: 1px solid $lighter-gray;
+}
+
+.p-buttonset .p-button:not(:first-child):lang(ar) {
+  border-right: 0 none;
+}
+
+.p-buttonset .p-button:last-of-type:lang(ar) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+//Radio buttons
+.p-radiobutton .p-radiobutton-box.p-highlight {
+  border-color: $primary-color !important;
+  background: $primary-color !important;
+}
+
+.mat-mdc-radio-button.mat-mdc-radio-checked .mdc-radio__background::before {
+  background-color: $primary-color !important;
+}
+
+.mat-mdc-radio-button
+  .mdc-radio
+  .mdc-radio__native-control:enabled:checked
+  + .mdc-radio__background
+  .mdc-radio__outer-circle {
+  border-color: $primary-color !important;
+}
+
+.mat-mdc-radio-button
+  .mdc-radio
+  .mdc-radio__native-control:enabled
+  + .mdc-radio__background
+  .mdc-radio__inner-circle {
+  border-color: $primary-color !important;
+}
+
+.mat-mdc-radio-button .mdc-radio{
+  padding-inline-end: 0 !important;
+}
+//checkbox
+.mdc-checkbox
+  .mdc-checkbox__native-control:enabled:checked
+  ~ .mdc-checkbox__background,
+.mdc-checkbox
+  .mdc-checkbox__native-control:enabled:indeterminate
+  ~ .mdc-checkbox__background,
+.mdc-checkbox
+  .mdc-checkbox__native-control[data-indeterminate="true"]:enabled
+  ~ .mdc-checkbox__background {
+  border-color: $blue-color !important;
+  background-color: $blue-color !important;
+}
+
+//confirm dialog
+.p-dialog .p-dialog-footer button {
+  background-color: $secondary-color;
+}
+
+.p-dialog .p-dialog-footer button:enabled:hover {
+  background: $dark-secondary;
+  color: $white-color;
+  border-color: $dark-secondary;
+}
+
+//disabled background color for inputs fields
+.p-inputnumber-buttons-stacked .p-inputnumber-input:disabled {
+  background-color: $lighter-gray;
+}
+
+.p-inputtext {
+  &:disabled {
+    background-color: $lighter-gray;
+  }
+  // &.ng-dirty.ng-invalid {
+  //   border-radius: 0 6px 6px 0;
+  //   &:lang(ar) {
+  //     border-radius: 6px 0 0 6px !important;
+  //   }
+  // }
+}
+
+.p-calendar-w-btn .p-inputtext:disabled {
+  background-color: $lighter-gray;
+}
+
+.btn-outline {
+  & .p-button {
+    background-color: $white-color;
+    border: 1px solid $primary-color;
+    padding: 0.5rem 0.6rem;
+    transition: 0.2s;
+    border-radius: 6px;
+    color: $primary-color;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    & .material-symbols-outlined {
+      color: $primary-color;
+    }
+  }
+
+  & .material-symbols-outlined {
+    top: 0;
+  }
+
+  &-secondary {
+    & .p-button {
+      background: $blue-color;
+      border: none;
+      padding: 0.6rem;
+      color: $white-color;
+      transition: 0.2s;
+      border-radius: 50%;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+
+    & .material-symbols-outlined {
+      top: 0;
+    }
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+//tab bar
+
+.p-tabview .p-tabview-panels {
+  padding: 0;
+}
+
+.p-tabview-nav {
+  padding-left: 0.75rem;
+}
+
+.p-tabview-title {
+  color: $gray-color;
+  font-size: $normal-font;
+  text-decoration: none;
+}
+
+.p-tabview .p-tabview-panels,
+.p-tabview-nav-container,
+.p-tabview .p-tabview-nav,
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  border: none;
+}
+
+//headings
+h1 {
+  font-size: $h1-size;
+  font-family: myfont-bold, myfont-ar-bold;
+}
+
+h2 {
+  font-size: $h2-size;
+  font-family: myfont-bold, myfont-ar-bold;
+}
+
+h3 {
+  font-size: $h3-size;
+  font-family: myfont-bold, myfont-ar-bold;
+}
+
+h4 {
+  font-size: $h4-size;
+  font-family: myfont-bold, myfont-ar-bold;
+}
+
+h5 {
+  font-size: $h5-size;
+  font-family: myfont-bold, myfont-ar-bold;
+}
+
+h6 {
+  font-size: $h6-size;
+  font-family: myfont-bold, myfont-ar-bold;
+}
+
+//form
+.p-inputtext,
+.p-input-icon-left,
+.p-dropdown,
+.p-calendar {
+  width: 100%;
+  font-size: $normal-font;
+  //padding: .5rem 2rem;
+}
+
+.p-inputswitch {
+  width: 2.5rem;
+  height: 1rem;
+}
+
+.p-inputswitch .p-inputswitch-slider:before {
+  left: unset !important;
+  box-shadow: $shadow-style;
+  border: 1px solid $lighter-gray;
+}
+
+.p-inputswitch .p-inputswitch-slider:before [lang="ar"] {
+  left: 0 !important;
+}
+
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider,
+.p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover
+  .p-inputswitch-slider {
+  background: $primary-color !important;
+}
+
+.p-calendar {
+  & .p-button {
+    background-color: $lighter-gray-2;
+    border-left: none;
+    border-top: 1px solid #ced4da;
+    border-right: 1px solid #ced4da;
+    border-bottom: 1px solid #ced4da;
+    // border-color: $secondary-color;
+    border-radius: 0 6px 6px 0;
+
+    & .p-icon {
+      color: $primary-color;
+    }
+
+    &:lang(ar) {
+      border-radius: 6px 0 0 6px;
+      border-right: none;
+      border-left: 1px solid $lighter-gray;
+    }
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &-w-btn .p-inputtext:lang(ar) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+}
+
+.p-component {
+  font-size: $normal-font !important;
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.p-float-label label {
+  &:lang(ar) {
+    right: 0.75rem;
+    width: fit-content;
+  }
+}
+
+.p-float-label input:focus ~ label,
+.p-float-label input.p-filled ~ label,
+.p-float-label .p-inputwrapper-focus ~ label,
+.p-float-label textarea:focus ~ label,
+.p-float-label textarea.p-filled ~ label,
+.p-float-label .p-inputwrapper-filled ~ label {
+  margin-top: 5px;
+  background-color: $white-color;
+  padding: 0 8px;
+}
+
+/* tabs  */
+
+// .p-tabview .p-tabview-nav {
+//   border: 1px solid transparent;
+// }
+
+.p-tabview .p-tabview-panels,
+.p-tabview-nav-container,
+.p-tabview .p-tabview-nav,
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  background: transparent !important;
+  background-color: transparent !important;
+  font-size: $normal-font;
+  font-weight: normal !important;
+  padding: 0.5rem 1rem;
+  color: $black-color;
+  white-space: nowrap;
+
+  & .counter {
+    background-color: $blue-color;
+    color: $white-color;
+    font-size: $small-font;
+    border-radius: 10px;
+    padding: 0rem 0.5rem;
+    margin-inline-start: 0.5rem;
+  }
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  color: $primary-color !important;
+  border-bottom: 2px solid $primary-color !important;
+  font-weight: bold !important;
+
+  & .counter {
+    background-color: $primary-color;
+    color: $white-color;
+  }
+
+  & .p-tabview-title {
+    color: $primary-color;
+  }
+}
+
+//tables
+
+.p-datatable .p-datatable-thead > tr > th,
+.p-datatable .p-datatable-tbody > tr > td {
+  font-size: $normal-font;
+}
+
+.p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
+  background: $bg-color;
+}
+
+.p-datatable .p-datatable {
+  &-thead > tr > th {
+    padding: 1rem 2rem;
+    border-bottom: 2px solid $lighter-gray;
+  }
+
+  &-tbody > tr > td {
+    padding: 0.5rem 2rem;
+  }
+}
+
+//input switch
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider,
+.p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover
+  .p-inputswitch-slider {
+  height: 11px;
+  width: 35px;
+}
+
+.p-inputswitch.p-component.p-inputswitch-checked {
+  height: 11px;
+  width: 35px;
+}
+
+.p-inputswitch-slider {
+  height: 11px;
+  width: 35px;
+}
+
+.p-inputswitch.p-component {
+  height: 11px;
+  width: 35px;
+  margin-inline-end: 1rem;
+}
+
+.error-validation {
+  color: red;
+  font-size: $xsmall-font;
+  position: absolute;
+  top: 2rem;
+  left: 0.75rem;
+
+  &:lang(ar) {
+    left: unset;
+    right: 0;
+  }
+}
+
+//slider{
+.p-slider {
+  & .p-slider-range {
+    background: $primary-color;
+  }
+
+  & .p-slider-handle {
+    border-color: $primary-color;
+    transition: 0.2s;
+
+    &:hover {
+      background-color: $primary-color;
+    }
+  }
+}
+
+//menu
+.mat-mdc-menu-item {
+  min-height: 35px !important;
+  transform: scale(0.9);
+
+  & .material-symbols-outlined {
+    color: $blue-color;
+  }
+}
+
+//scroll bar{
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $lighter-gray;
+}
+
+// stepper
+.p-steps .p-steps-item.p-highlight .p-steps-number {
+  color: $white-color;
+  background: $primary-color;
+}
+
+//paginator
+mat-paginator,
+.p-paginator {
+  background-color: transparent !important;
+  direction: ltr;
+}
+
+//dropdown
+
+.p-dropdown-items {
+  padding-inline-start: 0;
+}
+
+//filter
+.pi-filter {
+  position: relative;
+  top: 0.2rem;
+}
+
+//colors
+
+.red {
+  color: $red-color;
+}
+
+.green {
+  color: $green-color;
+}
+
+.orange {
+  color: $orange-color;
+}
+
+.blue {
+  color: $blue-color;
+}
+
+.purple {
+  color: $purple-color;
+}
+
+//spinner
+.mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: $primary-color !important;
+}

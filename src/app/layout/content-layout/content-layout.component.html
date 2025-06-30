@@ -1,0 +1,18 @@
+<div class="layout container-fluid" [class]="menuStatus==false?'layout--full':''">
+    <!--add class "layout--full" when closing the main menu-->
+    <div class="row">
+      <div class="layout__header col-12 p-0">
+        <app-header></app-header>
+      </div>
+      <div class="layout__main-menu col-2 p-0">
+        <app-main-menu></app-main-menu>
+      </div>
+      <div class="layout__contents col-10 p-0">
+        <div class="layout__page-contents col-12">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  <ng-template appAdhost></ng-template>

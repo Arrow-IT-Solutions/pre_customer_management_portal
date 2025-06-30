@@ -1,0 +1,50 @@
+<div class="upload-images mb-3">
+  <div class="row">
+    <div class="col">
+      <div class="upload-images__button" (click)="fileUpload.click()">
+        <div class="upload-icon">
+          <span class="material-symbols-outlined">cloud_upload</span>
+        </div>
+        <p class="upload-description text-center">
+          {{ "Upload Image" | translate }}
+        </p>
+      </div>
+      <form [formGroup]="dataFrom">
+        <input
+          id="file"
+          #fileUpload
+          type="file"
+          class="form-control file-input"
+          formControlName="fileName"
+          (change)="onFileChange($event)"
+        />
+
+        <div class="upload-images__file" *ngIf="fileSrc != ''">
+          <p-overlayPanel #op>
+            <img [src]="fileSrc == '' ? defultImg : fileSrc" alt="product" />
+          </p-overlayPanel>
+
+          <div class="file-thumbnail">
+            <img
+              [src]="fileSrc == '' ? defultImg : fileSrc"
+              (click)="op.toggle($event)"
+            />
+          </div>
+
+          <span class="file-name">Upload-image</span>
+          <span class="file-size">{{ fileSize }} Kb</span>
+          <span class="file-delete" (click)="FileClear()"
+            ><span class="material-symbols-outlined">close</span></span
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--end of upload image-->
+
+<ng-template #imgList>
+  <div class="upload-images__file">
+    <p-skeleton height="3rem"></p-skeleton>
+  </div>
+</ng-template>

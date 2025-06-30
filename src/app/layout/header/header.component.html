@@ -1,0 +1,72 @@
+<div class="header">
+
+  <div class="header__container">
+    <div class="company-name">
+      POS System
+      <span class="branch-name">Branch Name</span>
+    </div>
+    <div class="header__tools">
+      <div class="search__item">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            class="search-field"
+            type="text"
+            pInputText
+            placeholder="Search Products..."
+          />
+        </span>
+      </div>
+      <span class="material-symbols-outlined"
+        >barcode</span>
+      <span class="material-symbols-outlined"
+        >refresh</span>
+    </div>
+    <div class="profile">
+      <div class="cart-container">
+        <span class="material-symbols-outlined cart">shopping_cart</span>
+        <span class="counter">5</span>
+      </div>
+      <div [matMenuTriggerFor]="langMenu" class="language__icon">
+        <span class="material-symbols-outlined lang-icon">language</span>
+        <span class="m-0">English</span>
+        <span class="material-symbols-outlined m-0"> arrow_drop_down </span>
+      </div>
+      <div class="profile-menu" [matMenuTriggerFor]="menu">
+        <div class="profile__image">
+          <span class="registered-user">{{
+            userService.currentUser.userName
+          }}</span>
+          <span class="material-symbols-outlined"> arrow_drop_down </span>
+        </div>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <span class="material-symbols-outlined">account_circle</span>
+            My Profile
+          </button>
+          <button mat-menu-item>
+            <span class="material-symbols-outlined">logout</span>
+            Logout
+          </button>
+        </mat-menu>
+
+        <mat-menu #langMenu="matMenu">
+          <button mat-menu-item>
+            English
+          </button>
+          <button mat-menu-item>
+            عربي
+          </button>
+        </mat-menu>
+      </div>
+
+      <!-- <div class="profile__image">
+        <span class="material-symbols-outlined fill">account_circle</span>
+        <span class="registered-user">{{
+          userService.currentUser.userName
+        }}</span>
+      </div> -->
+    </div>
+  </div>
+</div>

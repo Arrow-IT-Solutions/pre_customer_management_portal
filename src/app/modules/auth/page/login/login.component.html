@@ -1,0 +1,83 @@
+<form [formGroup]="loginForm"
+	(ngSubmit)="onSubmit()"
+	class="login__form">
+	<div class="login row m-0">
+		<div class="col-md-6 col-sm-12 col-12 p-0">
+			<div class="left">
+				<!-- <img
+          class="left__logo-img mb-4"
+          src="../../../assets/images/logo.svg"
+        /> -->
+				<h4 class="mb-5">Hello! Welcome Back</h4>
+				<span class="p-input-icon-left mb-4">
+					<i class="pi">
+						<span class="material-symbols-outlined">person</span>
+					</i>
+					<input type="text"
+						pInputText
+						placeholder="Username"
+						formControlName="UserName">
+					<span *ngIf="submitted && form['UserName'].errors"
+						class="error-validation">
+						Field_Requierd
+					</span>
+				</span>
+				<span class="p-input-icon-left mb-4">
+					<i class="pi">
+						<span class="material-symbols-outlined">lock</span>
+					</i>
+					<input type="password"
+						pInputText
+						placeholder="Password"
+						formControlName="Password">
+
+
+					<span *ngIf="submitted && form['Password'].errors"
+						class="error-validation">
+						Field_Requierd
+					</span>
+				</span>
+				<!-- <div class="left__link mb-4">Forget Password?</div> -->
+				<!-- <button class="left__button mb-4" >Login</button> -->
+				<p-button [loading]="loading"
+					(click)="onSubmit()"
+					type="Submit"
+					class="btn-primary left__button mb-4 "
+					label="Login"></p-button>
+
+
+
+				<div class="left__small-text mb-4 pb-4">
+					<!-- <span class="left__small-text mb-4">
+						Don't have an account?&nbsp;
+					</span>
+					<span (click)="goToSignUp()"
+						class="left__small-text--link mb-4">
+						Sign Up
+					</span> -->
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-sm-12 col-12 p-0">
+			<div class="right">
+				
+				<!-- <img
+          class="right__login-img mb-4"
+          src="../../../assets/images/login-01.svg"
+        /> -->
+				<h3 class="mb-4">
+					Welcome to Survey Kubbah & Bastouni
+				</h3>
+				<!-- <p>
+					Lorem ipsum dolor sit amet, elit, tempor incid dolore magna
+				</p> -->
+
+
+			
+			</div>
+		</div>
+	</div>
+</form>
+
+
+<p-toast key="toast"></p-toast>

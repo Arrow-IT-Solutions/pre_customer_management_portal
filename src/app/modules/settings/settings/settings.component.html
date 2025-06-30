@@ -1,0 +1,94 @@
+<div class="settings" *ngFor="let row of data">
+  <span class="material-symbols-outlined fill" id="edit" (click)="openDialog(row)">edit</span>
+
+  <div id="tittle">
+    <span>{{ 'Settings' | translate }}:</span>
+  </div>
+
+  <div class="container settings-info">
+    <div class="row gy-3">
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="setting-item">
+          <label class="setting-item__label">
+            {{ 'CompanyName_Setting' | translate }}
+          </label>
+          <span class="setting-item__value">
+            {{ row.settingTranslation![layoutService.config.lang]?.name }}
+          </span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="setting-item">
+          <label class="setting-item__label">
+            {{ 'Subtitle_Setting' | translate }}
+          </label>
+          <span class="setting-item__value">
+            {{ row.settingTranslation![layoutService.config.lang]?.subtitle }}
+          </span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="setting-item ">
+          <label class="setting-item__label">
+            {{ 'AppURL_Setting' | translate }}
+          </label>
+          <span class="setting-item__value">{{ row.appURL }}</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="setting-item ">
+          <i class="material-symbols-outlined">settings_phone</i>
+          <span class="setting-item__value">{{ row.phone }}</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="setting-item ">
+          <i class="material-symbols-outlined">link</i>
+          <span class="setting-item__value">{{ row.facebookLink }}</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="setting-item">
+          <i class="material-symbols-outlined">link</i>
+          <span class="setting-item__value">{{ row.instagramLink }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row gy-3 mt-4">
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="setting-item setting-item--image">
+          <label class="setting-item__label">
+            {{ 'CompanyLogo_Setting' | translate }}
+          </label>
+          <img (click)="showDialog(row.logo)" [src]="row.logo" alt="Company Logo" class="img-fluid rounded" />
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="setting-item setting-item--image">
+          <label class="setting-item__label">
+            {{ 'backgroundImg_Setting' | translate }}
+          </label>
+          <img (click)="showDialog(row.backgroundImage)" [src]="row.backgroundImage" alt="Background"
+            class="img-fluid rounded" />
+        </div>
+      </div>
+
+      <div class="settings-card__qr-block">
+        <button class="settings-card__qr-download" (click)=" OpenQRDialog(row)">
+          {{ 'Show QR' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <button class="add-button" (click)="openDialog()">
+    <span class="material-symbols-outlined">add</span>
+  </button>
+
+  <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false"
+    [resizable]="false">
+    <img [src]="link" />
+  </p-dialog>

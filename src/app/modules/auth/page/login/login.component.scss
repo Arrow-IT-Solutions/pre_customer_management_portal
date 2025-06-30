@@ -1,0 +1,164 @@
+@import "../../../../../assets/scss/varialbles.scss";
+
+.login {
+  // height: 100vh;
+
+  & .left {
+    background-color: $bg-color;
+    width: 100%;
+    height: 100vh;
+    padding-left: 20%;
+    padding-right: 20%;
+    display: flex; // Use flexbox to center the items vertically
+    flex-direction: column; // Stack items vertically
+    justify-content: center; // Center items vertically
+    align-items: center; // Center items horizontally
+
+    @media (min-width: 992px) {
+      padding-left: 20%;
+      padding-right: 20%; // Desktops and large screens
+    }
+
+    @media (max-width: 991px) and (min-width: 768px) {
+      padding-left: 10%;
+      padding-right: 10%; // Tablets
+    }
+
+    @media (max-width: 767px) {
+      padding-left: 15%;
+      padding-right: 15%; // Smartphones
+    }
+
+    @media (max-height: 600px) {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    &_logo {
+      width: 155px;
+      height: 61px;
+    }
+
+    & h4 {
+      color: $primary-color;
+      font-size: $h4-size;
+    }
+
+    & .material-symbols-outlined {
+      top: -3px;
+      color: $primary-color;
+    }
+
+    &__link {
+      color: $blue-color;
+      text-decoration: underline;
+      font-size: $normal-font;
+      width: 100%;
+      text-align: end;
+      justify-content: flex-end;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+
+    &__small-text {
+      color: $gray-color;
+      font-size: $normal-font;
+
+      &--link {
+        color: $blue-color;
+        text-decoration: underline;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+    }
+
+    &__button {
+      color: $white-color; /* Button text color */
+      border: none;
+      background-color: $primary-color;
+      height: 40px;
+      border-radius: 6px;
+      width: 100%;
+      text-align: center;
+
+      
+    }
+
+
+    .btn-primary {
+      &::ng-deep .p-button {
+        background: transparent !important;
+        border: none !important;
+        transition: 0.2s;
+        border-radius: 6px;
+
+        &:focus{
+          outline: none;
+          box-shadow: none;
+        }
+      }
+    }
+
+    & .p-input-icon-left{
+      padding: 0;
+
+      & .p-inputtext{
+        padding: .6rem 2.5rem;
+      }
+    }
+  }
+
+  & .right {
+    height: 100vh;
+    background-color: $primary-color;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: flex; // Use flexbox to center the items vertically
+    flex-direction: column; // Stack items vertically
+    justify-content: center; // Center items vertically
+    align-items: center; // Center items horizontally
+
+    &__stars-top {
+      z-index: 1;
+      width: 100%;
+      position: absolute;
+      top: 0px;
+    }
+
+    &__stars-bottom {
+      z-index: 1;
+      width: 100%;
+      position: absolute;
+      bottom: -180px;
+    }
+
+    &__login-img {
+      width: 315px;
+      height: 285px;
+      z-index: 3;
+      top: -5px;
+    }
+
+    & h3 {
+      color: #FFFFFF;
+      font-size: $h3-size;
+    }
+
+    & p {
+      color: $black-color;
+      font-size: $h5-size;
+      width: 295px;
+      text-align: center;
+      letter-spacing: 0px;
+    }
+    @media (max-width: 767px) {
+      display: none;
+    }
+  }
+}

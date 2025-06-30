@@ -1,0 +1,40 @@
+<div class="main-menu">
+  <div *ngFor="let data of navData">
+    <nav [ngClass]="getClassNoItemClass(data)"
+      [routerLink]="data.items == null ? [data.routeLink] : null"
+      class="main-menu__item">
+      <div>
+        <div [attr.data-bs-target]="'#collapse' + data.id"
+          [pTooltip]="layoutService.config.dir == 'rtl' ? data.labelar : data.label"
+          data-bs-toggle="collapse"
+          [attr.aria-expanded]="isSubMenuOpen(data.id!)"
+          aria-controls="'collapse' + data.id"
+          (click)="toggleSubMenu(data.id!)"
+          class="item-container">
+          <div>
+            <span class="material-symbols-outlined">{{ data.icon }}</span>
+            <span class="description" *ngIf="layoutService.config.dir === 'rtl'">{{ data?.labelar }}</span>
+            <span class="description" *ngIf="layoutService.config.dir === 'ltr'">{{ data?.label }}</span>
+            <span class="short-description">{{ data.char }}</span>
+          </div>
+          <span *ngIf="data.items != null"
+            class="material-symbols-outlined down">
+            keyboard_arrow_down
+          </span>
+        </div>
+        <div [id]="'collapse' + data.id"
+          [ngClass]="{'collapse': !isSubMenuOpen(data.id!), 'show': isSubMenuOpen(data.id!)}"
+          >
+          <div *ngFor="let subItem of data.items"
+            [pTooltip]=" layoutService.config.dir === 'rtl' ? subItem.labelar : subItem.label"
+            [routerLink]="[subItem.routeLink]"
+            class="sub-menu__item">
+            <span *ngIf="layoutService.config.dir === 'rtl'">{{ subItem.labelar }}</span>
+            <span *ngIf="layoutService.config.dir === 'ltr'">{{ subItem.label }}</span>
+
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>

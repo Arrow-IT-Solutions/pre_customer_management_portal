@@ -1,0 +1,128 @@
+@import "../../../../../assets/scss/varialbles.scss";
+
+.header-admin{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background-color: $white-color;
+    height: 57px;
+    border-bottom: 1px solid $lighter-gray;
+    position: relative;
+    z-index: 1;
+
+    & .company-name{
+        font-family: myfont-bold, myfont-ar-bold;
+        color: $primary-color;
+        display: flex;
+        align-content: center;
+        align-items: center;
+
+        flex-wrap: wrap;
+        font-size: $h5-size;
+        padding-inline-start: 1rem;
+        height: 57px;
+        width: 100%;
+        .logocontainer{
+            width: 10rem;
+            height: 5rem;
+            img{
+              position: relative;
+                width: 50%;
+                height: 45%;
+                margin-top: 20px;
+            }
+        }
+
+        & .branch-name{
+            color: $black-color;
+            border-inline-start: 1px solid $lighter-gray;
+            padding-inline-start: 1rem;
+            margin-inline-start: 1rem;
+            font-size: $normal-font;
+            font-family: myfont-bold, myfont-ar-bold;
+            height: 24px;
+            top: .25rem;
+            position: relative;
+        }
+    }
+
+    &__container{
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        padding: 0.5rem 2rem .5rem 1rem;
+
+        @media (max-width:610px) {
+            justify-content: flex-start;
+        }
+    }
+
+    &__tools{
+            color: $secoundary-color;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+
+            & span{
+                margin-inline-start: .5rem;
+                cursor: pointer;
+                transition: .2s;
+                padding: .2rem;
+                width: 35px;
+                height: 35px;
+                text-align: center;
+                line-height: 30px;
+
+                &:hover{
+                    opacity: .7;
+                }
+
+                &.lang-icon{
+                    margin-inline-start: -0.5rem;
+
+                    &:lang(ar){
+                        margin-inline-start: 0;
+                        margin-inline-end: -1.5rem;
+                    }
+                }
+
+                // &:lang(ar){
+                //     margin-inline-end: .5rem;
+                //     margin-inline-start: unset;
+                // }
+            }
+
+            & .registered-user{
+                color: $black-color;
+            }
+
+            @media (max-width:610px) {
+                justify-content: flex-start;
+            }
+    }
+
+    & .profile{
+        display: flex;
+        cursor: pointer;
+
+        & .registered-user{
+            margin-inline-end: -1rem;
+            font-family: myfont-semibold, myfont-ar-semibold;
+            border-inline-start: 1px solid $lighter-gray;
+            padding-inline-start: 1rem;
+
+            &:lang(ar){
+                margin-inline-end: unset;
+            }
+        }
+    }
+
+    &:lang(ar){
+        padding: 0;
+    }
+
+    @media (max-width:610px) {
+        flex-direction: column;
+        height: unset;
+    }
+}

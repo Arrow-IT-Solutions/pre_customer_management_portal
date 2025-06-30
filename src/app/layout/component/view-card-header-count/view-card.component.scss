@@ -1,0 +1,30 @@
+  //small card
+  @import "../../../../assets/scss/varialbles.scss";
+  
+  .info-card {
+    background-color: $white-color;
+    border-radius: 10px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 1rem 1.8rem;
+    box-shadow: $shadow-style;
+
+    color: $gray-color;
+
+    &__count {
+      font-size: $xl-font;
+      color: $purple-color;
+      font-family: myfont-bold, myfont-ar-bold;
+
+      & .material-symbols-outlined {
+        font-size: $xl-icon;
+        margin-inline-end: 0.2rem;
+      }
+    }
+
+    &__title {
+      font-size: $normal-font;
+    }
+  }

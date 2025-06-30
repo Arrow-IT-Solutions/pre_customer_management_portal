@@ -1,0 +1,197 @@
+<div [formGroup]="dataForm" class="employees">
+  <div class="row mb-4 m-0 flex-row-reverse p-2">
+    <div class="col-lg-3 col-md-10 col p-0 employees__search">
+      <div class="flex flex-wrap justify-content-center gap-3">
+        <span class="p-input-icon-left p-0">
+          <i class="pi pi-search"></i>
+          <input class="search-field" type="text" (ngModelChange)="OnChange()"
+            placeholder="{{ 'Search_EmployeeName' | translate }}" formControlName="employeeName" pInputText />
+        </span>
+      </div>
+    </div>
+    <p-accordion class="p-0">
+      <p-accordionTab>
+        <ng-template pTemplate="header">
+          <div class="flex align-items-center">
+            <span class="material-symbols-outlined">tune</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="m-0 box2 d-flex">
+            <div class="filter-title">
+              <span class="material-symbols-outlined">filter_alt</span>
+              <span>Filter By</span>
+            </div>
+            <div class="container">
+
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="p-float-label">
+                  <input type="text" pInputText formControlName="phone" (ngModelChange)="OnChange()"
+                    class="search-field" type="text" />
+                  <label>{{ 'Search_EmployeePhone' | translate }}</label>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="p-float-label">
+                  <input type="text" pInputText formControlName="id" (ngModelChange)="OnChange()" class="search-field"
+                    type="text" />
+                  <label>{{ 'Search_EmployeeId' | translate}}</label>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="p-float-label">
+                  <input type="text" pInputText formControlName="role" (ngModelChange)="OnChange()" class="search-field"
+                    type="text" />
+                  <label>{{ 'Search_EmployeeRole' | translate}}</label>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="p-float-label">
+                  <input type="text" pInputText formControlName="userName" (ngModelChange)="OnChange()"
+                    class="search-field" type="text" />
+                  <label>{{ 'Search_EmployeeUserName' | translate}}</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col result">
+              <div class="ms-2 mt-3">
+                <p-button class="reset-btn" (onClick)="resetform()">
+                  <span class="material-symbols-outlined">restart_alt</span>
+                </p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+
+  <ng-container *ngIf="!loading; else ListView">
+    <div class="row mx-0 mt-2 box">
+      <div *ngFor="let row of data">
+        <div class="card col-12 mx-0 mb-2">
+          <div class="col-lg-2 col-md-6 col-sm-6 d-flex card__left">
+            <div class="image-container">
+              <div class="user-card__image employee_image">
+                <img *ngIf="row.image != null && row.image != ''; else char" (click)="showDialog(row.image)"
+                  [src]="row.image" />
+                <ng-template #char>{{ getFirstChar(row.employeeTranslation) }}</ng-template>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-9 col-md-12 col-sm-12 card__contents">
+            <div class="card-section">
+              <div class="card-section__title">info</div>
+              <div class="card-section__items">
+                <div class="card__contents__item">
+                  <div class="card-label">{{ 'EmployeeName' | translate }}</div>
+                  <div class="card-info">
+                    <span class="material-symbols-outlined fill"></span>
+                    {{ row.employeeTranslation![layoutService.config.lang]?.firstName }} {{
+                    row.employeeTranslation![layoutService.config.lang]?.lastName }}
+                  </div>
+                </div>
+                <div class="card__contents__item">
+                  <div class="card-label">{{ 'EmployeeUserName' | translate }}</div>
+                  <div class="card-info">
+                    <span class="material-symbols-outlined fill"></span>
+                    {{row.user.username}}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="card-section d-flex box3">
+              <div class="card__contents__item">
+                <div class="card-label">{{ 'employee-phone' | translate }}</div>
+                <div class="card-info">{{row.phone}}</div>
+              </div>
+              <div class="card__contents__item">
+                <div class="card-label">{{ 'employee-gender' | translate }}</div>
+                <div class="card-info">{{row.genderValue}}</div>
+              </div>
+              <div class="card__contents__item">
+                <div class="card-label">{{ 'Birthdate_employee' | translate }}</div>
+                <div class="card-info">{{row.birthDate | date : 'dd-MM-yyyy'}}</div>
+              </div>
+              <div class="card__contents__item">
+                <div class="card-label">{{ 'EmployeeRole' | translate }}</div>
+                <div class="card-info">
+                  <span class="material-symbols-outlined fill"></span>
+                  developer
+                </div>
+              </div>
+
+            </div>
+
+            <div class="card-section">
+              <div class="card-section__title"></div>
+              <div class="card-section__items">
+
+              </div>
+            </div>
+          </div>
+          <div class="one">
+            <div [matMenuTriggerFor]="menu" class="card__actions">
+              <span class="material-symbols-outlined card__actions__details">more_vert</span>
+            </div>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openDialog(row)">
+                <span class="material-symbols-outlined" id="icon_edit">Edit</span>
+                {{ 'Edit_Employee' | translate }}
+              </button>
+              <button mat-menu-item (click)="resetPass(row)">
+                <span class="material-symbols-outlined" id="icon_edit">Edit</span>
+                {{ 'ResetPassword_Employee' | translate }}
+              </button>
+              <button mat-menu-item (click)="confirmDelete(row)">
+                <span class="material-symbols-outlined" id="icon_delete">delete</span>
+                {{ 'Delete_Employee' | translate }}
+              </button>
+            </mat-menu>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="total">
+        {{ "totalEmployees" | translate }}:
+        {{ totalRecords}}
+      </div>
+      <p-paginator [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+        [first]="first" (onPageChange)="paginate($event)"></p-paginator>
+    </div>
+    <button class="add-button" (click)="openDialog()">
+      <span class="material-symbols-outlined">add</span>
+    </button>
+  </ng-container>
+
+  <ng-template #ListView>
+    <div class="row">
+      <div *ngFor="let list of [1, 2, 3, 4]" class="row mx-0 mt-2">
+        <p-skeleton height="7.5rem"></p-skeleton>
+      </div>
+    </div>
+  </ng-template>
+
+
+  <p-confirmDialog #positionDialog key="positionDialog" position="bottom" [baseZIndex]="10000" onHide="true">
+    <ng-template pTemplate="footer">
+      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}"
+        (click)="positionDialog.reject()"></button>
+      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}"
+        (click)="positionDialog.accept()"></button>
+    </ng-template>
+  </p-confirmDialog>
+
+</div>
+
+
+<p-toast key="toast"></p-toast>

@@ -1,0 +1,67 @@
+//main colors
+$primary-color:#cf8911;
+$secoundary-color: #F5C916;
+$primary-color-hover: #dd8e60;
+$secondary-color: #F4D474;
+$dark-secondary: #E2C15F;
+$blue-color: #007A8B;
+//////////////////////////////
+$sec-color: #59c6ce;
+$sec-color-hover: #50b1b8;
+$white-color: #ffffff;
+$black-color: #171826;
+$green-color: #4fc96c;
+$red-color: #e65468;
+$purple-color: #ad58c3;
+$orange-color: #e69454;
+$gold-color: #F5C916;
+$bronze-color: #C77B30;
+
+//backgrounds
+$bg-color: #f5f5f5; //full screen background
+$chips-color: #ebebf4;
+$light-blue: #ddecff; //cards titles
+$light-purple: #cccde4;
+
+//Gray colors
+$dark-gray: #202020; // titles
+$gray-color: #616164; // inactive
+$light-gray: #b4b1b1; // separators
+$lighter-gray: #e4e4e4; // borders
+$lighter-gray-2: #fafafa; //forms buttons bg
+
+//fonts
+$xsmall-font: 10px;
+$small-font: 12px;
+$normal-font: 14px;
+$large-font: 16px;
+$xl-font: 24px;
+$h1-size: 40px;
+$h2-size: 32px;
+$h3-size: 28px;
+$h4-size: 24px;
+$h5-size: 18px;
+$h6-size: 16px;
+
+//Icons
+$very-small-icon: 10px;
+$small-icon: 16px;
+$medium-icon: 20px;
+$large-icon: 24px;
+$xl-icon: 30px;
+
+//shared styles
+$shadow-style: 0px 0 5px 0px #00000021;
+
+//gradient colors
+%gradient-text{
+    background: #629EEC;
+    background: linear-gradient(to right, #629EEC 0%, #59C6CE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+%gradient-background{
+    background: rgb(178,212,255);
+    background: linear-gradient(90deg, rgba(178,212,255,1) 0%, rgba(89,198,206,1) 100%);
+}

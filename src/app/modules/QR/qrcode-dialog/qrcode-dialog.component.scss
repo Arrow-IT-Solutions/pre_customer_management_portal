@@ -1,0 +1,64 @@
+.qr-container {
+  position: relative;
+
+}
+
+.qr-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.qr-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  /* clicks pass through to the QR underneath */
+}
+
+/* qrcode-dialog.component.scss */
+
+.qr-container {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.qr-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.qr-actions .download-button {
+  background-color: #A72225;
+  /* brand red */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.qr-actions .download-button:hover {
+  background-color: #922021;
+}
+
+/* style the close button (which has mat-button on it) */
+.qr-actions button[mat-button] {
+  color: #A72225;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.qr-actions button[mat-button]:hover {
+  background-color: rgba(167, 34, 37, 0.1);
+}
