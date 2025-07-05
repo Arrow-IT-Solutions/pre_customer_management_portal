@@ -8,5 +8,20 @@
   "userName_database":"اسم المستخدم",
   "Edit_database":"تعديل",
   "Delete_database":"حذف",
-  "totaldatabases_databases":"المجموع"
+  "totaldatabases_databases":"المجموع",
+  "Basic_Info_Form":"المعلومات الأساسية",
+  "nameEn_database":"الاسم بالانكليزية",
+  "nameAr_database":"الاسم بالعربية",
+  "password_database":"كلمة المرور",
+  "save":"حفظ",
+  "nameEn_services":"الاسم بالانكليزية",
+  "nameAr_services":"الاسم بالعربية",
+  "descEn_services":"الوصف بالانكليزية",
+  "descAr_services":"الوصف بالعربية",
+  "hostName_servers":"اسم المضيف",
+  "IpAddress_servers":"عنوان IPالمضيف",
+  "Edit_Server":"تعديل",
+  "Delete_Server":"حذف",
+  "totalServers_Servers":"المجموع"
+  
 }
