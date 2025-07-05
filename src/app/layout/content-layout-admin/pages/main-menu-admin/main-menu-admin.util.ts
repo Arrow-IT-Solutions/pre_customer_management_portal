@@ -13,32 +13,37 @@ export interface NavbarData {
 }
 
 export const navbarData: NavbarData[] = [
-  {
-    label: 'Applications',
-    labelar: 'التطبيقات',
-    id: 'applications',
-    icon: ' format_align_justify',
-    routeLink: "applications"
-  },
+  // {
+  //   label: 'Applications',
+  //   labelar: 'التطبيقات',
+  //   id: 'applications',
+  //   icon: ' format_align_justify',
+  //   routeLink: "applications"
+  // },
   {
 
     label: 'System Management',
     labelar: 'إدارة النظام',
     id: 'users',
-    icon: 'group',
+    icon: '',
     items: [
       {
-        label: 'Employees',
-        labelar: 'الموظفين',
-        id: 'employees',
-        routeLink: 'employees'
+        label: 'Services',
+        labelar: 'الخدمات',
+        id: 'services',
+        routeLink: 'services'
       },
       {
-        label: 'Settings',
-        labelar: 'الإعدادات',
-        id: 'Settings',
-        icon: 'settings',
+        label: 'Servers',
+        labelar: 'المخدمين',
+        id: 'servers',
         routeLink: 'settings'
+      },
+       {
+        label: 'DataBases',
+        labelar: 'قواعد البيانات',
+        id: 'dataBases',
+        routeLink: 'DataBases'
       }
     ]
   }

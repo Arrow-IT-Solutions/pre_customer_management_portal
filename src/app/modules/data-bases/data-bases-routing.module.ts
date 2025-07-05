@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GateComponent } from './gate/gate.component';
+import { DataBasesComponent } from './data-bases/data-bases.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: GateComponent
+    path:'',
+    component:DataBasesComponent
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class GateRoutingModule { }
+export class DataBasesRoutingModule { }
