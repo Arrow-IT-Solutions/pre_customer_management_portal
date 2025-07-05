@@ -28,6 +28,19 @@
           
             </div>
           </div>
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password"  />
+              <label>{{ 'password_database' | translate }}</label>
+                <i 
+                  class="pi" 
+                  [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'" 
+                  (click)="togglePasswordVisibility()" 
+                  >
+                </i>
+          
+            </div>
+          </div>
         
         </div>
       </div>
@@ -37,7 +50,7 @@
 
 
     <div class="col-xs-12 text-end mt-4">
-      <p-button type="Submit" class="btn-primary" label="Save" [loading]="btnLoading"></p-button>
+      <p-button type="Submit" class="btn-primary"  [loading]="btnLoading">{{'save' | translate}}</p-button>
     </div>
   </div>
 </form>

@@ -1,6 +1,6 @@
 @import"../../../../assets/scss/varialbles.scss";
 
-.add-database {
+.add-server {
 
   &__title {
     margin-bottom: 20px;
@@ -75,19 +75,6 @@
 
     
 }
-.pi{
-    cursor: pointer;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    &:lang(ar){
-        right: unset;
-        left: 10px;
-}
-    
-}
- 
 
 
 

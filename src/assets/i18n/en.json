@@ -8,5 +8,20 @@
     "userName_database":"User Name",
     "Edit_database":"Edit",
     "Delete_database":"Delete",
-    "totaldatabases_databases":"Total"
+    "totaldatabases_databases":"Total",
+    "Basic_Info_Form":"Basic Info",
+    "nameEn_database":"Name in English",
+    "nameAr_database":"Name in Arabic",
+    "userName_database":"User Name",
+    "password_database":"Password",
+    "save":"Save",
+    "nameEn_services":"Name in English",
+    "nameAr_services":"Name in Arabic",
+    "descEn_services":"Description in English",
+    "descAr_services":"Description in Arabic",
+    "hostName_servers":"Host Name",
+    "IpAddress_servers":"Ip Address",
+    "Edit_Server":"Edit",
+    "Delete_Server":"Delete",
+    "totalServers_Servers":"Total"
 }

@@ -50,10 +50,10 @@ const routes: Routes = [
           )
       },
       {
-        path: 'password',
+        path: 'servers',
         loadChildren: () =>
-          import('./modules/password/password.module').then(
-            (m) => m.PasswordModule
+          import('./modules/servers/servers.module').then(
+            (m) => m.ServersModule
           )
       },
       {

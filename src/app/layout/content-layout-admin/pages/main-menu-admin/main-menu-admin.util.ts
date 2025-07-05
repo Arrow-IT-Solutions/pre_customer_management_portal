@@ -37,7 +37,7 @@ export const navbarData: NavbarData[] = [
         label: 'Servers',
         labelar: 'المخدمين',
         id: 'servers',
-        routeLink: 'settings'
+        routeLink: 'servers'
       },
        {
         label: 'DataBases',

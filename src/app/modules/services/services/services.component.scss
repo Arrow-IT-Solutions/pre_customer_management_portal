@@ -21,7 +21,7 @@
         width: 3rem !important;
         height: 3rem !important;
         border-radius: 50% !important;
-        background-color: $primary-color-hover !important;
+        background-color: $primary-color !important;
         border: none;
         color: white;
 
@@ -103,7 +103,7 @@
         justify-content: space-evenly;
 
         & .material-symbols-outlined{
-          color: $blue-color;
+          color: $primary-color;
           top: 0;
         }
       }
@@ -202,7 +202,7 @@
 
 .reset-btn {
       ::ng-deep button {
-        background-color: $primary-color-hover !important;
+        background-color: $primary-color !important;
         color: #fff !important;
         border: none !important;
         border-radius: 50% !important;
@@ -223,7 +223,7 @@
       }
     }
   & .card {
-     width: 30%;
+     width: 32%;
     display: flex;
     flex-direction: row;
     padding: 1rem;
@@ -501,7 +501,7 @@
 
 .reset-btn {
   ::ng-deep button {
-    background-color: $primary-color-hover !important;
+    background-color: $primary-color !important;
     color: #fff !important;
     border: none !important;
     border-radius: 50% !important;
