@@ -44,6 +44,12 @@ export const navbarData: NavbarData[] = [
         labelar: 'قواعد البيانات',
         id: 'dataBases',
         routeLink: 'DataBases'
+      },
+       {
+        label: 'Customers',
+        labelar: 'العملاء',
+        id: 'Customers',
+        routeLink: 'customers'
       }
     ]
   }
