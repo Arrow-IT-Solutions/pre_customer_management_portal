@@ -33,6 +33,10 @@
   "totalcustomers_customers":"المجموع",
   "nameEn_customer":"الاسم بالانكليزية",
   "nameAr_customer":"الاسم بالعربية",
-  "countryCode_customer":"رمز الدولة"
-  
+  "countryCode_customer":"رمز الدولة",
+  "Create_Customer":"إنشاء عميل",
+  "Update_Customer":"تحديث العميل",
+  "totalCustomer_customer":"إجمالي العملاء",
+  "Do_you_want_to_delete_this_record?":"هل تريد حذف هذا السجل؟",
+  "Delete_Confirmation":"تأكيد الحذف"
 }
