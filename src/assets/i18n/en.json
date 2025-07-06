@@ -23,5 +23,16 @@
     "IpAddress_servers":"Ip Address",
     "Edit_Server":"Edit",
     "Delete_Server":"Delete",
-    "totalServers_Servers":"Total"
+    "totalServers_Servers":"Total",
+     "name_customer":"Name",
+    "primaryContact_customer":"Primary Contact",
+    "email_customer":"Email",
+    "phone_customer":"Phone",
+    "anyDeskAddress_customer":"AnyDesk Address",
+    "Edit_customer":"Edit",
+    "Delete_customer":"Delete",
+    "totalcustomers_customers":"Total",
+    "nameEn_customer":"Name in English",
+    "nameAr_customer":"Name in Arabic",
+    "countryCode_customer":"Country Code"
 }

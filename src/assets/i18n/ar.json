@@ -22,6 +22,17 @@
   "IpAddress_servers":"عنوان IPالمضيف",
   "Edit_Server":"تعديل",
   "Delete_Server":"حذف",
-  "totalServers_Servers":"المجموع"
+  "totalServers_Servers":"المجموع",
+  "name_customer":"الاسم",
+  "primaryContact_customer":"معرف التواصل",
+  "email_customer":"الإيميل",
+  "phone_customer":"رقم الهاتف",
+  "anyDeskAddress_customer":"عنوان AnyDesk",
+  "Edit_customer":"تعديل",
+  "Delete_customer":"حذف",
+  "totalcustomers_customers":"المجموع",
+  "nameEn_customer":"الاسم بالانكليزية",
+  "nameAr_customer":"الاسم بالعربية",
+  "countryCode_customer":"رمز الدولة"
   
 }

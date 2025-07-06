@@ -1,0 +1,76 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="add-customer">
+  <div class="add-customer">
+    <div class="box-shadow mb-3">
+      <div class="row">
+        <div class="col-12 side-icon">
+          <span class="material-symbols-outlined">info</span>
+          <span>{{ 'Basic_Info_Form' | translate }}</span>
+        </div>
+        <div class="col-12 row m-0 p-0">
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="nameEn" />
+              <label>{{ 'nameEn_customer' | translate }}</label>
+              
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="nameAr" />
+              <label>{{ 'nameAr_customer' | translate }}</label>
+          
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="primaryContact" />
+              <label>{{ 'primaryContact_customer' | translate }}</label>
+          
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="email" />
+              <label>{{ 'email_customer' | translate }}</label>
+          
+            </div>
+          </div>
+           <div class="col-12 mb-3 phone">
+            <div class="p-float-label dropdown">
+                <p-dropdown [options]="" optionLabel="value" optionValue="key" formControlName="countryCode"
+                     appendTo="body"></p-dropdown>
+                     <label>{{ 'countryCode_customer' | translate }}</label>
+       
+            </div>
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="phone" />
+              <label>{{ 'phone_customer' | translate }}</label>
+          
+            </div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="anyDeskAddress" />
+              <label>{{ 'anyDeskAddress_customer' | translate }}</label>
+          
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+
+
+
+   <div class="col-xs-12 text-end mt-4">
+      <p-button type="Submit" class="btn-primary"  [loading]="btnLoading">{{'save' | translate}}</p-button>
+    </div>
+  </div>
+</form>
+
+<p-toast key="toast"></p-toast>
+
+
+
+
