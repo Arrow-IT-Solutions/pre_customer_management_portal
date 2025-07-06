@@ -33,6 +33,10 @@
   "totalcustomers_customers":"المجموع",
   "nameEn_customer":"الاسم بالانكليزية",
   "nameAr_customer":"الاسم بالعربية",
-  "countryCode_customer":"رمز الدولة"
+  "countryCode_customer":"رمز الدولة",
+  "number_port":"رقم المنفذ",
+  "Edit_port":"تعديل",
+  "Delete_port":"حذف",
+  "totalports_ports":"المجموع"
   
 }

@@ -1,6 +1,6 @@
 @import "../../../../assets/scss/varialbles.scss";
 
-.databases {
+.ports {
     padding: 1rem 1rem 1rem 0rem;
     position: relative;
 
@@ -246,7 +246,7 @@
     }
     .icon-container{
       display: flex;
-      margin-bottom: 6rem;
+      margin-bottom: 3rem;
 
       @media (max-width:767px) {
         padding-top: 0;

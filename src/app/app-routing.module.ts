@@ -63,6 +63,13 @@ const routes: Routes = [
             (m) => m.CustomersModule
           )
       },
+       {
+        path: 'ports',
+        loadChildren: () =>
+          import('./modules/ports/port.module').then(
+            (m) => m.PortModule
+          )
+      },
       {
         path: 'settings',
         loadChildren: () =>

@@ -34,5 +34,9 @@
     "totalcustomers_customers":"Total",
     "nameEn_customer":"Name in English",
     "nameAr_customer":"Name in Arabic",
-    "countryCode_customer":"Country Code"
+    "countryCode_customer":"Country Code",
+    "number_port":"Port Number",
+    "Edit_port":"Edit",
+    "Delete_port":"Delete",
+    "totalports_ports":"Total"
 }
