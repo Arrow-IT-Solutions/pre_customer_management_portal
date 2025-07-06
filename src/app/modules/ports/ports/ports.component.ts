@@ -1,28 +1,26 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
-import { DataBasesService } from 'src/app/layout/service/databases.service';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { AddDatabaseComponent } from '../add-database/add-database.component';
+import { PortsService } from 'src/app/layout/service/ports.service';
+import { AddPortComponent } from '../add-port/add-port.component';
 
 @Component({
-  selector: 'app-data-bases',
-  templateUrl: './data-bases.component.html',
-  styleUrls: ['./data-bases.component.scss'],
-  providers: [MessageService]
+  selector: 'app-ports',
+  templateUrl: './ports.component.html',
+  styleUrls: ['./ports.component.scss']
 })
-export class DataBasesComponent {
+export class PortsComponent {
     dataForm!: FormGroup;
     loading = false;
     pageSize: number = 12;
     first: number = 0;
     totalRecords: number = 0;
     constructor(public formBuilder:FormBuilder,public layoutService: LayoutService,
-      public translate: TranslateService,public database:DataBasesService) {
+      public translate: TranslateService,public port:PortsService) {
       this.dataForm=this.formBuilder.group({
-        name:[''],
-        UserName:['']
+        number:[''],
+        
   
       })
     }
@@ -47,19 +45,18 @@ export class DataBasesComponent {
       this.first = event.first
   
     }
-    openAdddatabase(){
+    openAddport(){
        window.scrollTo({ top: 0, behavior: 'smooth' });
       document.body.style.overflow = 'hidden';
-      let content = this.database.SelectedData == null ? 'Create_DataBase' : 'Update_DataBase';
+      let content = this.port.SelectedData == null ? 'Create_port' : 'Update_port';
       this.translate.get(content).subscribe((res: string) => {
         content = res
       });
-      var component = this.layoutService.OpenDialog(AddDatabaseComponent, content);
-      this.database.Dialog = component;
+      var component = this.layoutService.OpenDialog(AddPortComponent, content);
+      this.port.Dialog = component;
       component.OnClose.subscribe(() => {
         document.body.style.overflow = '';
         this.FillData();
       });
     }
-
 }

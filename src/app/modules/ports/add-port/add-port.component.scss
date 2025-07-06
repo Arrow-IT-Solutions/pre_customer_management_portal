@@ -1,0 +1,80 @@
+@import"../../../../assets/scss/varialbles.scss";
+
+.add-port {
+
+  &__title {
+    margin-bottom: 20px;
+  }
+
+  & .box-shadow {
+    border: 1px solid $lighter-gray;
+    border-radius: 6px;
+    padding: 1.7rem;
+    background-color: $white-color;
+  }
+
+  & .side-icon {
+    background-color: $chips-color;
+    color: $blue-color;
+    margin-right: 1rem;
+    border-radius: 6px;
+    padding: 0.25rem 1rem;
+    position: relative;
+    left: -2rem;
+    min-width: 220px;
+    top: -1rem;
+    width: unset;
+
+    & .material-symbols-outlined {
+      margin-inline-end: .5rem;
+
+      &:lang(ar) {
+        margin-inline-start: .5rem;
+        margin-inline-end: unset;
+      }
+    }
+
+    &__icon {
+      position: relative;
+      top: -0.25rem;
+      padding: 0.5rem;
+    }
+
+    &:lang(ar) {
+      left: unset;
+      right: -3rem;
+    }
+  }
+
+  & .switch-button {
+    display: flex;
+    align-items: center;
+  }
+
+  &__close {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    color: $blue-color;
+    cursor: pointer;
+
+    & .material-symbols-outlined {
+      transition: 0.2s;
+
+      &:hover {
+        opacity: 0.8;
+        background-color: $chips-color;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+.radio_options{
+    display: flex;
+    column-gap: 6rem;
+
+    
+}
+
+
+
