@@ -23,13 +23,13 @@ const routes: Routes = [
   //       )
   //   }],
   // },
-  // {
-  //   path: 'auth',
-  //   component: AuthLayoutComponent,
-  //   loadChildren: () =>
-  //     import('./modules/auth/auth.module').then((m) => m.AuthModule),
-  //   //import('./modules/gate/gate.module').then((m) => m.GateModule),
-  // },
+  {
+    path: 'auth',
+    component: AuthLayoutComponent,
+    loadChildren: () =>
+      import('./modules/auth/auth.module').then((m) => m.AuthModule),
+    //import('./modules/gate/gate.module').then((m) => m.GateModule),
+  },
   {
     path: 'layout-admin',
     component: ContentLayoutAdminComponent,
@@ -61,6 +61,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('./modules/customers/customers.module').then(
             (m) => m.CustomersModule
+          )
+      },
+       {
+        path: 'ports',
+        loadChildren: () =>
+          import('./modules/ports/port.module').then(
+            (m) => m.PortModule
           )
       },
       {

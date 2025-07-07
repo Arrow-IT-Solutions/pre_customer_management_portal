@@ -522,7 +522,7 @@
       top: auto;
     }
     &:hover {
-      background-color: darken($primary-color-hover, 5%) !important;
+      background-color: darken($primary-color, 2%) !important;
     }
   }
 }

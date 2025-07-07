@@ -39,4 +39,9 @@
   "totalCustomer_customer":"إجمالي العملاء",
   "Do_you_want_to_delete_this_record?":"هل تريد حذف هذا السجل؟",
   "Delete_Confirmation":"تأكيد الحذف"
+  "number_port":"رقم المنفذ",
+  "Edit_port":"تعديل",
+  "Delete_port":"حذف",
+  "totalports_ports":"المجموع"
+  
 }
