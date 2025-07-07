@@ -42,6 +42,21 @@
   "number_port":"رقم المنفذ",
   "Edit_port":"تعديل",
   "Delete_port":"حذف",
-  "totalports_ports":"المجموع"
+  "totalports_ports":"المجموع",
+  "userName_credential":"اسم المستخدم",
+  "Edit_credential":"تعديل",
+  "Delete_credential":"حذف",
+  "totalcredentials_credentials":"المجموع",
+  "password_credential":"كلمة المرور",
+  "customerName_definitions":"اسم العميل",
+  "service_definitions":"الخدمة",
+  "NameEnvironment_definitions":"اسم البيئة",
+  "UrlEnvironment_definitions":"رابط البيئة",
+  "Next_definitions":"التالي",
+  "server_definitions":"المخدم",
+  "databaseName_definitions":"اسم قاعدة البيانات",
+  "userName_definitions":"اسم مستخدم قاعدة البيانات",
+  "password_definitions":"كلمة مرور قاعدة البيانات",
+  "Save_definitions":"حفظ"
   
 }

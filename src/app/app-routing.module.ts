@@ -71,6 +71,21 @@ const routes: Routes = [
           )
       },
       {
+        path: 'credential',
+        loadChildren: () =>
+          import('./modules/credential/credential.module').then(
+            (m) => m.CredentialModule
+          )
+      },
+      {
+        path: 'add',
+        loadChildren: () =>
+          import('./modules/wizard-to-add/wizard-to-add.module').then(
+            (m) => m.WizardToAddModule
+          )
+      },
+     
+      {
         path: 'settings',
         loadChildren: () =>
           import('./modules/settings/settings.module').then(
