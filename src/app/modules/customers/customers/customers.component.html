@@ -21,7 +21,7 @@
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input class="search-field" type="text"
+                    <input class="search-field" type="text" (ngModelChange)="OnChange()"
                       placeholder="{{ 'name_customer' | translate }}" formControlName="name" pInputText />
                   </span>
                 </div>
@@ -30,7 +30,7 @@
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input class="search-field" type="text"
+                    <input class="search-field" type="text" (ngModelChange)="OnChange()"
                       placeholder="{{ 'primaryContact_customer' | translate }}" formControlName="primaryContact" pInputText />
                   </span>
                 </div>
@@ -39,7 +39,7 @@
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input class="search-field" type="text"
+                    <input class="search-field" type="text" (ngModelChange)="OnChange()"
                       placeholder="{{ 'email_customer' | translate }}" formControlName="email" pInputText />
                   </span>
                 </div>
@@ -48,7 +48,7 @@
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input class="search-field" type="text"
+                    <input class="search-field" type="text" (ngModelChange)="OnChange()"
                       placeholder="{{ 'phone_customer' | translate }}" formControlName="phone" pInputText />
                   </span>
                 </div>
@@ -57,12 +57,12 @@
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input class="search-field" type="text"
+                    <input class="search-field" type="text" (ngModelChange)="OnChange()"
                       placeholder="{{ 'anyDeskAddress_customer' | translate }}" formControlName="anyDeskAddress" pInputText />
                   </span>
                 </div>
               </div>
-              
+
             </div>
 
             <div class="col result">
@@ -77,11 +77,70 @@
       </p-accordionTab>
     </p-accordion>
 
-       </div>
+      </div>
       <ng-container *ngIf="!loading; else ListView">
 
       <div class="box">
-        <div class="card mx-0 mb-2">
+        <div class="card mx-0 mb-2" *ngFor="let row of data">
+          <div class="icon-container">
+            <span class="material-symbols-outlined fill">account_circle</span>
+
+          </div>
+          <div class="col-3 card__contents">
+            <div class="card-section__items">
+            <div class="card__contents__item">
+                  <div class="card-label">{{ 'name_customer' | translate }}</div>
+                  <div class="card-info">
+                      {{ row.customerTranslation![layoutService.config.lang]?.name }}
+                  </div>
+                </div>
+                <div class="card__contents__item">
+                  <div class="card-label">{{ 'primaryContact_customer' | translate }}</div>
+                  <div class="card-info">
+                    {{ row.primaryContact }}
+                  </div>
+                </div>
+                <div class="card__contents__item">
+                  <div class="card-label">{{ 'email_customer' | translate }}</div>
+                  <div class="card-info">
+                    {{ row.email }}
+                  </div>
+                </div>
+                <div class="card__contents__item">
+                  <div class="card-label">{{ 'phone_customer' | translate }}</div>
+                  <div class="card-info">
+                    {{ row.phone }}
+                  </div>
+                </div>
+                <div class="card__contents__item">
+                  <div class="card-label">{{ 'anyDeskAddress_customer' | translate }}</div>
+                  <div class="card-info">
+                    {{ row.anydeskAddress }}
+                  </div>
+                </div>
+                </div>
+
+
+          </div>
+
+          <div class="one">
+            <div [matMenuTriggerFor]="menu" class="card__actions">
+              <span class="material-symbols-outlined card__actions__details">more_vert</span>
+            </div>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openAddcustomer(row)">
+                <span class="material-symbols-outlined">Edit</span>
+                {{ 'Edit_customer' | translate }}
+              </button>
+              <button mat-menu-item (click)="confirmDelete(row)">
+                <span class="material-symbols-outlined">delete</span>
+                {{ 'Delete_customer' | translate }}
+              </button>
+            </mat-menu>
+
+          </div>
+        </div>
+         <!-- <div class="card mx-0 mb-2">
           <div class="icon-container">
             <span class="material-symbols-outlined fill">account_circle</span>
 
@@ -139,78 +198,19 @@
             </mat-menu>
 
           </div>
-        </div>
-         <div class="card mx-0 mb-2">
-          <div class="icon-container">
-            <span class="material-symbols-outlined fill">account_circle</span>
+        </div> -->
 
-          </div>
-          <div class="col-3 card__contents">
-            <div class="card-section__items">
-             <div class="card__contents__item">
-                  <div class="card-label">{{ 'name_customer' | translate }}</div>
-                  <div class="card-info">
-                    customer name
-                  </div>
-                </div>
-                <div class="card__contents__item">
-                  <div class="card-label">{{ 'primaryContact_customer' | translate }}</div>
-                  <div class="card-info">
-                    UserName
-                  </div>
-                </div>
-                <div class="card__contents__item">
-                  <div class="card-label">{{ 'email_customer' | translate }}</div>
-                  <div class="card-info">
-                    email
-                  </div>
-                </div>
-                <div class="card__contents__item">
-                  <div class="card-label">{{ 'phone_customer' | translate }}</div>
-                  <div class="card-info">
-                    phone
-                  </div>
-                </div>
-                <div class="card__contents__item">
-                  <div class="card-label">{{ 'anyDeskAddress_customer' | translate }}</div>
-                  <div class="card-info">
-                    anyDeskAddress
-                  </div>
-                </div>
-                </div>
-
-
-          </div>
-
-          <div class="one">
-            <div [matMenuTriggerFor]="menu" class="card__actions">
-              <span class="material-symbols-outlined card__actions__details">more_vert</span>
-            </div>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item >
-                <span class="material-symbols-outlined">Edit</span>
-                {{ 'Edit_customer' | translate }}
-              </button>
-              <button mat-menu-item >
-                <span class="material-symbols-outlined">delete</span>
-                {{ 'Delete_customer' | translate }}
-              </button>
-            </mat-menu>
-
-          </div>
-        </div>
-        
       </div>
 
 
 
-  
-    <div class="all d-flex">
-      <div class="total">
-        {{ "totalcustomers_customers" | translate }}:
-      </div>
 
-    </div>
+     <div class="all d-flex">
+          <div class="total">
+            {{ "totalCustomer_customer" | translate }}:{{ totalRecords }}
+          </div>
+
+        </div>
         <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
           [first]="first" (onPageChange)="paginate($event)"></p-paginator>
             <button class="add-button" (click)="openAddcustomer()">
@@ -240,3 +240,11 @@
 </div>
 
 
+  <p-confirmDialog #positionDialog key="positionDialog" position="bottom" [baseZIndex]="10000" onHide="true">
+        <ng-template pTemplate="footer">
+          <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}"
+            (click)="positionDialog.reject()"></button>
+          <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}"
+            (click)="positionDialog.accept()"></button>
+        </ng-template>
+      </p-confirmDialog>

@@ -11,51 +11,51 @@
             <div class="p-float-label">
               <input pInputText type="text" formControlName="nameEn" />
               <label>{{ 'nameEn_customer' | translate }}</label>
-              
+ <span *ngIf="submitted && form['nameEn'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
             </div>
           </div>
           <div class="col-12 mb-3">
             <div class="p-float-label">
               <input pInputText type="text" formControlName="nameAr" />
               <label>{{ 'nameAr_customer' | translate }}</label>
-          
+ <span *ngIf="submitted && form['nameAr'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
             </div>
           </div>
           <div class="col-12 mb-3">
             <div class="p-float-label">
               <input pInputText type="text" formControlName="primaryContact" />
               <label>{{ 'primaryContact_customer' | translate }}</label>
-          
+ <span *ngIf="submitted && form['primaryContact'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
             </div>
           </div>
           <div class="col-12 mb-3">
             <div class="p-float-label">
               <input pInputText type="text" formControlName="email" />
               <label>{{ 'email_customer' | translate }}</label>
-          
+ <span *ngIf="submitted && form['email'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
             </div>
           </div>
-           <div class="col-12 mb-3 phone">
-            <div class="p-float-label dropdown">
-                <p-dropdown [options]="" optionLabel="value" optionValue="key" formControlName="countryCode"
-                     appendTo="body"></p-dropdown>
-                     <label>{{ 'countryCode_customer' | translate }}</label>
-       
-            </div>
+            <div class="col-12 mb-3">
             <div class="p-float-label">
               <input pInputText type="text" formControlName="phone" />
               <label>{{ 'phone_customer' | translate }}</label>
-          
+ <span *ngIf="submitted && form['phone'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
             </div>
           </div>
           <div class="col-12 mb-3">
             <div class="p-float-label">
               <input pInputText type="text" formControlName="anyDeskAddress" />
               <label>{{ 'anyDeskAddress_customer' | translate }}</label>
-          
+ <span *ngIf="submitted && form['anyDeskAddress'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>
