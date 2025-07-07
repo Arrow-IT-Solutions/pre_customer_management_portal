@@ -68,7 +68,7 @@ export const navbarData: NavbarData[] = [
         label: 'Add',
         labelar: 'إضافة',
         id: 'add',
-        routeLink: 'add'
+        routeLink: 'add/definitions'
       }
     ]
   }

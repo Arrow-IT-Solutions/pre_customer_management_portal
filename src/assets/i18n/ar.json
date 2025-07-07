@@ -38,7 +38,7 @@
   "Update_Customer":"تحديث العميل",
   "totalCustomer_customer":"إجمالي العملاء",
   "Do_you_want_to_delete_this_record?":"هل تريد حذف هذا السجل؟",
-  "Delete_Confirmation":"تأكيد الحذف"
+  "Delete_Confirmation":"تأكيد الحذف",
   "number_port":"رقم المنفذ",
   "Edit_port":"تعديل",
   "Delete_port":"حذف",
@@ -57,6 +57,8 @@
   "databaseName_definitions":"اسم قاعدة البيانات",
   "userName_definitions":"اسم مستخدم قاعدة البيانات",
   "password_definitions":"كلمة مرور قاعدة البيانات",
-  "Save_definitions":"حفظ"
+  "Save_definitions":"حفظ",
+  "NameEnvironmentEn_definitions":"اسم البيئة بالانكليزية",
+  "NameEnvironmentAr_definitions":"اسم البيئة بالعربية"
   
 }
