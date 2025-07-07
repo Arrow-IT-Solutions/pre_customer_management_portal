@@ -43,5 +43,15 @@
     "Edit_credential":"Edit",
     "Delete_credential":"Delete",
     "totalcredentials_credentials":"Total",
-    "password_credential":"Password"
+    "password_credential":"Password",
+    "customerName_definitions":"Customer Name",
+    "service_definitions":"Service",
+    "NameEnvironment_definitions":"Environment Name",
+    "UrlEnvironment_definitions":"Environment URL",
+    "Next_definitions":"Next",
+    "server_definitions":"Server",
+    "databaseName_definitions":"Database Name",
+    "userName_definitions":"Database User Name",
+    "password_definitions":"Database Password",
+    "Save_definitions":"Save"
 }

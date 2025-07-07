@@ -61,8 +61,14 @@ export const navbarData: NavbarData[] = [
        {
         label: 'Customers',
         labelar: 'العملاء',
-        id: 'Customers',
+        id: 'customers',
         routeLink: 'customers'
+      },
+       {
+        label: 'Add',
+        labelar: 'إضافة',
+        id: 'add',
+        routeLink: 'add'
       }
     ]
   }

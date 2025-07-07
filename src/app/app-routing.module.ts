@@ -78,6 +78,14 @@ const routes: Routes = [
           )
       },
       {
+        path: 'add',
+        loadChildren: () =>
+          import('./modules/wizard-to-add/wizard-to-add.module').then(
+            (m) => m.WizardToAddModule
+          )
+      },
+     
+      {
         path: 'settings',
         loadChildren: () =>
           import('./modules/settings/settings.module').then(

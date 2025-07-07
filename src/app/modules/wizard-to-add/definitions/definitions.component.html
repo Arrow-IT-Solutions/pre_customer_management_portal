@@ -1,0 +1,58 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+  <div class="definitions row">
+    <div class="col-lg-6 col-md-12" style="margin: auto;">
+      <div class="box-shadow mb-3">
+        <div class="row">
+          <div class="col-12 side-icon">
+            <span class="material-symbols-outlined">info</span>
+            <span>{{ 'Basic_Info_Form' | translate }}</span>
+          </div>
+          <div class="col-12 row m-0 p-0">
+            
+            <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <p-dropdown [options]="" optionLabel="value" optionValue="key"
+                  formControlName="customerName"></p-dropdown>
+                <label>{{ 'customerName_definitions' | translate }}</label>
+               
+              </div>
+            </div>
+             <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <p-dropdown [options]="" optionLabel="value" optionValue="key"
+                  formControlName="service"></p-dropdown>
+                <label>{{ 'service_definitions' | translate }}</label>
+               
+              </div>
+            </div>
+            <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <input pInputText type="text" formControlName="nameEnv" />
+                <label>{{ 'NameEnvironment_definitions' | translate }}</label>
+              
+              </div>
+            </div>
+            <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <input pInputText type="text" formControlName="urlEnv" />
+                <label>{{ 'UrlEnvironment_definitions' | translate }}</label>
+              
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+   
+
+
+
+    <div class="col-xs-12 mt-4 text-center" style="margin: auto;">
+      <p-button type="Submit" class="btn-primary">{{ 'Next_definitions' | translate }}</p-button>
+    </div>
+  </div>
+</form>
