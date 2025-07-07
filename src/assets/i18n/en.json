@@ -12,7 +12,6 @@
     "Basic_Info_Form":"Basic Info",
     "nameEn_database":"Name in English",
     "nameAr_database":"Name in Arabic",
-    "userName_database":"User Name",
     "password_database":"Password",
     "save":"Save",
     "nameEn_services":"Name in English",
@@ -39,7 +38,7 @@
     "Update_Customer":"Update Customer",
     "totalCustomer_customer":"Total Customers",
     "Do_you_want_to_delete_this_record?":"Do you want to delete this record?",
-    "Delete_Confirmation":"Delete Confirmation"
+    "Delete_Confirmation":"Delete Confirmation",
     "number_port":"Port Number",
     "Edit_port":"Edit",
     "Delete_port":"Delete",
@@ -59,5 +58,4 @@
     "userName_definitions":"Database User Name",
     "password_definitions":"Database Password",
     "Save_definitions":"Save"
-    "totalports_ports":"Total"
 }
