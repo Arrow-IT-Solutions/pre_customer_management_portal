@@ -51,6 +51,13 @@ export const navbarData: NavbarData[] = [
         id: 'ports',
         routeLink: 'ports'
       },
+      {
+        label: 'Credential',
+        labelar: 'الاعتمادية',
+        id: 'credential',
+        routeLink: 'credential'
+      },
+      
        {
         label: 'Customers',
         labelar: 'العملاء',

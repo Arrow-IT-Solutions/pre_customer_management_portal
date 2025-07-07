@@ -37,6 +37,11 @@
   "number_port":"رقم المنفذ",
   "Edit_port":"تعديل",
   "Delete_port":"حذف",
-  "totalports_ports":"المجموع"
+  "totalports_ports":"المجموع",
+  "userName_credential":"اسم المستخدم",
+  "Edit_credential":"تعديل",
+  "Delete_credential":"حذف",
+  "totalcredentials_credentials":"المجموع",
+  "password_credential":"كلمة المرور"
   
 }

@@ -38,5 +38,10 @@
     "number_port":"Port Number",
     "Edit_port":"Edit",
     "Delete_port":"Delete",
-    "totalports_ports":"Total"
+    "totalports_ports":"Total",
+    "userName_credential":"User Name",
+    "Edit_credential":"Edit",
+    "Delete_credential":"Delete",
+    "totalcredentials_credentials":"Total",
+    "password_credential":"Password"
 }
