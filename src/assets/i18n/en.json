@@ -12,7 +12,6 @@
     "Basic_Info_Form":"Basic Info",
     "nameEn_database":"Name in English",
     "nameAr_database":"Name in Arabic",
-    "userName_database":"User Name",
     "password_database":"Password",
     "save":"Save",
     "nameEn_services":"Name in English",
@@ -58,8 +57,17 @@
     "databaseName_definitions":"Database Name",
     "userName_definitions":"Database User Name",
     "password_definitions":"Database Password",
+
     "Save_definitions":"Save",
     "totalports_ports":"Total",
     "NameEnvironmentEn_definitions":"Environment name in English",
-    "NameEnvironmentAr_definitions":"Environment name in Arabic"
+    "NameEnvironmentAr_definitions":"Environment name in Arabic",
+    "startDate_subscription":"Start Date",
+    "endDate_subscription":"End Date",
+    "status_subscription":"Status",
+    "Edit_subscription":"Edit",
+    "Delete_subscription":"Delete",
+    "totalsubscription_subscription":"Total"
+
+
 }

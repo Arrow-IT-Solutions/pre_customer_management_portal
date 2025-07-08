@@ -78,6 +78,14 @@ const routes: Routes = [
           )
       },
       {
+        path: 'subscription',
+        loadChildren: () =>
+          import('./modules/subscription/subscription.module').then(
+            (m) => m.SubscriptionModule
+          )
+      },
+      
+      {
         path: 'add',
         loadChildren: () =>
           import('./modules/wizard-to-add/wizard-to-add.module').then(

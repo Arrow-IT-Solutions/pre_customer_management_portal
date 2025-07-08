@@ -59,6 +59,14 @@
   "password_definitions":"كلمة مرور قاعدة البيانات",
   "Save_definitions":"حفظ",
   "NameEnvironmentEn_definitions":"اسم البيئة بالانكليزية",
-  "NameEnvironmentAr_definitions":"اسم البيئة بالعربية"
+  "NameEnvironmentAr_definitions":"اسم البيئة بالعربية",
+  "startDate_subscription":"تاريخ البداية",
+  "endDate_subscription":"تاريخ النهاية",
+  "status_subscription":"الحالة",
+  "Edit_subscription":"تعديل",
+  "Delete_subscription":"حذف",
+  "totalsubscription_subscription":"المجموع"
   
+  
+
 }
