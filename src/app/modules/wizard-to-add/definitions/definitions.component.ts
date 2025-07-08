@@ -24,7 +24,8 @@ export class DefinitionsComponent {
     this.dataForm = formBuilder.group({
       customerName: ['', Validators.required],
       service: ['', Validators.required],
-      nameEnv: ['', Validators.required],
+      nameEnvEn: ['', Validators.required],
+      nameEnvAr:['',Validators.required],
       urlEnv: ['', Validators.required],
     });
 

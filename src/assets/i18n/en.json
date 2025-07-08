@@ -57,5 +57,9 @@
     "databaseName_definitions":"Database Name",
     "userName_definitions":"Database User Name",
     "password_definitions":"Database Password",
+    "Save_definitions":"Save",
+    "totalports_ports":"Total",
+    "NameEnvironmentEn_definitions":"Environment name in English",
+    "NameEnvironmentAr_definitions":"Environment name in Arabic",
     "Save_definitions":"Save"
 }

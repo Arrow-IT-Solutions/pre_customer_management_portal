@@ -57,6 +57,8 @@
   "databaseName_definitions":"اسم قاعدة البيانات",
   "userName_definitions":"اسم مستخدم قاعدة البيانات",
   "password_definitions":"كلمة مرور قاعدة البيانات",
+  "Save_definitions":"حفظ",
+  "NameEnvironmentEn_definitions":"اسم البيئة بالانكليزية",
+  "NameEnvironmentAr_definitions":"اسم البيئة بالعربية",
   "Save_definitions":"حفظ"
-
 }
