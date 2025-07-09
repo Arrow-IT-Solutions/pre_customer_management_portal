@@ -12,10 +12,10 @@
           (click)="toggleSubMenu(data.id!)"
           class="item-container">
           <div>
-            <span class="material-symbols-outlined">{{ data.icon }}</span>
+            <!-- <span class="material-symbols-outlined">{{ data.icon }}</span> -->
             <span class="description" *ngIf="layoutService.config.dir === 'rtl'">{{ data?.labelar }}</span>
             <span class="description" *ngIf="layoutService.config.dir === 'ltr'">{{ data?.label }}</span>
-            <span class="short-description">{{ data.char }}</span>
+            <!-- <span class="short-description">{{ data.char }}</span> -->
           </div>
           <span *ngIf="data.items != null"
             class="material-symbols-outlined down">

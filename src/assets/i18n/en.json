@@ -70,5 +70,12 @@
     "totalports_ports":"Total",
     "NameEnvironmentEn_definitions":"Environment name in English",
     "NameEnvironmentAr_definitions":"Environment name in Arabic",
-    "Save_definitions":"Save"
+    "startDate_subscription":"Start Date",
+    "endDate_subscription":"End Date",
+    "status_subscription":"Status",
+    "Edit_subscription":"Edit",
+    "Delete_subscription":"Delete",
+    "totalsubscription_subscription":"Total"
+    
+
 }

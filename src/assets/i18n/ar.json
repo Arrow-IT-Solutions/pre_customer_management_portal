@@ -69,5 +69,12 @@
   "Save_definitions":"حفظ",
   "NameEnvironmentEn_definitions":"اسم البيئة بالانكليزية",
   "NameEnvironmentAr_definitions":"اسم البيئة بالعربية",
-  "Save_definitions":"حفظ"
+  "startDate_subscription":"تاريخ البداية",
+  "endDate_subscription":"تاريخ النهاية",
+  "status_subscription":"الحالة",
+  "Edit_subscription":"تعديل",
+  "Delete_subscription":"حذف",
+  "totalsubscription_subscription":"المجموع"
+  
+
 }

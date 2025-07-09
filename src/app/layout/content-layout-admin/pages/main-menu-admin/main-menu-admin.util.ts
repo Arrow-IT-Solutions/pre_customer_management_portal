@@ -63,6 +63,12 @@ export const navbarData: NavbarData[] = [
         id: 'credential',
         routeLink: 'credential'
       },
+      {
+        label: 'Subscription',
+        labelar: 'الاشتراك',
+        id: 'subscription',
+        routeLink: 'subscription'
+      },
       
        {
         label: 'Customers',
