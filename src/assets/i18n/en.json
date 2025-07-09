@@ -57,7 +57,6 @@
     "databaseName_definitions":"Database Name",
     "userName_definitions":"Database User Name",
     "password_definitions":"Database Password",
-
     "Save_definitions":"Save",
     "totalports_ports":"Total",
     "NameEnvironmentEn_definitions":"Environment name in English",
@@ -68,6 +67,6 @@
     "Edit_subscription":"Edit",
     "Delete_subscription":"Delete",
     "totalsubscription_subscription":"Total"
-
+    
 
 }
