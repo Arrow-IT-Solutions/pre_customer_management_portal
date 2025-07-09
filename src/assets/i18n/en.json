@@ -16,8 +16,7 @@
     "save":"Save",
     "nameEn_services":"Name in English",
     "nameAr_services":"Name in Arabic",
-    "descEn_services":"Description in English",
-    "descAr_services":"Description in Arabic",
+    "desc_services":"Description",
     "hostName_servers":"Host Name",
     "IpAddress_servers":"Ip Address",
     "Edit_Server":"Edit",
@@ -57,5 +56,15 @@
     "databaseName_definitions":"Database Name",
     "userName_definitions":"Database User Name",
     "password_definitions":"Database Password",
-    "Save_definitions":"Save"
+    "Save_definitions":"Save" ,
+    "environmentName_environment": "Name",
+    "environmentUrl_environment": "URL",
+    "Edit_Environment": "Edit",
+    "Delete_Environment": "Delete",
+    "totalEnvironments_environment": "Total",
+    "nameEn_environment": "Name in English",
+    "nameAr_environment": "Name in Arabic",
+    "url_environment": "URL",
+    "Filter_By_environment": "Filter By"
+
 }

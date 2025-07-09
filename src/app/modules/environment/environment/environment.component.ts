@@ -1,23 +1,23 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import {
-  ServiceSearchRequest,
-  ServiceResponse,
-  ServiceTranslationResponse
-} from '../services.module';
+  EnvironmentSearchRequest,
+  EnvironmentResponse,
+  EnvironmentTranslationResponse
+} from '../environment.module';  
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { AddServiceComponent } from '../add-service/add-service.component';
+import { AddEnvironmentComponent } from '../add-environment/add-environment.component';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { ServicesService } from 'src/app/Core/services/services.service';
+import { EnvironmentService } from 'src/app/Core/services/environments.service';
 
 @Component({
-  selector: 'app-services',
-  templateUrl: './services.component.html',
-  styleUrls: ['./services.component.scss'],
+  selector: 'app-environment',
+  templateUrl: './environment.component.html',
+  styleUrls: ['./environment.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class ServicesComponent {
+export class EnvironmentComponent {
   pageSize: number = 12;
   first: number = 0;
   totalRecords: number = 0;
@@ -25,8 +25,8 @@ export class ServicesComponent {
   link = '';
 
   dataForm!: FormGroup;
-  data: ServiceResponse[] = [];
-  
+  data: EnvironmentResponse[] = [];
+
   loading = false;
   isResetting: boolean = false;
 
@@ -35,19 +35,17 @@ export class ServicesComponent {
 
   constructor(
     public formBuilder: FormBuilder,
-    public services: ServicesService,
+    public environmentService: EnvironmentService,
     public translate: TranslateService,
     public layoutService: LayoutService,
     public messageService: MessageService,
     public confirmationService: ConfirmationService
   ) {
     this.dataForm = this.formBuilder.group({
-    name: [''],
-    nameAr: ['', Validators.required],
-    nameEn: ['', Validators.required],
-    description: ['', Validators.required]
-});
-
+      name: [''],
+      uuid: [''],
+      url: ['']
+    });
   }
 
   async ngOnInit() {
@@ -58,31 +56,32 @@ export class ServicesComponent {
     this.loading = true;
     this.data = [];
 
-    const filter: ServiceSearchRequest = {
+    const filter: EnvironmentSearchRequest = {
       name: this.dataForm.get('name')?.value?.trim(),
       uuid: this.dataForm.get('uuid')?.value?.trim(),
+      customerServiceIDFK: '', 
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString()
     };
 
-    const response = await this.services.Search(filter) as any;
+    const response = await this.environmentService.Search(filter) as any;
 
     this.data = response?.data || [];
     this.totalRecords = Number(response?.totalRecords || 0);
     this.loading = false;
   }
 
-  openAddService(row: ServiceResponse | null = null) {
+  openAddEnvironment(row: EnvironmentResponse | null = null) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.body.style.overflow = 'hidden';
 
-    this.services.SelectedData = row;
-    let content = this.services.SelectedData == null ? 'Create_Service' : 'Update_Service';
+    this.environmentService.SelectedData = row;
+    let content = this.environmentService.SelectedData == null ? 'Create_Environment' : 'Update_Environment';
 
     this.translate.get(content).subscribe(res => content = res);
 
-    const component = this.layoutService.OpenDialog(AddServiceComponent, content);
-    this.services.Dialog = component;
+    const component = this.layoutService.OpenDialog(AddEnvironmentComponent, content);
+    this.environmentService.Dialog = component;
 
     component.OnClose.subscribe(() => {
       document.body.style.overflow = '';
@@ -90,32 +89,22 @@ export class ServicesComponent {
     });
   }
 
-confirmDelete(service: ServiceResponse) {
-  console.log(service);
-  this.confirmationService.confirm({
-    message: this.translate.instant("Do_you_want_to_delete_this_record?"),
-    header: this.translate.instant("Delete_Confirmation"),
-    icon: 'pi pi-info-circle',
-    key: 'positionDialog',
-    closeOnEscape: true,
-    accept: async () => {
-      const response = (await this.services.Delete(service.uuid!)) as any;
-
-      this.confirmationService.close();
-
-      if (response?.requestStatus?.toString() === '200') {
+  confirmDelete(row: EnvironmentResponse) {
+    this.confirmationService.confirm({
+      message: 'Do_you_want_to_delete_this_record?',
+      header: 'Delete_Confirmation',
+      icon: 'pi pi-info-circle',
+      key: 'positionDialog',
+      closeOnEscape: true,
+      accept: async () => {
+        const response = await this.environmentService.Delete(row.uuid!) as any;
+        this.confirmationService.close();
         this.layoutService.showSuccess(this.messageService, 'toast', true, response.requestMessage);
-        this.FillData(); // or reload your service list
-      } else {
-        this.layoutService.showError(this.messageService, 'toast', true, response.requestMessage || 'Delete failed.');
-      }
-    },
-    reject: () => {
-    },
-  });
-}
-
-
+        this.FillData();
+      },
+      reject: () => {}
+    });
+  }
 
   async resetform() {
     this.isResetting = true;
@@ -134,15 +123,15 @@ confirmDelete(service: ServiceResponse) {
   }
 
   paginate(event: any) {
-    this.pageSize = event.rows;
-    this.first = event.first;
-    this.FillData(event.first);
-  }
+  this.pageSize = event.rows;
+  this.first = event.first;
+  const pageIndex = Math.floor(event.first / event.rows);
+  this.FillData(pageIndex);
+}
+
 
   showDialog(link: string) {
     this.link = link;
     this.visible = true;
   }
-
-
 }

@@ -42,6 +42,13 @@ const routes: Routes = [
             (m) => m.ServicesModule
           )
       },
+       {
+      path: 'environments',   
+      loadChildren: () =>
+        import('./modules/environment/environment.module').then(
+          (m) => m.EnvironmentModule
+        )
+    },
       {
         path: 'DataBases',
         loadChildren: () =>
