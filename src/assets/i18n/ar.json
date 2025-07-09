@@ -65,7 +65,9 @@
   "nameEn_environment": "الاسم بالانكليزية",
   "nameAr_environment": "الاسم بالعربية",
   "url_environment": "الرابط",
-  "Filter_By_environment": "تصفية حسب"
-
-
+  "Filter_By_environment": "تصفية حسب",
+  "Save_definitions":"حفظ",
+  "NameEnvironmentEn_definitions":"اسم البيئة بالانكليزية",
+  "NameEnvironmentAr_definitions":"اسم البيئة بالعربية",
+  "Save_definitions":"حفظ"
 }

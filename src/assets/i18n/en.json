@@ -56,7 +56,7 @@
     "databaseName_definitions":"Database Name",
     "userName_definitions":"Database User Name",
     "password_definitions":"Database Password",
-    "Save_definitions":"Save" ,
+    "Save_definitions":"Save",
     "environmentName_environment": "Name",
     "environmentUrl_environment": "URL",
     "Edit_Environment": "Edit",
@@ -65,6 +65,10 @@
     "nameEn_environment": "Name in English",
     "nameAr_environment": "Name in Arabic",
     "url_environment": "URL",
-    "Filter_By_environment": "Filter By"
-
+    "Filter_By_environment": "Filter By",
+    "Save_definitions":"Save",
+    "totalports_ports":"Total",
+    "NameEnvironmentEn_definitions":"Environment name in English",
+    "NameEnvironmentAr_definitions":"Environment name in Arabic",
+    "Save_definitions":"Save"
 }
