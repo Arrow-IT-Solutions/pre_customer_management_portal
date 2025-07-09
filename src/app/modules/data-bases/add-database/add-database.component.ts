@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { DataBasesService } from 'src/app/layout/service/databases.service';
+import { DatabaseService } from 'src/app/layout/service/databases.service';
 import { LayoutService } from 'src/app/layout/service/layout.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class AddDatabaseComponent {
         isPasswordVisible: boolean = false;
         constructor(public formBuilder:FormBuilder,
           public messageService: MessageService,
-          public database:DataBasesService,
+          public database:DatabaseService,
           public layoutService: LayoutService,
   
         ){

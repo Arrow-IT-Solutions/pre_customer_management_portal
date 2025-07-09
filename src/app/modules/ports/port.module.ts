@@ -6,7 +6,8 @@ import { PortsComponent } from './ports/ports.component';
 import { AddPortComponent } from './add-port/add-port.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ResponseBase } from 'src/app/shared/class/class';
+import { RequestBase, ResponseBase } from 'src/app/shared/class/class';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -19,9 +20,41 @@ import { ResponseBase } from 'src/app/shared/class/class';
     PortRoutingModule,
     SharedModule,
     ReactiveFormsModule
-  ]
+  ],
+  providers: [ConfirmationService, MessageService]
+
 })
 export class PortModule { }
-export interface PortResponse extends ResponseBase {
-  
+export interface PortRequest extends RequestBase
+{
+uuid?:string;
+portNumber?:string;
+serverIDFK?: string;
+}
+
+export interface PortUpdateRequest extends RequestBase
+{
+uuid?:string;
+portNumber?:string;
+serverIDFK?: string;
+}
+
+export interface PortSearchRequest extends RequestBase
+{
+uuid?:string;
+portNumber?:string;
+serverIDFK?: string;
+}
+
+export interface PortResponse extends ResponseBase
+{
+uuid?:string;
+ requestStatus?:string;
+ requestMessage?:string;
+portNumber?:string;
+serverIDFK?: string;
+ serverResponse?: {
+    uuid?: string;
+    name?: string;
+  };
 }

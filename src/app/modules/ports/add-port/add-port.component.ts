@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { PortsService } from 'src/app/layout/service/ports.service';
+import { PortService } from 'src/app/layout/service/ports.service';
 
 @Component({
   selector: 'app-add-port',
@@ -17,7 +17,7 @@ export class AddPortComponent {
         loading: boolean = false;
         constructor(public formBuilder:FormBuilder,
           public messageService: MessageService,
-          public port: PortsService,
+          public port: PortService,
           public layoutService: LayoutService,
   
         ){
