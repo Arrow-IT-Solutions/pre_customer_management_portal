@@ -34,6 +34,12 @@ export const navbarData: NavbarData[] = [
         routeLink: 'services'
       },
       {
+        label: 'Environments',
+        labelar: 'بيئة',
+        id: 'environments',
+        routeLink: 'environments'
+      },
+      {
         label: 'Servers',
         labelar: 'المخدمين',
         id: 'servers',
@@ -56,6 +62,12 @@ export const navbarData: NavbarData[] = [
         labelar: 'الاعتمادية',
         id: 'credential',
         routeLink: 'credential'
+      },
+      {
+        label: 'Subscription',
+        labelar: 'الاشتراك',
+        id: 'subscription',
+        routeLink: 'subscription'
       },
       
        {

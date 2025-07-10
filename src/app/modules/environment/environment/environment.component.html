@@ -1,6 +1,6 @@
-<div class="services">
+<div class="environments">
 
-     <div [formGroup]="dataForm" class="row mb-4 m-0  p-0">
+  <div [formGroup]="dataForm" class="row mb-4 m-0 p-0">
     <p-accordion class="mt-5 p-0">
       <p-accordionTab>
         <ng-template pTemplate="header">
@@ -21,13 +21,10 @@
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
                     <input class="search-field" type="text" (input)="OnChange()"
-                      placeholder="{{ 'serviceName_services' | translate }}" formControlName="name" pInputText />
+                      placeholder="{{ 'environmentName_environment' | translate }}" formControlName="name" pInputText />
                   </span>
                 </div>
               </div>
-              
-              
-
 
             </div>
 
@@ -42,73 +39,63 @@
         </ng-template>
       </p-accordionTab>
     </p-accordion>
+  </div>
 
-          </div>
-          <ng-container *ngIf="!loading; else ListView">
-
-          <div class="box">
-      <div class="card mx-0 mb-2" *ngFor="let service of data">
+  <ng-container *ngIf="!loading; else ListView">
+    <div class="box">
+      <div class="card mx-0 mb-2" *ngFor="let env of data">
         <div class="icon-container">
-          <span class="material-symbols-outlined fill">group_work</span>
+          <span class="material-symbols-outlined fill">language</span>
         </div>
 
         <div class="col-3 card__contents">
           <div class="card-section__items">
             <div class="card__contents__item">
-              <div class="card-label">{{ 'serviceName_services' | translate }}</div>
+              <div class="card-label">{{ 'environmentName_environment' | translate }}</div>
               <div class="card-info">
-                {{ service.serviceTranslation?.['en']?.name || service.serviceTranslation?.['ar']?.name }}
+                {{ env.environmentTranslation?.['en']?.name || env.environmentTranslation?.['ar']?.name }}
               </div>
             </div>
             <div class="card__contents__item">
-              <div class="card-label">{{ 'serviceDescription_services' | translate }}</div>
+              <div class="card-label">{{ 'environmentUrl_environment' | translate }}</div>
               <div class="card-info">
-                  {{ service.description }}
+                {{ env.url }}
               </div>
             </div>
           </div>
         </div>
 
         <div class="one">
-          <div [matMenuTriggerFor]="menu" [matMenuTriggerData]="{ service: service }" class="card__actions">
+          <div [matMenuTriggerFor]="menu" class="card__actions">
             <span class="material-symbols-outlined card__actions__details">more_vert</span>
           </div>
           <mat-menu #menu="matMenu">
-  <ng-template matMenuContent let-service="service">
-    <button mat-menu-item (click)="openAddService(service)">
-      <span class="material-symbols-outlined">edit</span>
-      {{ 'Edit_Service' | translate }}
-    </button>
-    <button mat-menu-item (click)="confirmDelete(service)">
-      <span class="material-symbols-outlined">delete</span>
-      {{ 'Delete_Service' | translate }}
-    </button>
-  </ng-template>
-</mat-menu>
-
-
+            <button mat-menu-item (click)="openAddEnvironment(env)">
+              <span class="material-symbols-outlined">Edit</span>
+              {{ 'Edit_Environment' | translate }}
+            </button>
+            <button mat-menu-item (click)="confirmDelete(env)">
+              <span class="material-symbols-outlined">delete</span>
+              {{ 'Delete_Environment' | translate }}
+            </button>
+          </mat-menu>
         </div>
       </div>
     </div>
 
-
-
-
-
-  
     <div class="all d-flex">
       <div class="total">
-          {{ "totalServices_services" | translate }}: {{ totalRecords }}
-      </div>
+        {{ "totalEnvironments_environment" | translate }}: {{ totalRecords }}
 
+      </div>
     </div>
-        <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
-          [first]="first" (onPageChange)="paginate($event)"></p-paginator>
-            <button class="add-button" (click)="openAddService()">
+
+    <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+      [first]="first" (onPageChange)="paginate($event)"></p-paginator>
+
+    <button class="add-button" (click)="openAddEnvironment()">
       <span class="material-symbols-outlined">add</span>
     </button>
-
-
   </ng-container>
 
   <ng-template #ListView>
@@ -128,4 +115,5 @@
       </div>
     </div>
   </ng-template>
+
 </div>

@@ -42,6 +42,13 @@ const routes: Routes = [
             (m) => m.ServicesModule
           )
       },
+       {
+      path: 'environments',   
+      loadChildren: () =>
+        import('./modules/environment/environment.module').then(
+          (m) => m.EnvironmentModule
+        )
+    },
       {
         path: 'DataBases',
         loadChildren: () =>
@@ -77,6 +84,14 @@ const routes: Routes = [
             (m) => m.CredentialModule
           )
       },
+      {
+        path: 'subscription',
+        loadChildren: () =>
+          import('./modules/subscription/subscription.module').then(
+            (m) => m.SubscriptionModule
+          )
+      },
+      
       {
         path: 'add',
         loadChildren: () =>
