@@ -56,6 +56,7 @@ body {
 ////////shared styles\\\\\\\\\
 
 .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
   position: relative;
   top: 5px;
 }
@@ -755,6 +756,7 @@ mat-paginator,
 
 //filter
 .pi-filter {
+
   position: relative;
   top: 0.2rem;
 }
@@ -785,4 +787,16 @@ mat-paginator,
 .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,
 .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
   stroke: $primary-color !important;
+}
+
+.pi {
+  font-family: "primeicons" !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  direction: ltr;
+  unicode-bidi: isolate;
 }
