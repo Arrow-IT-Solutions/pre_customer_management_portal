@@ -1,0 +1,138 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+  <div class="environment row">
+    <div class="col-lg-4 col-md-12">
+      <div class="box-shadow mb-3">
+        <div class="row">
+          <div class="col-12 side-icon">
+            <span class="material-symbols-outlined">info</span>
+            <span>{{ 'Basic_Info_Form' | translate }}</span>
+          </div>
+          <div class="col-12 row m-0 p-0">
+            
+            <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <input pInputText type="text" formControlName="nameEnvEn" />
+                <label>{{ 'NameEnvironmentEn_definitions' | translate }}</label>
+              
+              </div>
+            </div>
+            <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <input pInputText type="text" formControlName="nameEnvAr" />
+                <label>{{ 'NameEnvironmentAr_definitions' | translate }}</label>
+              
+              </div>
+            </div>
+            <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <input pInputText type="text" formControlName="urlEnv" />
+                <label>{{ 'UrlEnvironment_definitions' | translate }}</label>
+              
+              </div>
+            </div>
+             <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <p-dropdown [options]="" optionLabel="value" optionValue="key"
+                  formControlName="server"></p-dropdown>
+                <label>{{ 'server_definitions' | translate }}</label>
+               
+              </div>
+            </div>
+            
+            <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <input pInputText type="text" formControlName="databaseName" />
+                <label>{{ 'databaseName_definitions' | translate }}</label>
+              
+              </div>
+            </div>
+            <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <input pInputText type="text" formControlName="userName" />
+                <label>{{ 'userName_definitions' | translate }}</label>
+              
+              </div>
+            </div>
+           <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password"  />
+              <label>{{ 'password_definitions' | translate }}</label>
+              <i 
+                  class="pi" 
+                  [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'" 
+                  (click)="togglePasswordVisibility()" 
+                  >
+                </i>
+               
+          
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+      <div style="display: flex;align-items: center;justify-content: center;">
+      <p-button type="Submit" class="btn-primary">{{ 'Add_definitions' | translate }}</p-button>
+      </div>
+           
+    </div>
+
+   
+
+
+
+    
+    </div>
+     <div class="col-lg-8 col-md-12">
+      <div class="box-shadow mb-3">
+        <div class="row">
+            <div class="card ">
+                <div class="items2">
+                <div class="item">
+                  <div class="card-label">{{ 'NameEnvironment_definitions' | translate }}</div>
+                  <div class="card-info">
+                    name
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="card-label">{{ 'UrlEnvironment_definitions' | translate }}</div>
+                  <div class="card-info">
+                   
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="card-label">{{ 'server_definitions' | translate }}</div>
+                  <div class="card-info">
+                   
+                  </div>
+                </div>
+             
+                </div>
+                <div class="items">
+                
+                <div class="item">
+                  <div class="card-label">{{ 'databaseName_definitions' | translate }}</div>
+                  <div class="card-info">
+                    
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="card-label">{{ 'userName_definitions' | translate }}</div>
+                  <div class="card-info">
+                   
+                  </div>
+                </div>
+               
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+  </div>
+  <div class="col-xs-12 mt-4 text-center" style="display: flex;justify-content: space-between;align-items: center;padding: 2rem 5rem 0;">
+      <p-button type="Submit" class="btn-primary" (click)="back()">{{ 'Back_definitions' | translate }}</p-button>
+
+      <p-button type="Submit" class="btn-primary">{{ 'Save_definitions' | translate }}</p-button>
+
+   </div>
+</form>

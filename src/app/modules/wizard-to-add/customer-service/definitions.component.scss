@@ -1,0 +1,201 @@
+@import '../../../../assets/scss/varialbles.scss';
+
+.definitions {
+  &__title {
+    margin-bottom: 20px;
+  }
+
+  & .box-shadow {
+    border: 1px solid $lighter-gray;
+    border-radius: 6px;
+    padding: 1.7rem;
+    background-color: $white-color;
+    min-height: 15rem;
+  }
+
+  & .side-icon {
+    background-color: $chips-color;
+    color: $blue-color;
+    margin-right: 1rem;
+    border-radius: 6px;
+    padding: 0.25rem 1rem;
+    position: relative;
+    left: -2rem;
+    min-width: 220px;
+    top: -1rem;
+    width: unset;
+
+    & .material-symbols-outlined {
+      margin-inline-end: 0.5rem;
+
+      &:lang(ar) {
+        margin-inline-start: 0.5rem;
+        margin-inline-end: unset;
+      }
+    }
+
+    &__icon {
+      position: relative;
+      top: -0.25rem;
+      padding: 0.5rem;
+    }
+
+    &:lang(ar) {
+      left: unset;
+      right: -3rem;
+    }
+  }
+
+  & .switch-button {
+    display: flex;
+    align-items: center;
+  }
+
+  &__close {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    color: $blue-color;
+    cursor: pointer;
+
+    & .material-symbols-outlined {
+      transition: 0.2s;
+
+      &:hover {
+        opacity: 0.8;
+        background-color: $chips-color;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  & .counter-control label {
+    margin-inline-start: 3rem;
+  }
+
+  & .tags {
+    margin-top: 0.5rem;
+    cursor: pointer;
+
+    &__item {
+      background-color: rgba($blue-color, 0.15);
+      padding: 0.5rem;
+      border-radius: 6px;
+      color: $blue-color;
+      transition: 0.2s;
+      margin-inline-end: 0.5rem;
+
+      &:hover {
+        background-color: rgba($blue-color, 0.05);
+      }
+
+      & .material-symbols-outlined {
+        font-size: $medium-icon;
+        margin-inline-start: 0.5rem;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.upload-images {
+  box-shadow: 0px 0 5px 0px rgba(0, 0, 0, 0.1294117647);
+  border: none;
+  border-radius: 10px;
+  padding: 1.7rem;
+  background-color: #ffffff;
+
+  &__button {
+    width: 100%;
+    min-height: 170px;
+    background-color: $bg-color;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 2rem;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='11' ry='11' stroke='%23333' stroke-width='2' stroke-dasharray='6%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 11px;
+    border-color: $secondary-color;
+    cursor: pointer;
+
+    & .material-symbols-outlined {
+      font-size: 60px;
+      color: $secondary-color;
+    }
+
+    & P {
+      width: 100%;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+  }
+
+  &__file {
+    background-color: $bg-color;
+    padding: 0.2rem 0.5rem;
+    margin-top: 1rem;
+    position: relative;
+    border-radius: 10px;
+
+    & .file-thumbnail {
+      //width: 35px;
+      height: 50px;
+      //clip-path: inset(8px 0px);
+      display: inline-block;
+      margin-inline-end: 0.5rem;
+
+      & img {
+        height: 100%;
+      }
+    }
+
+    & .file-name {
+      margin-inline-end: 0.5rem;
+
+      &:lang(ar) {
+        display: inline-block;
+      }
+    }
+
+    & .file-size {
+      opacity: 0.6;
+    }
+
+    & .file-delete {
+      position: absolute;
+      top: 0.75rem;
+      right: 1rem;
+      color: $secondary-color;
+      cursor: pointer;
+
+      &:lang(ar) {
+        right: unset;
+        left: 1rem;
+      }
+    }
+
+    &:lang(ar) {
+      direction: rtl;
+    }
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  & .side-icon {
+    background-color: $bg-color;
+    color: $secondary-color;
+    font-size: $large-icon;
+    width: 45px;
+    height: 45px;
+    margin-right: 1rem;
+    border-radius: 10px;
+
+    & .material-symbols-outlined {
+      top: 8px;
+    }
+  }
+}

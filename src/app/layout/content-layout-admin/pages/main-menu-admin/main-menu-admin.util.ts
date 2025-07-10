@@ -74,7 +74,7 @@ export const navbarData: NavbarData[] = [
         label: 'Add',
         labelar: 'إضافة',
         id: 'add',
-        routeLink: 'add/definitions'
+        routeLink: 'add/customer-service'
       }
     ]
   }

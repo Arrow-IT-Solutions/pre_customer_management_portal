@@ -24,9 +24,7 @@ export class DefinitionsComponent {
     this.dataForm = formBuilder.group({
       customerName: ['', Validators.required],
       service: ['', Validators.required],
-      nameEnvEn: ['', Validators.required],
-      nameEnvAr:['',Validators.required],
-      urlEnv: ['', Validators.required],
+   
     });
 
   }
@@ -36,12 +34,15 @@ export class DefinitionsComponent {
 
   async onSubmit() {
     console.log('onSubmit dataform : ', this.dataForm);
-    this.router.navigate(['layout-admin/add/variants']);
+    
   }
 
-     async Save() {}
+     
      resetForm() {
     this.dataForm.reset();
+  }
+  nextStep(){
+  this.router.navigate(['layout-admin/add/subscription']);
   }
 
 }

@@ -65,7 +65,13 @@
   "status_subscription":"الحالة",
   "Edit_subscription":"تعديل",
   "Delete_subscription":"حذف",
-  "totalsubscription_subscription":"المجموع"
+  "totalsubscription_subscription":"المجموع",
+  "Cancle_definitions":"إلغاء",
+  "Back_subscription":"السابق",
+  "Next_subscription":"التالي",
+  "Back_definitions":"السابق",
+  "Add_definitions":"إضافة"
+
   
 
 }

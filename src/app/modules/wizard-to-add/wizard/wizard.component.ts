@@ -14,12 +14,16 @@ export class WizardComponent {
   ngOnInit() {
     this.items = [
       {
-        label: this.isAr() ? 'التعريف' : 'Definitions',
-        routerLink: 'definitions',
+        label: this.isAr() ? 'خدمة العملاء' : 'Customer Service',
+        routerLink: 'customer-service',
       },
       {
-        label: this.isAr() ? 'المتغيرات': 'Variants',
-        routerLink: 'variants',
+        label: this.isAr() ? 'الاشتراك': 'Subscription',
+        routerLink: 'subscription',
+      },
+       {
+        label: this.isAr() ? 'البيئة': 'Environment',
+        routerLink: 'environment',
       },
     ];
   }

@@ -17,7 +17,7 @@
                
               </div>
             </div>
-             <div class="col-12 mb-3">
+             <div class="col-12 mb-3 mt-2">
               <div class="p-float-label">
                 <p-dropdown [options]="" optionLabel="value" optionValue="key"
                   formControlName="service"></p-dropdown>
@@ -25,7 +25,7 @@
                
               </div>
             </div>
-            <div class="col-12 mb-3">
+            <!-- <div class="col-12 mb-3">
               <div class="p-float-label">
                 <input pInputText type="text" formControlName="nameEnvEn" />
                 <label>{{ 'NameEnvironmentEn_definitions' | translate }}</label>
@@ -45,7 +45,7 @@
                 <label>{{ 'UrlEnvironment_definitions' | translate }}</label>
               
               </div>
-            </div>
+            </div> -->
 
 
           </div>
@@ -58,8 +58,11 @@
 
 
 
-    <div class="col-xs-12 mt-4 text-center" style="margin: auto;">
-      <p-button type="Submit" class="btn-primary">{{ 'Next_definitions' | translate }}</p-button>
+    <div class="col-xs-12 mt-4 text-center" style="display: flex;justify-content: space-between;align-items: center;padding: 5rem 5rem 0;">
+      <p-button type="Submit" class="btn-primary">{{ 'Cancle_definitions' | translate }}</p-button>
+
+      <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ 'Next_definitions' | translate }}</p-button>
+
     </div>
   </div>
 </form>

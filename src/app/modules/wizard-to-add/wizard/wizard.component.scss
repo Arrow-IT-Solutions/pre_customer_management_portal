@@ -10,5 +10,15 @@
     padding: 1.5rem 1.5rem 0;
     background-color: $white-color;
     margin-bottom: 1rem;
+    .p-stepper{
+      
+    }
   }
+}
+
+@media screen and (max-width: 767px) { 
+    .mobile-column {
+        display: flex;
+        flex-direction: column;
+    }
 }

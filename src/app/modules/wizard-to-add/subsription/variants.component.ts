@@ -23,10 +23,10 @@ export class VariantsComponent {
       public messageService: MessageService,
       ) {
       this.dataForm = formBuilder.group({
-        server: ['', Validators.required],
-        databaseName: ['', Validators.required],
-        userName: ['', Validators.required],
-        password: ['', Validators.required],
+        startDate: ['', Validators.required],
+        endDate: ['', Validators.required],
+        status: ['', Validators.required],
+        
       });
   
     }
@@ -45,6 +45,13 @@ export class VariantsComponent {
     }
      togglePasswordVisibility(): void {
            this.isPasswordVisible = !this.isPasswordVisible;
-     }
+    }
+    nextStep(){
+     this.router.navigate(['layout-admin/add/environment']);
+  }
+   back(){
+    this.router.navigate(['layout-admin/add/customer-service']);
+  }
+
 
 }
