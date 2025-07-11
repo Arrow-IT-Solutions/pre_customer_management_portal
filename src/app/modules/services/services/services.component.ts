@@ -35,7 +35,7 @@ export class ServicesComponent {
 
   constructor(
     public formBuilder: FormBuilder,
-    public services: ServicesService,
+    public serviceService: ServicesService,
     public translate: TranslateService,
     public layoutService: LayoutService,
     public messageService: MessageService,
@@ -53,6 +53,7 @@ export class ServicesComponent {
   async ngOnInit() {
     await this.FillData();
   }
+  
 
   async FillData(pageIndex: number = 0) {
     this.loading = true;
@@ -65,24 +66,27 @@ export class ServicesComponent {
       pageSize: this.pageSize.toString()
     };
 
-    const response = await this.services.Search(filter) as any;
+    const response = await this.serviceService.Search(filter) as any;
 
     this.data = response?.data || [];
     this.totalRecords = Number(response?.totalRecords || 0);
     this.loading = false;
   }
 
-  openAddService(row: ServiceResponse | null = null) {
+  
+
+ openAddService(row: ServiceResponse | null = null) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.body.style.overflow = 'hidden';
+    this.serviceService.SelectedData = row;
 
-    this.services.SelectedData = row;
-    let content = this.services.SelectedData == null ? 'Create_Service' : 'Update_Service';
-
-    this.translate.get(content).subscribe(res => content = res);
+    let content = row == null ? 'Create_Subscripe' : 'Update_Subscripe';
+    this.translate.get(content).subscribe((res: string) => {
+      content = res;
+    });
 
     const component = this.layoutService.OpenDialog(AddServiceComponent, content);
-    this.services.Dialog = component;
+    this.serviceService.Dialog = component;
 
     component.OnClose.subscribe(() => {
       document.body.style.overflow = '';
@@ -90,32 +94,29 @@ export class ServicesComponent {
     });
   }
 
-confirmDelete(service: ServiceResponse) {
-  console.log(service);
-  this.confirmationService.confirm({
-    message: this.translate.instant("Do_you_want_to_delete_this_record?"),
-    header: this.translate.instant("Delete_Confirmation"),
-    icon: 'pi pi-info-circle',
-    key: 'positionDialog',
-    closeOnEscape: true,
-    accept: async () => {
-      const response = (await this.services.Delete(service.uuid!)) as any;
-
-      this.confirmationService.close();
-
-      if (response?.requestStatus?.toString() === '200') {
-        this.layoutService.showSuccess(this.messageService, 'toast', true, response.requestMessage);
-        this.FillData(); // or reload your service list
-      } else {
-        this.layoutService.showError(this.messageService, 'toast', true, response.requestMessage || 'Delete failed.');
+async confirmDelete(row: ServiceResponse) {
+    this.confirmationService.confirm({
+      message: this.translate.instant('Do_you_want_to_delete_this_record?'),
+      header: this.translate.instant('Delete_Confirmation'),
+      icon: 'pi pi-info-circle',
+      acceptLabel: this.translate.instant('Yes'),
+      rejectLabel: this.translate.instant('No'),
+      key: 'confirmDialog',
+      accept: async () => {
+        try {
+          const resp = await this.serviceService.Delete(row.uuid!) as any;
+          this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
+          this.FillData(); 
+        } catch (error) {
+          this.messageService.add({
+            severity: 'error',
+            summary: this.translate.instant('Error'),
+            detail: this.translate.instant('database.Failed_to_delete')
+          });
+        }
       }
-    },
-    reject: () => {
-    },
-  });
-}
-
-
+    });
+  }
 
   async resetform() {
     this.isResetting = true;
@@ -123,6 +124,13 @@ confirmDelete(service: ServiceResponse) {
     await this.FillData();
     this.isResetting = false;
   }
+
+  paginate(event: any) {
+  this.pageSize = event.rows;
+  this.first = event.first;
+  const pageIndex = event.first / event.rows;  
+  this.FillData(pageIndex);
+}
 
   OnChange() {
     if (this.isResetting) return;
@@ -133,11 +141,7 @@ confirmDelete(service: ServiceResponse) {
     }, this.doneTypingInterval);
   }
 
-  paginate(event: any) {
-    this.pageSize = event.rows;
-    this.first = event.first;
-    this.FillData(event.first);
-  }
+  
 
   showDialog(link: string) {
     this.link = link;

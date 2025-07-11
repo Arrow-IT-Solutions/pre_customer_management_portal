@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from 'src/app/Core/services/http-client.service';
 import { LayoutService } from './layout.service';
-import { SubscripeResponse } from 'src/app/modules/subscription/subscription.module';
+import { SubscriptionResponse } from 'src/app/modules/subscription/subscription.module';
 
 
 @Injectable({
@@ -9,7 +9,7 @@ import { SubscripeResponse } from 'src/app/modules/subscription/subscription.mod
 })
 export class SubscripeService {
 
-  public SelectedData: SubscripeResponse | null = null;
+  public SelectedData: SubscriptionResponse | null = null;
   public Dialog: any | null = null;
   
 }

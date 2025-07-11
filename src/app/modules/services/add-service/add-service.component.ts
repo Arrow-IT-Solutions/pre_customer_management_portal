@@ -35,17 +35,31 @@ export class AddServiceComponent {
   }
 
   async ngOnInit() {
-    if (this.servicesService.SelectedData) {
-      await this.FillData();
+      try {
+        this.loading = true;
+        this.resetForm();
+  
+        if (this.servicesService.SelectedData != null) {
+          await this.FillData();
+        }
+      } catch (exceptionVar) {
+        console.log(exceptionVar);
+      } finally {
+        this.loading = false;
+      }
     }
-  }
 
+  
   async onSubmit() {
     this.submitted = true;
+
     if (this.dataForm.invalid) {
+      this.layoutService.showError(this.messageService, 'toast', true, 'Please correct the errors in the form.');
       return;
     }
+
     this.btnLoading = true;
+
     try {
       await this.Save();
     } finally {

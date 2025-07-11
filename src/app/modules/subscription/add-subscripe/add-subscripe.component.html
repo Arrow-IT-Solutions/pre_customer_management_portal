@@ -19,16 +19,43 @@
               <label>{{ 'endDate_subscription' | translate }}</label>
             </div>
           </div>
+
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <p-dropdown
+                [options]="customerServiceList"
+                [optionLabel]="getCustomerServiceLabel()"
+                optionValue="uuid"
+                formControlName="customerServiceIDFK">
+              </p-dropdown>
+              <label>{{ 'customer_service' | translate }}</label>
+            </div>
+          </div>
+
+         
+
         
           <div class="col-12 mb-3">
              <div class="p-float-label">
-                <p-dropdown [options]="" optionLabel="value" optionValue="key"
-                  formControlName="status"></p-dropdown>
-                <label>{{ 'status_subscription' | translate }}</label>
-               
+             <p-dropdown
+                [options]="statusList"
+                optionLabel="value"
+                optionValue="key"
+                formControlName="status">
+              </p-dropdown>
+
+
+                <label>{{ 'status_subscription' | translate }}</label>               
               </div>
           </div>
         
+           <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="price" />
+              <label>{{ 'price_subscription' | translate }}</label>
+            </div>
+          </div>
           
         </div>
       </div>
