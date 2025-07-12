@@ -16,8 +16,7 @@
     "save":"Save",
     "nameEn_services":"Name in English",
     "nameAr_services":"Name in Arabic",
-    "descEn_services":"Description in English",
-    "descAr_services":"Description in Arabic",
+    "desc_services":"Description",
     "hostName_servers":"Host Name",
     "IpAddress_servers":"Ip Address",
     "Edit_Server":"Edit",
@@ -58,7 +57,15 @@
     "userName_definitions":"Database User Name",
     "password_definitions":"Database Password",
     "Save_definitions":"Save",
-    "totalports_ports":"Total",
+    "environmentName_environment": "Name",
+    "environmentUrl_environment": "URL",
+    "Edit_Environment": "Edit",
+    "Delete_Environment": "Delete",
+    "totalEnvironments_environment": "Total",
+    "nameEn_environment": "Name in English",
+    "nameAr_environment": "Name in Arabic",
+    "url_environment": "URL",
+    "Filter_By_environment": "Filter By",
     "NameEnvironmentEn_definitions":"Environment name in English",
     "NameEnvironmentAr_definitions":"Environment name in Arabic",
     "startDate_subscription":"Start Date",
@@ -71,7 +78,9 @@
     "Back_subscription":"Back",
     "Next_subscription":"Next",
     "Back_definitions":"Back",
-    "Add_definitions":"Add"
+    "Add_definitions":"Add",
+    "price_subscription":"price",
+    "customer_service":"customer service"
     
 
 }

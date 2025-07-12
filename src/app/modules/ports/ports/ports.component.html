@@ -1,7 +1,5 @@
-
 <div class="ports">
-
-     <div [formGroup]="dataForm" class="row mb-4 m-0  p-0">
+  <div [formGroup]="dataForm" class="row mb-4 m-0 p-0">
     <p-accordion class="mt-5 p-0">
       <p-accordionTab>
         <ng-template pTemplate="header">
@@ -16,24 +14,19 @@
               <span>Filter By</span>
             </div>
             <div class="container">
-
               <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input class="search-field" type="text"
-                      placeholder="{{ 'number_port' | translate }}" formControlName="number" pInputText />
+                    <input class="search-field" type="text" placeholder="{{ 'number_port' | translate }}" formControlName="portNumber" pInputText (input)="OnChange()" />
                   </span>
                 </div>
               </div>
-              
-
-
             </div>
 
             <div class="col result">
               <div class="ms-2 mt-3">
-                <p-button class="reset-btn" (onClick)="resetform()">
+                <p-button class="reset-btn" (onClick)="resetForm()">
                   <span class="material-symbols-outlined">restart_alt</span>
                 </p-button>
               </div>
@@ -42,7 +35,6 @@
         </ng-template>
       </p-accordionTab>
     </p-accordion>
-
        </div>
       <ng-container *ngIf="!loading; else ListView">
 
@@ -82,29 +74,18 @@
             </mat-menu>
 
           </div>
+  </div>
+  <ng-container *ngIf="!loading; else ListView">
+    <div class="box">
+      <div *ngFor="let row of data" class="card mx-0 mb-2">
+        <div class="icon-container">
+          <span class="material-symbols-outlined fill">location_searching</span>
         </div>
-        <div class="card mx-0 mb-2">
-          <div class="icon-container">
-            <span class="material-symbols-outlined fill">location_searching</span>
-
-          </div>
-          <div class="col-3 card__contents">
-            <div class="card-section__items">
-             <div class="card__contents__item">
-                  <div class="card-label">{{ 'number_port' | translate }}</div>
-                  <div class="card-info">
-                    port number
-                  </div>
-                </div>
-                
-                </div>
-
-
-          </div>
-
-          <div class="one">
-            <div [matMenuTriggerFor]="menu" class="card__actions">
-              <span class="material-symbols-outlined card__actions__details">more_vert</span>
+        <div class="col-3 card__contents">
+          <div class="card-section__items">
+            <div class="card__contents__item">
+              <div class="card-label">{{ 'number_port' | translate }}</div>
+              <div class="card-info">{{ row.portNumber || '-' }}</div>
             </div>
             <mat-menu #menu="matMenu">
               <button mat-menu-item >
@@ -152,30 +133,39 @@
                 {{ 'Delete_port' | translate }}
               </button>
             </mat-menu>
-
           </div>
         </div>
-       
 
-
+        <div class="one">
+          <div [matMenuTriggerFor]="menu" class="card__actions">
+            <span class="material-symbols-outlined card__actions__details">more_vert</span>
+          </div>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openDialog(row)">
+              <span class="material-symbols-outlined">edit</span>
+              {{ 'Edit_port' | translate }}
+            </button>
+            <button mat-menu-item (click)="confirmDelete(row)">
+              <span class="material-symbols-outlined">delete</span>
+              {{ 'Delete_port' | translate }}
+            </button>
+          </mat-menu>
+        </div>
       </div>
-
-
-
-  
-    <div class="all d-flex">
-      <div class="total">
-        {{ "totalports_ports" | translate }}:
-      </div>
-
     </div>
-        <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
-          [first]="first" (onPageChange)="paginate($event)"></p-paginator>
-            <button class="add-button" (click)="openAddport()">
+
+    <div class="all d-flex">
+      <div class="total">{{ 'totalports_ports' | translate }}: {{ totalRecords }}</div>
+    </div>
+    <p-paginator class="mt-2" 
+    [rows]="pageSize" 
+    [totalRecords]="totalRecords" 
+    [rowsPerPageOptions]="[4, 12, 20, 30]" 
+    [first]="first" 
+    (onPageChange)="paginate($event)"></p-paginator>
+    <button class="add-button" (click)="openAddport()">
       <span class="material-symbols-outlined">add</span>
     </button>
-
-
   </ng-container>
 
   <ng-template #ListView>
@@ -195,5 +185,10 @@
       </div>
     </div>
   </ng-template>
+    <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
+    <ng-template pTemplate="footer">
+      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}" (click)="confirmDialog.reject()"></button>
+      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}" (click)="confirmDialog.accept()"></button>
+    </ng-template>
+  </p-confirmDialog>
 </div>
-

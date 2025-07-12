@@ -32,6 +32,7 @@ import { HasPermissionDirective } from './Core/directive/has-permission.directiv
 import { DisableElementDirective } from './Core/directive/disable-element.directive';
 import { MatButtonModule } from '@angular/material/button';
 import { QRModule } from './modules/QR/qr.module';
+import { MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -68,8 +69,9 @@ import { QRModule } from './modules/QR/qr.module';
       },
     }),
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent],
+
 
 })
 export class AppModule implements OnInit {

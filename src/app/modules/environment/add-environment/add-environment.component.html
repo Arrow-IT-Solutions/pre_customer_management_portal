@@ -1,0 +1,82 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="add-environment" novalidate>
+  <div class="add-environment">
+    <div class="box-shadow mb-3">
+      <div class="row">
+        <div class="col-12 side-icon">
+          <span class="material-symbols-outlined">info</span>
+          <span>{{ 'Basic_Info_Form' | translate }}</span>
+        </div>
+        <div class="col-12 row m-0 p-0">
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="nameEn" />
+              <label>{{ 'nameEn_environment' | translate }}</label>
+            </div>
+            <small *ngIf="submitted && form['nameEn'].invalid" class="error-validation">
+              {{ 'Field_Required' | translate }}
+            </small>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="nameAr" />
+              <label>{{ 'nameAr_environment' | translate }}</label>
+            </div>
+            <small *ngIf="submitted && form['nameAr'].invalid" class="error-validation">
+              {{ 'Field_Required' | translate }}
+            </small>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <p-dropdown
+                [options]="customerServices"
+                optionLabel="label"
+                optionValue="value"
+                formControlName="customerServiceIDFK"
+                [filter]="true"
+                [showClear]="true"
+                filterBy="label"
+                placeholder="{{ 'Select_Customer_Service' | translate }}"
+              >
+              </p-dropdown>
+              <label>{{ 'Customer_Service' | translate }}</label>
+            </div>
+            <small *ngIf="submitted && form['customerServiceIDFK'].invalid" class="error-validation">
+              {{ 'Field_Required' | translate }}
+            </small>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="url" />
+              <label>{{ 'url_environment' | translate }}</label>
+            </div>
+            <small *ngIf="submitted && form['url'].invalid" class="error-validation">
+              <ng-container *ngIf="form['url'].errors?.['required']">
+                {{ 'Field_Required' | translate }}
+              </ng-container>
+              <ng-container *ngIf="form['url'].errors?.['pattern']">
+                {{ 'Invalid_URL_Format' | translate }}
+              </ng-container>
+            </small>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 text-end mt-4">
+      <button
+        pButton
+        type="submit"
+        label="{{ 'save' | translate }}"
+        [loading]="btnLoading"
+        class="btn-primary"
+      ></button>
+    </div>
+  </div>
+</form>
+
+<p-toast key="toast"></p-toast>
