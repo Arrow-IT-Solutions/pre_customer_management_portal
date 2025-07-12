@@ -6,7 +6,9 @@ import { SubscriptionsComponent } from './subscriptions/subscriptions.component'
 import { AddSubscripeComponent } from './add-subscripe/add-subscripe.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ResponseBase } from 'src/app/shared/class/class';
+import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/class/class';
+import { MessageService, ConfirmationService } from 'primeng/api';
+
 
 
 @NgModule({
@@ -19,9 +21,51 @@ import { ResponseBase } from 'src/app/shared/class/class';
     SubscriptionRoutingModule,
     SharedModule,
     ReactiveFormsModule
+  ],
+   providers: [ 
+    MessageService,
+    ConfirmationService
   ]
 })
 export class SubscriptionModule { }
-export interface SubscripeResponse extends ResponseBase {
-  
+export interface SubscriptionRequest extends RequestBase {
+  customerServiceIDFK: string;
+  startDate: string;
+  endDate: string;
+  price: string;
+  status: string;
 }
+export interface SubscriptionUpdateRequest extends RequestBase {
+  uuid: string;
+  customerServiceIDFK?: string;
+  startDate?: string;
+  endDate?: string;
+  price?: string;
+  status?: string;
+}
+export interface SubscriptionSearchRequest extends SearchRequestBase {
+  uuid?: string;
+  customerServiceIDFK?: string;
+  status: string;
+
+}
+export interface SubscriptionResponse extends ResponseBase {
+  uuid: string;
+  customerServiceIDFK: string;
+  startDate: Date;
+  endDate: Date;
+  price: number;
+  status: string;
+  customerService?: string;
+}
+
+export interface SubscriptionResponse extends ResponseBase {
+  uuid: string;
+  customerServiceIDFK: string;
+  startDate: Date;
+  endDate: Date;
+  price: number;
+  status: string;
+  customerService?: string;
+}
+

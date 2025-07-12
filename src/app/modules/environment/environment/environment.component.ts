@@ -44,7 +44,7 @@ export class EnvironmentComponent {
     this.dataForm = this.formBuilder.group({
       name: [''],
       uuid: [''],
-      url: ['']
+      url: [''],
     });
   }
 
@@ -89,22 +89,29 @@ export class EnvironmentComponent {
     });
   }
 
-  confirmDelete(row: EnvironmentResponse) {
-    this.confirmationService.confirm({
-      message: 'Do_you_want_to_delete_this_record?',
-      header: 'Delete_Confirmation',
-      icon: 'pi pi-info-circle',
-      key: 'positionDialog',
-      closeOnEscape: true,
-      accept: async () => {
-        const response = await this.environmentService.Delete(row.uuid!) as any;
-        this.confirmationService.close();
-        this.layoutService.showSuccess(this.messageService, 'toast', true, response.requestMessage);
-        this.FillData();
-      },
-      reject: () => {}
-    });
-  }
+  async confirmDelete(row: EnvironmentResponse) {
+      this.confirmationService.confirm({
+        message: this.translate.instant('Do_you_want_to_delete_this_record?'),
+        header: this.translate.instant('Delete_Confirmation'),
+        icon: 'pi pi-info-circle',
+        acceptLabel: this.translate.instant('Yes'),
+        rejectLabel: this.translate.instant('No'),
+        key: 'confirmDialog',
+        accept: async () => {
+          try {
+            const resp = await this.environmentService.Delete(row.uuid!) as any;
+            this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
+            this.FillData(); 
+          } catch (error) {
+            this.messageService.add({
+              severity: 'error',
+              summary: this.translate.instant('Error'),
+              detail: this.translate.instant('database.Failed_to_delete')
+            });
+          }
+        }
+      });
+    }
 
   async resetform() {
     this.isResetting = true;
@@ -112,6 +119,7 @@ export class EnvironmentComponent {
     await this.FillData();
     this.isResetting = false;
   }
+  
 
   OnChange() {
     if (this.isResetting) return;

@@ -23,7 +23,6 @@ import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/cla
 })
 export class EnvironmentModule { }
 
-// Interfaces based on your backend models
 
 export interface EnvironmentRequest extends RequestBase {
   uuid?: string;
@@ -49,7 +48,7 @@ export interface EnvironmentResponse extends ResponseBase {
   uuid: string;
   customerServiceIDFK: string;
   url: string;
-  environmentTranslation: { [key: string]: EnvironmentTranslationResponse };
+  environmentTranslation: EnvironmentTranslationResponse[];
 }
 
 export interface EnvironmentTranslationRequest {

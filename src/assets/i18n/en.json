@@ -66,8 +66,6 @@
     "nameAr_environment": "Name in Arabic",
     "url_environment": "URL",
     "Filter_By_environment": "Filter By",
-    "Save_definitions":"Save",
-    "totalports_ports":"Total",
     "NameEnvironmentEn_definitions":"Environment name in English",
     "NameEnvironmentAr_definitions":"Environment name in Arabic",
     "startDate_subscription":"Start Date",
@@ -75,7 +73,9 @@
     "status_subscription":"Status",
     "Edit_subscription":"Edit",
     "Delete_subscription":"Delete",
-    "totalsubscription_subscription":"Total"
+    "totalsubscription_subscription":"Total",
+    "price_subscription":"price",
+    "customer_service":"customer service"
     
 
 }
