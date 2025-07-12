@@ -51,11 +51,54 @@
       <ng-container *ngIf="!loading; else ListView">
 
       <div class="box">
+        <div class="card mx-0 mb-2">
+          <div class="icon-container">
+            <span class="material-symbols-outlined fill">library_add</span>
+
+          </div>
+          <div class="col-3 card__contents">
+            <div class="card-section__items">
+             <div class="card__contents__item">
+                  <div class="card-label">{{ 'startDate_subscription' | translate }}</div>
+                  <div class="card-info">
+                    startDate
+                  </div>
+                </div>
+                <div class="card__contents__item">
+                  <div class="card-label">{{ 'endDate_subscription' | translate }}</div>
+                  <div class="card-info">
+                    endDate
+                  </div>
+                </div>
+                 <div class="card__contents__item">
+                  <div class="card-label">{{ 'status_subscription' | translate }}</div>
+                  <div class="card-info">
+                    expired
+                  </div>
+                </div>
+                </div>
+
+
+          </div>
+
+          <div class="one">
+            <div [matMenuTriggerFor]="menu" class="card__actions">
+              <span class="material-symbols-outlined card__actions__details">more_vert</span>
+            </div>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item >
+                 <span class="material-symbols-outlined" id="icon">Edit</span>
+                {{ 'Edit_subscription' | translate }}
+              </button>
+              <button mat-menu-item >
+                <span class="material-symbols-outlined" id="icon">delete</span>
+                {{ 'Delete_subscription' | translate }}
+              </button>
+            </mat-menu>
   <div *ngFor="let row of data" class="card mx-0 mb-2">
     <div class="icon-container">
       <span class="material-symbols-outlined fill">library_add</span>
     </div>
-
     <div class="col-3 card__contents">
       <div class="card-section__items">
         <div class="card__contents__item">

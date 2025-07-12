@@ -74,6 +74,11 @@
     "Edit_subscription":"Edit",
     "Delete_subscription":"Delete",
     "totalsubscription_subscription":"Total",
+    "Cancle_definitions":"Cancle",
+    "Back_subscription":"Back",
+    "Next_subscription":"Next",
+    "Back_definitions":"Back",
+    "Add_definitions":"Add",
     "price_subscription":"price",
     "customer_service":"customer service"
     

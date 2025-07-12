@@ -45,7 +45,22 @@
 
           </div>
           <ng-container *ngIf="!loading; else ListView">
+          <div class="one">
+            <div [matMenuTriggerFor]="menu" class="card__actions">
+              <span class="material-symbols-outlined card__actions__details">more_vert</span>
+            </div>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item >
+                 <span class="material-symbols-outlined" id="icon">Edit</span>
+                {{ 'Edit_Service' | translate }}
+              </button>
+              <button mat-menu-item >
+                <span class="material-symbols-outlined" id="icon">delete</span>
+                {{ 'Delete_Service' | translate }}
+              </button>
+            </mat-menu>
 
+          </div>
           <div class="box">
       <div class="card mx-0 mb-2" *ngFor="let service of data">
         <div class="icon-container">
@@ -66,6 +81,16 @@
                   {{ service.description }}
               </div>
             </div>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item >
+                 <span class="material-symbols-outlined" id="icon">Edit</span>
+                {{ 'Edit_Service' | translate }}
+              </button>
+              <button mat-menu-item >
+                <span class="material-symbols-outlined" id="icon">delete</span>
+                {{ 'Delete_Service' | translate }}
+              </button>
+            </mat-menu>
           </div>
         </div>
 
@@ -85,7 +110,22 @@
             </button>
           </ng-template>
         </mat-menu>
+          </div>
 
+          <div class="one">
+            <div [matMenuTriggerFor]="menu" class="card__actions">
+              <span class="material-symbols-outlined card__actions__details">more_vert</span>
+            </div>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item >
+                 <span class="material-symbols-outlined" id="icon">Edit</span>
+                {{ 'Edit_Service' | translate }}
+              </button>
+              <button mat-menu-item >
+                <span class="material-symbols-outlined" id="icon">delete</span>
+                {{ 'Delete_Service' | translate }}
+              </button>
+            </mat-menu>
 
         </div>
       </div>
