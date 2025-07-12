@@ -18,7 +18,8 @@
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input class="search-field" type="text" placeholder="{{ 'number_port' | translate }}" formControlName="portNumber" pInputText (input)="OnChange()" />
+                    <input class="search-field" type="text" placeholder="{{ 'number_port' | translate }}"
+                      formControlName="portNumber" pInputText (input)="OnChange()" />
                   </span>
                 </div>
               </div>
@@ -35,45 +36,6 @@
         </ng-template>
       </p-accordionTab>
     </p-accordion>
-       </div>
-      <ng-container *ngIf="!loading; else ListView">
-
-      <div class="box">
-        <div class="card mx-0 mb-2">
-          <div class="icon-container">
-            <span class="material-symbols-outlined fill">location_searching</span>
-
-          </div>
-          <div class="col-3 card__contents">
-            <div class="card-section__items">
-             <div class="card__contents__item">
-                  <div class="card-label">{{ 'number_port' | translate }}</div>
-                  <div class="card-info">
-                    port number
-                  </div>
-                </div>
-                
-                </div>
-
-
-          </div>
-
-          <div class="one">
-            <div [matMenuTriggerFor]="menu" class="card__actions">
-              <span class="material-symbols-outlined card__actions__details">more_vert</span>
-            </div>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item >
-                 <span class="material-symbols-outlined" id="icon">Edit</span>
-                {{ 'Edit_port' | translate }}
-              </button>
-              <button mat-menu-item >
-                <span class="material-symbols-outlined" id="icon">delete</span>
-                {{ 'Delete_port' | translate }}
-              </button>
-            </mat-menu>
-
-          </div>
   </div>
   <ng-container *ngIf="!loading; else ListView">
     <div class="box">
@@ -87,52 +49,6 @@
               <div class="card-label">{{ 'number_port' | translate }}</div>
               <div class="card-info">{{ row.portNumber || '-' }}</div>
             </div>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item >
-                 <span class="material-symbols-outlined" id="icon">Edit</span>
-                {{ 'Edit_port' | translate }}
-              </button>
-              <button mat-menu-item >
-                <span class="material-symbols-outlined" id="icon">delete</span>
-                {{ 'Delete_port' | translate }}
-              </button>
-            </mat-menu>
-
-          </div>
-        </div>
-        <div class="card mx-0 mb-2">
-          <div class="icon-container">
-            <span class="material-symbols-outlined fill">location_searching</span>
-
-          </div>
-          <div class="col-3 card__contents">
-            <div class="card-section__items">
-             <div class="card__contents__item">
-                  <div class="card-label">{{ 'number_port' | translate }}</div>
-                  <div class="card-info">
-                    port number
-                  </div>
-                </div>
-                
-                </div>
-
-
-          </div>
-
-          <div class="one">
-            <div [matMenuTriggerFor]="menu" class="card__actions">
-              <span class="material-symbols-outlined card__actions__details">more_vert</span>
-            </div>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item >
-                 <span class="material-symbols-outlined" id="icon">Edit</span>
-                {{ 'Edit_port' | translate }}
-              </button>
-              <button mat-menu-item >
-                <span class="material-symbols-outlined" id="icon">delete</span>
-                {{ 'Delete_port' | translate }}
-              </button>
-            </mat-menu>
           </div>
         </div>
 
@@ -157,12 +73,8 @@
     <div class="all d-flex">
       <div class="total">{{ 'totalports_ports' | translate }}: {{ totalRecords }}</div>
     </div>
-    <p-paginator class="mt-2" 
-    [rows]="pageSize" 
-    [totalRecords]="totalRecords" 
-    [rowsPerPageOptions]="[4, 12, 20, 30]" 
-    [first]="first" 
-    (onPageChange)="paginate($event)"></p-paginator>
+    <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+      [first]="first" (onPageChange)="paginate($event)"></p-paginator>
     <button class="add-button" (click)="openAddport()">
       <span class="material-symbols-outlined">add</span>
     </button>
@@ -185,10 +97,12 @@
       </div>
     </div>
   </ng-template>
-    <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
+  <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
     <ng-template pTemplate="footer">
-      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}" (click)="confirmDialog.reject()"></button>
-      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}" (click)="confirmDialog.accept()"></button>
+      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}"
+        (click)="confirmDialog.reject()"></button>
+      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}"
+        (click)="confirmDialog.accept()"></button>
     </ng-template>
   </p-confirmDialog>
 </div>
