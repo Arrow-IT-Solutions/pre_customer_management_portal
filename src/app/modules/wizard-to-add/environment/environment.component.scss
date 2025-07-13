@@ -222,11 +222,17 @@
         display: flex;
         width: 100%;
         justify-content: space-evenly;
+        @media(max-width:767px){
+          flex-direction: column;
+        }
     }
     .items2{
         display: flex;
         width: 100%;
         justify-content: space-around; 
+         @media(max-width:767px){
+          flex-direction: column;
+        }
     }
     .card-info{
         color: #8E8E8E;

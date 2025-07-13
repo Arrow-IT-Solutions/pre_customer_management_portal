@@ -99,6 +99,13 @@ const routes: Routes = [
             (m) => m.WizardToAddModule
           )
       },
+      {
+        path: 'customer-services',
+        loadChildren: () =>
+          import('./modules/customer-service/customer-service.module').then(
+            (m) => m.CustomerServiceModule
+          )
+      },
      
       {
         path: 'settings',

@@ -17,11 +17,8 @@ export class WizardComponent {
         label: this.isAr() ? 'خدمة العملاء' : 'Customer Service',
         routerLink: 'customer-service',
       },
+     
       {
-        label: this.isAr() ? 'الاشتراك': 'Subscription',
-        routerLink: 'subscription',
-      },
-       {
         label: this.isAr() ? 'البيئة': 'Environment',
         routerLink: 'environment',
       },
