@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WizardComponent } from './wizard/wizard.component';
 import { DefinitionsComponent } from './customer-service/definitions.component';
-import { VariantsComponent } from './subsription/variants.component';
 import { EnvironmentComponent } from './environment/environment.component';
 
 const routes: Routes = [
@@ -14,11 +13,8 @@ const routes: Routes = [
         path: 'customer-service',
         component:DefinitionsComponent,
       },
+    
       {
-        path: 'subscription',
-        component:VariantsComponent,
-      },
-       {
         path: 'environment',
         component:EnvironmentComponent,
       },

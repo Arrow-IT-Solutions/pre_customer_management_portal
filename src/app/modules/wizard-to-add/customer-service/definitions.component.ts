@@ -24,6 +24,9 @@ export class DefinitionsComponent {
     this.dataForm = formBuilder.group({
       customerName: ['', Validators.required],
       service: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      status: ['', Validators.required],
    
     });
 
@@ -42,7 +45,7 @@ export class DefinitionsComponent {
     this.dataForm.reset();
   }
   nextStep(){
-  this.router.navigate(['layout-admin/add/subscription']);
+  this.router.navigate(['layout-admin/add/environment']);
   }
 
 }
