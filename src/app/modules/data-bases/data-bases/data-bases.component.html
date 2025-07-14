@@ -118,9 +118,19 @@
   </ng-container>
 
   <ng-template #ListView>
+     <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
+      </div>
+    </div>
     <div class="row">
-      <div *ngFor="let list of [1, 2, 3, 4]" class="col mx-0 mt-2">
-        <p-skeleton height="7.5rem"></p-skeleton>
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
+      </div>
+    </div>
+    <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
       </div>
     </div>
   </ng-template>

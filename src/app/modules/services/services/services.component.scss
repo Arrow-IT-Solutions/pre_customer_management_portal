@@ -1,11 +1,11 @@
 @import "../../../../assets/scss/varialbles.scss";
 
 .services {
-    padding: 1rem 1rem 1rem 0rem;
+    padding: 1rem 1rem 1rem 1rem;
     position: relative;
 
     &:lang(ar){
-        padding: 1rem 0 1rem 1rem;
+        padding: 1rem 1rem 1rem 1rem;
     }
     .container{
         display: flex;
@@ -173,14 +173,21 @@
       top: -5px;
     }
   }
-  .box2{
+ .box2{
     display: flex;
     flex-direction: row;
     column-gap: 2rem;
+    @media(max-width:767px){
+        flex-direction:column ;
+        align-items: center;
+    }
     .container{
       display: flex;
       flex-wrap: wrap;
       column-gap: 2rem;
+       @media(max-width:767px){
+        flex-direction:column ;
+    }
     }
 
   }
@@ -238,6 +245,7 @@
     @media (max-width:767px) {
       max-height: 15rem;
       width: 100%;
+      flex-direction: column;
 
 
     }
@@ -251,7 +259,7 @@
 
       @media (max-width:767px) {
         padding-top: 0;
-        margin-bottom: 5rem;
+        margin-bottom: 0.2rem;
       }
       @media (max-width: 991px) and (min-width: 768px) {
        padding-top: 0;
@@ -464,7 +472,7 @@
 @media screen and (max-width: 990px) {
   .filter-title {
     width: 100% !important;
-    justify-content: start !important;
+    justify-content: center !important;
   }
 }
 .total {

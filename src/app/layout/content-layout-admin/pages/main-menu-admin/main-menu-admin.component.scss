@@ -6,7 +6,7 @@
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  width: 85%;
+  width: 95%;
   transition: 0.2s;
   color: $black-color;
   // overflow: auto;
@@ -225,8 +225,12 @@
 }
 
 // responsive
-
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 1300px) {
+    .main-menu{
+    width: 100% !important;
+  }
+}
+@media screen and (max-width: 1150px) {
   .main-menu{
     width: 80% !important;
 
