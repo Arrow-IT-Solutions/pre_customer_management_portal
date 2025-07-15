@@ -28,6 +28,7 @@ export interface EnvironmentRequest extends RequestBase {
   uuid?: string;
   customerServiceIDFK: string;
   url: string;
+  serverIDFK: string;
   environmentTranslation: EnvironmentTranslationRequest[];
 }
 
@@ -35,6 +36,7 @@ export interface EnvironmentUpdateRequest extends RequestBase {
   uuid: string;
   customerServiceIDFK?: string;
   url?: string;
+  serverIDFK?: string;
   environmentTranslation?: EnvironmentTranslationUpdateRequest[];
 }
 
@@ -48,6 +50,7 @@ export interface EnvironmentResponse extends ResponseBase {
   uuid: string;
   customerServiceIDFK: string;
   url: string;
+  serverIDFK: string;
   environmentTranslation: EnvironmentTranslationResponse[];
 }
 

@@ -10,6 +10,7 @@ import { LayoutService } from 'src/app/layout/service/layout.service';
 import { AddEnvironmentComponent } from '../add-environment/add-environment.component';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { EnvironmentService } from 'src/app/Core/services/environments.service';
+import { ServersService } from 'src/app/layout/service/servers.service';
 
 @Component({
   selector: 'app-environment',
@@ -26,6 +27,7 @@ export class EnvironmentComponent {
 
   dataForm!: FormGroup;
   data: EnvironmentResponse[] = [];
+servers: { [key: string]: string } = {};
 
   loading = false;
   isResetting: boolean = false;
@@ -39,16 +41,20 @@ export class EnvironmentComponent {
     public translate: TranslateService,
     public layoutService: LayoutService,
     public messageService: MessageService,
+    private serverService: ServersService,
     public confirmationService: ConfirmationService
   ) {
     this.dataForm = this.formBuilder.group({
       name: [''],
       uuid: [''],
       url: [''],
+      serverIDFK: [''],
+
     });
   }
 
   async ngOnInit() {
+    await this.retrieveServers();
     await this.FillData();
   }
 
@@ -70,6 +76,30 @@ export class EnvironmentComponent {
     this.totalRecords = Number(response?.totalRecords || 0);
     this.loading = false;
   }
+
+  async retrieveServers() {
+  const filter = {
+    name: '',
+    uuid: '',
+    pageIndex: '0',
+    pageSize: '10'
+  };
+
+  const response = await this.serverService.Search(filter) as any;
+  const servers = response?.data || [];
+
+this.servers = {};
+servers.forEach((server: any) => {
+  if (server.uuid) {
+    this.servers[server.uuid.trim()] = server.hostname || server.ipAddress || '—';
+  }
+});
+
+console.log('Server Map:', this.servers);
+
+
+}
+
 
   openAddEnvironment(row: EnvironmentResponse | null = null) {
     window.scrollTo({ top: 0, behavior: 'smooth' });

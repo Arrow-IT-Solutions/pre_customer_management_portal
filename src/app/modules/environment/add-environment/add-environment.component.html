@@ -48,6 +48,29 @@
             </small>
           </div>
 
+
+           <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <p-dropdown
+                [options]="servers"
+                optionLabel="label"
+                optionValue="value"
+                formControlName="serverIDFK"
+                [filter]="true"
+                [showClear]="true"
+                filterBy="label"
+                placeholder="{{ 'Select_ServerIDFK' | translate }}"
+              >
+              </p-dropdown>
+
+              <label>{{ 'ServerIDFK' | translate }}</label>
+            </div>
+            <small *ngIf="submitted && form['serverIDFK'].invalid" class="error-validation">
+              {{ 'Field_Required' | translate }}
+            </small>
+          </div>
+
+
           <div class="col-12 mb-3">
             <div class="p-float-label">
               <input pInputText type="text" formControlName="url" />
