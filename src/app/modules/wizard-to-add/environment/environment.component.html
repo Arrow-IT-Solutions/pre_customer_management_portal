@@ -102,7 +102,11 @@
                     <!-- <button type="button" class="btn btn-sm btn-danger" (click)="removeEnvironment(i)">
                       <i class="pi pi-trash"></i>
                     </button> -->
-                    <span class="material-symbols-outlined"  id="delete" (click)="removeEnvironment(i)">delete</span>
+                    <div class="actions">
+                    <span class="material-symbols-outlined">edit</span>
+                    <span class="material-symbols-outlined"  (click)="removeEnvironment(i)">delete</span>
+                    </div>
+                    
                   </div>
                   <div class="card-body">
                     <div class="environment-details">
