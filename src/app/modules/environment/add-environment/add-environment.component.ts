@@ -4,6 +4,8 @@ import { MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/layout.service';
 import { EnvironmentRequest, EnvironmentUpdateRequest } from '../environment.module';
 import { EnvironmentService } from 'src/app/Core/services/environments.service';
+import { ServersService } from 'src/app/layout/service/servers.service';
+import { ServerResponse } from '../../servers/servers.module';
 
 @Component({
   selector: 'app-add-environment',
@@ -17,18 +19,20 @@ export class AddEnvironmentComponent {
   btnLoading = false;
   loading = false;
   customerServices: any[] = [];
-
+  servers: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private layoutService: LayoutService,
     private environmentService: EnvironmentService,
+    private serverService: ServersService,
     private messageService: MessageService
   ) {
     this.dataForm = this.formBuilder.group({
       customerServiceIDFK: [''],
       nameEn: ['', Validators.required],
       nameAr: ['', Validators.required],
-      url: ['', [Validators.required, Validators.pattern(/https?:\/\/.+/)]]
+      url: ['', [Validators.required, Validators.pattern(/https?:\/\/.+/)]],
+      serverIDFK: ['', Validators.required]
     });
   }
 
@@ -39,6 +43,7 @@ export class AddEnvironmentComponent {
   async ngOnInit() {
     this.loading = true;
     await this.retrieveCustomerServices();
+    await this.retrieveServers();
     this.resetForm();
 
     if (this.environmentService.SelectedData) {
@@ -88,6 +93,7 @@ async save() {
         environmentTranslation: environmentTranslations,
         url: this.dataForm.controls['url'].value == null ? null : this.dataForm.controls['url'].value.toString(),
         customerServiceIDFK: 'af7ac44a-bbef-48be-8cde-bbcfe3b9a3ff',
+        serverIDFK: this.dataForm.controls['serverIDFK'].value
 
       };
       console.log(updateCustomer)
@@ -98,6 +104,7 @@ async save() {
         environmentTranslation: environmentTranslations,
         url: this.dataForm.controls['url'].value == null ? null : this.dataForm.controls['url'].value.toString(),
         customerServiceIDFK: 'af7ac44a-bbef-48be-8cde-bbcfe3b9a3ff',
+        serverIDFK: this.dataForm.controls['serverIDFK'].value
       };
 
       console.log('addCustomer ', addCustomer)
@@ -144,9 +151,30 @@ async save() {
       customerServiceIDFK: this.environmentService.SelectedData?.customerServiceIDFK ?? '',
       nameAr: ar?.name || '',
       nameEn: en?.name || '',
-      url: environment.url || ''
+      url: environment.url || '',
+      serverIDFK: this.environmentService.SelectedData?.serverIDFK ?? '',
+
     });
   }
+async retrieveServers() {
+  const filter = {
+    name: '',
+    uuid: '',
+    pageIndex: '0',
+    pageSize: '10'
+  };
+
+  const response = await this.serverService.Search(filter) as any;
+  const lang = this.layoutService.config.lang || 'en';
+
+  this.servers = (response.data || []).map((server: ServerResponse) => {
+    return {
+      label: server.hostname || server.ipAddress || '—',
+      value: server.uuid
+    };
+  });
+}
+
 
   async retrieveCustomerServices() {
   const filter = {
