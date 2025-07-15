@@ -79,9 +79,17 @@
     "Next_subscription":"Next",
     "Back_definitions":"Back",
     "Add_definitions":"Add",
-    "price_subscription":"price",
+    "price_subscription":"Price",
     "customer_service":"customer service",
-    "details_subscription":"Subscription Detailes"
-    
+    "details_subscription":"Subscription Detailes",
+    "Environment_required": "At least one environment must be added before saving",
+    "Customer_Service_required":"Please fill all required fields",
+    "ServiceName_Customer":"Service Name",
+    "CustomerName_Customer":"Customer Name",
+    "No_Environments_Added": "No environments added",
+    "Environments_List": "Environments List",
+    "ServerName_definitions": "Server Name",
+    "Field_Required": "This field is required"
+
 
 }

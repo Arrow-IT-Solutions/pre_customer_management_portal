@@ -40,4 +40,32 @@ export class ServersService {
     const apiUrl = `/api/server/${uuid}`;
     return await this.httpClient.delete(apiUrl, uuid);
   }
+   public submitted: any | null = "";
+    constructor(public layoutService: LayoutService, public httpClient: HttpClientService) { }
+    async Add(data: ServerRequest) {
+      const apiUrl = `/api/server`;
+
+      return await this.httpClient.post(apiUrl, data);
+    }
+
+    async Update(data: ServerUpdateRequest) {
+
+      const apiUrl = `/api/server`;
+      return await this.httpClient.put(apiUrl, data);
+    }
+
+    async Delete(uuid: string) {
+
+      const apiUrl = `/api/server/${uuid}`;
+      return await this.httpClient.delete(apiUrl, uuid)
+
+    }
+
+    async Search(filter: ServerSearchRequest) {
+
+      const apiUrl = `/api/server/list?${this.layoutService.Filter(filter)}`;
+
+      return await this.httpClient.get(apiUrl)
+
+    }
 }

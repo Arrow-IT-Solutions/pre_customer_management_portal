@@ -8,131 +8,154 @@
             <span>{{ 'Basic_Info_Form' | translate }}</span>
           </div>
           <div class="col-12 row m-0 p-0">
-            
+
             <div class="col-12 mb-3">
               <div class="p-float-label">
                 <input pInputText type="text" formControlName="nameEnvEn" />
                 <label>{{ 'NameEnvironmentEn_definitions' | translate }}</label>
-              
+                <span *ngIf="submitted && form['nameEnvEn'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
               </div>
             </div>
             <div class="col-12 mb-3">
               <div class="p-float-label">
                 <input pInputText type="text" formControlName="nameEnvAr" />
                 <label>{{ 'NameEnvironmentAr_definitions' | translate }}</label>
-              
+                <span *ngIf="submitted && form['nameEnvAr'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
               </div>
             </div>
             <div class="col-12 mb-3">
               <div class="p-float-label">
                 <input pInputText type="text" formControlName="urlEnv" />
                 <label>{{ 'UrlEnvironment_definitions' | translate }}</label>
-              
+                <span *ngIf="submitted && form['urlEnv'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
               </div>
             </div>
-             <div class="col-12 mb-3">
+              <div class="col-12 mb-3">
               <div class="p-float-label">
-                <p-dropdown [options]="" optionLabel="value" optionValue="key"
-                  formControlName="server"></p-dropdown>
-                <label>{{ 'server_definitions' | translate }}</label>
-               
-              </div>
+              <p-dropdown [options]="servers" optionLabel="hostname" optionValue="uuid" formControlName="server"
+                [filter]="true" [showClear]="true" filterBy="hostname" (onFilter)="FillServer($event)"></p-dropdown>
+              <label>{{ 'ServerName_definitions' | translate }}</label>
+              <span *ngIf="submitted && form['server'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
             </div>
-            
+            </div>
+
             <div class="col-12 mb-3">
               <div class="p-float-label">
                 <input pInputText type="text" formControlName="databaseName" />
                 <label>{{ 'databaseName_definitions' | translate }}</label>
-              
+                <span *ngIf="submitted && form['databaseName'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
               </div>
             </div>
             <div class="col-12 mb-3">
               <div class="p-float-label">
                 <input pInputText type="text" formControlName="userName" />
                 <label>{{ 'userName_definitions' | translate }}</label>
-              
+                <span *ngIf="submitted && form['userName'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
               </div>
             </div>
            <div class="col-12 mb-3">
             <div class="p-float-label">
               <input pInputText [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password"  />
               <label>{{ 'password_definitions' | translate }}</label>
-              <i 
-                  class="pi" 
-                  [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'" 
-                  (click)="togglePasswordVisibility()" 
+              <span *ngIf="submitted && form['password'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
+              <i
+                  class="pi"
+                  [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'"
+                  (click)="togglePasswordVisibility()"
+                  style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #6c757d;"
                   >
                 </i>
-               
-          
             </div>
-
-
           </div>
         </div>
       </div>
       <div style="display: flex;align-items: center;justify-content: center;">
-      <p-button type="Submit" class="btn-primary">{{ 'Add_definitions' | translate }}</p-button>
+      <p-button type="button" class="btn-primary" (click)="addEnvironment()">{{ 'Add_definitions' | translate }}</p-button>
       </div>
-           
+
     </div>
 
-   
 
 
 
-    
+
+
     </div>
      <div class="col-lg-8 col-md-12">
       <div class="box-shadow mb-3">
         <div class="row">
-            <div class="card ">
-                <div class="items2">
-                <div class="item">
-                  <div class="card-label">{{ 'NameEnvironment_definitions' | translate }}</div>
-                  <div class="card-info">
-                    name
+          <div class="col-12 side-icon">
+            <span class="material-symbols-outlined">list</span>
+            <span>{{ 'Environments_List' | translate }}</span>
+          </div>
+
+          <div class="col-12" *ngIf="envDatabase.length > 0">
+            <div class="row">
+              <div class="col-md-6 mb-3" *ngFor="let env of envDatabase; let i = index">
+                <div class="card environment-card">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">
+                      <span class="badge badge-primary me-2">{{ i + 1 }}</span>
+                      {{ getEnvironmentDisplayName(env.environmentTranslation) }}
+                    </h6>
+                    <button type="button" class="btn btn-sm btn-danger" (click)="removeEnvironment(i)">
+                      <i class="pi pi-trash"></i>
+                    </button>
+                  </div>
+                  <div class="card-body">
+                    <div class="environment-details">
+                      <div class="detail-item">
+                        <label>{{ 'NameEnvironmentEn_definitions' | translate }}:</label>
+                        <span>{{ getEnvironmentName(env.environmentTranslation, 'en') }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'NameEnvironmentAr_definitions' | translate }}:</label>
+                        <span>{{ getEnvironmentName(env.environmentTranslation, 'ar') }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'UrlEnvironment_definitions' | translate }}:</label>
+                        <span>{{ env.url }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'ServerName_definitions' | translate }}:</label>
+                        <span>{{ getServerName(env.serverIDFK) }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'databaseName_definitions' | translate }}:</label>
+                        <span>{{ env.dbName }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'userName_definitions' | translate }}:</label>
+                        <span>{{ env.dbUserName }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <label>Connection String:</label>
+                        <span class="connection-string">{{ env.connectionString }}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="item">
-                  <div class="card-label">{{ 'UrlEnvironment_definitions' | translate }}</div>
-                  <div class="card-info">
-                   
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="card-label">{{ 'server_definitions' | translate }}</div>
-                  <div class="card-info">
-                   
-                  </div>
-                </div>
-             
-                </div>
-                <div class="items">
-                
-                <div class="item">
-                  <div class="card-label">{{ 'databaseName_definitions' | translate }}</div>
-                  <div class="card-info">
-                    
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="card-label">{{ 'userName_definitions' | translate }}</div>
-                  <div class="card-info">
-                   
-                  </div>
-                </div>
-               
-                </div>
+              </div>
             </div>
+          </div>
+
+          <div class="col-12 text-center py-5" *ngIf="envDatabase.length === 0">
+            <div class="no-environments">
+              <h5 class="mt-3 text-muted">{{ 'No_Environments_Added' | translate }}</h5>
+
+            </div>
+          </div>
         </div>
         </div>
         </div>
   </div>
   <div class="col-xs-12 mt-4 text-center" style="display: flex;justify-content: space-between;align-items: center;padding: 2rem 5rem 0;">
-      <p-button type="Submit" class="btn-primary" (click)="back()">{{ 'Back_definitions' | translate }}</p-button>
+      <p-button type="button" class="btn-primary" (click)="back()">{{ 'Back_definitions' | translate }}</p-button>
 
-      <p-button type="Submit" class="btn-primary">{{ 'Save_definitions' | translate }}</p-button>
+      <p-button type="submit" class="btn-primary" [loading]="btnLoading" [disabled]="btnLoading">{{ 'Save_definitions' | translate }}</p-button>
 
-   </div>
+  </div>
 </form>
+
+<p-toast key="toast"></p-toast>

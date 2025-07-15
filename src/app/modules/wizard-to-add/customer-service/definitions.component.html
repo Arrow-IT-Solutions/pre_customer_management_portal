@@ -8,22 +8,24 @@
             <span>{{ 'Basic_Info_Form' | translate }}</span>
           </div>
           <div class="col-12 row m-0 p-0">
-            
+
             <div class="col-12 mb-3">
               <div class="p-float-label">
-                <p-dropdown [options]="" optionLabel="value" optionValue="key"
-                  formControlName="customerName"></p-dropdown>
-                <label>{{ 'customerName_definitions' | translate }}</label>
-               
-              </div>
+              <p-dropdown [options]="customers" optionLabel="name" optionValue="uuid" formControlName="customerName"
+                [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillCustomer($event)"></p-dropdown>
+              <label>{{ 'CustomerName_Customer' | translate }}</label>
+              <span *ngIf="submitted && form['customerName'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
+            </div>
             </div>
              <div class="col-12 mb-3 mt-2">
               <div class="p-float-label">
-                <p-dropdown [options]="" optionLabel="value" optionValue="key"
-                  formControlName="service"></p-dropdown>
-                <label>{{ 'service_definitions' | translate }}</label>
-               
-              </div>
+              <p-dropdown [options]="services" optionLabel="name" optionValue="uuid" formControlName="service"
+                [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillService($event)"></p-dropdown>
+              <label>{{ 'ServiceName_Customer' | translate }}</label>
+              <span *ngIf="submitted && form['service'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
+            </div>
             </div>
               <label style="font-weight: bold;font-size: 1rem;">{{ 'details_subscription' | translate }}:</label>
                <br><br>
@@ -31,22 +33,43 @@
             <div class="p-float-label">
               <p-calendar [showIcon]="true" formControlName="startDate"></p-calendar>
               <label>{{ 'startDate_subscription' | translate }}</label>
+               <span *ngIf="submitted && form['startDate'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
             </div>
           </div>
            <div class="col-12 mb-3">
             <div class="p-float-label">
               <p-calendar [showIcon]="true" formControlName="endDate"></p-calendar>
               <label>{{ 'endDate_subscription' | translate }}</label>
+              <span *ngIf="submitted && form['endDate'].errors" class="error-validation">{{ 'Field_Required' |
+                translate }}</span>
             </div>
           </div>
-        
+
           <div class="col-12 mb-3">
+                      <div class="col-12 mb-3">
              <div class="p-float-label">
-                <p-dropdown [options]="" optionLabel="value" optionValue="key"
-                  formControlName="status"></p-dropdown>
+             <p-dropdown
+                [options]="statusList"
+                optionLabel="value"
+                optionValue="key"
+                formControlName="status">
+              </p-dropdown>
+
+
                 <label>{{ 'status_subscription' | translate }}</label>
-               
+                <span *ngIf="submitted && form['status'].errors" class="error-validation">{{ 'Field_Required' |
+                  translate }}</span>
               </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="price" />
+              <label>{{ 'price_subscription' | translate }}</label>
+              <span *ngIf="submitted && form['price'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
+            </div>
+          </div>
           </div>
 
 
@@ -56,7 +79,7 @@
 
     </div>
 
-   
+
 
 
 
@@ -68,3 +91,5 @@
     </div>
   </div>
 </form>
+
+<p-toast key="toast"></p-toast>
