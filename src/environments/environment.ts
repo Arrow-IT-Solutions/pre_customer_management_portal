@@ -4,4 +4,4 @@ export const environment = {
   baseApiUrl: "https://localhost:54534"
 };
 
-//https://survey-api-dev.apps-jo.com
+//https://customer-management-dev-api.apps-jo.com

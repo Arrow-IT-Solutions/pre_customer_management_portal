@@ -18,7 +18,8 @@
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input type="text" class="search-field" placeholder="{{ 'name_dataBase' | translate }}" formControlName="name" pInputText (input)="OnChange()" />
+                    <input type="text" class="search-field" placeholder="{{ 'name_dataBase' | translate }}"
+                      formControlName="name" pInputText (input)="OnChange()" />
                   </span>
                 </div>
               </div>
@@ -27,7 +28,8 @@
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input type="text" class="search-field" placeholder="{{ 'userName_database' | translate }}" formControlName="UserName" pInputText (input)="OnChange()" />
+                    <input type="text" class="search-field" placeholder="{{ 'userName_database' | translate }}"
+                      formControlName="UserName" pInputText (input)="OnChange()" />
                   </span>
                 </div>
               </div>
@@ -105,9 +107,8 @@
 
     <div class="row mt-3 align-items-center justify-content-between">
       <div class="total">{{ 'totaldatabases_databases' | translate }}: {{ totalRecords }}</div>
-      <p-paginator [rows]="pageSize" [totalRecords]="totalRecords" 
-                   [rowsPerPageOptions]="[4, 12, 20, 30]" 
-                   [first]="first" (onPageChange)="paginate($event)">
+      <p-paginator [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+        [first]="first" (onPageChange)="paginate($event)">
       </p-paginator>
     </div>
 
@@ -117,17 +118,29 @@
   </ng-container>
 
   <ng-template #ListView>
+     <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
+      </div>
+    </div>
     <div class="row">
-      <div *ngFor="let list of [1, 2, 3, 4]" class="col mx-0 mt-2">
-        <p-skeleton height="7.5rem"></p-skeleton>
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
+      </div>
+    </div>
+    <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
       </div>
     </div>
   </ng-template>
 
   <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
     <ng-template pTemplate="footer">
-      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}" (click)="confirmDialog.reject()"></button>
-      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}" (click)="confirmDialog.accept()"></button>
+      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}"
+        (click)="confirmDialog.reject()"></button>
+      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}"
+        (click)="confirmDialog.accept()"></button>
     </ng-template>
   </p-confirmDialog>
 </div>

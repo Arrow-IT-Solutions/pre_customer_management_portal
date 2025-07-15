@@ -86,6 +86,21 @@
   "port_credential": "رقم المنفذ",
   "Deleted_successfully": "تم الحذف بنجاح",
   "Failed_to_delete": "فشل في الحذف",
-  "Success": "عملية ناجحة"
+  "Success": "عملية ناجحة",
+  "Cancle_definitions":"إلغاء",
+  "Back_subscription":"السابق",
+  "Next_subscription":"التالي",
+  "Back_definitions":"السابق",
+  "Add_definitions":"إضافة",
+  "details_subscription":"معلومات الاشتراك",
+  "Environment_required": "يجب إضافة بيئة واحدة على الأقل قبل الحفظ",
+  "Customer_Service_required":"يرجى تعبئة جميع الحقول المطلوبة",
+  "ServiceName_Customer":"اسم الخدمة",
+  "CustomerName_Customer":"اسم العميل",
+  "No_Environments_Added": "لم يتم إضافة أي بيئات",
+  "Environments_List": "قائمة البيئات",
+  "ServerName_definitions": "اسم الخادم",
+  "Field_Required": "هذا الحقل مطلوب",
+  "price_subscription":"السعر"
 
 }

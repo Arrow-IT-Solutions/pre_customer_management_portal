@@ -10,6 +10,7 @@ import { LayoutService } from 'src/app/layout/service/layout.service';
 import { AddEnvironmentComponent } from '../add-environment/add-environment.component';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { EnvironmentService } from 'src/app/Core/services/environments.service';
+import { ServersService } from 'src/app/layout/service/servers.service';
 
 @Component({
   selector: 'app-environment',
@@ -26,6 +27,7 @@ export class EnvironmentComponent {
 
   dataForm!: FormGroup;
   data: EnvironmentResponse[] = [];
+servers: { [key: string]: string } = {};
 
   loading = false;
   isResetting: boolean = false;
@@ -39,16 +41,20 @@ export class EnvironmentComponent {
     public translate: TranslateService,
     public layoutService: LayoutService,
     public messageService: MessageService,
+    private serverService: ServersService,
     public confirmationService: ConfirmationService
   ) {
     this.dataForm = this.formBuilder.group({
       name: [''],
       uuid: [''],
-      url: ['']
+      url: [''],
+      serverIDFK: [''],
+
     });
   }
 
   async ngOnInit() {
+    await this.retrieveServers();
     await this.FillData();
   }
 
@@ -71,6 +77,30 @@ export class EnvironmentComponent {
     this.loading = false;
   }
 
+  async retrieveServers() {
+  const filter = {
+    name: '',
+    uuid: '',
+    pageIndex: '0',
+    pageSize: '10'
+  };
+
+  const response = await this.serverService.Search(filter) as any;
+  const servers = response?.data || [];
+
+this.servers = {};
+servers.forEach((server: any) => {
+  if (server.uuid) {
+    this.servers[server.uuid.trim()] = server.hostname || server.ipAddress || '—';
+  }
+});
+
+console.log('Server Map:', this.servers);
+
+
+}
+
+
   openAddEnvironment(row: EnvironmentResponse | null = null) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.body.style.overflow = 'hidden';
@@ -89,22 +119,29 @@ export class EnvironmentComponent {
     });
   }
 
-  confirmDelete(row: EnvironmentResponse) {
-    this.confirmationService.confirm({
-      message: 'Do_you_want_to_delete_this_record?',
-      header: 'Delete_Confirmation',
-      icon: 'pi pi-info-circle',
-      key: 'positionDialog',
-      closeOnEscape: true,
-      accept: async () => {
-        const response = await this.environmentService.Delete(row.uuid!) as any;
-        this.confirmationService.close();
-        this.layoutService.showSuccess(this.messageService, 'toast', true, response.requestMessage);
-        this.FillData();
-      },
-      reject: () => {}
-    });
-  }
+  async confirmDelete(row: EnvironmentResponse) {
+      this.confirmationService.confirm({
+        message: this.translate.instant('Do_you_want_to_delete_this_record?'),
+        header: this.translate.instant('Delete_Confirmation'),
+        icon: 'pi pi-info-circle',
+        acceptLabel: this.translate.instant('Yes'),
+        rejectLabel: this.translate.instant('No'),
+        key: 'confirmDialog',
+        accept: async () => {
+          try {
+            const resp = await this.environmentService.Delete(row.uuid!) as any;
+            this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
+            this.FillData(); 
+          } catch (error) {
+            this.messageService.add({
+              severity: 'error',
+              summary: this.translate.instant('Error'),
+              detail: this.translate.instant('database.Failed_to_delete')
+            });
+          }
+        }
+      });
+    }
 
   async resetform() {
     this.isResetting = true;
@@ -112,6 +149,7 @@ export class EnvironmentComponent {
     await this.FillData();
     this.isResetting = false;
   }
+  
 
   OnChange() {
     if (this.isResetting) return;

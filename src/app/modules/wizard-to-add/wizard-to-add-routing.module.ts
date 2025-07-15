@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WizardComponent } from './wizard/wizard.component';
-import { DefinitionsComponent } from './definitions/definitions.component';
-import { VariantsComponent } from './variants/variants.component';
+import { DefinitionsComponent } from './customer-service/definitions.component';
+import { EnvironmentComponent } from './environment/environment.component';
 
 const routes: Routes = [
    {
@@ -10,12 +10,13 @@ const routes: Routes = [
     component:WizardComponent,
     children: [
       {
-        path: 'definitions',
+        path: 'customer-service',
         component:DefinitionsComponent,
       },
+    
       {
-        path: 'variants',
-        component:VariantsComponent,
+        path: 'environment',
+        component:EnvironmentComponent,
       },
     ],
   }

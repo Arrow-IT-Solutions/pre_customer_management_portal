@@ -9,34 +9,23 @@
         <div class="col-12 row m-0 p-0">
           <div class="col-12 mb-3">
             <div class="p-float-label">
-              <input pInputText type="text" formControlName="hostName" />
+              <input pInputText type="text" formControlName="hostname" />
               <label>{{ 'hostName_servers' | translate }}</label>
-              
             </div>
           </div>
           <div class="col-12 mb-3">
             <div class="p-float-label">
-              <input pInputText type="text" formControlName="IpAddress" />
+              <input pInputText type="text" formControlName="ipAddress" />
               <label>{{ 'IpAddress_servers' | translate }}</label>
-          
             </div>
           </div>
-      
-          
         </div>
       </div>
     </div>
-
-
-
-
-   <div class="col-xs-12 text-end mt-4">
-      <p-button type="Submit" class="btn-primary"  [loading]="btnLoading">{{'save' | translate}}</p-button>
+    <div class="col-xs-12 text-end mt-4">
+      <p-button type="Submit" class="btn-primary" [loading]="btnLoading">{{'save' | translate}}</p-button>
     </div>
   </div>
 </form>
 
 <p-toast key="toast"></p-toast>
-
-
-

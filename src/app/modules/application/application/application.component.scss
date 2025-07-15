@@ -71,6 +71,7 @@
         }
       }
 
+     
       & .filter-title{
         display: flex;
         align-items: center;
@@ -80,7 +81,7 @@
         justify-content: space-evenly;
 
         & .material-symbols-outlined{
-          color: $primary-color;
+          color: $gray-color;
           top: 0;
         }
       }
@@ -211,8 +212,6 @@
       }
       .fill{
         color: $primary-color;
-
-
        }
 
      }
@@ -401,9 +400,9 @@
       cursor: pointer;
       width: 50px;
 
-      &__details {
+     &__details {
         font-size: $xl-icon;
-        color: $primary-color;
+        color: $gray-color;
 
       }
     }
@@ -415,7 +414,7 @@
 @media screen and (max-width: 990px) {
   .filter-title {
     width: 100% !important;
-    justify-content: start !important;
+    justify-content: center !important;
   }
 }
 .total {

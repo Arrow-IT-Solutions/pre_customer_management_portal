@@ -1,6 +1,6 @@
 <div class="subscription">
 
-     <div [formGroup]="dataForm" class="row mb-4 m-0  p-0">
+  <div [formGroup]="dataForm" class="row mb-4 m-0  p-0">
     <p-accordion class="mt-5 p-0">
       <p-accordionTab>
         <ng-template pTemplate="header">
@@ -18,15 +18,16 @@
 
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
-                <div class="p-float-label">
-                <p-dropdown [options]="" optionLabel="value" optionValue="key"
-                  formControlName="status"></p-dropdown>
-                <label>{{ 'status_subscription' | translate }}</label>
-               
-              </div>
+                  <div class="p-float-label">
+                    <p-dropdown [options]="statusList" optionLabel="value" optionValue="key" (onChange)="Search()"
+                      formControlName="status">
+                    </p-dropdown>
+                    <label>{{ 'status_subscription' | translate }}</label>
+
+                  </div>
                 </div>
-              
-            </div>
+
+              </div>
             </div>
 
             <div class="col result">
@@ -37,79 +38,71 @@
               </div>
             </div>
           </div>
-          
+
         </ng-template>
       </p-accordionTab>
     </p-accordion>
 
-       </div>
-      <ng-container *ngIf="!loading; else ListView">
+  </div>
+  <ng-container *ngIf="!loading; else ListView">
 
-      <div class="box">
-        <div class="card mx-0 mb-2">
-          <div class="icon-container">
-            <span class="material-symbols-outlined fill">library_add</span>
+    <div class="box">
+      <div *ngFor="let row of data" class="card mx-0 mb-2">
+        <div class="icon-container">
+          <span class="material-symbols-outlined fill">library_add</span>
+        </div>
 
-          </div>
-          <div class="col-3 card__contents">
-            <div class="card-section__items">
-             <div class="card__contents__item">
-                  <div class="card-label">{{ 'startDate_subscription' | translate }}</div>
-                  <div class="card-info">
-                    startDate
-                  </div>
-                </div>
-                <div class="card__contents__item">
-                  <div class="card-label">{{ 'endDate_subscription' | translate }}</div>
-                  <div class="card-info">
-                    endDate
-                  </div>
-                </div>
-                 <div class="card__contents__item">
-                  <div class="card-label">{{ 'status_subscription' | translate }}</div>
-                  <div class="card-info">
-                    expired
-                  </div>
-                </div>
-                </div>
-
-
-          </div>
-
-          <div class="one">
-            <div [matMenuTriggerFor]="menu" class="card__actions">
-              <span class="material-symbols-outlined card__actions__details">more_vert</span>
+        <div class="col-3 card__contents">
+          <div class="card-section__items">
+            <div class="card__contents__item">
+              <div class="card-label">{{ 'startDate_subscription' | translate }}</div>
+              <div class="card-info">{{ row.startDate | date: 'yyyy-MM-dd' }}</div>
             </div>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item >
-                <span class="material-symbols-outlined">Edit</span>
-                {{ 'Edit_subscription' | translate }}
-              </button>
-              <button mat-menu-item >
-                <span class="material-symbols-outlined">delete</span>
-                {{ 'Delete_subscription' | translate }}
-              </button>
-            </mat-menu>
-
+            <div class="card__contents__item">
+              <div class="card-label">{{ 'endDate_subscription' | translate }}</div>
+              <div class="card-info">{{ row.endDate | date: 'yyyy-MM-dd' }}</div>
+            </div>
+            <div class="card__contents__item">
+              <div class="card-label">{{ 'status_subscription' | translate }}</div>
+              <div class="card-info">{{ row.status }}</div>
+            </div>
+            <div class="card__contents__item">
+              <div class="card-label">{{ 'price_subscription' | translate }}</div>
+              <div class="card-info">{{ row.price }}</div>
+            </div>
           </div>
         </div>
-       
 
-
+        <div class="one">
+          <div [matMenuTriggerFor]="menu" class="card__actions">
+            <span class="material-symbols-outlined card__actions__details">more_vert</span>
+          </div>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openAddService(row)">
+              <span class="material-symbols-outlined">Edit</span>
+              {{ 'Edit_subscription' | translate }}
+            </button>
+            <button mat-menu-item (click)="confirmDelete(row)">
+              <span class="material-symbols-outlined">delete</span>
+              {{ 'Delete_subscription' | translate }}
+            </button>
+          </mat-menu>
+        </div>
       </div>
+    </div>
 
 
 
-  
     <div class="all d-flex">
       <div class="total">
-        {{ "totalsubscription_subscription" | translate }}:
-      </div>
+        {{ "totalEnvironments_environment" | translate }}: {{ totalRecords }}
 
+      </div>
     </div>
-        <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
-          [first]="first" (onPageChange)="paginate($event)"></p-paginator>
-            <button class="add-button" (click)="openAddService()">
+
+    <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+      [first]="first" (onPageChange)="paginate($event)"></p-paginator>
+    <button class="add-button" (click)="openAddService()">
       <span class="material-symbols-outlined">add</span>
     </button>
 
@@ -118,20 +111,18 @@
 
   <ng-template #ListView>
     <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
-        <p-skeleton height="10rem"></p-skeleton>
-      </div>
-    </div>
-    <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
-        <p-skeleton height="10rem"></p-skeleton>
-      </div>
-    </div>
-    <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+      <div *ngFor="let list of [1, 2, 3]" class="row mx-0 mt-2">
         <p-skeleton height="10rem"></p-skeleton>
       </div>
     </div>
   </ng-template>
+  <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
+    <ng-template pTemplate="footer">
+      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}"
+        (click)="confirmDialog.reject()"></button>
+      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}"
+        (click)="confirmDialog.accept()"></button>
+    </ng-template>
+  </p-confirmDialog>
 </div>
-
+<p-toast key="toast"></p-toast>

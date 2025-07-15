@@ -4,6 +4,8 @@ import { MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/layout.service';
 import { EnvironmentRequest, EnvironmentUpdateRequest } from '../environment.module';
 import { EnvironmentService } from 'src/app/Core/services/environments.service';
+import { ServersService } from 'src/app/layout/service/servers.service';
+import { ServerResponse } from '../../servers/servers.module';
 
 @Component({
   selector: 'app-add-environment',
@@ -17,18 +19,20 @@ export class AddEnvironmentComponent {
   btnLoading = false;
   loading = false;
   customerServices: any[] = [];
-
+  servers: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private layoutService: LayoutService,
     private environmentService: EnvironmentService,
+    private serverService: ServersService,
     private messageService: MessageService
   ) {
     this.dataForm = this.formBuilder.group({
-      customerServiceIDFK: ['', Validators.required],
+      customerServiceIDFK: [''],
       nameEn: ['', Validators.required],
       nameAr: ['', Validators.required],
-      url: ['', [Validators.required, Validators.pattern(/https?:\/\/.+/)]]
+      url: ['', [Validators.required, Validators.pattern(/https?:\/\/.+/)]],
+      serverIDFK: ['', Validators.required]
     });
   }
 
@@ -39,6 +43,7 @@ export class AddEnvironmentComponent {
   async ngOnInit() {
     this.loading = true;
     await this.retrieveCustomerServices();
+    await this.retrieveServers();
     this.resetForm();
 
     if (this.environmentService.SelectedData) {
@@ -64,59 +69,72 @@ export class AddEnvironmentComponent {
     }
   }
 
-  async save() {
-    const environmentTranslations = [
-  {
-    name: this.form['nameAr'].value || '',
-    language: 'ar'
-  },
-  {
-    name: this.form['nameEn'].value || '',
-    language: 'en'
-  }
-];
-
-    const customerServiceIDFK = this.form['customerServiceIDFK'].value;
-    const url = this.form['url'].value;
-
-
-    
+ 
+async save() {
 
     let response;
 
-    if (this.environmentService.SelectedData) {
-      const environmentUpdate: EnvironmentUpdateRequest = {
-        uuid: this.environmentService.SelectedData.uuid,
-        customerServiceIDFK,
-        url,
-        environmentTranslation: environmentTranslations
+    var environmentTranslations = [
+      {
+        name: this.dataForm.controls['nameAr'].value == null ? '' : this.dataForm.controls['nameAr'].value.toString(),
+        language: 'ar'
+      },
+      {
+        name: this.dataForm.controls['nameEn'].value == null ? '' : this.dataForm.controls['nameEn'].value.toString(),
+        language: 'en'
+      }
+    ];
+    
+
+    if (this.environmentService.SelectedData != null) {
+      // update
+      var updateCustomer: EnvironmentUpdateRequest = {
+        uuid: this.environmentService.SelectedData?.uuid?.toString(),
+        environmentTranslation: environmentTranslations,
+        url: this.dataForm.controls['url'].value == null ? null : this.dataForm.controls['url'].value.toString(),
+        customerServiceIDFK: 'af7ac44a-bbef-48be-8cde-bbcfe3b9a3ff',
+        serverIDFK: this.dataForm.controls['serverIDFK'].value
+
       };
-      response = await this.environmentService.Update(environmentUpdate);
+      console.log(updateCustomer)
+      response = await this.environmentService.Update(updateCustomer);
     } else {
-      const environmentAdd: EnvironmentRequest = {
-        customerServiceIDFK,
-        url,
-        environmentTranslation: environmentTranslations
+      // add
+      var addCustomer: EnvironmentRequest = {
+        environmentTranslation: environmentTranslations,
+        url: this.dataForm.controls['url'].value == null ? null : this.dataForm.controls['url'].value.toString(),
+        customerServiceIDFK: 'af7ac44a-bbef-48be-8cde-bbcfe3b9a3ff',
+        serverIDFK: this.dataForm.controls['serverIDFK'].value
       };
-      response = await this.environmentService.Add(environmentAdd);
+
+      console.log('addCustomer ', addCustomer)
+
+      response = await this.environmentService.Add(addCustomer);
     }
 
-    if (response?.requestStatus?.toString() === '200') {
+    if (response?.requestStatus?.toString() == '200') {
       this.layoutService.showSuccess(this.messageService, 'toast', true, response?.requestMessage);
-      if (!this.environmentService.SelectedData) {
+      if (this.environmentService.SelectedData == null) {
         this.resetForm();
+        setTimeout(() => {
+          this.environmentService.Dialog.adHostChild.viewContainerRef.clear();
+          this.environmentService.Dialog.adHostDynamic.viewContainerRef.clear();
+          this.environmentService.triggerRefreshEnvironment();
+        }, 600);
       } else {
         setTimeout(() => {
-          this.environmentService.Dialog?.adHostChild?.viewContainerRef.clear();
-          this.environmentService.Dialog?.adHostDynamic?.viewContainerRef.clear();
+          this.environmentService.Dialog.adHostChild.viewContainerRef.clear();
+          this.environmentService.Dialog.adHostDynamic.viewContainerRef.clear();
+          this.environmentService.triggerRefreshEnvironment();
         }, 600);
       }
     } else {
-      this.layoutService.showError(this.messageService, 'toast', true, response?.requestMessage || 'Operation failed.');
+      this.layoutService.showError(this.messageService, 'toast', true, response?.requestMessage);
     }
+
+    this.btnLoading = false;
     this.submitted = false;
   }
-
   resetForm() {
     this.dataForm.reset();
     this.submitted = false;
@@ -130,19 +148,40 @@ export class AddEnvironmentComponent {
     const en = environment.environmentTranslation?.['en'];
 
     this.dataForm.patchValue({
-      customerServiceIDFK: environment.customerServiceIDFK || '',
+      customerServiceIDFK: this.environmentService.SelectedData?.customerServiceIDFK ?? '',
       nameAr: ar?.name || '',
       nameEn: en?.name || '',
-      url: environment.url || ''
+      url: environment.url || '',
+      serverIDFK: this.environmentService.SelectedData?.serverIDFK ?? '',
+
     });
   }
+async retrieveServers() {
+  const filter = {
+    name: '',
+    uuid: '',
+    pageIndex: '0',
+    pageSize: '10'
+  };
+
+  const response = await this.serverService.Search(filter) as any;
+  const lang = this.layoutService.config.lang || 'en';
+
+  this.servers = (response.data || []).map((server: ServerResponse) => {
+    return {
+      label: server.hostname || server.ipAddress || '—',
+      value: server.uuid
+    };
+  });
+}
+
 
   async retrieveCustomerServices() {
   const filter = {
     name: '',
     uuid: '',
     pageIndex: '0',
-    pageSize: '100000',
+    pageSize: '10',
     IncludeCustomer: '1',   
     IncludeService: '1'     
   };
@@ -152,11 +191,11 @@ export class AddEnvironmentComponent {
   const lang = this.layoutService.config.lang || 'en';
 
  this.customerServices = (response.data || []).map((service: any) => {
-  const customerTranslation = service.customer?.customerTranslation?.[lang]?.name;
+  const environmentTranslation = service.customer?.environmentTranslation?.[lang]?.name;
   const serviceTranslation = service.service?.serviceTranslation?.[lang]?.name;
 
   return {
-    label: customerTranslation || serviceTranslation || '—',
+    label: environmentTranslation || serviceTranslation || '—',
     value: service.uuid
   };
 });

@@ -18,7 +18,8 @@
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input class="search-field" type="text" placeholder="{{ 'number_port' | translate }}" formControlName="portNumber" pInputText (input)="OnChange()" />
+                    <input class="search-field" type="text" placeholder="{{ 'number_port' | translate }}"
+                      formControlName="portNumber" pInputText (input)="OnChange()" />
                   </span>
                 </div>
               </div>
@@ -57,11 +58,11 @@
           </div>
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openDialog(row)">
-              <span class="material-symbols-outlined">edit</span>
+              <span class="material-symbols-outlined" id="icon">edit</span>
               {{ 'Edit_port' | translate }}
             </button>
             <button mat-menu-item (click)="confirmDelete(row)">
-              <span class="material-symbols-outlined">delete</span>
+              <span class="material-symbols-outlined" id="icon">delete</span>
               {{ 'Delete_port' | translate }}
             </button>
           </mat-menu>
@@ -72,12 +73,8 @@
     <div class="all d-flex">
       <div class="total">{{ 'totalports_ports' | translate }}: {{ totalRecords }}</div>
     </div>
-    <p-paginator class="mt-2" 
-    [rows]="pageSize" 
-    [totalRecords]="totalRecords" 
-    [rowsPerPageOptions]="[4, 12, 20, 30]" 
-    [first]="first" 
-    (onPageChange)="paginate($event)"></p-paginator>
+    <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+      [first]="first" (onPageChange)="paginate($event)"></p-paginator>
     <button class="add-button" (click)="openAddport()">
       <span class="material-symbols-outlined">add</span>
     </button>
@@ -100,10 +97,12 @@
       </div>
     </div>
   </ng-template>
-    <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
+  <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
     <ng-template pTemplate="footer">
-      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}" (click)="confirmDialog.reject()"></button>
-      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}" (click)="confirmDialog.accept()"></button>
+      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}"
+        (click)="confirmDialog.reject()"></button>
+      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}"
+        (click)="confirmDialog.accept()"></button>
     </ng-template>
   </p-confirmDialog>
 </div>

@@ -1,11 +1,11 @@
 @import "../../../../assets/scss/varialbles.scss";
 
 .databases {
-    padding: 1rem 1rem 1rem 0rem;
+    padding: 1rem 1rem 1rem 1rem;
     position: relative;
 
     &:lang(ar){
-        padding: 1rem 0 1rem 1rem;
+        padding: 1rem 1rem 1rem 1rem;
     }
     .container{
         display: flex;
@@ -94,6 +94,7 @@
         }
       }
 
+     
       & .filter-title{
         display: flex;
         align-items: center;
@@ -103,7 +104,7 @@
         justify-content: space-evenly;
 
         & .material-symbols-outlined{
-          color: $primary-color;
+          color: $gray-color;
           top: 0;
         }
       }
@@ -172,14 +173,21 @@
       top: -5px;
     }
   }
-  .box2{
+ .box2{
     display: flex;
     flex-direction: row;
     column-gap: 2rem;
+    @media(max-width:767px){
+        flex-direction:column ;
+        align-items: center;
+    }
     .container{
       display: flex;
       flex-wrap: wrap;
       column-gap: 2rem;
+       @media(max-width:767px){
+        flex-direction:column ;
+    }
     }
 
   }
@@ -202,7 +210,7 @@
 
 .reset-btn {
       ::ng-deep button {
-        background-color: $primary-color !important;
+        background-color: $secoundary-color !important;
         color: #fff !important;
         border: none !important;
         border-radius: 50% !important;
@@ -217,8 +225,8 @@
         top: auto;
         margin-right: 1rem !important;
         margin-top: 2rem !important;
-        &:hover {
-          background-color: darken($primary-color, 2%) !important;
+       &:hover {
+          background-color: darken($secoundary-color, 5%) !important;
         }
       }
     }
@@ -232,7 +240,7 @@
     border-radius: 6px;
     align-items: center;
 
-    border-color: rgba($primary-color, 0.5);
+    border-color: rgba($gray-color, 0.5);
     // column-gap: 1rem;
     @media (max-width:767px) {
       max-height: 15rem;
@@ -259,8 +267,6 @@
       }
       .fill{
         color: $primary-color;
-
-
        }
 
      }
@@ -451,9 +457,9 @@
       cursor: pointer;
       width: 50px;
 
-      &__details {
+     &__details {
         font-size: $xl-icon;
-        color: $primary-color;
+        color: $gray-color;
 
       }
     }
@@ -465,7 +471,7 @@
 @media screen and (max-width: 990px) {
   .filter-title {
     width: 100% !important;
-    justify-content: start !important;
+    justify-content: center !important;
   }
 }
 .total {
@@ -524,6 +530,9 @@
       background-color: darken($primary-color, 2%) !important;
     }
   }
+}
+#icon{
+  color: $gray-color;
 }
 
 

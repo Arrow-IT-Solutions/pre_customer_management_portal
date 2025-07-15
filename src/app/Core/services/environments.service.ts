@@ -8,6 +8,7 @@ import {
 } from 'src/app/modules/environment/environment.module';  // Adjust path as needed
 import { UserService } from './user.service';
 import { HttpClientService } from './http-client.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,13 @@ export class EnvironmentService {
     public httpClient: HttpClientService
   ) {}
 
+  private refreshEmployeesSubject = new Subject<void>();
+  
+    refreshEmployees$ = this.refreshEmployeesSubject.asObservable();
+  
+    triggerRefreshEnvironment() {
+        this.refreshEmployeesSubject.next();
+      }
   async Add(data: EnvironmentRequest) {
     const apiUrl = `/api/environment`;
     return await this.httpClient.post(apiUrl, data);

@@ -62,6 +62,12 @@
                 {{ env.url }}
               </div>
             </div>
+            <div class="card__contents__item">
+            <div class="card-label">{{ 'ServerIDFK' | translate }}</div>
+            <div class="card-info">
+              {{  env.serverIDFK }}
+            </div>
+          </div>     
           </div>
         </div>
 
@@ -71,11 +77,11 @@
           </div>
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openAddEnvironment(env)">
-              <span class="material-symbols-outlined">Edit</span>
+              <span class="material-symbols-outlined" id="icon">Edit</span>
               {{ 'Edit_Environment' | translate }}
             </button>
             <button mat-menu-item (click)="confirmDelete(env)">
-              <span class="material-symbols-outlined">delete</span>
+              <span class="material-symbols-outlined" id="icon">delete</span>
               {{ 'Delete_Environment' | translate }}
             </button>
           </mat-menu>
@@ -115,5 +121,13 @@
       </div>
     </div>
   </ng-template>
-
+ <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
+    <ng-template pTemplate="footer">
+      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}"
+        (click)="confirmDialog.reject()"></button>
+      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}"
+        (click)="confirmDialog.accept()"></button>
+    </ng-template>
+  </p-confirmDialog>
 </div>
+  <p-toast key="toast"></p-toast>

@@ -1,6 +1,6 @@
 @import "../../../../assets/scss/varialbles.scss";
 
-.credential {
+.customer-service {
     padding: 1rem 1rem 1rem 1rem;
     position: relative;
 
@@ -102,6 +102,8 @@
         margin-top: 0.75rem;
         width: 12%;
         justify-content: space-evenly;
+       
+       
 
         & .material-symbols-outlined{
           color: $gray-color;
@@ -231,11 +233,11 @@
       }
     }
   & .card {
-     width: 32%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     padding: 1rem;
-    max-height: 14rem;
+    max-height: 24rem;
     overflow-y: auto;
     border-radius: 6px;
     align-items: center;
@@ -243,8 +245,9 @@
     border-color: rgba($gray-color, 0.5);
     // column-gap: 1rem;
     @media (max-width:767px) {
-      max-height: 15rem;
+      max-height: 30rem;
       width: 100%;
+      flex-direction: column;
 
 
     }
@@ -258,7 +261,7 @@
 
       @media (max-width:767px) {
         padding-top: 0;
-        margin-bottom: 5rem;
+        margin-bottom: 0.5rem;
       }
       @media (max-width: 991px) and (min-width: 768px) {
        padding-top: 0;
@@ -344,7 +347,7 @@
 
     &__title{
         font-family: myfont-bold, myfont-ar-bold;
-        color: $primary-color-hover;
+        color: $blue-color;
         margin-bottom: 0.75rem;
         display: none;
     }
@@ -352,10 +355,11 @@
     &__items{
         display: flex;
         width: 95%;
-        flex-direction: column;
+        justify-content: space-between;
+        // flex-direction: column;
 
 
-       padding: 0.5rem;
+       padding: 1rem;
 
 
         @media (max-width:767px){
@@ -379,7 +383,7 @@
     &__contents {
 
 
-      width: 80%;
+      width: 95%;
 
       @media(max-width:767px){
       }

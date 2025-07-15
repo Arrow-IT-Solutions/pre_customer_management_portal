@@ -25,7 +25,7 @@ export const navbarData: NavbarData[] = [
     label: 'System Management',
     labelar: 'إدارة النظام',
     id: 'users',
-    icon: '',
+    icon: 'apps',
     items: [
       {
         label: 'Services',
@@ -33,12 +33,7 @@ export const navbarData: NavbarData[] = [
         id: 'services',
         routeLink: 'services'
       },
-      {
-        label: 'Environments',
-        labelar: 'بيئة',
-        id: 'environments',
-        routeLink: 'environments'
-      },
+      
       {
         label: 'Servers',
         labelar: 'المخدمين',
@@ -63,12 +58,7 @@ export const navbarData: NavbarData[] = [
         id: 'credential',
         routeLink: 'credential'
       },
-      {
-        label: 'Subscription',
-        labelar: 'الاشتراك',
-        id: 'subscription',
-        routeLink: 'subscription'
-      },
+     
       
        {
         label: 'Customers',
@@ -76,14 +66,38 @@ export const navbarData: NavbarData[] = [
         id: 'customers',
         routeLink: 'customers'
       },
-       {
+      
+    ]
+  },
+  {
+        label: 'Environments',
+        labelar: 'بيئة',
+        id: 'environments',
+        routeLink: 'environments',
+        icon:'language'
+  }, 
+  {
+        label: 'Subscription',
+        labelar: 'الاشتراك',
+        id: 'subscription',
+        routeLink: 'subscription',
+        icon:'library_add'
+  },
+  {
+        label: 'Customer Services',
+        labelar: 'خدمة العملاء',
+        id: 'customer-services',
+        routeLink: 'customer-services',
+        icon:'group_work'
+  },
+  
+  {
         label: 'Add',
         labelar: 'إضافة',
         id: 'add',
-        routeLink: 'add/definitions'
-      }
-    ]
-  }
+        routeLink: 'add/customer-service',
+        icon:'control_point'
+  }   
 
 
 
