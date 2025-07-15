@@ -80,7 +80,7 @@ export class ServicesComponent {
     document.body.style.overflow = 'hidden';
     this.serviceService.SelectedData = row;
 
-    let content = row == null ? 'Create_Subscripe' : 'Update_Subscripe';
+    let content = row == null ? 'Create_Service' : 'Update_Service';
     this.translate.get(content).subscribe((res: string) => {
       content = res;
     });

@@ -89,7 +89,12 @@
     "No_Environments_Added": "No environments added",
     "Environments_List": "Environments List",
     "ServerName_definitions": "Server Name",
-    "Field_Required": "This field is required"
-
+    "Field_Required": "This field is required",
+    "ServerIDFK": "Server",
+    "Customer_Service":"Customer Service",
+    "Create_Service":"Create Service",
+    "Update_Service":"Update Service",
+    "Create_Subscripe":"Create Subscripe",
+    "Update_Subscripe":"Update Subscripe"
 
 }
