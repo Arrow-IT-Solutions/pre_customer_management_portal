@@ -20,14 +20,11 @@ export class ServersService {
   }
   constructor(public layoutService: LayoutService, public httpClient: HttpClientService) { }
 
+  public submitted: any | null = "";
   async Add(data: ServerRequest) {
     const apiUrl = `/api/server`;
-    return await this.httpClient.post(apiUrl, data);
-  }
 
-  async Search(filter: ServerSearchRequest) {
-    const apiUrl = `/api/server/list?${this.layoutService.Filter(filter)}`;
-    return await this.httpClient.get(apiUrl)
+    return await this.httpClient.post(apiUrl, data);
   }
 
   async Update(data: ServerUpdateRequest) {
@@ -37,35 +34,17 @@ export class ServersService {
   }
 
   async Delete(uuid: string) {
+
     const apiUrl = `/api/server/${uuid}`;
-    return await this.httpClient.delete(apiUrl, uuid);
+    return await this.httpClient.delete(apiUrl, uuid)
+
   }
-   public submitted: any | null = "";
-    constructor(public layoutService: LayoutService, public httpClient: HttpClientService) { }
-    async Add(data: ServerRequest) {
-      const apiUrl = `/api/server`;
 
-      return await this.httpClient.post(apiUrl, data);
-    }
+  async Search(filter: ServerSearchRequest) {
 
-    async Update(data: ServerUpdateRequest) {
+    const apiUrl = `/api/server/list?${this.layoutService.Filter(filter)}`;
 
-      const apiUrl = `/api/server`;
-      return await this.httpClient.put(apiUrl, data);
-    }
+    return await this.httpClient.get(apiUrl)
 
-    async Delete(uuid: string) {
-
-      const apiUrl = `/api/server/${uuid}`;
-      return await this.httpClient.delete(apiUrl, uuid)
-
-    }
-
-    async Search(filter: ServerSearchRequest) {
-
-      const apiUrl = `/api/server/list?${this.layoutService.Filter(filter)}`;
-
-      return await this.httpClient.get(apiUrl)
-
-    }
+  }
 }
