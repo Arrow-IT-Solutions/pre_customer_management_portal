@@ -17,14 +17,14 @@ import { Subscription } from 'rxjs';
 })
 export class DataBasesComponent implements OnInit {
   dataForm!: FormGroup;
-  loading = false;
-  pageSize = 12;
-  first = 0;
-  totalRecords = 0;
-  data: DatabaseResponse[] = [];
+  doneTypingInterval =1000;
   typingTimer: any;
-  doneTypingInterval = 1000;
-  isResetting = false;
+  loading = false;
+  pageSize:number = 12;
+  first = 0;
+  totalRecords: number = 0;
+  data: DatabaseResponse[] = [];
+  isResetting: boolean = false;
   formChangesSub!: Subscription;
 
   constructor(
