@@ -206,6 +206,7 @@
    right: 1rem;
    margin-top: 1rem;
    cursor: pointer;
+   color: $gray-color;
 
 }
 .pi:lang(ar){
@@ -255,16 +256,16 @@
   .card-header {
     background-color: #f8f9fa;
     border-bottom: 1px solid #e1e5e9;
-    padding: 0.75rem 1rem;
+    padding: 1rem;
     border-radius: 8px 8px 0 0;
 
     h6 {
       color: #495057;
-      font-weight: 600;
+      font-weight: 400;
     }
 
     .badge {
-      background-color: #007bff;
+      background-color: $secoundary-color;
       color: white;
       padding: 0.25rem 0.5rem;
       border-radius: 4px;
@@ -294,9 +295,10 @@
   .detail-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    // align-items: center;
     padding: 0.5rem 0;
     border-bottom: 1px solid #f1f3f4;
+    flex-direction: column;
 
     &:last-child {
       border-bottom: none;
@@ -312,8 +314,11 @@
     span {
       color: #495057;
       flex: 1;
-      text-align: right;
+      // text-align: right;
       word-break: break-word;
+    }
+    #nameAr{
+      text-align: right;
     }
 
     .connection-string {
@@ -344,5 +349,20 @@
   p {
     margin-bottom: 0;
     font-size: 0.9rem;
+  }
+}
+#label:lang(ar){
+  margin-right: 2rem;
+
+}
+#delete{
+  color: $gray-color;
+  cursor: pointer;
+}
+#spinner{
+  margin: auto;
+  margin-top: 15%;
+  @media(max-width:767px){
+    margin-top: 40%;
   }
 }
