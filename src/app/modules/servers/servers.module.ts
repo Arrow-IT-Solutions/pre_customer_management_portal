@@ -7,7 +7,6 @@ import { AddServerComponent } from './add-server/add-server.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/class/class';
-import { RequestBase, ResponseBase } from 'src/app/shared/class/class';
 
 
 @NgModule({
@@ -47,30 +46,26 @@ export interface ServerResponse extends ResponseBase {
   hostname?: string;
   ipAddress?: string;
 }
-export interface ServerRequest extends RequestBase
-{
-uuid?:string;
-ipAddress?:string;
-hostname?: string;
+export interface ServerRequest extends RequestBase {
+  uuid?: string;
+  ipAddress?: string;
+  hostname?: string;
 }
 
-export interface ServerUpdateRequest extends RequestBase
-{
-uuid?:string;
-ipAddress?:string;
-hostname?: string;
+export interface ServerUpdateRequest extends RequestBase {
+  uuid?: string;
+  ipAddress?: string;
+  hostname?: string;
 }
 
-export interface ServerSearchRequest extends RequestBase
-{
-uuid?:string;
-ipAddress?:string;
-hostname?: string;
+export interface ServerSearchRequest extends RequestBase {
+  uuid?: string;
+  ipAddress?: string;
+  hostname?: string;
 }
 
-export interface ServerResponse extends ResponseBase
-{
-uuid?:string;
-ipAddress?:string;
-hostname?: string;
+export interface ServerResponse extends ResponseBase {
+  uuid?: string;
+  ipAddress?: string;
+  hostname?: string;
 }
