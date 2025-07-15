@@ -66,7 +66,6 @@
   "nameAr_environment": "الاسم بالعربية",
   "url_environment": "الرابط",
   "Filter_By_environment": "تصفية حسب",
-  "Save_definitions":"حفظ",
   "NameEnvironmentEn_definitions":"اسم البيئة بالانكليزية",
   "NameEnvironmentAr_definitions":"اسم البيئة بالعربية",
   "startDate_subscription":"تاريخ البداية",
@@ -74,7 +73,19 @@
   "status_subscription":"الحالة",
   "Edit_subscription":"تعديل",
   "Delete_subscription":"حذف",
-  "totalsubscription_subscription":"المجموع"
-  
+  "totalsubscription_subscription":"المجموع",
+  "Update_Credential": "تعديل الاعتمادية",
+  "portNumber_credential": "رقم المنفذ",
+  "Filter_By": "تصفية حسب",
+  "credential.Do_you_want_to_delete_this_record?": " هل تريد حذف هذه الاعتمادية؟",
+  "Yes": "نعم",
+  "No":"لا",
+  "field_required": "هذا الحقل مطلوب",
+  "Create_Credential": "إضاقة اعتمادية",
+  "Edit_Credential": "تعديل الاعتمادية",
+  "port_credential": "رقم المنفذ",
+  "Deleted_successfully": "تم الحذف بنجاح",
+  "Failed_to_delete": "فشل في الحذف",
+  "Success": "عملية ناجحة"
 
 }

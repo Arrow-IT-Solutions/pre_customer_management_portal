@@ -30,8 +30,9 @@ export class CredentialModule { }
 export interface CredentialRequest extends RequestBase
 {
 uuid?:string;
-portNumber?:string;
-serverIDFK?: string;
+userName?:string;
+portIDFK?:string;
+password?: string;
 }
 
 export interface CredentialUpdateRequest extends RequestBase
