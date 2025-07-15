@@ -198,7 +198,7 @@
       top: 8px;
     }
   }
- 
+
 
 }
 .pi{
@@ -206,7 +206,7 @@
    right: 1rem;
    margin-top: 1rem;
    cursor: pointer;
-   
+
 }
 .pi:lang(ar){
     right: unset;
@@ -229,7 +229,7 @@
     .items2{
         display: flex;
         width: 100%;
-        justify-content: space-around; 
+        justify-content: space-around;
          @media(max-width:767px){
           flex-direction: column;
         }
@@ -239,3 +239,110 @@
         font-weight: bold;
     }
  }
+
+// تصميم البيئات
+.environment-card {
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e1e5e9;
+    padding: 0.75rem 1rem;
+    border-radius: 8px 8px 0 0;
+
+    h6 {
+      color: #495057;
+      font-weight: 600;
+    }
+
+    .badge {
+      background-color: #007bff;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+      }
+    }
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+.environment-details {
+  .detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f3f4;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    label {
+      font-weight: 600;
+      color: #6c757d;
+      margin-bottom: 0;
+      flex: 0 0 40%;
+    }
+
+    span {
+      color: #495057;
+      flex: 1;
+      text-align: right;
+      word-break: break-word;
+    }
+
+    .connection-string {
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      background-color: #f8f9fa;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #e9ecef;
+    }
+  }
+}
+
+.no-environments {
+  padding: 2rem;
+  text-align: center;
+  color: #6c757d;
+
+  i {
+    margin-bottom: 1rem;
+  }
+
+  h5 {
+    margin-bottom: 0.5rem;
+    color: #495057;
+  }
+
+  p {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+  }
+}
