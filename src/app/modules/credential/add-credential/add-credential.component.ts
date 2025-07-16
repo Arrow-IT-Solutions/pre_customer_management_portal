@@ -98,8 +98,8 @@ export class AddCredentialComponent {
       this.messageService.add({
         key: 'toast',
         severity: 'success',
-        summary: 'Success',
-        detail: 'Added successfully'
+  summary: this.translate.instant('Success'),
+        detail: this.translate.instant('Successfull_Add')
       });
 
       this.dataForm.reset();

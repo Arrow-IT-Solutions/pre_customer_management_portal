@@ -8,6 +8,8 @@ import { AddDatabaseComponent } from '../add-database/add-database.component';
 import { DatabaseResponse, DatabaseSearchRequest } from '../data-bases.module';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { EnvironmentResponse } from '../../environment/environment.module';
+import { EnvironmentService } from 'src/app/Core/services/environments.service';
 
 @Component({
   selector: 'app-data-bases',
@@ -26,22 +28,25 @@ export class DataBasesComponent implements OnInit {
   data: DatabaseResponse[] = [];
   isResetting: boolean = false;
   formChangesSub!: Subscription;
-
+  envOptions : EnvironmentResponse[] = [];
   constructor(
     private formBuilder: FormBuilder,
     public translate: TranslateService,
     public layoutService: LayoutService,
     public databaseService: DatabaseService,
     public messageService: MessageService,
-    public confirmationService: ConfirmationService
+    public confirmationService: ConfirmationService,
+    public environmentService: EnvironmentService
   ) {
     this.dataForm = this.formBuilder.group({
       name: [''],
-      UserName: ['']
+      UserName: [''],
+       envIDFK: ['']
     });
   }
 
   async ngOnInit() {
+     await this.FillEnvironments();
     await this.fillData(0);
     this.formChangesSub = this.dataForm.valueChanges
       .pipe(
@@ -52,7 +57,25 @@ export class DataBasesComponent implements OnInit {
       .subscribe(() => this.fillData(0));
   }
 
- 
+ async FillEnvironments() {
+
+  const response = await this.environmentService.Search({});
+  this.envOptions = (response?.data || []).map((env: any) => {
+    const lang = this.translate.currentLang || 'en';
+    return {
+      uuid: env.uuid,
+      name: env.environmentTranslation?.[lang]?.name || 'Unnamed'
+    };
+  });
+}
+
+getEnvName(row: DatabaseResponse): string {
+  const env = row.environmentResponse;
+  if (!env || !env.environmentTranslation) return '-';
+
+  const lang = this.translate.currentLang || 'en';
+  return env.environmentTranslation[lang]?.name || '-';
+}
 
   async fillData(pageIndex: number = 0) {
     this.first = pageIndex * this.pageSize;
@@ -61,6 +84,7 @@ export class DataBasesComponent implements OnInit {
     const filter: DatabaseSearchRequest = {
       name: this.dataForm.get('name')?.value || '',
       userName: this.dataForm.get('UserName')?.value || '',
+      envIDFK: this.dataForm.get('envIDFK')?.value || '',
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString()
     };
@@ -121,7 +145,7 @@ export class DataBasesComponent implements OnInit {
 
   async confirmDelete(row: DatabaseResponse) {
     this.confirmationService.confirm({
-      message: this.translate.instant('database.Do_you_want_to_delete_this_record?'),
+      message: this.translate.instant('Do_you_want_to_delete_this_record?'),
       header: this.translate.instant('Delete_Confirmation'),
       icon: 'pi pi-info-circle',
       acceptLabel: this.translate.instant('Yes'),
@@ -130,13 +154,18 @@ export class DataBasesComponent implements OnInit {
       accept: async () => {
         try {
           const resp = await this.databaseService.Delete(row.uuid!) as any;
-          this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
+               this.messageService.add({
+          key: 'toast',
+          severity: 'success',
+          summary: this.translate.instant('Success'),
+          detail: this.translate.instant('Deleted_successfully')
+        });
           this.fillData(Math.floor(this.first / this.pageSize));
         } catch (error) {
           this.messageService.add({
             severity: 'error',
             summary: this.translate.instant('Error'),
-            detail: this.translate.instant('database.Failed_to_delete')
+            detail: this.translate.instant('Failed_to_delete')
           });
         }
       }
