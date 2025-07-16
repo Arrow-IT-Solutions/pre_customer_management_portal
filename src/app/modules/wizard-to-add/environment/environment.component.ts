@@ -115,14 +115,12 @@ export class EnvironmentComponent implements OnDestroy {
     try {
       this.loading = true;
       await this.RetriveServer();
-      try {
+      
         this.session = this.provisionedService.getSession();
         if (this.session.envDatabases && this.session.envDatabases.length > 0) {
           this.envDatabase = this.session.envDatabases;
         }
-      } catch (error) {
-        console.log('No existing session found');
-      }
+      
 
       this.resetForm();
 
