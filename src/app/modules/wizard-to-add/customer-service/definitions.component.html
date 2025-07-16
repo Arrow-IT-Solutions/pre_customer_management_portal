@@ -86,7 +86,7 @@
     <div class="col-xs-12 mt-4 text-end" style="padding: 2rem 1rem;">
       <!-- <p-button type="Submit" class="btn-primary">{{ 'Cancle_definitions' | translate }}</p-button> -->
 
-      <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ 'Next_definitions' | translate }}</p-button>
+      <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ isEditMode ? ('Update_definitions' | translate) : ('Next_definitions' | translate) }}</p-button>
 
     </div>
   </div>

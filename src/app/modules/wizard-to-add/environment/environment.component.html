@@ -107,31 +107,31 @@
                     <div class="environment-details">
                       <div class="detail-item">
                         <label>{{ 'NameEnvironmentEn_definitions' | translate }}:</label>
-                        <span>{{ getEnvironmentName(env.environmentTranslation, 'en') }}</span>
+                        <span>{{ getEnvironmentName(env.environmentTranslation, 'en') || 'N/A' }}</span>
                       </div>
                       <div class="detail-item">
                         <label>{{ 'NameEnvironmentAr_definitions' | translate }}:</label>
-                        <span>{{ getEnvironmentName(env.environmentTranslation, 'ar') }}</span>
+                        <span>{{ getEnvironmentName(env.environmentTranslation, 'ar') || 'N/A' }}</span>
                       </div>
                       <div class="detail-item">
                         <label>{{ 'UrlEnvironment_definitions' | translate }}:</label>
-                        <span>{{ env.url }}</span>
+                        <span>{{ env.url || 'N/A' }}</span>
                       </div>
                       <div class="detail-item">
                         <label>{{ 'ServerName_definitions' | translate }}:</label>
-                        <span>{{ getServerName(env.serverIDFK) }}</span>
+                        <span>{{ getServerNameByFK(env.serverIDFK, env) }}</span>
                       </div>
                       <div class="detail-item">
                         <label>{{ 'databaseName_definitions' | translate }}:</label>
-                        <span>{{ env.dbName }}</span>
+                        <span>{{ env.dbName || 'N/A' }}</span>
                       </div>
                       <div class="detail-item">
                         <label>{{ 'userName_definitions' | translate }}:</label>
-                        <span>{{ env.dbUserName }}</span>
+                        <span>{{ env.dbUserName || 'N/A' }}</span>
                       </div>
                       <div class="detail-item">
                         <label>Connection String:</label>
-                        <span class="connection-string">{{ env.connectionString }}</span>
+                        <span class="connection-string">{{ env.connectionString || 'N/A' }}</span>
                       </div>
                     </div>
                   </div>
@@ -153,7 +153,7 @@
   <div class="col-xs-12 mt-4 text-center" style="display: flex;justify-content: space-between;align-items: center;padding: 2rem 5rem 0;">
       <p-button type="button" class="btn-primary" (click)="back()">{{ 'Back_definitions' | translate }}</p-button>
 
-      <p-button type="submit" class="btn-primary" [loading]="btnLoading" [disabled]="btnLoading">{{ 'Save_definitions' | translate }}</p-button>
+      <p-button type="submit" class="btn-primary" [loading]="btnLoading" [disabled]="btnLoading">{{ isEditMode ? ('Update_definitions' | translate) : ('Save_definitions' | translate) }}</p-button>
 
   </div>
 </form>

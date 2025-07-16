@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { EnvDatabase, ProvisionedServiceRequest, ProvisionedSession } from '../wizard-to-add.module';
+import { EnvDatabase, ProvisionedServiceRequest, ProvisionedSession, ProvisionedServiceUpdateRequest } from '../wizard-to-add.module';
 import { ServersService } from 'src/app/layout/service/servers.service';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { ServerResponse, ServerSearchRequest } from '../../servers/servers.module';
@@ -25,6 +25,8 @@ export class EnvironmentComponent implements OnDestroy {
   session!: ProvisionedSession;
   envDatabase: EnvDatabase[] = [];
   private isNavigatingToCustomerService = false;
+  isEditMode: boolean = false;
+  editingServiceId: string | null = null;
    constructor(
     public formBuilder: FormBuilder,
     public router: Router,
@@ -68,24 +70,64 @@ export class EnvironmentComponent implements OnDestroy {
     }
 
     let response;
-    const addProvisioned: ProvisionedServiceRequest = {
-      subscription: this.session.subscription,
-      customerIDFK: this.session.customerIDFK,
-      serviceIDFK: this.session.serviceIDFK,
-      envDatabases: this.envDatabase
-    };
 
-    response = await this.provisionedService.Add(addProvisioned);
+    if (this.isEditMode && this.editingServiceId) {
+      const updateProvisioned: ProvisionedServiceUpdateRequest = {
+        uuid: this.editingServiceId,
+        customerIDFK: this.session.customerIDFK,
+        serviceIDFK: this.session.serviceIDFK,
+        subscription: {
+          uuid: '', 
+          startDate: this.session.subscription?.startDate,
+          endDate: this.session.subscription?.endDate,
+          price: this.session.subscription?.price,
+          status: this.session.subscription?.status,
+          customerServiceIDFK: this.editingServiceId
+        },
+        envDatabases: this.envDatabase.map(env => ({
+          url: env.url,
+          serverIDFK: env.serverIDFK,
+          environmentTranslation: env.environmentTranslation.map(et => ({
+            uuid: '', 
+            name: et.name,
+            language: et.language
+          })),
+          dbName: env.dbName,
+          connectionString: env.connectionString,
+          dbUserName: env.dbUserName,
+          dbPassword: env.dbPassword
+        }))
+      };
+
+      response = await this.provisionedService.Update(updateProvisioned);
+    } else {
+      const addProvisioned: ProvisionedServiceRequest = {
+        subscription: this.session.subscription,
+        customerIDFK: this.session.customerIDFK,
+        serviceIDFK: this.session.serviceIDFK,
+        envDatabases: this.envDatabase
+      };
+
+      response = await this.provisionedService.Add(addProvisioned);
+    }
     if (response?.requestStatus?.toString() == '200') {
-      this.layoutService.showSuccess(this.messageService, 'toast', true, response?.requestMessage);
+      const successMessage = this.isEditMode ?
+        this.translate.instant('Provisioned service updated successfully') :
+        response?.requestMessage;
+
+      this.layoutService.showSuccess(this.messageService, 'toast', true, successMessage);
 
       setTimeout(() => {
         this.envDatabase = [];
         this.resetForm();
         this.provisionedService.clearSession();
 
-        this.isNavigatingToCustomerService = true;
-        this.router.navigate(['layout-admin/add/customer-service']);
+        if (this.isEditMode) {
+          this.router.navigate(['layout-admin/customer-services']);
+        } else {
+          this.isNavigatingToCustomerService = true;
+          this.router.navigate(['layout-admin/add/customer-service']);
+        }
         this.btnLoading = false;
       }, 2000);
     } else {
@@ -114,14 +156,32 @@ export class EnvironmentComponent implements OnDestroy {
    async ngOnInit() {
     try {
       this.loading = true;
+
+      this.editingServiceId = sessionStorage.getItem('editingProvisionedServiceId');
+      if (this.editingServiceId) {
+        this.isEditMode = true;
+      }
+
       await this.RetriveServer();
+
       try {
         this.session = this.provisionedService.getSession();
         if (this.session.envDatabases && this.session.envDatabases.length > 0) {
-          this.envDatabase = this.session.envDatabases;
+          this.envDatabase = [...this.session.envDatabases];         
+          this.envDatabase.forEach((env, index) => {
+            console.log(`Environment ${index + 1}:`, {
+              url: env.url,
+              serverIDFK: env.serverIDFK,
+              dbName: env.dbName,
+              dbUserName: env.dbUserName,
+              connectionString: env.connectionString,
+              environmentTranslation: env.environmentTranslation
+            });
+          });
         }
       } catch (error) {
         console.log('No existing session found');
+        this.envDatabase = [];
       }
 
       this.resetForm();
@@ -131,9 +191,7 @@ export class EnvironmentComponent implements OnDestroy {
     } finally {
       this.loading = false;
     }
-  }
-
-   async RetriveServer() {
+  }   async RetriveServer() {
 
     var serverID: any;
 
@@ -146,8 +204,8 @@ export class EnvironmentComponent implements OnDestroy {
 
     }
     const response = await this.serverService.Search(filter) as any
-
-    this.servers = response.data,
+    
+    this.servers = response.data || [];
 
       await this.ReWriteServer();
 
@@ -245,7 +303,57 @@ export class EnvironmentComponent implements OnDestroy {
 
   getServerName(serverUuid: string): string {
     const server = this.servers.find(s => s.uuid === serverUuid);
-    return server?.hostname || '';
+    const serverName = server?.hostname || server?.ipAddress || 'Unknown Server';
+
+    return serverName;
+  }
+
+  getServerNameByFK(serverFK: any, envData?: any): string {
+    if (envData && envData.server) {
+      const serverName = envData.server.hostname || envData.server.ipAddress || 'Unknown Server';
+      return serverName;
+    }
+
+    if (this.envDatabase && this.envDatabase.length > 0) {
+      const serverIdToMatch = serverFK ? serverFK.toString() : '';
+      const envWithServer = this.envDatabase.find(env => 
+        env.serverIDFK?.toString() === serverIdToMatch && (env as any).server
+      );
+      
+      if (envWithServer && (envWithServer as any).server) {
+        const serverData = (envWithServer as any).server;
+        const result = serverData.hostname || serverData.ipAddress || 'Unknown Server';
+
+        return result;
+      }
+    }
+
+    if (!this.servers || this.servers.length === 0) {
+      return 'N/A';
+    }
+
+    const serverIdToMatch = serverFK ? serverFK.toString() : '';
+
+    let server = this.servers.find(s => {
+      const serverId = s.uuid ? s.uuid.toString() : '';
+      return serverId === serverIdToMatch;
+    });
+
+    if (!server) {
+      server = this.servers.find(s => {
+        const properties = ['serverIDPK', 'id', 'serverId'];
+        for (const prop of properties) {
+          const serverId = (s as any)[prop] ? (s as any)[prop].toString() : '';
+          if (serverId === serverIdToMatch) {
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+
+    const result = server ? (server.hostname || server.ipAddress || 'Unknown Server') : 'N/A';
+    return result;
   }
 
   removeEnvironment(index: number) {
@@ -257,8 +365,15 @@ export class EnvironmentComponent implements OnDestroy {
   }
 
   getEnvironmentName(environmentTranslation: any[], language: string): string {
+
+    if (!environmentTranslation || !Array.isArray(environmentTranslation)) {
+      return '';
+    }
+
     const translation = environmentTranslation.find(t => t.language === language);
-    return translation ? translation.name : '';
+    const result = translation ? translation.name : '';
+
+    return result;
   }
 
   getEnvironmentDisplayName(environmentTranslation: any[]): string {
@@ -277,6 +392,7 @@ export class EnvironmentComponent implements OnDestroy {
   ngOnDestroy() {
     if (!this.isNavigatingToCustomerService) {
       this.provisionedService.clearSession();
+      sessionStorage.removeItem('editingProvisionedServiceId');
     }
   }
 }

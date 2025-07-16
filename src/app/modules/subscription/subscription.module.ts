@@ -36,7 +36,7 @@ export interface SubscriptionRequest extends RequestBase {
   status: string;
 }
 export interface SubscriptionUpdateRequest extends RequestBase {
-  uuid: string;
+  uuid?: string;
   customerServiceIDFK?: string;
   startDate?: string;
   endDate?: string;

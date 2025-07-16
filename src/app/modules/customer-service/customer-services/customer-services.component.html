@@ -58,8 +58,8 @@
   </div>
   <ng-container>
 
-    <div class="box">
-      <div class="card mx-0 mb-2">
+    <div class="box" *ngIf="data.length > 0; else ListView">
+      <div class="card mx-0 mb-2" *ngFor="let row of data">
         <div class="icon-container">
           <span class="material-symbols-outlined fill">group_work</span>
         </div>
@@ -68,24 +68,24 @@
           <div class="card-section__items">
              <div class="card__contents__item">
               <div class="card-label">{{ 'customerName_definitions' | translate }}</div>
-              <div class="card-info"></div>
+              <div class="card-info">{{ row.customer.customerTranslation![layoutService.config.lang]?.name }}</div>
             </div>
              <div class="card__contents__item">
               <div class="card-label">{{ 'service_definitions' | translate }}</div>
-              <div class="card-info"></div>
+              <div class="card-info">{{ row.service.serviceTranslation![layoutService.config.lang]?.name }}</div>
             </div>
-            
+
             <div class="card__contents__item">
               <div class="card-label">{{ 'startDate_subscription' | translate }}</div>
-              <div class="card-info"></div>
+              <div class="card-info">{{ row.subscription.startDate | date: 'shortDate' }}</div>
             </div>
             <div class="card__contents__item">
               <div class="card-label">{{ 'endDate_subscription' | translate }}</div>
-              <div class="card-info"></div>
+              <div class="card-info">{{ row.subscription.endDate | date: 'shortDate' }}</div>
             </div>
             <div class="card__contents__item">
               <div class="card-label">{{ 'status_subscription' | translate }}</div>
-              <div class="card-info"></div>
+              <div class="card-info">{{ row.subscription.status }}</div>
             </div>
             <!-- <div class="card__contents__item">
               <div class="card-label">{{ 'price_subscription' | translate }}</div>
@@ -99,7 +99,7 @@
             <span class="material-symbols-outlined card__actions__details">more_vert</span>
           </div>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="OpenAddCustomerService(row)">
               <span class="material-symbols-outlined" id="icon">Edit</span>
               {{ 'Edit_subscription' | translate }}
             </button>
@@ -111,7 +111,7 @@
           </mat-menu>
         </div>
       </div>
-      
+
     </div>
 
 
