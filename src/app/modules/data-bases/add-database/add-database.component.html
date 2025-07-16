@@ -6,56 +6,62 @@
           <span class="material-symbols-outlined">info</span>
           <span>{{ 'Basic_Info_Form' | translate }}</span>
         </div>
+        <div class="col-12 mb-3">
+          <div class="p-float-label">
+            <p-dropdown [options]="envOptions" optionLabel="name" optionValue="uuid" placeholder="{{ 'SelectEnvironment' | translate }}" formControlName="envIDFK"></p-dropdown>
+
+            <label>{{ 'env_Database' | translate }}</label>
+          </div>
+          <div *ngIf="submitted && form['envIDFK'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
+        </div>
         <div class="col-12 row m-0 p-0">
           <div class="col-12 mb-3">
             <div class="p-float-label">
-              <input pInputText type="text" formControlName="nameEn" />
-              <label>{{ 'nameEn_database' | translate }}</label>
-              
+              <input pInputText type="text" formControlName="name" />
+              <label>{{ 'name_dataBase' | translate }}</label>
             </div>
+           <div *ngIf="submitted && form['name'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
           </div>
-          <div class="col-12 mb-3">
-            <div class="p-float-label">
-              <input pInputText type="text" formControlName="nameAr" />
-              <label>{{ 'nameAr_database' | translate }}</label>
-          
-            </div>
           </div>
           <div class="col-12 mb-3">
             <div class="p-float-label">
               <input pInputText type="text" formControlName="userName" />
               <label>{{ 'userName_database' | translate }}</label>
-          
             </div>
+           <div *ngIf="submitted && form['userName'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
+          </div>
+                   <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="connectionString" />
+              <label>{{ 'connectionString_database' | translate }}</label>
+            </div>
+           <div *ngIf="submitted && form['connectionString'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>
           <div class="col-12 mb-3">
             <div class="p-float-label">
-              <input pInputText [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password"  />
+              <input pInputText [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password" />
               <label>{{ 'password_database' | translate }}</label>
-                <i 
-                  class="pi" 
-                  [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'" 
-                  (click)="togglePasswordVisibility()" 
-                  >
-                </i>
-          
+              <i class="pi" [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'" (click)="togglePasswordVisibility()"></i>
             </div>
+           <div *ngIf="submitted && form['password'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
           </div>
-        
+          </div>
         </div>
       </div>
     </div>
 
-
-
-
     <div class="col-xs-12 text-end mt-4">
-      <p-button type="Submit" class="btn-primary"  [loading]="btnLoading">{{'save' | translate}}</p-button>
+      <p-button type="Submit" class="btn-primary" [loading]="btnLoading">{{ 'save' | translate }}</p-button>
     </div>
   </div>
 </form>
 
 <p-toast key="toast"></p-toast>
-
-
-

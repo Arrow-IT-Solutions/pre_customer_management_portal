@@ -25,7 +25,7 @@ export const navbarData: NavbarData[] = [
     label: 'System Management',
     labelar: 'إدارة النظام',
     id: 'users',
-    icon: '',
+    icon: 'apps',
     items: [
       {
         label: 'Services',
@@ -74,7 +74,7 @@ export const navbarData: NavbarData[] = [
         labelar: 'بيئة',
         id: 'environments',
         routeLink: 'environments',
-        icon:'list'
+        icon:'language'
   }, 
   {
         label: 'Subscription',
@@ -96,7 +96,7 @@ export const navbarData: NavbarData[] = [
         labelar: 'إضافة',
         id: 'add',
         routeLink: 'add/customer-service',
-        icon:'add'
+        icon:'control_point'
   }   
 
 

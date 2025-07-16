@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClientService } from 'src/app/Core/services/http-client.service';
 import { LayoutService } from './layout.service';
 import { ServerRequest, ServerResponse, ServerSearchRequest, ServerUpdateRequest } from 'src/app/modules/servers/servers.module';
-
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,32 +11,40 @@ export class ServersService {
 
   public SelectedData: ServerResponse | null = null;
   public Dialog: any | null = null;
-   public submitted: any | null = "";
-    constructor(public layoutService: LayoutService, public httpClient: HttpClientService) { }
-    async Add(data: ServerRequest) {
-      const apiUrl = `/api/server`;
+  private refreshServersSubject = new Subject<void>();
 
-      return await this.httpClient.post(apiUrl, data);
-    }
+  refreshServers$ = this.refreshServersSubject.asObservable();
 
-    async Update(data: ServerUpdateRequest) {
+  triggerRefreshServers() {
+    this.refreshServersSubject.next();
+  }
+  constructor(public layoutService: LayoutService, public httpClient: HttpClientService) { }
 
-      const apiUrl = `/api/server`;
-      return await this.httpClient.put(apiUrl, data);
-    }
+  public submitted: any | null = "";
+  async Add(data: ServerRequest) {
+    const apiUrl = `/api/server`;
 
-    async Delete(uuid: string) {
+    return await this.httpClient.post(apiUrl, data);
+  }
 
-      const apiUrl = `/api/server/${uuid}`;
-      return await this.httpClient.delete(apiUrl, uuid)
+  async Update(data: ServerUpdateRequest) {
 
-    }
+    const apiUrl = `/api/server`;
+    return await this.httpClient.put(apiUrl, data);
+  }
 
-    async Search(filter: ServerSearchRequest) {
+  async Delete(uuid: string) {
 
-      const apiUrl = `/api/server/list?${this.layoutService.Filter(filter)}`;
+    const apiUrl = `/api/server/${uuid}`;
+    return await this.httpClient.delete(apiUrl, uuid)
 
-      return await this.httpClient.get(apiUrl)
+  }
 
-    }
+  async Search(filter: ServerSearchRequest) {
+
+    const apiUrl = `/api/server/list?${this.layoutService.Filter(filter)}`;
+
+    return await this.httpClient.get(apiUrl)
+
+  }
 }

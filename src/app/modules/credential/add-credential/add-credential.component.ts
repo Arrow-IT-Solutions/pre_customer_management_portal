@@ -1,34 +1,56 @@
-import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MessageService } from "primeng/api";
-import { CredentialService } from "src/app/layout/service/credential.service";
-import { LayoutService } from "src/app/layout/service/layout.service";
-import { PortService } from "src/app/layout/service/ports.service";
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CredentialService } from 'src/app/layout/service/credential.service';
+import { PortService } from 'src/app/layout/service/ports.service';
+import { LayoutService } from 'src/app/layout/service/layout.service';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-credential',
   templateUrl: './add-credential.component.html',
-  styleUrls: ['./add-credential.component.scss']
+  styleUrls: ['./add-credential.component.scss'],
+  providers: [MessageService]
 })
-export class AddCredentialComponent implements OnInit {
+export class AddCredentialComponent {
+
+  @Output() OnClose = new EventEmitter<void>();
+
   dataForm!: FormGroup;
-  submitted = false;
-  btnLoading = false;
-  isPasswordVisible = false;
+  submitted: boolean = false;
+  btnLoading: boolean = false;
+  loading: boolean = false;
+  isPasswordVisible: boolean = false;
   portOptions: { uuid: string; portNumber: string }[] = [];
 
   constructor(
     public formBuilder: FormBuilder,
-    public messageService: MessageService,
-    public credential: CredentialService,
     public layoutService: LayoutService,
-    public portService: PortService
+    public credentialService: CredentialService,
+    public portService: PortService,
+    public messageService: MessageService,
+    public translate: TranslateService
   ) {
-    this.dataForm = this.formBuilder.group({
+    this.dataForm = formBuilder.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],
       portIDFK: ['', Validators.required]
     });
+  }
+
+  async ngOnInit() {
+    try {
+      this.loading = true;
+      await this.loadPorts();
+      this.resetForm();
+      if (this.credentialService.SelectedData != null) {
+        await this.FillData();
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.loading = false;
+    }
   }
 
   get form(): { [key: string]: AbstractControl } {
@@ -39,15 +61,57 @@ export class AddCredentialComponent implements OnInit {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
 
-  async ngOnInit() {
-    await this.loadPorts();
-    this.loadSelectedData();
+  async onSubmit() {
+    try {
+      this.btnLoading = true;
+      if (this.dataForm.invalid) {
+        this.submitted = true;
+        return;
+      }
+      await this.Save();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.btnLoading = false;
+    }
   }
 
-  private async loadPorts() {
+  async Save() {
+    let response;
+    const payload: any = { ...this.dataForm.value };
+
+    if (this.credentialService.SelectedData != null) {
+      payload.uuid = this.credentialService.SelectedData.uuid;
+      response = await this.credentialService.Update(payload);
+
+      this.messageService.add({
+        key: 'toast',
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Updated successfully'
+      });
+
+      this.closeDialog();
+    } else {
+      response = await this.credentialService.Add(payload);
+
+      this.messageService.add({
+        key: 'toast',
+        severity: 'success',
+  summary: this.translate.instant('Success'),
+        detail: this.translate.instant('Successfull_Add')
+      });
+
+      this.dataForm.reset();
+      this.submitted = false;
+      this.closeDialog();
+    }
+  }
+
+  async loadPorts() {
     try {
-      const ports = await this.portService.Search({});
-      this.portOptions = ports.data || [];
+      const result = await this.portService.Search({});
+      this.portOptions = result?.data || [];
     } catch (error) {
       this.messageService.add({
         key: 'toast',
@@ -58,66 +122,24 @@ export class AddCredentialComponent implements OnInit {
     }
   }
 
-  loadSelectedData() {
-    if (this.credential.SelectedData) {
-      const data = this.credential.SelectedData;
-      this.dataForm.patchValue({
-        userName: data.userName,
-        password: data.password,
-        portIDFK: data.portResponse?.uuid || ''
-      });
-    } else {
-      this.credential.SelectedData = null; 
-      this.dataForm.reset();
-      this.submitted = false;
-    }
+  resetForm() {
+    this.dataForm.reset();
   }
 
-  async onSubmit() {
-    this.submitted = true;
-    if (this.dataForm.invalid) return;
+  async FillData() {
+    const selected = this.credentialService.SelectedData;
 
-    this.btnLoading = true;
-    const payload: any = { ...this.dataForm.value };
+    const patch = {
+      userName: selected?.userName || '',
+      password: selected?.password || '',
+      portIDFK: selected?.portResponse?.uuid || ''
+    };
 
-    if (this.credential.SelectedData && this.credential.SelectedData.uuid) {
-      payload.uuid = this.credential.SelectedData.uuid;
-    }
+    this.dataForm.patchValue(patch);
+  }
 
-    try {
-      if (this.credential.SelectedData) {
-        await this.credential.Update(payload);
-        this.messageService.add({
-          key: 'toast',
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Updated successfully'
-        });
-        this.credential.Dialog = false;
-      } else {
-        await this.credential.Add(payload);
-        this.messageService.add({
-          key: 'toast',
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Added successfully'
-        });
-        this.dataForm.reset();
-        this.submitted = false;
-      }
-
-      this.credential.SelectedData = null; 
-
-    } catch (error: any) {
-      console.error('Save error:', error);
-      this.messageService.add({
-        key: 'toast',
-        severity: 'error',
-        summary: 'Error',
-        detail: error?.message || 'Failed to save'
-      });
-    } finally {
-      this.btnLoading = false;
-    }
+  closeDialog() {
+    this.credentialService.Dialog.close?.();
+    this.OnClose.emit();
   }
 }

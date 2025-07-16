@@ -11,7 +11,7 @@
           <div class="m-0 box2 d-flex">
             <div class="filter-title">
               <span class="material-symbols-outlined">filter_alt</span>
-              <span>Filter By</span>
+              <span>{{ 'Filter_By' | translate }}</span>
             </div>
             <div class="container">
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
@@ -29,9 +29,15 @@
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
                     <input type="text" class="search-field" placeholder="{{ 'userName_database' | translate }}"
-                      formControlName="UserName" pInputText (input)="OnChange()" />
+                      formControlName="userName" pInputText (input)="OnChange()" />
                   </span>
                 </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <p-dropdown [options]="envOptions" optionLabel="name" optionValue="uuid"
+                  formControlName="envIDFK" placeholder="{{ 'SelectEnvironment' | translate }}"
+                  (onChange)="OnChange()">
+                </p-dropdown>
               </div>
             </div>
 
@@ -76,6 +82,12 @@
                   {{ row.password || '-' }}
                 </div>
               </div>
+              <div class="card__contents__item">
+               <div class="card-label">{{ 'environment' | translate }}</div>
+                 <div class="card-info">
+                 {{ getEnvName(row) || '-' }}
+                 </div>
+                 </div>
 
               <div class="card__contents__item">
                 <div class="card-label">{{ 'connectionString_database' | translate }}</div>
@@ -105,12 +117,13 @@
       </div>
     </div>
 
-    <div class="row mt-3 align-items-center justify-content-between">
-      <div class="total">{{ 'totaldatabases_databases' | translate }}: {{ totalRecords }}</div>
-      <p-paginator [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
-        [first]="first" (onPageChange)="paginate($event)">
-      </p-paginator>
+     <div class="all d-flex">
+      <div class="total">{{ 'totalcredentials_credentials' | translate }}: {{ totalRecords }}</div>
     </div>
+
+
+    <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+      [first]="first" (onPageChange)="paginate($event)"></p-paginator>
 
     <button class="add-button" (click)="openDialog()">
       <span class="material-symbols-outlined">add</span>
@@ -118,9 +131,19 @@
   </ng-container>
 
   <ng-template #ListView>
+     <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
+      </div>
+    </div>
     <div class="row">
-      <div *ngFor="let list of [1, 2, 3, 4]" class="col mx-0 mt-2">
-        <p-skeleton height="7.5rem"></p-skeleton>
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
+      </div>
+    </div>
+    <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
       </div>
     </div>
   </ng-template>
