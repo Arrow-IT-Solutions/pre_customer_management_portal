@@ -227,14 +227,14 @@
     display: flex;
     flex-direction: row;
     padding: 1rem;
-    max-height: 14rem;
+    max-height: 20rem;
     overflow-y: auto;
     border-radius: 6px;
     align-items: center;
     border-color: rgba($gray-color, 0.5);
 
     @media (max-width: 767px) {
-      max-height: 15rem;
+      // max-height: 15rem;
       width: 100%;
       flex-direction: column;
     }
@@ -245,7 +245,7 @@
 
     .icon-container {
       display: flex;
-      margin-bottom: 6rem;
+      margin-bottom: 10rem;
 
       @media (max-width: 767px) {
         padding-top: 0;
@@ -327,6 +327,7 @@
         @media (max-width: 767px) {
           display: flex;
           flex-direction: column;
+          row-gap: 2rem;
           margin: auto;
         }
 
@@ -345,16 +346,16 @@
       }
 
       &__item {
-        margin-inline-end: 2rem;
+        // margin-inline-end: 2rem;
 
         @media (max-width: 790px) {
           width: unset;
         }
       }
 
-      @media (max-width: 991px) {
-        margin-top: 1rem;
-      }
+      // @media (max-width: 991px) {
+      //   margin-top: 1rem;
+      // }
     }
 
     &-label {

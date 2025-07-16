@@ -355,9 +355,17 @@
   margin-right: 2rem;
 
 }
-#delete{
+.actions{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  .material-symbols-outlined{
   color: $gray-color;
   cursor: pointer;
+  border: 1px solid $gray-color;
+  border-radius: 6px;
+  }
+  
 }
 #spinner{
   margin: auto;
