@@ -10,6 +10,11 @@ import { Router } from '@angular/router';
 import { ProvisionedServiceResponse, ProvisionedServiceSearchRequest, ProvisionedSession } from '../../wizard-to-add/wizard-to-add.module';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { SubscriptionRequest } from '../../subscription/subscription.module';
+import { CustomerResponse, CustomerSearchRequest } from '../../customers/customers.module';
+import { ServerResponse } from '../../servers/servers.module';
+import { CustomersService } from 'src/app/layout/service/customers.service';
+import { ServiceResponse, ServiceSearchRequest } from '../../services/services.module';
+import { ServicesService } from 'src/app/Core/services/services.service';
 
 @Component({
   selector: 'app-customer-services',
@@ -23,12 +28,14 @@ export class CustomerServicesComponent {
     pageSize: number = 12;
     first: number = 0;
     totalRecords: number = 0;
-   data: ProvisionedServiceResponse[] = [];
+    data: ProvisionedServiceResponse[] = [];
     statusList: ConstantResponse[] = [];
     doneTypingInterval = 1000;
     typingTimer: any;
     isResetting: boolean = false;
     customerServiceTotal: number = 0;
+    customers: CustomerResponse[] = [];
+    services: ServiceResponse[] = [];
 
     constructor(
       public formBuilder: FormBuilder,
@@ -39,7 +46,9 @@ export class CustomerServicesComponent {
       public messageService: MessageService,
       public confirmationService: ConfirmationService,
       public provisionedService: ProvisionedService,
-      public route:Router
+      public customersService: CustomersService,
+      public serviceService: ServicesService,
+      public route: Router
     ) {
       this.dataForm = this.formBuilder.group({
         customerName: [''],
@@ -50,6 +59,8 @@ export class CustomerServicesComponent {
 
     async ngOnInit() {
       await this.FillData();
+      await this.FillCustomers();
+      await this.FillServices();
     }
 
       async FillData(pageIndex: number = 0) {
@@ -68,7 +79,16 @@ export class CustomerServicesComponent {
     };
 
     const response = (await this.provisionedService.Search(filter)) as any;
-    console.log('data',response)
+
+    // if (response.data && response.data.length > 0) {
+    //   console.log(' First item subscription details:', {
+    //     hasSubscription: !!response.data[0].subscription,
+    //     subscriptionUuid: response.data[0].subscription?.uuid,
+    //     subscriptionKeys: response.data[0].subscription ? Object.keys(response.data[0].subscription) : [],
+    //     fullSubscription: response.data[0].subscription
+    //   });
+    // }
+
     if (response.data == null || response.data.length == 0) {
       this.data = [];
       this.customerServiceTotal = 0;
@@ -101,11 +121,11 @@ export class CustomerServicesComponent {
       this.isResetting = false;
     }
 
-    paginate(event: any) {
+   async paginate(event: any) {
     this.pageSize = event.rows;
     this.first = event.first;
     const pageIndex = event.first / event.rows;
-    this.FillData(pageIndex);
+    await this.FillData(pageIndex);
   }
 
 
@@ -119,33 +139,35 @@ export class CustomerServicesComponent {
           customerIDFK: row.customer.uuid,
           serviceIDFK: row.service.uuid,
           subscription: {
+            uuid: row.subscription.uuid || row.uuid, 
             startDate: row.subscription.startDate.toString(),
             endDate: row.subscription.endDate.toString(),
             price: row.subscription.price.toString(),
-            status: row.subscription.status,
+            status: row.subscription.status.toString(),
             customerServiceIDFK: row.uuid
           } as SubscriptionRequest,
           envDatabases: row.environments.map(env => {
             const relatedDatabase = row.databases.find(db =>
               (db as any).environmentResponse?.uuid === env.uuid
             );
+
             const environmentTranslation = env.environmentTranslation
               ? Object.values(env.environmentTranslation).map((et: any) => ({
-                  uuid: et.uuid,
-                  name: et.name,
-                  language: et.language
+                  uuid: et.uuid || '',
+                  name: et.name || '',
+                  language: et.language || ''
                 }))
               : [];
 
             const envDatabase = {
-              url: env.url,
-              serverIDFK: env.serverIDFK, 
-              server: (env as any).server,  
+              url: env.url || '',
+              serverIDFK: env.serverIDFK || '',
+              server: (env as any).server,
               environmentTranslation: environmentTranslation,
               dbName: relatedDatabase?.name || '',
               connectionString: relatedDatabase?.connectionString || '',
               dbUserName: relatedDatabase?.userName || '',
-              dbPassword: ''     
+              dbPassword: relatedDatabase?.password || ''
             };
 
             return envDatabase;
@@ -163,7 +185,7 @@ export class CustomerServicesComponent {
       }
     }
 
-    async confirmDelete(row: customerServiceResponse) {
+    async confirmDelete(row: ProvisionedServiceResponse) {
         this.confirmationService.confirm({
           message: this.translate.instant('Do_you_want_to_delete_this_record?'),
           header: this.translate.instant('Delete_Confirmation'),
@@ -173,8 +195,8 @@ export class CustomerServicesComponent {
           key: 'confirmDialog',
           accept: async () => {
             try {
-              // const resp = await this.customerService.Delete(row.uuid!) as any;
-              // this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
+              const resp = await this.provisionedService.Delete(row.uuid!) as any;
+              this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
               this.FillData();
             } catch (error) {
               this.messageService.add({
@@ -186,5 +208,89 @@ export class CustomerServicesComponent {
           }
         });
     }
+
+     async FillCustomers(event: any = null) {
+
+    var customerID: any;
+
+    let filter: CustomerSearchRequest = {
+
+      name: '',
+      uuid: customerID,
+      pageIndex: "",
+      pageSize: '100000'
+
+    }
+    const response = await this.customersService.Search(filter) as any
+
+    this.customers = response.data,
+
+      await this.ReWriteCustomer();
+  }
+
+  ReWriteCustomer(): any {
+
+    var customerDTO: any[] = []
+
+    this.customers.map(customer => {
+      const translation = customer.customerTranslation?.[this.layoutService.config.lang] as any;
+      const customerName = translation?.name;
+
+      var obj =
+      {
+        ...customer,
+        name: `${customerName}`.trim()
+
+      }
+
+      customerDTO.push(obj)
+
+    })
+
+    this.customers = customerDTO;
+
+  }
+
+   async FillServices(event: any = null) {
+
+    var serviceID: any;
+
+    let filter: ServiceSearchRequest = {
+
+      name: '',
+      uuid: serviceID,
+      pageIndex: "",
+      pageSize: '100000'
+
+    }
+    const response = await this.serviceService.Search(filter) as any
+
+    this.services = response.data,
+
+      await this.ReWriteService();
+  }
+
+  ReWriteService(): any {
+
+    var serviceDTO: any[] = []
+
+    this.services.map(service => {
+      const translation = service.serviceTranslation?.[this.layoutService.config.lang] as any;
+      const serviceName = translation?.name;
+
+      var obj =
+      {
+        ...service,
+        name: `${serviceName}`.trim()
+
+      }
+
+      serviceDTO.push(obj)
+
+    })
+
+    this.services = serviceDTO;
+
+  }
 
 }

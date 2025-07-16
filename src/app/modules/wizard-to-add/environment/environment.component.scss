@@ -317,20 +317,12 @@
       align-items: flex-start;
       padding: 0.75rem 0;
       border-bottom: 1px solid #f0f0f0;
+      flex-direction: column;
 
       &:last-child {
         border-bottom: none;
         padding-bottom: 0;
       }
-
-.environment-details {
-  .detail-item {
-    display: flex;
-    justify-content: space-between;
-    // align-items: center;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #f1f3f4;
-    flex-direction: column;
 
       &:first-child {
         padding-top: 0;
@@ -343,7 +335,6 @@
         flex: 0 0 45%;
         font-size: 0.9rem;
       }
-
 
       span {
         color: #212529;
@@ -365,22 +356,15 @@
           white-space: pre-wrap;
         }
 
-    span {
-      color: #495057;
-      flex: 1;
-      // text-align: right;
-      word-break: break-word;
-    }
-    #nameAr{
-      text-align: right;
-    }
-
-
         &:empty::after {
           content: 'N/A';
           color: #6c757d;
           font-style: italic;
         }
+      }
+
+      #nameAr {
+        text-align: right;
       }
     }
   }
@@ -397,24 +381,83 @@
 }
 #label:lang(ar){
   margin-right: 2rem;
-
 }
+
 .actions{
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  .material-symbols-outlined{
-  color: $gray-color;
-  cursor: pointer;
-  border: 1px solid $gray-color;
-  border-radius: 6px;
-  }
   
+  .material-symbols-outlined{
+    color: $gray-color;
+    cursor: pointer;
+    border: 1px solid $gray-color;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      transform: scale(1.1);
+    }
+    
+    &:first-child:hover {
+      color: #007bff;
+    }
+    
+    &:last-child:hover {
+      color: #dc3545;
+    }
+  }
 }
+
 #spinner{
   margin: auto;
   margin-top: 15%;
   @media(max-width:767px){
     margin-top: 40%;
+  }
+}
+
+// ستايل للبطاقة في وضع التعديل
+.environment-card.editing {
+  border: 2px solid #007bff !important;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3) !important;
+  background-color: rgba(0, 123, 255, 0.05) !important;
+  
+  .card-header {
+    background-color: rgba(0, 123, 255, 0.1) !important;
+    border-bottom-color: #007bff !important;
+  }
+}
+
+// تحسين مظهر زر الإلغاء
+.btn-secondary {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+  
+  &:hover {
+    background-color: #5a6268 !important;
+    border-color: #545b62 !important;
+  }
+}
+
+// ستايل خاص لعرض كلمة المرور في الكارد
+.detail-item {
+  span {
+    word-break: break-all;
+    
+    // إخفاء كلمة المرور افتراضياً وعرضها كنقاط
+    &.password-field {
+      font-family: monospace;
+      letter-spacing: 2px;
+      
+      &::before {
+        content: "••••••••";
+      }
+      
+      &.show-password::before {
+        content: attr(data-password);
+      }
+    }
   }
 }
