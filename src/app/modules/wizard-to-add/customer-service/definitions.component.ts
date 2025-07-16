@@ -29,6 +29,8 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
   statusList: ConstantResponse[] = [];
   session!: ProvisionedSession;
   private isNavigatingToEnvironment = false;
+  isEditMode: boolean = false;
+  editingServiceId: string | null = null;
    constructor(
     public formBuilder: FormBuilder,
     public router: Router,
@@ -64,6 +66,14 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
 async ngOnInit() {
   try {
     this.loading = true;
+
+    this.route.queryParams.subscribe(params => {
+      if (params['mode'] === 'edit' && params['id']) {
+        this.isEditMode = true;
+        this.editingServiceId = params['id'];
+      }
+    });
+
     const response = await this.constantService.Search('SubscriptionStatus') as any;
     this.statusList = response?.data ?? [];
     await this.RetriveCustomer();
@@ -74,7 +84,7 @@ async ngOnInit() {
 
       const fromBack = this.route.snapshot.queryParams['fromBack'];
 
-      if (fromBack === 'true') {
+      if (fromBack === 'true' || this.isEditMode) {
         this.restoreFormFromSession();
       } else {
         this.resetForm();

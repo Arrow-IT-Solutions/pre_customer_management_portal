@@ -7,11 +7,12 @@ import { DefinitionsComponent } from './customer-service/definitions.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EnvironmentComponent } from './environment/environment.component';
-import { RequestBase, ResponseBase } from 'src/app/shared/class/class';
+import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/class/class';
 import { CustomerResponse } from '../customers/customers.module';
 import { ServiceResponse } from '../services/services.module';
-import { EnvironmentTranslationRequest } from '../environment/environment.module';
-import { SubscriptionRequest } from '../subscription/subscription.module';
+import { EnvironmentResponse, EnvironmentTranslationRequest, EnvironmentTranslationUpdateRequest } from '../environment/environment.module';
+import { SubscriptionRequest, SubscriptionResponse, SubscriptionUpdateRequest } from '../subscription/subscription.module';
+import { DatabaseResponse } from '../data-bases/data-bases.module';
 
 
 @NgModule({
@@ -35,6 +36,8 @@ export interface ProvisionedSession {
   serviceIDFK?: string;
   subscription?: SubscriptionRequest;
   envDatabases?: EnvDatabase[];
+  subscriptionUpdate?: SubscriptionUpdateRequest;
+  envDatabasesUpdate?: UpdateEnvDatabase[];
 }
 export interface ProvisionedServiceRequest extends RequestBase {
   customerIDFK?: string;
@@ -52,6 +55,42 @@ export interface EnvDatabase {
   dbUserName: string;
   dbPassword: string;
 }
+
+export interface ProvisionedServiceSearchRequest extends SearchRequestBase {
+  uuid?: string;
+  CustomerIDFK?: string;
+  ServiceIDFK?: string;
+  IncludeCustomer?: string;
+  IncludeService?: string;
+}
+
+export interface ProvisionedServiceResponse extends ResponseBase {
+  uuid: string;
+  customer: CustomerResponse;
+  service: ServiceResponse;
+  subscription: SubscriptionResponse;
+  environments: EnvironmentResponse[];
+  databases: DatabaseResponse[];
+
+}
+
+export interface ProvisionedServiceUpdateRequest extends RequestBase {
+  customerIDFK?: string;
+  serviceIDFK?: string;
+  subscription?: SubscriptionUpdateRequest;
+  envDatabases?: UpdateEnvDatabase[];
+}
+
+export interface UpdateEnvDatabase {
+  url: string;
+  serverIDFK: string;
+  environmentTranslation: EnvironmentTranslationUpdateRequest[];
+  dbName: string;
+  connectionString: string;
+  dbUserName: string;
+  dbPassword: string;
+}
+
 
 export interface CustomerServiceResponse extends ResponseBase {
   uuid: string;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ProvisionedServiceRequest, ProvisionedSession } from 'src/app/modules/wizard-to-add/wizard-to-add.module';
+import { ProvisionedServiceRequest, ProvisionedServiceSearchRequest, ProvisionedServiceUpdateRequest, ProvisionedSession } from 'src/app/modules/wizard-to-add/wizard-to-add.module';
 import { LayoutService } from './layout.service';
 import { HttpClientService } from 'src/app/Core/services/http-client.service';
 
@@ -38,4 +38,25 @@ export class ProvisionedService {
 
           return await this.httpClient.post(apiUrl, data);
         }
+
+          async Search(filter: ProvisionedServiceSearchRequest) {
+
+            const apiUrl = `/api/customerService/GetBulk?${this.layoutService.Filter(filter)}`;
+
+              return await this.httpClient.get(apiUrl)
+
+          }
+
+              async Update(data: ProvisionedServiceUpdateRequest) {
+
+              const apiUrl = `/api/customerService/UpdateBulk`;
+              return await this.httpClient.put(apiUrl, data);
+            }
+
+                async Delete(uuid: string) {
+
+              const apiUrl = `/api/customerService/Bulk${uuid}`;
+              return await this.httpClient.delete(apiUrl, uuid);
+
+            }
 }
