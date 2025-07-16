@@ -54,7 +54,7 @@ servers: { [key: string]: string } = {};
   }
 
   async ngOnInit() {
-    await this.retrieveServers();
+    await this.retrieveServer();
     await this.FillData();
   }
 
@@ -77,7 +77,13 @@ servers: { [key: string]: string } = {};
     this.loading = false;
   }
 
-  async retrieveServers() {
+retrieveServers(row: EnvironmentResponse): string {
+  const serverUUID = row.serverIDFK;
+  return this.servers[serverUUID?.trim()] || '-';
+}
+
+
+  async retrieveServer() {
   const filter = {
     name: '',
     uuid: '',
@@ -91,7 +97,7 @@ servers: { [key: string]: string } = {};
 this.servers = {};
 servers.forEach((server: any) => {
   if (server.uuid) {
-    this.servers[server.uuid.trim()] = server.hostname || server.ipAddress || '—';
+    this.servers[server.uuid.trim()] = server.hostname || '—';
   }
 });
 

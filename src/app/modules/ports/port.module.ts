@@ -8,6 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RequestBase, ResponseBase } from 'src/app/shared/class/class';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ServerResponse } from '../servers/servers.module';
 
 
 @NgModule({
@@ -53,8 +54,5 @@ uuid?:string;
  requestMessage?:string;
 portNumber?:string;
 serverIDFK?: string;
- serverResponse?: {
-    uuid?: string;
-    name?: string;
-  };
+ serverResponse?: ServerResponse;
 }

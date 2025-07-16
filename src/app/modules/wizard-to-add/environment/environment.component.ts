@@ -163,8 +163,6 @@ export class EnvironmentComponent implements OnDestroy {
       }
 
       await this.RetriveServer();
-
-      try {
         this.session = this.provisionedService.getSession();
         if (this.session.envDatabases && this.session.envDatabases.length > 0) {
           this.envDatabase = [...this.session.envDatabases];         
@@ -179,10 +177,6 @@ export class EnvironmentComponent implements OnDestroy {
             });
           });
         }
-      } catch (error) {
-        console.log('No existing session found');
-        this.envDatabase = [];
-      }
 
       this.resetForm();
 

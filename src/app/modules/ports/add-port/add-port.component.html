@@ -6,21 +6,38 @@
           <span class="material-symbols-outlined">info</span>
           <span>{{ 'Basic_Info_Form' | translate }}</span>
         </div>
+        <div class="col-12 mb-3">
+          <div class="p-float-label">
+                  <p-dropdown 
+                    [options]="serverOptions"
+                    optionLabel="hostname"
+                    optionValue="uuid"
+                    formControlName="serverIDFK"
+                    placeholder="{{ 'Select_server' | translate }}">
+                  </p-dropdown>
+
+            <label>{{ 'hostname' | translate }}</label>
+          </div>
+          <div *ngIf="submitted && form['serverIDFK'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
+        </div>
         <div class="col-12 row m-0 p-0">
           <div class="col-12 mb-3">
             <div class="p-float-label">
-              <input pInputText type="text" formControlName="hostName" />
+              <input pInputText type="text" formControlName="portNumber" />
               <label>{{ 'number_port' | translate }}</label>
-              
             </div>
+                      <div *ngIf="submitted && form['portNumber'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>
         
           
         </div>
+
       </div>
     </div>
-
-
 
 
    <div class="col-xs-12 text-end mt-4">

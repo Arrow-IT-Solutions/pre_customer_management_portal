@@ -100,5 +100,26 @@
     "No_Environments_Added": "No environments added",
     "Environments_List": "Environments List",
     "ServerName_definitions": "Server Name",
-    "Field_Required": "This field is required"
+    "Field_Required": "This field is required",
+
+    "ServerIDFK": "Server",
+    "Customer_Service":"Customer Service",
+    "Create_Service":"Create Service",
+    "Update_Service":"Update Service",
+    "Create_Subscripe":"Create Subscripe",
+    "Update_Subscripe":"Update Subscripe",
+    "Successfull_Add": "Added Successfully",
+    "Create_DataBase": "Create Database",
+    "Update_DataBase": "Update Database",
+    "connectionString_database": "Connection String",
+    "environment": "Environment",
+    "SelectEnvironment": "Environment",
+    "Error": "Error",
+    "port.Failed_to_delete": "Failed to Delete: this Port is linked with at least one Credential",
+    "Create_port": "Create Port",
+    "Update_port": "Update Port",
+    "hostname": "Host Name",
+    "Select_server": "Host Name",
+    "env_Database": "Environment"
+
 }

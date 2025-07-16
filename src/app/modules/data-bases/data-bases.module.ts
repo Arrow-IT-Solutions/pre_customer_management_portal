@@ -8,6 +8,7 @@ import { DataBasesComponent } from './data-bases/data-bases.component';
 import { DataBasesRoutingModule } from './data-bases-routing.module';
 import { RequestBase, ResponseBase } from 'src/app/shared/class/class';
 import { ConfirmationService } from 'primeng/api';
+import { EnvironmentResponse } from '../environment/environment.module';
 
 
 @NgModule({
@@ -35,7 +36,7 @@ name?:string;
 userName?:string;
 connectionString?:string;
 password?:string;
-EnvIDFK?: string;
+envIDFK?: string;
 }
 
 export interface DatabaseUpdateRequest extends RequestBase
@@ -45,7 +46,7 @@ name?:string;
 userName?:string;
 connectionString?:string;
 password?:string;
-EnvIDFK?: string;
+envIDFK?: string;
 }
 
 export interface DatabaseSearchRequest extends RequestBase
@@ -55,20 +56,16 @@ name?:string;
 userName?:string;
 connectionString?:string;
 password?:string;
-EnvIDFK?: string;
+envIDFK?: string;
 }
 
-export interface DatabaseResponse extends ResponseBase
-{
-uuid?:string;
- requestStatus?:string;
- requestMessage?:string;
- userName?:string;
- name?:string;
- password?:string;
-connectionString?:string;
- enironmentResponse?: {
-    uuid?: string;
-    name?: string;
-  };
+export interface DatabaseResponse extends ResponseBase {
+  uuid?: string;
+  requestStatus?: string;
+  requestMessage?: string;
+  userName?: string;
+  password?: string;
+  name?:string;
+  connectionString?: string;
+  environmentResponse?: EnvironmentResponse;
 }

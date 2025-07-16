@@ -1,5 +1,5 @@
-<form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
-  <div class="environment row">
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" >
+  <div class="environment row" *ngIf="!loading; else spinner">
     <div class="col-lg-4 col-md-12">
       <div class="box-shadow mb-3">
         <div class="row">
@@ -10,60 +10,60 @@
           <div class="col-12 row m-0 p-0">
 
             <div class="col-12 mb-3">
-              <div class="p-float-label">
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['nameEnvEn'].errors}">
                 <input pInputText type="text" formControlName="nameEnvEn" />
-                <label>{{ 'NameEnvironmentEn_definitions' | translate }}</label>
+                <label [ngClass]="{'error': submitted && form['nameEnvEn'].errors}">{{ 'NameEnvironmentEn_definitions' | translate }}</label>
                 <span *ngIf="submitted && form['nameEnvEn'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
               </div>
             </div>
             <div class="col-12 mb-3">
-              <div class="p-float-label">
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['nameEnvAr'].errors}">
                 <input pInputText type="text" formControlName="nameEnvAr" />
-                <label>{{ 'NameEnvironmentAr_definitions' | translate }}</label>
+                <label [ngClass]="{'error': submitted && form['nameEnvAr'].errors}">{{ 'NameEnvironmentAr_definitions' | translate }}</label>
                 <span *ngIf="submitted && form['nameEnvAr'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
               </div>
             </div>
             <div class="col-12 mb-3">
-              <div class="p-float-label">
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['urlEnv'].errors}">
                 <input pInputText type="text" formControlName="urlEnv" />
-                <label>{{ 'UrlEnvironment_definitions' | translate }}</label>
+                <label [ngClass]="{'error': submitted && form['urlEnv'].errors}">{{ 'UrlEnvironment_definitions' | translate }}</label>
                 <span *ngIf="submitted && form['urlEnv'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
               </div>
             </div>
               <div class="col-12 mb-3">
-              <div class="p-float-label">
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['server'].errors}">
               <p-dropdown [options]="servers" optionLabel="hostname" optionValue="uuid" formControlName="server"
-                [filter]="true" [showClear]="true" filterBy="hostname" (onFilter)="FillServer($event)"></p-dropdown>
-              <label>{{ 'ServerName_definitions' | translate }}</label>
+                [filter]="true" [showClear]="true" filterBy="hostname" (onFilter)="FillServer($event)" dir="ltr"></p-dropdown>
+              <label id="label" [ngClass]="{'error': submitted && form['server'].errors}">{{ 'ServerName_definitions' | translate }}</label>
               <span *ngIf="submitted && form['server'].errors" class="error-validation">{{ 'Field_Required' |
                 translate }}</span>
             </div>
             </div>
 
             <div class="col-12 mb-3">
-              <div class="p-float-label">
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['databaseName'].errors}">
                 <input pInputText type="text" formControlName="databaseName" />
-                <label>{{ 'databaseName_definitions' | translate }}</label>
+                <label [ngClass]="{'error': submitted && form['databaseName'].errors}">{{ 'databaseName_definitions' | translate }}</label>
                 <span *ngIf="submitted && form['databaseName'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
               </div>
             </div>
             <div class="col-12 mb-3">
-              <div class="p-float-label">
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['userName'].errors}">
                 <input pInputText type="text" formControlName="userName" />
-                <label>{{ 'userName_definitions' | translate }}</label>
+                <label [ngClass]="{'error': submitted && form['userName'].errors}">{{ 'userName_definitions' | translate }}</label>
                 <span *ngIf="submitted && form['userName'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
               </div>
             </div>
            <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['password'].errors}">
               <input pInputText [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password"  />
-              <label>{{ 'password_definitions' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['password'].errors}">{{ 'password_definitions' | translate }}</label>
               <span *ngIf="submitted && form['password'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span>
               <i
                   class="pi"
                   [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'"
                   (click)="togglePasswordVisibility()"
-                  style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #6c757d;"
+                  
                   >
                 </i>
             </div>
@@ -91,17 +91,22 @@
           </div>
 
           <div class="col-12" *ngIf="envDatabase.length > 0">
-            <div class="row">
+            <div class="row" >
               <div class="col-md-6 mb-3" *ngFor="let env of envDatabase; let i = index">
                 <div class="card environment-card">
                   <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="mb-0">
-                      <span class="badge badge-primary me-2">{{ i + 1 }}</span>
-                      {{ getEnvironmentDisplayName(env.environmentTranslation) }}
+                      <span class="badge me-2">{{ i + 1 }}</span>
+                      <!-- {{ getEnvironmentDisplayName(env.environmentTranslation) }} -->
                     </h6>
-                    <button type="button" class="btn btn-sm btn-danger" (click)="removeEnvironment(i)">
+                    <!-- <button type="button" class="btn btn-sm btn-danger" (click)="removeEnvironment(i)">
                       <i class="pi pi-trash"></i>
-                    </button>
+                    </button> -->
+                    <div class="actions">
+                    <span class="material-symbols-outlined">edit</span>
+                    <span class="material-symbols-outlined"  (click)="removeEnvironment(i)">delete</span>
+                    </div>
+                    
                   </div>
                   <div class="card-body">
                     <div class="environment-details">
@@ -112,6 +117,9 @@
                       <div class="detail-item">
                         <label>{{ 'NameEnvironmentAr_definitions' | translate }}:</label>
                         <span>{{ getEnvironmentName(env.environmentTranslation, 'ar') || 'N/A' }}</span>
+
+                        <span id="nameAr">{{ getEnvironmentName(env.environmentTranslation, 'ar') }}</span>
+
                       </div>
                       <div class="detail-item">
                         <label>{{ 'UrlEnvironment_definitions' | translate }}:</label>
@@ -157,5 +165,7 @@
 
   </div>
 </form>
-
+<ng-template #spinner>
+<mat-spinner id="spinner"></mat-spinner>
+</ng-template>
 <p-toast key="toast"></p-toast>

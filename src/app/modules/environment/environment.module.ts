@@ -43,6 +43,7 @@ export interface EnvironmentUpdateRequest extends RequestBase {
 export interface EnvironmentSearchRequest extends SearchRequestBase {
   uuid?: string;
   customerServiceIDFK?: string;
+  serverIDFK?: string;
   name?: string;
 }
 
