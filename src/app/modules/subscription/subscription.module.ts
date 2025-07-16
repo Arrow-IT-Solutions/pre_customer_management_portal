@@ -56,6 +56,7 @@ export interface SubscriptionResponse extends ResponseBase {
   endDate: Date;
   price: number;
   status: string;
+   statusValue: string;
   customerService?: string;
 }
 

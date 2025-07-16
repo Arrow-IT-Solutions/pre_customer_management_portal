@@ -100,6 +100,13 @@
     "Environments_List": "Environments List",
     "ServerName_definitions": "Server Name",
     "Field_Required": "This field is required",
+
+    "ServerIDFK": "Server",
+    "Customer_Service":"Customer Service",
+    "Create_Service":"Create Service",
+    "Update_Service":"Update Service",
+    "Create_Subscripe":"Create Subscripe",
+    "Update_Subscripe":"Update Subscripe",
     "Successfull_Add": "Added Successfully",
     "Create_DataBase": "Create Database",
     "Update_DataBase": "Update Database",
