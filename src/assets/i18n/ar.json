@@ -101,6 +101,19 @@
   "Environments_List": "قائمة البيئات",
   "ServerName_definitions": "اسم الخادم",
   "Field_Required": "هذا الحقل مطلوب",
-  "price_subscription":"السعر"
+  "price_subscription":"السعر",
+   "Successfull_Add": "تمت الإضافة بنجاح",
+   "Create_DataBase": "إنشاء قاعدة بيانات",
+   "Update_DataBase": "تعديل قاعدة البيانات",
+   "connectionString_database":"سلسلة الاتصال",
+   "environment": "البيئة",
+   "SelectEnvironment":" البيئة",
+   "Error": "خطأ",
+   "port.Failed_to_delete": "تعذر الحذف: هذا المنفذ مرتبط باعتمادية أو أكثر",
+   "Create_port": "إضافة منفذ",
+    "Update_port": "تعديل المنفذ",
+    "hostname": "اسم المضيف",
+    "Select_server":"اسم المضيف",
+    "env_Database": "البيئة"
 
 }

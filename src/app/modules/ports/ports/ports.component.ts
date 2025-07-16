@@ -7,6 +7,8 @@ import { AddPortComponent } from '../add-port/add-port.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PortResponse, PortSearchRequest } from '../port.module';
 import { debounceTime, distinctUntilChanged, filter, Subscription } from 'rxjs';
+import { ServersService } from 'src/app/layout/service/servers.service';
+import { ServerResponse } from '../../servers/servers.module';
 
 @Component({
   selector: 'app-ports',
@@ -24,25 +26,26 @@ export class PortsComponent implements OnInit {
   doneTypingInterval = 1000;
   isResetting = false;
   formChangesSub!: Subscription;
-
+  serverOptions: ServerResponse[] = [];
 
   constructor(
-    public formBuilder: FormBuilder,
+    public formBuilder: FormBuilder, 
     public layoutService: LayoutService,
-    public translate: TranslateService,
+    public translate: TranslateService, 
     public portService: PortService,
-    public confirmationService: ConfirmationService,
-    public messageService: MessageService,
+    public confirmationService: ConfirmationService, 
+    public messageService: MessageService, 
+    public serverService: ServersService
   ) {
     this.dataForm = this.formBuilder.group({
       portNumber: [''],
-    })
+      serverIDFK: ['']
+    });
   }
 
   async fillData(pageIndex: number = 0) {
     this.first = pageIndex * this.pageSize;
     this.loading = true;
-
 
     const filter: PortSearchRequest = {
       portNumber: this.dataForm.get('portNumber')?.value || '',
@@ -51,8 +54,8 @@ export class PortsComponent implements OnInit {
     };
 
     try {
-      const response = await this.portService.Search(filter) as any;
-      this.data = response.data
+      const response = (await this.portService.Search(filter)) as any;
+      this.data = response.data;
       this.totalRecords = Number(response?.totalRecords || 0);
     } catch {
       this.messageService.add({
@@ -64,8 +67,23 @@ export class PortsComponent implements OnInit {
 
     this.loading = false;
   }
+  async FillServers() {
+    const response = await this.serverService.Search({});
+    this.serverOptions = (response?.data || []).map((server: any) => {
+      return {
+        uuid: server.uuid,
+        hostname: server.hostname || 'Unnamed'
+      };
+    });
+  }
+  getHostName(row: PortResponse): string {
+    const server = row.serverResponse;
+    if (!server) return '-';
 
+    return server.hostname || '-';
+  }
   async ngOnInit() {
+    await this.FillServers();
     await this.fillData(0);
     this.formChangesSub = this.dataForm.valueChanges
       .pipe(
@@ -105,7 +123,7 @@ export class PortsComponent implements OnInit {
     this.portService.SelectedData = row;
 
     let content = row ? 'Update_port' : 'Create_port';
-    this.translate.get(content).subscribe(res => content = res);
+    this.translate.get(content).subscribe((res) => (content = res));
 
     const comp = this.layoutService.OpenDialog(AddPortComponent, content);
     this.portService.Dialog = comp;
@@ -115,25 +133,11 @@ export class PortsComponent implements OnInit {
     });
   }
 
-  openAddport() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.body.style.overflow = 'hidden';
-    let content = this.portService.SelectedData == null ? 'Create_port' : 'Update_port';
-    this.translate.get(content).subscribe((res: string) => {
-      content = res
-    });
-    var component = this.layoutService.OpenDialog(AddPortComponent, content);
-    this.portService.Dialog = component;
-    component.OnClose.subscribe(() => {
-      document.body.style.overflow = '';
-      this.fillData();
-    });
-  }
 
 
   async confirmDelete(row: PortResponse) {
     this.confirmationService.confirm({
-      message: this.translate.instant('port.Do_you_want_to_delete_this_record?'),
+      message: this.translate.instant('Do_you_want_to_delete_this_record?'),
       header: this.translate.instant('Delete_Confirmation'),
       icon: 'pi pi-info-circle',
       acceptLabel: this.translate.instant('Yes'),
@@ -141,14 +145,29 @@ export class PortsComponent implements OnInit {
       key: 'confirmDialog',
       accept: async () => {
         try {
-          const resp = await this.portService.Delete(row.uuid!) as any;
-          this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
+          const resp = (await this.portService.Delete(row.uuid!)) as any;
+          if(resp.requestStatus == '200'){
+          this.messageService.add({
+          key: 'toast',
+          severity: 'success',
+          summary: this.translate.instant('Success'),
+          detail: this.translate.instant('Deleted_successfully')
+        });}
+        else if (resp.requestStatus =='400'){
+                this.messageService.add({
+            severity: 'error',
+             key: 'toast',
+            summary: this.translate.instant('Error'),
+            detail: this.translate.instant('port.Failed_to_delete')
+          });
+        }
           this.fillData(Math.floor(this.first / this.pageSize));
         } catch (error) {
           this.messageService.add({
             severity: 'error',
+             key: 'toast',
             summary: this.translate.instant('Error'),
-            detail: this.translate.instant('port.Failed_to_delete')
+            detail: this.translate.instant('Failed_to_delete')
           });
         }
       }
