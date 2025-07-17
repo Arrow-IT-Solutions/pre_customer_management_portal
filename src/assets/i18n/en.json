@@ -120,6 +120,9 @@
     "Update_port": "Update Port",
     "hostname": "Host Name",
     "Select_server": "Host Name",
-    "env_Database": "Environment"
+    "env_Database": "Environment",
+    "Environment added successfully": "Environment added successfully",
+    "Environment updated successfully": "Environment updated successfully",
+    "Cancel_definitions": "Cancel"
 
 }

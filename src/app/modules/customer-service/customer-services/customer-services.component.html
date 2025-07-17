@@ -19,9 +19,10 @@
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <div class="p-float-label">
-                    <p-dropdown [options]="statusList" optionLabel="value" optionValue="key" (onChange)="Search()"
-                      formControlName="customerName" [filter]="true">
-                    </p-dropdown>
+                   <p-dropdown [options]="customers" optionLabel="name" optionValue="uuid" formControlName="customerName"
+                      [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillCustomers($event)"
+                      (ngModelChange)="OnChange()" inputId="customerDropdown"
+                      placeholder="{{ 'customerName_definitions' | translate }}"></p-dropdown>
                     <label>{{ 'customerName_definitions' | translate }}</label>
 
                   </div>
@@ -31,9 +32,10 @@
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <div class="p-float-label">
-                    <p-dropdown [options]="statusList" optionLabel="value" optionValue="key" (onChange)="Search()"
-                      formControlName="service" [filter]="true">
-                    </p-dropdown>
+                    <p-dropdown [options]="services" optionLabel="name" optionValue="uuid" formControlName="service"
+                      [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillServices($event)"
+                      (ngModelChange)="OnChange()" inputId="serviceDropdown"
+                      placeholder="{{ 'service_definitions' | translate }}"></p-dropdown>
                     <label>{{ 'service_definitions' | translate }}</label>
 
                   </div>
@@ -85,7 +87,7 @@
             </div>
             <div class="card__contents__item">
               <div class="card-label">{{ 'status_subscription' | translate }}</div>
-              <div class="card-info">{{ row.subscription.status }}</div>
+              <div class="card-info">{{ row.subscription.statusValue }}</div>
             </div>
             <!-- <div class="card__contents__item">
               <div class="card-label">{{ 'price_subscription' | translate }}</div>
@@ -104,7 +106,7 @@
               {{ 'Edit_subscription' | translate }}
             </button>
             <!-- (click)="confirmDelete()" -->
-            <button mat-menu-item>
+            <button mat-menu-item (click)="confirmDelete(row)">
               <span class="material-symbols-outlined" id="icon">delete</span>
               {{ 'Delete_subscription' | translate }}
             </button>

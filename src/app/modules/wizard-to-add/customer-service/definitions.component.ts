@@ -76,6 +76,7 @@ async ngOnInit() {
 
     const response = await this.constantService.Search('SubscriptionStatus') as any;
     this.statusList = response?.data ?? [];
+
     await this.RetriveCustomer();
     await this.RetriveService();
 
@@ -108,9 +109,27 @@ restoreFormFromSession() {
       service: this.session.serviceIDFK || '',
       startDate: this.session.subscription?.startDate ? new Date(this.session.subscription.startDate) : '',
       endDate: this.session.subscription?.endDate ? new Date(this.session.subscription.endDate) : '',
-      status: Number(this.session.subscription?.status) || '',
+      status: this.session.subscription?.status ? Number(this.session.subscription.status) : '', // Convert to number to match dropdown options
       price: this.session.subscription?.price || ''
     });
+
+    const statusValue = this.session.subscription?.status;
+    let statusAsNumber: number | undefined;
+    let matchingStatusOption: ConstantResponse | undefined;
+
+    if (statusValue !== undefined && statusValue !== null && statusValue !== '') {
+      statusAsNumber = Number(statusValue);
+      matchingStatusOption = this.statusList.find(opt => opt.key === statusAsNumber);
+    }
+
+    // console.log(' Status matching check:', {
+    //   sessionStatus: statusValue,
+    //   sessionStatusType: typeof statusValue,
+    //   convertedToNumber: statusAsNumber,
+    //   matchingOption: matchingStatusOption,
+    //   allStatusKeys: this.statusList.map(opt => opt.key),
+    //   allStatusKeysTypes: this.statusList.map(opt => typeof opt.key)
+    // });
   } else {
     this.resetForm();
   }

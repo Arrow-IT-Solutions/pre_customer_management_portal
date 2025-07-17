@@ -22,13 +22,14 @@ import { MessageService, ConfirmationService } from 'primeng/api';
     SharedModule,
     ReactiveFormsModule
   ],
-   providers: [ 
+   providers: [
     MessageService,
     ConfirmationService
   ]
 })
 export class SubscriptionModule { }
 export interface SubscriptionRequest extends RequestBase {
+  uuid?: string;
   customerServiceIDFK: string;
   startDate: string;
   endDate: string;

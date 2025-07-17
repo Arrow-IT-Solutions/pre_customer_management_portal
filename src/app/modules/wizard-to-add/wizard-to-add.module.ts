@@ -75,6 +75,7 @@ export interface ProvisionedServiceResponse extends ResponseBase {
 }
 
 export interface ProvisionedServiceUpdateRequest extends RequestBase {
+  uuid: string;
   customerIDFK?: string;
   serviceIDFK?: string;
   subscription?: SubscriptionUpdateRequest;
