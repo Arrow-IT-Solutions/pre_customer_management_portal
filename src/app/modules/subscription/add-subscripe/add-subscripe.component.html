@@ -8,28 +8,37 @@
         </div>
         <div class="col-12 row m-0 p-0">
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['startDate'].errors}">
               <p-calendar [showIcon]="true" formControlName="startDate"></p-calendar>
-              <label>{{ 'startDate_subscription' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['startDate'].errors}">{{ 'startDate_subscription' | translate }}</label>
+            </div>
+            <div *ngIf="submitted && form['startDate'].errors?.['required']" class="text-danger mt-1">
+              {{ 'field_required' | translate }}
             </div>
           </div>
            <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['endDate'].errors}">
               <p-calendar [showIcon]="true" formControlName="endDate"></p-calendar>
-              <label>{{ 'endDate_subscription' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['endDate'].errors}">{{ 'endDate_subscription' | translate }}</label>
+            </div>
+            <div *ngIf="submitted && form['endDate'].errors?.['required']" class="text-danger mt-1">
+              {{ 'field_required' | translate }}
             </div>
           </div>
 
 
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['customerServiceIDFK'].errors}">
               <p-dropdown
                 [options]="customerServiceList"
                 [optionLabel]="getCustomerServiceLabel()"
                 optionValue="uuid"
                 formControlName="customerServiceIDFK">
               </p-dropdown>
-              <label>{{ 'customer_service' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['customerServiceIDFK'].errors}">{{ 'customer_service' | translate }}</label>
+            </div>
+            <div *ngIf="submitted && form['customerServiceIDFK'].errors?.['required']" class="text-danger mt-1">
+              {{ 'field_required' | translate }}
             </div>
           </div>
 
@@ -37,7 +46,7 @@
 
         
           <div class="col-12 mb-3">
-             <div class="p-float-label">
+             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['status'].errors}">
              <p-dropdown
                 [options]="statusList"
                 optionLabel="value"
@@ -46,14 +55,20 @@
               </p-dropdown>
 
 
-                <label>{{ 'status_subscription' | translate }}</label>               
+                <label [ngClass]="{'error': submitted && form['status'].errors}">{{ 'status_subscription' | translate }}</label>               
               </div>
+              <div *ngIf="submitted && form['status'].errors?.['required']" class="text-danger mt-1">
+              {{ 'field_required' | translate }}
+            </div>
           </div>
         
            <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['price'].errors}">
               <input pInputText type="text" formControlName="price" />
-              <label>{{ 'price_subscription' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['price'].errors}">{{ 'price_subscription' | translate }}</label>
+            </div>
+            <div *ngIf="submitted && form['price'].errors?.['required']" class="text-danger mt-1">
+              {{ 'field_required' | translate }}
             </div>
           </div>
           

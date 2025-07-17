@@ -54,7 +54,7 @@ export class AddServiceComponent {
     this.submitted = true;
 
     if (this.dataForm.invalid) {
-      this.layoutService.showError(this.messageService, 'toast', true, 'Please correct the errors in the form.');
+      this.layoutService.showError(this.messageService, 'toast', true, 'Please fill all required fields');
       return;
     }
 

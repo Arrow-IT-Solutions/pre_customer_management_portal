@@ -57,14 +57,15 @@
   <ng-container *ngIf="!loading; else ListView">
     <div class="row mx-0 mt-2 box">
       <div *ngFor="let row of data" class="card col-12 mx-0 mb-2">
-        <div class="col-lg-9 col-md-12 col-sm-12 card__contents">
-          <div class="card-section">
-            <div class="card-section__title">info</div>
+         <div class="icon-container">
+          <span class="material-symbols-outlined fill">database</span>
+        </div>
+        <div class=" card__contents"> 
             <div class="card-section__items">
               <div class="card__contents__item">
                 <div class="card-label">{{ 'name_dataBase' | translate }}</div>
                 <div class="card-info">
-                  <span class="material-symbols-outlined fill">dns</span>
+                  
                   {{ row.name || '-' }}
                 </div>
               </div>
@@ -82,12 +83,16 @@
                   {{ row.password || '-' }}
                 </div>
               </div>
-              <div class="card__contents__item">
+               <div class="card__contents__item">
                <div class="card-label">{{ 'environment' | translate }}</div>
                  <div class="card-info">
                  {{ getEnvName(row) || '-' }}
                  </div>
                  </div>
+            
+            </div>
+             <div class="card-section__items">
+             
 
               <div class="card__contents__item">
                 <div class="card-label">{{ 'connectionString_database' | translate }}</div>
@@ -96,7 +101,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          
         </div>
 
         <div class="one">
@@ -105,11 +110,11 @@
           </div>
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openDialog(row)">
-              <span class="material-symbols-outlined">edit</span>
+              <span class="material-symbols-outlined" id="icon">edit</span>
               {{ 'Edit_database' | translate }}
             </button>
             <button mat-menu-item (click)="confirmDelete(row)">
-              <span class="material-symbols-outlined">delete</span>
+              <span class="material-symbols-outlined" id="icon">delete</span>
               {{ 'Delete_database' | translate }}
             </button>
           </mat-menu>
@@ -131,21 +136,12 @@
   </ng-container>
 
   <ng-template #ListView>
-     <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+       <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="row mx-0 mt-2">
         <p-skeleton height="10rem"></p-skeleton>
       </div>
     </div>
-    <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
-        <p-skeleton height="10rem"></p-skeleton>
-      </div>
-    </div>
-    <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
-        <p-skeleton height="10rem"></p-skeleton>
-      </div>
-    </div>
+   
   </ng-template>
 
   <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">

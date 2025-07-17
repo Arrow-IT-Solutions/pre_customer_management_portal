@@ -7,7 +7,7 @@
           <span>{{ 'Basic_Info_Form' | translate }}</span>
         </div>
         <div class="col-12 mb-3">
-          <div class="p-float-label">
+          <div class="p-float-label" [ngClass]="{'error_border': submitted && form['serverIDFK'].errors}">
                   <p-dropdown 
                     [options]="serverOptions"
                     optionLabel="hostname"
@@ -16,7 +16,7 @@
                     placeholder="{{ 'Select_server' | translate }}">
                   </p-dropdown>
 
-            <label>{{ 'hostname' | translate }}</label>
+            <label [ngClass]="{'error': submitted && form['serverIDFK'].errors}">{{ 'hostname' | translate }}</label>
           </div>
           <div *ngIf="submitted && form['serverIDFK'].errors?.['required']" class="text-danger mt-1">
             {{ 'field_required' | translate }}
@@ -24,9 +24,9 @@
         </div>
         <div class="col-12 row m-0 p-0">
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['portNumber'].errors}">
               <input pInputText type="text" formControlName="portNumber" />
-              <label>{{ 'number_port' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['portNumber'].errors}">{{ 'number_port' | translate }}</label>
             </div>
                       <div *ngIf="submitted && form['portNumber'].errors?.['required']" class="text-danger mt-1">
             {{ 'field_required' | translate }}

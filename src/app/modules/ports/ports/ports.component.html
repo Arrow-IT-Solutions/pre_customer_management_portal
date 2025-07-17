@@ -14,7 +14,7 @@
               <span>Filter By</span>
             </div>
             <div class="container">
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mt-3">
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
@@ -58,14 +58,13 @@
               <div class="card-label">{{ 'number_port' | translate }}</div>
               <div class="card-info">{{ row.portNumber || '-' }}</div>
             </div>
+             <div class="card__contents__item">
+              <div class="card-label">{{ 'hostname' | translate }}</div>
+              <div class="card-info">{{ getHostName(row) || '-' }}</div>
+            </div>
           </div>
         </div>
-                <div class="col-3 card__contents">
-               <div class="card-label">{{ 'hostname' | translate }}</div>
-                 <div class="card-info">
-                 {{ getHostName(row) || '-' }}
-                 </div>
-        </div>
+          
 
         <div class="one">
           <div [matMenuTriggerFor]="menu" class="card__actions">
