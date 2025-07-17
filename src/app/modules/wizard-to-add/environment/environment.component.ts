@@ -31,7 +31,7 @@ export class EnvironmentComponent implements OnDestroy {
   editingServiceId: string | null = null;
   isEditingEnvironment: boolean = false;
   editingEnvironmentIndex: number = -1;
-   constructor(
+  constructor(
     public formBuilder: FormBuilder,
     public router: Router,
     public layoutService: LayoutService,
@@ -41,15 +41,15 @@ export class EnvironmentComponent implements OnDestroy {
     public translate: TranslateService,
     private cdr: ChangeDetectorRef
 
-    ) {
+  ) {
     this.dataForm = formBuilder.group({
-     nameEnvEn:['',Validators.required],
-     nameEnvAr:['',Validators.required],
-     urlEnv:['',Validators.required],
-     server:['',Validators.required],
-     databaseName:['',Validators.required],
-     userName:['',Validators.required],
-     password:['',Validators.required]
+      nameEnvEn: ['', Validators.required],
+      nameEnvAr: ['', Validators.required],
+      urlEnv: ['', Validators.required],
+      server: ['', Validators.required],
+      databaseName: ['', Validators.required],
+      userName: ['', Validators.required],
+      password: ['', Validators.required]
 
     });
 
@@ -58,25 +58,24 @@ export class EnvironmentComponent implements OnDestroy {
     return this.dataForm.controls;
   }
 
- async onSubmit() {
-   this.submitted = true;
-
-    if (this.dataForm.invalid) {
-      this.layoutService.showError(this.messageService, 'toast', true, 'Please fill all required fields');
-      return;
-    }
+  async onSubmit() {
     try {
       this.btnLoading = true;
-// last v
+      this.loading = true;
+
       await this.Save();
+
+
     } catch (exceptionVar) {
       this.btnLoading = false;
+      this.loading = false;
     }
+    this.loading = false;
   }
 
   async Save() {
     if (!this.envDatabase || this.envDatabase.length === 0) {
-      this.layoutService.showError(this.messageService, 'toast', true,  this.translate.instant("Environment_required"));
+      this.layoutService.showError(this.messageService, 'toast', true, this.translate.instant("Environment_required"));
       return;
     }
 
@@ -133,9 +132,9 @@ export class EnvironmentComponent implements OnDestroy {
         };
 
         if (this.session.subscription.uuid &&
-            this.session.subscription.uuid.trim() !== '' &&
-            this.session.subscription.uuid !== 'undefined' &&
-            this.session.subscription.uuid !== 'null') {
+          this.session.subscription.uuid.trim() !== '' &&
+          this.session.subscription.uuid !== 'undefined' &&
+          this.session.subscription.uuid !== 'null') {
           subscriptionData.uuid = this.session.subscription.uuid.trim();
         } else {
           if (this.editingServiceId) {
@@ -171,14 +170,14 @@ export class EnvironmentComponent implements OnDestroy {
 
           const envTranslations = Array.isArray(env.environmentTranslation)
             ? env.environmentTranslation.filter(et =>
-                et &&
-                et.name &&
-                et.name.trim() !== '' &&
-                et.name !== 'undefined' &&
-                et.language &&
-                et.language.trim() !== '' &&
-                et.language !== 'undefined'
-              )
+              et &&
+              et.name &&
+              et.name.trim() !== '' &&
+              et.name !== 'undefined' &&
+              et.language &&
+              et.language.trim() !== '' &&
+              et.language !== 'undefined'
+            )
             : [];
 
           const updateEnv: any = {};
@@ -256,13 +255,13 @@ export class EnvironmentComponent implements OnDestroy {
 
         if (this.isEditMode) {
           sessionStorage.removeItem('editingProvisionedServiceId');
-          this.router.navigate(['layout-admin/customer-services']);
+
         } else {
           this.isNavigatingToCustomerService = true;
-          this.router.navigate(['layout-admin/add/customer-service']);
         }
+        this.router.navigate(['layout-admin/customer-services']);
         this.btnLoading = false;
-      }, 2000);
+      }, 500);
     } else {
       console.error(' Error response:', response);
       const errorMessage = response?.requestMessage ||
@@ -285,23 +284,22 @@ export class EnvironmentComponent implements OnDestroy {
     }
   }
 
-
   resetForm() {
-  this.dataForm.reset();
+    this.dataForm.reset();
   }
 
-   togglePasswordVisibility(): void {
-  this.isPasswordVisible = !this.isPasswordVisible;
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
   }
 
-  back(){
+  back() {
     this.isNavigatingToCustomerService = true;
     this.router.navigate(['layout-admin/add/customer-service'], {
       queryParams: { fromBack: 'true' }
     });
   }
 
-   async ngOnInit() {
+  async ngOnInit() {
     try {
       this.loading = true;
 
@@ -314,28 +312,28 @@ export class EnvironmentComponent implements OnDestroy {
 
       this.initializeServerIdMapping();
 
-        this.session = this.provisionedService.getSession();
+      this.session = this.provisionedService.getSession();
 
-        if (this.session.envDatabases && this.session.envDatabases.length > 0) {
-          this.envDatabase = [...this.session.envDatabases];
-          this.envDatabase.forEach((env, index) => {
-            console.log(`Environment ${index + 1}:`, {
-              url: env.url,
-              serverIDFK: env.serverIDFK,
-              dbName: env.dbName,
-              dbUserName: env.dbUserName,
-              connectionString: env.connectionString,
-              environmentTranslation: env.environmentTranslation
-            });
-
-            const server = this.findServerByMultipleIds(env.serverIDFK);
-            if (!server) {
-              console.warn(`Server with ID ${env.serverIDFK} not found in servers list for environment ${index + 1}`);
-            } else {
-              console.log(`Server found for environment ${index + 1}:`, server.hostname);
-            }
+      if (this.session.envDatabases && this.session.envDatabases.length > 0) {
+        this.envDatabase = [...this.session.envDatabases];
+        this.envDatabase.forEach((env, index) => {
+          console.log(`Environment ${index + 1}:`, {
+            url: env.url,
+            serverIDFK: env.serverIDFK,
+            dbName: env.dbName,
+            dbUserName: env.dbUserName,
+            connectionString: env.connectionString,
+            environmentTranslation: env.environmentTranslation
           });
-        }
+
+          const server = this.findServerByMultipleIds(env.serverIDFK);
+          if (!server) {
+            console.warn(`Server with ID ${env.serverIDFK} not found in servers list for environment ${index + 1}`);
+          } else {
+            console.log(`Server found for environment ${index + 1}:`, server.hostname);
+          }
+        });
+      }
 
       this.resetForm();
 
@@ -389,7 +387,9 @@ export class EnvironmentComponent implements OnDestroy {
       }
     }
 
-  }   async RetriveServer() {
+  }
+
+  async RetriveServer() {
 
     var serverID: any;
 
@@ -398,7 +398,7 @@ export class EnvironmentComponent implements OnDestroy {
       hostname: '',
       uuid: serverID,
       pageIndex: "",
-      pageSize: '100000'
+      pageSize: '10'
 
     }
     const response = await this.serverService.Search(filter) as any
@@ -416,11 +416,11 @@ export class EnvironmentComponent implements OnDestroy {
       });
     });
 
-      await this.ReWriteServer();
+    await this.ReWriteServer();
 
   }
 
-    ReWriteServer(): any {
+  ReWriteServer(): any {
 
     var serverDTO: any[] = []
 
@@ -442,7 +442,7 @@ export class EnvironmentComponent implements OnDestroy {
 
   }
 
-    async FillServer(event: any = null) {
+  async FillServer(event: any = null) {
 
     let filterInput = '';
     if (event != null) {
@@ -573,7 +573,7 @@ export class EnvironmentComponent implements OnDestroy {
 
     this.updateSession();
 
-   // this.layoutService.showSuccess(this.messageService, 'toast', true, 'تم حذف البيئة بنجاح');
+    // this.layoutService.showSuccess(this.messageService, 'toast', true, 'تم حذف البيئة بنجاح');
   }
 
   getEnvironmentName(environmentTranslation: any[], language: string): string {
@@ -679,9 +679,9 @@ export class EnvironmentComponent implements OnDestroy {
 
     let server = this.servers.find(s => {
       const matches = s.uuid?.toString() === searchId ||
-             (s as any).serverIDPK?.toString() === searchId ||
-             (s as any).id?.toString() === searchId ||
-             (s as any).serverId?.toString() === searchId;
+        (s as any).serverIDPK?.toString() === searchId ||
+        (s as any).id?.toString() === searchId ||
+        (s as any).serverId?.toString() === searchId;
 
       if (matches) {
         console.log('🎯 Direct match found:', {
