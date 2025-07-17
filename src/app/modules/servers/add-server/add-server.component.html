@@ -8,16 +8,22 @@
         </div>
         <div class="col-12 row m-0 p-0">
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['hostname'].errors}">
               <input pInputText type="text" formControlName="hostname" />
-              <label>{{ 'hostName_servers' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['hostname'].errors}">{{ 'hostName_servers' | translate }}</label>
             </div>
+              <div *ngIf="submitted && form['hostname'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['ipAddress'].errors}">
               <input pInputText type="text" formControlName="ipAddress" />
-              <label>{{ 'IpAddress_servers' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['ipAddress'].errors}">{{ 'IpAddress_servers' | translate }}</label>
             </div>
+              <div *ngIf="submitted && form['ipAddress'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>
         </div>
       </div>

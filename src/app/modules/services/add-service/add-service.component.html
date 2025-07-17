@@ -8,24 +8,33 @@
         </div>
         <div class="col-12 row m-0 p-0">
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['nameEn'].errors}">
               <input pInputText type="text" formControlName="nameEn" />
-              <label>{{ 'nameEn_services' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['nameEn'].errors}">{{ 'nameEn_services' | translate }}</label>
               
             </div>
+             <div *ngIf="submitted && form['nameEn'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['nameAr'].errors}">
               <input pInputText type="text" formControlName="nameAr" />
-              <label>{{ 'nameAr_services' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['nameAr'].errors}">{{ 'nameAr_services' | translate }}</label>
           
             </div>
+             <div *ngIf="submitted && form['nameAr'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['desc'].errors}">
               <input pInputText type="text" formControlName="desc" />
-              <label>{{ 'desc_services' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['desc'].errors}">{{ 'desc_services' | translate }}</label>
             </div>
+             <div *ngIf="submitted && form['desc'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>        
         </div>
       </div>

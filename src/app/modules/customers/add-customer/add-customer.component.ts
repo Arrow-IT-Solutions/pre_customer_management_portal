@@ -49,6 +49,11 @@ export class AddCustomerComponent {
       }
 
   async onSubmit() {
+    this.submitted = true;
+      if (this.dataForm.invalid) {
+      this.layoutService.showError(this.messageService, 'toast', true, 'Please fill all required fields');
+      return;
+    }
     try {
       this.btnLoading = true;
       if (this.dataForm.invalid) {
