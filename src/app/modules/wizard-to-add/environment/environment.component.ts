@@ -61,7 +61,7 @@ export class EnvironmentComponent implements OnDestroy {
  async onSubmit() {
     try {
       this.btnLoading = true;
-
+// last v
       await this.Save();
     } catch (exceptionVar) {
       this.btnLoading = false;
@@ -703,7 +703,7 @@ export class EnvironmentComponent implements OnDestroy {
 
     const numericId = parseInt(searchId);
     if (!isNaN(numericId) && numericId > 0 && numericId <= this.servers.length) {
-      const serverByIndex = this.servers[numericId - 1]; 
+      const serverByIndex = this.servers[numericId - 1];
       if (serverByIndex && serverByIndex.uuid) {
         const serverUuid = serverByIndex.uuid;
         if (serverUuid) {
@@ -732,7 +732,7 @@ export class EnvironmentComponent implements OnDestroy {
     let serverIdToUse = envToEdit.serverIDFK;
 
     if (serverToUse && serverToUse.uuid) {
-      serverIdToUse = serverToUse.uuid;  
+      serverIdToUse = serverToUse.uuid;
       console.log('Server details:', {
         hostname: serverToUse.hostname,
         uuid: serverToUse.uuid,
@@ -762,7 +762,7 @@ export class EnvironmentComponent implements OnDestroy {
         nameEnvEn: this.getEnvironmentName(envToEdit.environmentTranslation, 'en'),
         nameEnvAr: this.getEnvironmentName(envToEdit.environmentTranslation, 'ar'),
         urlEnv: envToEdit.url,
-        server: serverIdToUse, 
+        server: serverIdToUse,
         databaseName: envToEdit.dbName,
         userName: envToEdit.dbUserName,
         password: envToEdit.dbPassword
@@ -806,11 +806,11 @@ export class EnvironmentComponent implements OnDestroy {
     const selectedServer = this.servers.find(s => s.uuid === selectedServerUuid);
 
     const originalEnv = this.envDatabase[this.editingEnvironmentIndex];
-    let serverIDFKToSave = originalEnv.serverIDFK;  
+    let serverIDFKToSave = originalEnv.serverIDFK;
 
     const updatedEnvDatabase: EnvDatabase = {
       url: this.dataForm.controls['urlEnv'].value || '',
-      serverIDFK: serverIDFKToSave, 
+      serverIDFK: serverIDFKToSave,
       environmentTranslation: environmentTranslations,
       dbName: this.dataForm.controls['databaseName'].value || '',
       connectionString: connectionString,
