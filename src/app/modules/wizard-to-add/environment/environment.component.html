@@ -41,7 +41,7 @@
             </div>
               <div class="col-12 mb-3">
               <div class="p-float-label" [ngClass]="{'error_border': submitted && form['server'].errors}">
-              <p-dropdown [options]="servers" optionLabel="hostname" optionValue="uuid" formControlName="server"
+              <p-dropdown #serverDropdown [options]="servers" optionLabel="hostname" optionValue="uuid" formControlName="server"
                 [filter]="true" [showClear]="true" filterBy="hostname" (onFilter)="FillServer($event)" dir="ltr"></p-dropdown>
               <label id="label" [ngClass]="{'error': submitted && form['server'].errors}">{{ 'ServerName_definitions' | translate }}</label>
               <!-- <span *ngIf="submitted && form['server'].errors" class="error-validation">{{ 'Field_Required' |
@@ -81,7 +81,7 @@
                   class="pi"
                   [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'"
                   (click)="togglePasswordVisibility()"
-                  
+
                   >
                 </i>
             </div>
@@ -92,7 +92,12 @@
         </div>
       </div>
       <div style="display: flex;align-items: center;justify-content: center;">
-      <p-button type="button" class="btn-primary" (click)="addEnvironment()">{{ 'Add_definitions' | translate }}</p-button>
+      <p-button type="button" class="btn-primary" (click)="addEnvironment()">
+        {{ isEditingEnvironment ? ('Update_definitions' | translate) : ('Add_definitions' | translate) }}
+      </p-button>
+      <p-button *ngIf="isEditingEnvironment" type="button" class="btn-primary" (click)="cancelEnvironmentEdit()">
+        {{ 'Cancel_definitions' | translate }}
+      </p-button>
       </div>
 
     </div>
@@ -114,7 +119,7 @@
           <div class="col-12" *ngIf="envDatabase.length > 0">
             <div class="row" >
               <div class="col-md-6 mb-3" *ngFor="let env of envDatabase; let i = index">
-                <div class="card environment-card">
+                <div class="card environment-card" [ngClass]="{'editing': isEditingEnvironment && editingEnvironmentIndex === i}">
                   <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="mb-0">
                       <span class="badge me-2">{{ i + 1 }}</span>
@@ -124,10 +129,10 @@
                       <i class="pi pi-trash"></i>
                     </button> -->
                     <div class="actions">
-                    <span class="material-symbols-outlined">edit</span>
-                    <span class="material-symbols-outlined"  (click)="removeEnvironment(i)">delete</span>
+                    <span class="material-symbols-outlined" (click)="editEnvironment(i)" title="{{ 'Edit_definitions' | translate }}">edit</span>
+                    <span class="material-symbols-outlined"  (click)="removeEnvironment(i)" title="{{ 'Delete_definitions' | translate }}">delete</span>
                     </div>
-                    
+
                   </div>
                   <div class="card-body">
                     <div class="environment-details">
@@ -139,7 +144,7 @@
                         <label>{{ 'NameEnvironmentAr_definitions' | translate }}:</label>
                         <span id="nameAr">{{ getEnvironmentName(env.environmentTranslation, 'ar') || 'N/A' }}</span>
 
-                        <span id="nameAr">{{ getEnvironmentName(env.environmentTranslation, 'ar') }}</span>
+                        <!-- <span id="nameAr">{{ getEnvironmentName(env.environmentTranslation, 'ar') }}</span> -->
 
                       </div>
                       <div class="detail-item">
@@ -157,6 +162,10 @@
                       <div class="detail-item">
                         <label>{{ 'userName_definitions' | translate }}:</label>
                         <span>{{ env.dbUserName || 'N/A' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'password_definitions' | translate }}:</label>
+                        <span>{{ env.dbPassword || 'N/A' }}</span>
                       </div>
                       <div class="detail-item">
                         <label>Connection String:</label>

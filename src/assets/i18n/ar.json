@@ -115,6 +115,9 @@
     "Update_port": "تعديل المنفذ",
     "hostname": "اسم المضيف",
     "Select_server":"اسم المضيف",
-    "env_Database": "البيئة"
+    "env_Database": "البيئة",
+    "Environment added successfully": "تمت إضافة البيئة بنجاح",
+    "Environment updated successfully": "تم تحديث البيئة بنجاح",
+    "Cancel_definitions": "إلغاء"
 
 }

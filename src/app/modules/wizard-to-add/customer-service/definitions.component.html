@@ -21,7 +21,7 @@
               {{ 'field_required' | translate }}
             </div>
             </div>
-            
+
              <div class="col-12 mb-3 mt-2">
               <div class="p-float-label" [ngClass]="{'error_border': submitted && form['service'].errors}">
               <p-dropdown [options]="services" optionLabel="name" optionValue="uuid" formControlName="service"
@@ -68,7 +68,7 @@
                 optionValue="key"
                 formControlName="status"
                 dir="ltr"
-                
+
                 >
               </p-dropdown>
 
@@ -108,8 +108,8 @@
     <div class="col-xs-12 mt-4 text-end" style="padding: 2rem 1rem;">
       <!-- <p-button type="Submit" class="btn-primary">{{ 'Cancle_definitions' | translate }}</p-button> -->
 
-      <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ isEditMode ? ('Update_definitions' | translate) : ('Next_definitions' | translate) }}</p-button>
-
+      <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{  ('Next_definitions' | translate) }}</p-button>
+ <!-- <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ isEditMode ? ('Update_definitions' | translate) : ('Next_definitions' | translate) }}</p-button> -->
     </div>
   </div>
 </form>
