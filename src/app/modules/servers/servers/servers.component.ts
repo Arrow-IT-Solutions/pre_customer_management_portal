@@ -42,7 +42,7 @@ export class ServersComponent {
   ) {
     this.dataForm = this.formBuilder.group({
       hostname: [''],
-      ipAddress: ['']
+      ipaddress: ['']
     });
     this.serverService.refreshServers$.subscribe(() => {
       this.FillData();
@@ -60,14 +60,13 @@ export class ServersComponent {
     const filter: ServerSearchRequest = {
       uuid: '',
       hostname: this.dataForm.controls['hostname'].value,
-      ipAddress: this.dataForm.controls['ipAddress'].value,
+      ipAddress: this.dataForm.controls['ipaddress'].value,
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString()
     };
 
     const response = await this.serverService.Search(filter) as any;
 
-    console.log(response);
     this.data = response?.data || [];
     this.totalRecords = Number(response?.totalRecords || 0);
     this.loading = false;
@@ -78,7 +77,7 @@ export class ServersComponent {
     document.body.style.overflow = 'hidden';
     this.serverService.SelectedData = row;
 
-    let content = row == null ? 'Create_Subscripe' : 'Update_Subscripe';
+    let content = row == null ? 'Create_Server' : 'Update_Server';
     this.translate.get(content).subscribe((res: string) => {
       content = res;
     });
@@ -124,10 +123,9 @@ export class ServersComponent {
   }
 
   paginate(event: any) {
-    this.pageSize = event.rows;
-    this.first = event.first;
-    const pageIndex = event.first / event.rows;
-    this.FillData(pageIndex);
+    this.pageSize = event.rows
+    this.first = event.first
+    this.FillData(event.first);
   }
 
   OnChange() {
