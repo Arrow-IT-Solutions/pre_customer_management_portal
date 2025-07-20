@@ -11,6 +11,9 @@ import { AddEnvironmentComponent } from '../add-environment/add-environment.comp
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { EnvironmentService } from 'src/app/Core/services/environments.service';
 import { ServersService } from 'src/app/layout/service/servers.service';
+import { customerServiceService } from 'src/app/layout/service/customerService.service';
+import { ProvisionedServiceSearchRequest } from '../../wizard-to-add/wizard-to-add.module';
+import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 
 @Component({
   selector: 'app-environment',
@@ -28,6 +31,8 @@ export class EnvironmentComponent {
   dataForm!: FormGroup;
   data: EnvironmentResponse[] = [];
 servers: { [key: string]: string } = {};
+customerServices: { [key: string]: string } = {};
+
 
   loading = false;
   isResetting: boolean = false;
@@ -42,6 +47,8 @@ servers: { [key: string]: string } = {};
     public layoutService: LayoutService,
     public messageService: MessageService,
     private serverService: ServersService,
+    public provisionedService: ProvisionedService,
+    public customerService: customerServiceService,
     public confirmationService: ConfirmationService
   ) {
     this.dataForm = this.formBuilder.group({
@@ -55,6 +62,7 @@ servers: { [key: string]: string } = {};
 
   async ngOnInit() {
     await this.retrieveServer();
+    await this.retrieveCustomerService();
     await this.FillData();
   }
 
@@ -71,6 +79,7 @@ servers: { [key: string]: string } = {};
     };
 
     const response = await this.environmentService.Search(filter) as any;
+console.log('Environment API Response:', response);
 
     this.data = response?.data || [];
     this.totalRecords = Number(response?.totalRecords || 0);
@@ -81,6 +90,44 @@ retrieveServers(row: EnvironmentResponse): string {
   const serverUUID = row.serverIDFK;
   return this.servers[serverUUID?.trim()] || '-';
 }
+
+
+retrieveCustomerServiceLabel(env: EnvironmentResponse): string {
+  const customerServiceUUID = env.customerServiceIDFK?.trim();
+  return this.customerServices[customerServiceUUID] || '-';
+}
+
+
+
+ async retrieveCustomerService() {
+  const filter = {
+    uuid: '',
+    CustomerIDFK: '',
+    ServiceIDFK: '',
+    IncludeCustomer: '1',   
+    IncludeService: '1',
+    pageIndex: '0',
+    pageSize: '10'         
+  };
+
+  const response = await this.provisionedService.Search(filter) as any;
+  const customerService = response?.data || [];
+
+  this.customerServices = {};
+
+  const lang = this.layoutService.config.lang || 'en';
+
+  customerService.forEach((cs: any) => {
+    if (cs.uuid) {
+      const customerName = cs.customer?.customerTranslation?.[lang]?.name || 'Unknown Customer';
+      const serviceName = cs.service?.serviceTranslation?.[lang]?.name || 'Unknown Service';
+      this.customerServices[cs.uuid.trim()] = `${customerName} - ${serviceName}`;
+    }
+  });
+
+  console.log('Customer Services Map:', this.customerServices);
+}
+
 
 
   async retrieveServer() {
@@ -167,11 +214,11 @@ console.log('Server Map:', this.servers);
   }
 
   paginate(event: any) {
-  this.pageSize = event.rows;
-  this.first = event.first;
-  const pageIndex = Math.floor(event.first / event.rows);
-  this.FillData(pageIndex);
-}
+    this.pageSize = event.rows
+    this.first = event.first
+    this.FillData(event.first)
+
+  }
 
 
   showDialog(link: string) {

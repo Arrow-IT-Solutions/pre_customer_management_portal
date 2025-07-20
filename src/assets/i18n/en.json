@@ -124,5 +124,9 @@
     "Environment updated successfully": "Environment updated successfully",
     "Cancel_definitions": "Cancel",
     "Create_Server": "Create Server",
-    "Update_Server": "Update Server"
+    "Update_Server": "Update Server",
+    "Create_Environment":"Create Environment",
+    "Update_Environment": "Update Environment",
+    "Select_ServerIDFK" : "Select Server",
+    "Select_Customer_Service" : "Select Customer Service"
 }
