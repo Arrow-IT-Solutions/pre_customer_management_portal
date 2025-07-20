@@ -5,6 +5,8 @@ import { MessageService } from 'primeng/api';
 import { EnvironmentService } from 'src/app/Core/services/environments.service';
 import { DatabaseService } from 'src/app/layout/service/databases.service';
 import { LayoutService } from 'src/app/layout/service/layout.service';
+import { DatabaseUpdateRequest, DatabaseRequest } from '../data-bases.module';
+import { EncryptionService } from 'src/app/shared/service/encryption.service';
 
 @Component({
   selector: 'app-add-database',
@@ -24,11 +26,12 @@ export class AddDatabaseComponent {
 
   constructor(
     public formBuilder: FormBuilder,
-    public messageService: MessageService, 
-    public databaseService: DatabaseService, 
-    public layoutService: LayoutService, 
-    public environmentService: EnvironmentService, 
-    public translate: TranslateService
+    public messageService: MessageService,
+    public databaseService: DatabaseService,
+    public layoutService: LayoutService,
+    public environmentService: EnvironmentService,
+    public translate: TranslateService,
+    public encryptionService: EncryptionService
   ) {
     this.dataForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -61,11 +64,12 @@ export class AddDatabaseComponent {
   }
 
   async onSubmit() {
-      this.submitted = true;
-      if (this.dataForm.invalid) {
+    this.submitted = true;
+    if (this.dataForm.invalid) {
       this.layoutService.showError(this.messageService, 'toast', true, 'Please fill all required fields');
       return;
     }
+
     try {
       this.btnLoading = true;
       if (this.dataForm.invalid) {
@@ -81,35 +85,59 @@ export class AddDatabaseComponent {
   }
   async Save() {
     let response;
-    const payload: any = { ...this.dataForm.value };
+    let password = this.dataForm.controls['password'].value.toString();
+    let connectionSTR = this.dataForm.controls['connectionString'].value.toString();
+    let encryptedPass = EncryptionService.encrypt(password);
+    let encryptedSTR = EncryptionService.encrypt(connectionSTR);
+
 
     if (this.databaseService.SelectedData != null) {
-      payload.uuid = this.databaseService.SelectedData.uuid;
-      response = await this.databaseService.Update(payload);
+      // update
+      var database: DatabaseUpdateRequest = {
 
-      this.messageService.add({
-        key: 'toast',
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Updated successfully'
-      });
+        name: this.dataForm.controls['name'].value.toString(),
+        userName: this.dataForm.controls['userName'].value.toString(),
+        password: (await encryptedPass),
+        connectionString: (await encryptedSTR),
+        envIDFK: this.dataForm.controls['envIDFK'].value.toString(),
+        uuid: this.databaseService.SelectedData?.uuid?.toString(),
+      };
+      response = await this.databaseService.Update(database);
 
-      this.closeDialog();
+
+      if (response.requestStatus == "200") {
+        this.databaseService.Dialog.adHostChild.viewContainerRef.clear();
+        this.databaseService.Dialog.adHostDynamic.viewContainerRef.clear();
+      }
+
     } else {
-      response = await this.databaseService.Add(payload);
+      // add
 
-      this.messageService.add({
-        key: 'toast',
-        severity: 'success',
-        summary: this.translate.instant('Success'),
-        detail: this.translate.instant('Successfull_Add')
-      });
+      var addDatabase: DatabaseRequest = {
 
-      this.dataForm.reset();
-      this.submitted = false;
-      this.closeDialog();
+        name: this.dataForm.controls['name'].value.toString(),
+        userName: this.dataForm.controls['userName'].value.toString(),
+        password: await encryptedPass,
+        connectionString: await encryptedSTR,
+        envIDFK: this.dataForm.controls['envIDFK'].value.toString(),
+      };
+      console.log(addDatabase)
+      response = await this.databaseService.Add(addDatabase);
+
+      if (response != null) {
+        if (response.requestStatus == 200) {
+          this.databaseService.SelectedData = response
+          this.databaseService.Dialog.close();
+        }
+      }
     }
+
+    this.btnLoading = false;
+    this.submitted = false;
+
+
   }
+
   async loadEnvironments() {
     try {
       const result = await this.environmentService.Search({});
@@ -129,9 +157,11 @@ export class AddDatabaseComponent {
       });
     }
   }
+
   resetForm() {
     this.dataForm.reset();
   }
+
   async FillData() {
     const selected = this.databaseService.SelectedData;
 
@@ -140,11 +170,12 @@ export class AddDatabaseComponent {
       userName: selected?.userName || '',
       password: selected?.password || '',
       connectionString: selected?.connectionString || '',
-      envIDFK: selected?.environmentResponse?.uuid || ''
+      envIDFK: selected?.environment?.uuid || ''
     };
 
     this.dataForm.patchValue(patch);
   }
+
   closeDialog() {
     this.databaseService.Dialog.close?.();
     this.OnClose.emit();

@@ -9,6 +9,7 @@ import { ServersService } from 'src/app/layout/service/servers.service';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { ServerResponse, ServerSearchRequest } from '../../servers/servers.module';
 import { TranslateService } from '@ngx-translate/core';
+import { EncryptionService } from 'src/app/shared/service/encryption.service';
 
 @Component({
   selector: 'app-environment',
@@ -96,16 +97,7 @@ export class EnvironmentComponent implements OnDestroy {
 
         const isValid = hasValidUrl && hasValidServer && hasValidDbName && hasValidUserName && hasValidPassword;
 
-        if (!isValid) {
-          console.warn('Invalid environment data:', {
-            env: env,
-            hasValidUrl,
-            hasValidServer,
-            hasValidDbName,
-            hasValidUserName,
-            hasValidPassword
-          });
-        }
+
         return isValid;
       });
 
@@ -165,79 +157,65 @@ export class EnvironmentComponent implements OnDestroy {
         console.log(' No subscription data in session');
       }
 
-      if (validEnvDatabases && validEnvDatabases.length > 0) {
-        updateProvisioned.envDatabases = validEnvDatabases.map(env => {
+      if (validEnvDatabases?.length) {
+        const envs: EnvDatabase[] = [];
+        for (const env of validEnvDatabases) {
+          const updateEnv: any = {};
+          updateEnv.url = this.cleanValue(env.url);
+          updateEnv.serverIDFK = this.cleanValue(env.serverIDFK);
+          updateEnv.dbName = this.cleanValue(env.dbName);
+          updateEnv.connectionString = this.cleanValue(env.connectionString);
+          updateEnv.dbUserName = this.cleanValue(env.dbUserName);
+          updateEnv.dbPassword = this.cleanValue(env.dbPassword);
+          const connectionString = this.cleanValue(env.connectionString);
+          const dbPassword = this.cleanValue(env.dbPassword);
+          // ✅ Encrypt sensitive fields
+          updateEnv.connectionString = connectionString
+            ? await EncryptionService.encrypt(connectionString)
+            : undefined;
+
+          updateEnv.dbPassword = dbPassword
+            ? await EncryptionService.encrypt(dbPassword)
+            : undefined;
 
           const envTranslations = Array.isArray(env.environmentTranslation)
-            ? env.environmentTranslation.filter(et =>
-              et &&
-              et.name &&
-              et.name.trim() !== '' &&
-              et.name !== 'undefined' &&
-              et.language &&
-              et.language.trim() !== '' &&
-              et.language !== 'undefined'
-            )
+            ? env.environmentTranslation
+              .filter(et =>
+                this.cleanValue(et?.name) && this.cleanValue(et?.language)
+              )
+              .map(et => {
+                return {
+                  uuid: this.cleanValue(et?.uuid),
+                  name: this.cleanValue(et?.name),
+                  language: this.cleanValue(et?.language)
+                };
+              })
             : [];
 
-          const updateEnv: any = {};
-
-          if (env.url && env.url.trim() !== '' && env.url !== 'undefined') {
-            updateEnv.url = env.url.trim();
-          }
-
-          if (env.serverIDFK && env.serverIDFK.toString().trim() !== '' && env.serverIDFK !== 'undefined') {
-            updateEnv.serverIDFK = env.serverIDFK.toString().trim();
-          }
-
-          if (env.dbName && env.dbName.trim() !== '' && env.dbName !== 'undefined') {
-            updateEnv.dbName = env.dbName.trim();
-          }
-
-          if (env.connectionString && env.connectionString.trim() !== '' && env.connectionString !== 'undefined') {
-            updateEnv.connectionString = env.connectionString.trim();
-          }
-
-          if (env.dbUserName && env.dbUserName.trim() !== '' && env.dbUserName !== 'undefined') {
-            updateEnv.dbUserName = env.dbUserName.trim();
-          }
-
-          if (env.dbPassword && env.dbPassword.trim() !== '' && env.dbPassword !== 'undefined') {
-            updateEnv.dbPassword = env.dbPassword.trim();
-          }
-
           if (envTranslations.length > 0) {
-            updateEnv.environmentTranslation = envTranslations.map(et => {
-              const translation: any = {};
-
-              if (et.uuid && et.uuid.trim() !== '' && et.uuid !== 'undefined') {
-                translation.uuid = et.uuid.trim();
-              }
-
-              if (et.name && et.name.trim() !== '' && et.name !== 'undefined') {
-                translation.name = et.name.trim();
-              }
-
-              if (et.language && et.language.trim() !== '' && et.language !== 'undefined') {
-                translation.language = et.language.trim();
-              }
-
-              return translation;
-            });
+            updateEnv.environmentTranslation = envTranslations;
           }
 
-          return updateEnv;
-        });
+          envs.push(updateEnv as EnvDatabase);
+          updateProvisioned.envDatabases = envs;
+        }
       }
 
+      console.log(updateProvisioned)
+
+
       response = await this.provisionedService.Update(updateProvisioned);
+
     } else {
+
+      const encryptedEnvDatabases = await this.encryptEnvDatabases(this.envDatabase);
       const addProvisioned: ProvisionedServiceRequest = {
         subscription: this.session.subscription,
         customerIDFK: this.session.customerIDFK,
         serviceIDFK: this.session.serviceIDFK,
-        envDatabases: this.envDatabase
+        envDatabases: encryptedEnvDatabases
       };
+
 
       response = await this.provisionedService.Add(addProvisioned);
     }
@@ -284,6 +262,25 @@ export class EnvironmentComponent implements OnDestroy {
     }
   }
 
+  private async encryptEnvDatabases(data: EnvDatabase[]): Promise<EnvDatabase[]> {
+    return await Promise.all(
+      data.map(async (item) => {
+        try {
+          const encryptedPassword = await EncryptionService.encrypt(item.dbPassword);
+          const encryptedConnectionString = await EncryptionService.encrypt(item.connectionString);
+
+          return {
+            ...item,
+            password: encryptedPassword,
+            connectionString: encryptedConnectionString
+          };
+        } catch (err) {
+          return item;
+        }
+      })
+    );
+  }
+
   resetForm() {
     this.dataForm.reset();
   }
@@ -314,6 +311,8 @@ export class EnvironmentComponent implements OnDestroy {
 
       this.session = this.provisionedService.getSession();
 
+      console.log('Sess', this.session)
+
       if (this.session.envDatabases && this.session.envDatabases.length > 0) {
         this.envDatabase = [...this.session.envDatabases];
         this.envDatabase.forEach((env, index) => {
@@ -329,8 +328,6 @@ export class EnvironmentComponent implements OnDestroy {
           const server = this.findServerByMultipleIds(env.serverIDFK);
           if (!server) {
             console.warn(`Server with ID ${env.serverIDFK} not found in servers list for environment ${index + 1}`);
-          } else {
-            console.log(`Server found for environment ${index + 1}:`, server.hostname);
           }
         });
       }
@@ -405,17 +402,6 @@ export class EnvironmentComponent implements OnDestroy {
 
     this.servers = response.data || [];
 
-    this.servers.forEach((server, index) => {
-      console.log(`Server ${index + 1} details:`, {
-        uuid: server.uuid,
-        hostname: server.hostname,
-        ipAddress: server.ipAddress,
-        serverIDPK: (server as any).serverIDPK,
-        id: (server as any).id,
-        allProperties: server
-      });
-    });
-
     await this.ReWriteServer();
 
   }
@@ -454,7 +440,7 @@ export class EnvironmentComponent implements OnDestroy {
       hostname: filterInput,
       uuid: '',
       pageIndex: "",
-      pageSize: '100000'
+      pageSize: '10'
     }
     const response = await this.serverService.Search(filter) as any
 
@@ -462,7 +448,7 @@ export class EnvironmentComponent implements OnDestroy {
     await this.ReWriteServer();
   }
 
-  addEnvironment() {
+  async addEnvironment() {
     if (this.dataForm.invalid) {
       this.submitted = true;
       return;
@@ -501,6 +487,7 @@ export class EnvironmentComponent implements OnDestroy {
     const connectionString = this.buildConnectionString();
 
     const selectedServer = this.servers.find(s => s.uuid === serverValue);
+
 
     const newEnvDatabase: EnvDatabase = {
       url: urlEnv,
@@ -555,14 +542,6 @@ export class EnvironmentComponent implements OnDestroy {
     const serverIdToMatch = serverFK ? serverFK.toString() : '';
 
     const server = this.findServerByMultipleIds(serverIdToMatch);
-
-    if (!server) {
-      console.log('Available servers:', this.servers.map(s => ({
-        hostname: s.hostname || 'No hostname',
-        uuid: s.uuid || 'No UUID'
-      })));
-      return 'Server Not Found';
-    }
 
     const result = server.hostname || server.ipAddress || 'Unknown Server';
     return result;
@@ -633,15 +612,6 @@ export class EnvironmentComponent implements OnDestroy {
       targetServer = this.findServerByMultipleIds(envToEdit.serverIDFK);
 
       if (!targetServer) {
-        console.error(' Server still not found after reload');
-        console.log('Available server details:', this.servers.map(s => ({
-          hostname: s.hostname,
-          uuid: s.uuid,
-          serverIDPK: (s as any).serverIDPK,
-          id: (s as any).id,
-          allProps: Object.keys(s)
-        })));
-
         if (this.servers.length > 0) {
           targetServer = this.servers[0];
           this.serverIdMapping[envToEdit.serverIDFK.toString()] = targetServer.uuid || '';
@@ -670,12 +640,6 @@ export class EnvironmentComponent implements OnDestroy {
     }
 
     const searchId = serverId.toString();
-    console.log(' Available servers:', this.servers.map(s => ({
-      hostname: s.hostname,
-      uuid: s.uuid,
-      serverIDPK: (s as any).serverIDPK,
-      id: (s as any).id
-    })));
 
     let server = this.servers.find(s => {
       const matches = s.uuid?.toString() === searchId ||
@@ -683,14 +647,6 @@ export class EnvironmentComponent implements OnDestroy {
         (s as any).id?.toString() === searchId ||
         (s as any).serverId?.toString() === searchId;
 
-      if (matches) {
-        console.log('🎯 Direct match found:', {
-          hostname: s.hostname,
-          uuid: s.uuid,
-          serverIDPK: (s as any).serverIDPK,
-          searchId: searchId
-        });
-      }
 
       return matches;
     });
@@ -843,5 +799,16 @@ export class EnvironmentComponent implements OnDestroy {
     this.editingEnvironmentIndex = -1;
     this.resetForm();
     this.submitted = false;
+  }
+
+  cleanValue(val: any): string | undefined {
+    if (typeof val === 'string') {
+      const trimmed = val.trim();
+      return trimmed && trimmed !== 'undefined' ? trimmed : undefined;
+    } else if (val !== undefined && val !== null) {
+      const strVal = val.toString().trim();
+      return strVal && strVal !== 'undefined' ? strVal : undefined;
+    }
+    return undefined;
   }
 }
