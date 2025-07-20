@@ -6,6 +6,11 @@ import { EnvironmentRequest, EnvironmentUpdateRequest } from '../environment.mod
 import { EnvironmentService } from 'src/app/Core/services/environments.service';
 import { ServersService } from 'src/app/layout/service/servers.service';
 import { ServerResponse } from '../../servers/servers.module';
+import { customerServiceResponse } from '../../customer-service/customer-service.module';
+import { CustomerSearchRequest } from '../../customers/customers.module';
+import { ProvisionedServiceSearchRequest } from '../../wizard-to-add/wizard-to-add.module';
+import { customerServiceService } from 'src/app/layout/service/customerService.service';
+import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 
 @Component({
   selector: 'app-add-environment',
@@ -18,17 +23,21 @@ export class AddEnvironmentComponent {
   submitted = false;
   btnLoading = false;
   loading = false;
-  customerServices: any[] = [];
   servers: any[] = [];
+  customerServices: customerServiceResponse[] = [];
+  customerServiceOptions: { label: string; value: string }[] = [];
+customerServiceList: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private layoutService: LayoutService,
     private environmentService: EnvironmentService,
     private serverService: ServersService,
+    public customerService: customerServiceService,
+    public provisionedService: ProvisionedService,
     private messageService: MessageService
   ) {
     this.dataForm = this.formBuilder.group({
-      customerServiceIDFK: [''],
+      customerServiceIDFK: ['' , Validators.required],
       nameEn: ['', Validators.required],
       nameAr: ['', Validators.required],
       url: ['', [Validators.required, Validators.pattern(/https?:\/\/.+/)]],
@@ -42,7 +51,7 @@ export class AddEnvironmentComponent {
 
   async ngOnInit() {
     this.loading = true;
-    await this.retrieveCustomerServices();
+    await this.RetrieveCustomerServices();
     await this.retrieveServers();
     this.resetForm();
 
@@ -92,7 +101,7 @@ async save() {
         uuid: this.environmentService.SelectedData?.uuid?.toString(),
         environmentTranslation: environmentTranslations,
         url: this.dataForm.controls['url'].value == null ? null : this.dataForm.controls['url'].value.toString(),
-        customerServiceIDFK: 'af7ac44a-bbef-48be-8cde-bbcfe3b9a3ff',
+        customerServiceIDFK: this.dataForm.controls['customerServiceIDFK'].value,
         serverIDFK: this.dataForm.controls['serverIDFK'].value
 
       };
@@ -103,7 +112,7 @@ async save() {
       var addCustomer: EnvironmentRequest = {
         environmentTranslation: environmentTranslations,
         url: this.dataForm.controls['url'].value == null ? null : this.dataForm.controls['url'].value.toString(),
-        customerServiceIDFK: 'af7ac44a-bbef-48be-8cde-bbcfe3b9a3ff',
+        customerServiceIDFK: this.dataForm.controls['customerServiceIDFK'].value,
         serverIDFK: this.dataForm.controls['serverIDFK'].value
       };
 
@@ -176,31 +185,73 @@ async retrieveServers() {
 }
 
 
-  async retrieveCustomerServices() {
-  const filter = {
-    name: '',
-    uuid: '',
-    pageIndex: '0',
-    pageSize: '10',
-    IncludeCustomer: '1',   
-    IncludeService: '1'     
-  };
+  async RetrieveCustomerServices() {
+     let filter: ProvisionedServiceSearchRequest = {
+          uuid: '',
+          CustomerIDFK: '',
+          ServiceIDFK: '',
+          IncludeCustomer: '1',
+          IncludeService: '1',
+          pageIndex: '0',
+          pageSize: '10',
+    
+        };
+    
+        const rawResponse = (await this.provisionedService.Search(filter)) as any;
+ 
+    console.log('Raw response:', rawResponse);
 
-  const response = await this.environmentService.Search(filter) as any;
-  console.log('Search response:', response);
+  this.customerServiceList = rawResponse.data;
+
   const lang = this.layoutService.config.lang || 'en';
 
- this.customerServices = (response.data || []).map((service: any) => {
-  const environmentTranslation = service.customer?.environmentTranslation?.[lang]?.name;
-  const serviceTranslation = service.service?.serviceTranslation?.[lang]?.name;
+  
+  this.customerServiceOptions = (rawResponse.data ?? []).map((item: any) => ({
+    label: `${item.customer?.customerTranslation?.[lang]?.name ?? 'Unknown Customer'} - ${item.service?.serviceTranslation?.[lang]?.name ?? 'Unknown Service'}`,
+    value: item.uuid
+  }));
 
-  return {
-    label: environmentTranslation || serviceTranslation || '—',
-    value: service.uuid
-  };
-});
 
+
+
+    console.log('Customer Services Dropdown:', this.customerServiceOptions);
 }
 
+  
+  
+  
+  
+  
+  //   async filterCustomerServices(event: any) {
+  // const filterInput = event?.filter || '';
+  // const filter: CustomerSearchRequest = {
+  //   name: filterInput,
+  //   uuid: '',
+  //   pageIndex: '',
+  //   pageSize: '10'
+  // };
+
+  // const response = await this.customerService.Search(filter) as any;
+  // const lang = this.layoutService.config.lang || 'en';
+
+  // this.customerServices = (response.data ?? []).map((item: any) => {
+  //   const customerName = item.customerTranslation?.[lang]?.name || '—';
+  //   const serviceName = item.service?.serviceTranslation?.[lang]?.name || '—';
+
+  //   return {
+  //     ...item,
+  //     name: `${customerName} - ${serviceName}`
+  //   };
+  // });
+// }
+
+  
+  
   }
+
+  
+
+
+
+  
 

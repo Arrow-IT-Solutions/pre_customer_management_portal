@@ -7,6 +7,25 @@
           <span>{{ 'Basic_Info_Form' | translate }}</span>
         </div>
         <div class="col-12 row m-0 p-0">
+           <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['customerServiceIDFK'].errors}">
+             <p-dropdown
+              [options]="customerServiceOptions"
+              optionLabel="label"
+              optionValue="value"
+              formControlName="customerServiceIDFK"
+              [filter]="true"
+              [showClear]="true"
+              filterBy="label">
+            </p-dropdown>
+              <label [ngClass]="{'error': submitted && form['customerServiceIDFK'].errors}">{{ 'Customer_Service' | translate }}</label>
+            </div>
+            <div *ngIf="submitted && form['customerServiceIDFK'].errors?.['required']" class="text-danger mt-1">
+              {{ 'field_required' | translate }}
+            </div>
+          </div>
+
+
           <div class="col-12 mb-3">
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['startDate'].errors}">
               <p-calendar [showIcon]="true" formControlName="startDate"></p-calendar>
@@ -27,20 +46,6 @@
           </div>
 
 
-          <div class="col-12 mb-3">
-            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['customerServiceIDFK'].errors}">
-              <p-dropdown
-                [options]="customerServiceList"
-                [optionLabel]="getCustomerServiceLabel()"
-                optionValue="uuid"
-                formControlName="customerServiceIDFK">
-              </p-dropdown>
-              <label [ngClass]="{'error': submitted && form['customerServiceIDFK'].errors}">{{ 'customer_service' | translate }}</label>
-            </div>
-            <div *ngIf="submitted && form['customerServiceIDFK'].errors?.['required']" class="text-danger mt-1">
-              {{ 'field_required' | translate }}
-            </div>
-          </div>
 
          
 

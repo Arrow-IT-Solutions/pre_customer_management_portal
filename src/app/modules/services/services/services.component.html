@@ -56,7 +56,7 @@
             <div class="card__contents__item">
               <div class="card-label">{{ 'serviceName_services' | translate }}</div>
               <div class="card-info">
-                {{ service.serviceTranslation?.['en']?.name || service.serviceTranslation?.['ar']?.name }}
+                {{ service.serviceTranslation?.[layoutService.config.lang]?.name }}
               </div>
             </div>
             <div class="card__contents__item">

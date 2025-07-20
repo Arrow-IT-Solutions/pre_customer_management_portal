@@ -123,6 +123,9 @@
     "env_Database": "Environment",
     "Environment added successfully": "Environment added successfully",
     "Environment updated successfully": "Environment updated successfully",
-    "Cancel_definitions": "Cancel"
-
+    "Cancel_definitions": "Cancel",
+    "Create_Environment":"Create Environment",
+    "Update_Environment": "Update Environment",
+    "Select_ServerIDFK" : "Select Server",
+    "Select_Customer_Service" : "Select Customer Service"
 }
