@@ -53,7 +53,8 @@
             <div class="card__contents__item">
               <div class="card-label">{{ 'environmentName_environment' | translate }}</div>
               <div class="card-info">
-                {{ env.environmentTranslation?.['en']?.name || env.environmentTranslation?.['ar']?.name }}
+                  {{ env.environmentTranslation?.[layoutService.config.lang]?.name }}
+
               </div>
             </div>
             <div class="card__contents__item">
@@ -68,6 +69,15 @@
     {{ servers[env.serverIDFK] || env.serverIDFK || '—' }}
   </div>
 </div>  
+
+<div class="card__contents__item">
+  <div class="card-label">{{ 'Customer_Service' | translate }}</div>
+  <div class="card-info">
+     {{ retrieveCustomerServiceLabel(env) }}
+  </div>
+</div>
+
+
           </div>
         </div>
 

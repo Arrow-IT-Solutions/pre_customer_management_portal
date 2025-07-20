@@ -9,6 +9,25 @@
         <div class="col-12 row m-0 p-0">
 
           <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['customerServiceIDFK'].errors}">
+             <p-dropdown
+              [options]="customerServiceOptions"
+              optionLabel="label"
+              optionValue="value"
+              formControlName="customerServiceIDFK"
+              placeholder="Select_Customer_Service"
+              [filter]="true"
+              [showClear]="true"
+              filterBy="label">
+            </p-dropdown>
+              <label [ngClass]="{'error': submitted && form['customerServiceIDFK'].errors}">{{ 'Customer_Service' | translate }}</label>
+            </div>
+            <div *ngIf="submitted && form['customerServiceIDFK'].errors?.['required']" class="text-danger mt-1">
+              {{ 'field_required' | translate }}
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['nameEn'].errors}">
               <input pInputText type="text" formControlName="nameEn" />
               <label [ngClass]="{'error': submitted && form['nameEn'].errors}">{{ 'nameEn_environment' | translate }}</label>
@@ -28,25 +47,8 @@
             </div>
           </div>
 
-          <div class="col-12 mb-3">
-            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['customerServiceIDFK'].errors}">
-              <p-dropdown
-                [options]="customerServices"
-                optionLabel="label"
-                optionValue="value"
-                formControlName="customerServiceIDFK"
-                [filter]="true"
-                [showClear]="true"
-                filterBy="label"
-                placeholder="{{ 'Select_Customer_Service' | translate }}"
-              >
-              </p-dropdown>
-              <label [ngClass]="{'error': submitted && form['customerServiceIDFK'].errors}">{{ 'Customer_Service' | translate }}</label>
-            </div>
-            <div *ngIf="submitted && form['customerServiceIDFK'].errors?.['required']" class="text-danger mt-1">
-              {{ 'field_required' | translate }}
-            </div>
-          </div>
+           
+
 
 
            <div class="col-12 mb-3">

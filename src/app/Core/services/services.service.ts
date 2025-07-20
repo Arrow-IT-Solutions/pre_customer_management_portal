@@ -8,6 +8,7 @@ import {
 } from 'src/app/modules/services/services.module';
 import { UserService } from './user.service';
 import { HttpClientService } from './http-client.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,12 @@ import { HttpClientService } from './http-client.service';
 export class ServicesService {
   public SelectedData: ServiceResponse | null = null;
   public Dialog: any | null = null;
+  private refreshServicesSubject = new Subject<void>();
+  refreshServices$ = this.refreshServicesSubject.asObservable();
 
+  triggerRefreshServices() {
+      this.refreshServicesSubject.next();
+    }
   constructor(
     public layoutService: LayoutService,
     public userService: UserService,
