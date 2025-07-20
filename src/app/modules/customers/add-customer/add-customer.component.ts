@@ -12,30 +12,30 @@ import { CustomerRequest, CustomerUpdateRequest } from '../customers.module';
   providers: [MessageService]
 })
 export class AddCustomerComponent {
-        dataForm!: FormGroup;
-        submitted: boolean = false;
-        btnLoading: boolean = false;
-        loading: boolean = false;
-        constructor(public formBuilder:FormBuilder,
-          public messageService: MessageService,
-          public customer: CustomersService,
-          public layoutService: LayoutService,
-          public customerService: CustomersService
-        ){
-          this.dataForm=this.formBuilder.group({
-            nameEn:['',Validators.required],
-            nameAr:['',Validators.required],
-            primaryContact:['',Validators.required],
-            email:['',Validators.required],
-            phone:['',Validators.required],
-            anyDeskAddress:['',Validators.required]
-          })
-        }
-        get form(): { [key: string]: AbstractControl } {
-        return this.dataForm.controls;
-      }
-      async ngOnInit() {
-  try {
+  dataForm!: FormGroup;
+  submitted: boolean = false;
+  btnLoading: boolean = false;
+  loading: boolean = false;
+  constructor(public formBuilder: FormBuilder,
+    public messageService: MessageService,
+    public customer: CustomersService,
+    public layoutService: LayoutService,
+    public customerService: CustomersService
+  ) {
+    this.dataForm = this.formBuilder.group({
+      nameEn: ['', Validators.required],
+      nameAr: ['', Validators.required],
+      primaryContact: ['', Validators.required],
+      email: ['', Validators.required],
+      phone: ['', Validators.required],
+      anyDeskAddress: ['', Validators.required]
+    })
+  }
+  get form(): { [key: string]: AbstractControl } {
+    return this.dataForm.controls;
+  }
+  async ngOnInit() {
+    try {
       this.loading = true;
 
       if (this.customerService.SelectedData != null) {
@@ -46,14 +46,9 @@ export class AddCustomerComponent {
     } finally {
       this.loading = false;
     }
-      }
+  }
 
   async onSubmit() {
-    this.submitted = true;
-      if (this.dataForm.invalid) {
-      this.layoutService.showError(this.messageService, 'toast', true, 'Please fill all required fields');
-      return;
-    }
     try {
       this.btnLoading = true;
       if (this.dataForm.invalid) {
@@ -67,7 +62,7 @@ export class AddCustomerComponent {
     }
   }
 
-async Save() {
+  async Save() {
 
     let response;
 
@@ -93,7 +88,7 @@ async Save() {
         phone: this.dataForm.controls['phone'].value == null ? null : this.dataForm.controls['phone'].value.toString(),
 
       };
-      console.log(updateCustomer)
+
       response = await this.customerService.Update(updateCustomer);
     } else {
       // add
@@ -105,7 +100,6 @@ async Save() {
         phone: this.dataForm.controls['phone'].value == null ? null : this.dataForm.controls['phone'].value.toString(),
       };
 
-      console.log('addCustomer ', addCustomer)
 
       response = await this.customerService.Add(addCustomer);
     }
