@@ -42,21 +42,14 @@ export class ProvisionedService {
 
   async Search(filter: ProvisionedServiceSearchRequest) {
 
-    const apiUrl = `/api/customerService/list?${this.layoutService.Filter(filter)}`;
+    const apiUrl = `/api/customerService/GetBulk?${this.layoutService.Filter(filter)}`;
 
     return await this.httpClient.get(apiUrl)
-
   }
 
   async Update(data: ProvisionedServiceUpdateRequest) {
-    console.log('🚀 ProvisionedService.Update called with:', JSON.stringify(data, null, 2));
-    console.log('🔍 Subscription in request:', data.subscription);
-    console.log('🔍 Subscription UUID:', data.subscription?.uuid);
-
     const apiUrl = `/api/customerService/UpdateBulk`;
     const response = await this.httpClient.put(apiUrl, data);
-
-    console.log('📥 Response from API:', response);
     return response;
   }
 

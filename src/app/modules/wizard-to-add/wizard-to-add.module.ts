@@ -13,6 +13,7 @@ import { ServiceResponse } from '../services/services.module';
 import { EnvironmentResponse, EnvironmentTranslationRequest, EnvironmentTranslationUpdateRequest } from '../environment/environment.module';
 import { SubscriptionRequest, SubscriptionResponse, SubscriptionUpdateRequest } from '../subscription/subscription.module';
 import { DatabaseResponse } from '../data-bases/data-bases.module';
+import { ServerResponse } from '../servers/servers.module';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ export interface EnvDatabase {
   connectionString: string;
   dbUserName: string;
   dbPassword: string;
+  server?: ServerResponse
 }
 
 export interface ProvisionedServiceSearchRequest extends SearchRequestBase {
