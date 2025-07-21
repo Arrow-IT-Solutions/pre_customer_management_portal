@@ -6,12 +6,13 @@ import { LayoutService } from 'src/app/layout/service/layout.service';
 @Injectable({
   providedIn: 'root',
 })
+
 export class LocalService {
   constructor(
     private userService: UserService,
     private layoutService: LayoutService,
     public router: Router
-  ) {}
+  ) { }
 
   public saveData(key: string, value: string) {
     localStorage.setItem(key, value);
@@ -51,10 +52,12 @@ export class LocalService {
     console.log('get Storage lang', lang, 'get Storage dir', dir);
     this.layoutService.config =
     {
-      dir :dir == null ? 'en' : dir,
-      lang : lang == null ? 'en' : lang
+      dir: dir == null ? 'en' : dir,
+      lang: lang == null ? 'en' : lang
 
     }
- 
+
   }
+
+
 }

@@ -63,7 +63,7 @@ export class ApplicationComponent {
       name: '',
       uuid: '',
       pageIndex: "",
-      pageSize: '100000'
+      pageSize: '10'
 
     }
     const response = await this.settingService.Search(filter) as any

@@ -47,29 +47,42 @@ export class ServicesComponent {
     nameEn: ['', Validators.required],
     description: ['', Validators.required]
 });
-
+ this.serviceService.refreshServices$.subscribe(() => {
+      this.FillData();
+    });
   }
 
   async ngOnInit() {
     await this.FillData();
   }
-  
+   Search() {
+    this.FillData();
+  }
 
   async FillData(pageIndex: number = 0) {
     this.loading = true;
     this.data = [];
+    this.totalRecords = 0;
 
     const filter: ServiceSearchRequest = {
       name: this.dataForm.get('name')?.value?.trim(),
       uuid: this.dataForm.get('uuid')?.value?.trim(),
       pageIndex: pageIndex.toString(),
-      pageSize: this.pageSize.toString()
+      pageSize: this.pageSize.toString(),
     };
 
-    const response = await this.serviceService.Search(filter) as any;
+    const response = (await this.serviceService.Search(filter)) as any;
 
-    this.data = response?.data || [];
-    this.totalRecords = Number(response?.totalRecords || 0);
+     if (response.data == null || response.data.length == 0) {
+      this.data = [];
+      this.totalRecords = 0;
+    } else if (response.data != null && response.data.length != 0) {
+      this.data = response.data;
+      this.totalRecords = response.data[0];
+    }
+
+    this.totalRecords = response.totalRecords;
+
     this.loading = false;
   }
 
@@ -118,6 +131,8 @@ async confirmDelete(row: ServiceResponse) {
     });
   }
 
+  
+
   async resetform() {
     this.isResetting = true;
     this.dataForm.reset();
@@ -125,23 +140,24 @@ async confirmDelete(row: ServiceResponse) {
     this.isResetting = false;
   }
 
-  paginate(event: any) {
-  this.pageSize = event.rows;
-  this.first = event.first;
-  const pageIndex = event.first / event.rows;  
-  this.FillData(pageIndex);
-}
+    paginate(event: any) {
+    this.pageSize = event.rows
+    this.first = event.first
+    this.FillData(event.first)
 
-  OnChange() {
-    if (this.isResetting) return;
+  }
+
+
+
+   OnChange() {
+    if (this.isResetting) { return }; 
 
     clearTimeout(this.typingTimer);
     this.typingTimer = setTimeout(() => {
       this.FillData();
     }, this.doneTypingInterval);
-  }
 
-  
+  }
 
   showDialog(link: string) {
     this.link = link;

@@ -6,8 +6,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { CredentialService } from 'src/app/layout/service/credential.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CredentialResponse, CredentialSearchRequest } from '../credential.module';
-import { debounceTime, distinctUntilChanged, filter, Subscription } from 'rxjs';
 import { PortService } from 'src/app/layout/service/ports.service';
+import { EncryptionService } from 'src/app/shared/service/encryption.service';
 
 @Component({
   selector: 'app-credential',
@@ -24,18 +24,17 @@ export class CredentialComponent implements OnInit {
   typingTimer: any;
   doneTypingInterval = 1000;
   isResetting = false;
-  formChangesSub!: Subscription;
   portOptions: { uuid: string; portNumber: string }[] = [];
 
   constructor(
-    public formBuilder: FormBuilder, 
-    public layoutService: LayoutService, 
-    public translate: TranslateService, 
-    public credentialService: CredentialService, 
-    public confirmationService: ConfirmationService, 
+    public formBuilder: FormBuilder,
+    public layoutService: LayoutService,
+    public translate: TranslateService,
+    public credentialService: CredentialService,
+    public confirmationService: ConfirmationService,
     public messageService: MessageService,
-     public portService: PortService
-    ) {
+    public portService: PortService
+  ) {
     this.dataForm = this.formBuilder.group({
       userName: [''],
       password: [''],
@@ -56,14 +55,8 @@ export class CredentialComponent implements OnInit {
 
     try {
       const response = (await this.credentialService.Search(filter)) as any;
-      const rawData = response?.data || [];
-      this.data = rawData.map((item: CredentialResponse) => {
-        if (!item.portResponse) {
-          const port = this.portOptions.find((p) => p.uuid === item.portIDFK);
-          item.portResponse = port || { uuid: '', portNumber: '-' };
-        }
-        return item;
-      });
+      const encryptedData = response?.data || [];
+      this.data = await this.decrypt(encryptedData);
 
       this.totalRecords = Number(response?.totalRecords || 0);
     } catch (error) {
@@ -81,7 +74,6 @@ export class CredentialComponent implements OnInit {
     try {
       const response = await this.portService.Search({});
       this.portOptions = response.data || [];
-      console.log('Port options:', this.portOptions);
     } catch (error) {
       this.messageService.add({
         severity: 'error',
@@ -91,14 +83,6 @@ export class CredentialComponent implements OnInit {
     }
 
     await this.fillData(0);
-
-    this.formChangesSub = this.dataForm.valueChanges
-      .pipe(
-        debounceTime(this.doneTypingInterval),
-        distinctUntilChanged(),
-        filter(() => !this.isResetting)
-      )
-      .subscribe(() => this.fillData(0));
   }
 
   async resetForm() {
@@ -124,25 +108,22 @@ export class CredentialComponent implements OnInit {
     this.fillData(pageIndex);
   }
 
-
-
   openAddcredential(row: CredentialResponse | null = null) {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  document.body.style.overflow = 'hidden';
-  this.credentialService.SelectedData = row;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.style.overflow = 'hidden';
+    this.credentialService.SelectedData = row;
 
-  let contentKey = row ? 'Update_Credential' : 'Create_Credential';
-  this.translate.get(contentKey).subscribe((title) => {
-    const dialogRef = this.layoutService.OpenDialog(AddCredentialComponent, title);
-    this.credentialService.Dialog = dialogRef;
-    dialogRef.OnClose.subscribe(() => {
+    let content = row ? 'Update_Credential' : 'Create_Credential';
+    this.translate.get(content).subscribe((res: string) => {
+      content = res
+    });
+    var component = this.layoutService.OpenDialog(AddCredentialComponent, content);
+    this.credentialService.Dialog = component;
+    component.OnClose.subscribe(() => {
       document.body.style.overflow = '';
-      this.credentialService.SelectedData = null;
       this.fillData(Math.floor(this.first / this.pageSize));
     });
-  });
-}
-
+  }
 
   async confirmDelete(row: CredentialResponse) {
     this.confirmationService.confirm({
@@ -155,12 +136,12 @@ export class CredentialComponent implements OnInit {
       accept: async () => {
         try {
           const resp = (await this.credentialService.Delete(row.uuid!)) as any;
-         this.messageService.add({
-          key: 'toast',
-          severity: 'success',
-          summary: this.translate.instant('Success'),
-          detail: this.translate.instant('Deleted_successfully')
-        });
+          this.messageService.add({
+            key: 'toast',
+            severity: 'success',
+            summary: this.translate.instant('Success'),
+            detail: this.translate.instant('Deleted_successfully')
+          });
           this.fillData(Math.floor(this.first / this.pageSize));
         } catch (error) {
           this.messageService.add({
@@ -172,5 +153,20 @@ export class CredentialComponent implements OnInit {
         }
       }
     });
+  }
+
+  private async decrypt(data: any[]): Promise<any[]> {
+    return await Promise.all(
+      data.map(async (item) => {
+        try {
+          const decryptedPassword = await EncryptionService.decrypt(item.password);
+
+          return { ...item, password: decryptedPassword };
+        } catch (err) {
+          console.warn(`Failed to decrypt password for item with id ${item.id}:`, err);
+          return { ...item, password: '[decryption failed]' };
+        }
+      })
+    );
   }
 }

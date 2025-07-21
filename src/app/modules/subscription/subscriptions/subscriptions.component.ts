@@ -7,6 +7,8 @@ import { AddSubscripeComponent } from '../add-subscripe/add-subscripe.component'
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { SubscriptionSearchRequest, SubscriptionResponse } from '../subscription.module';
 import { ConstantResponse, ConstantService } from 'src/app/Core/services/constant.service';
+import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
+import { customerServiceService } from 'src/app/layout/service/customerService.service';
 
 @Component({
   selector: 'app-subscriptions',
@@ -22,6 +24,7 @@ export class SubscriptionsComponent {
   totalRecords: number = 0;
   data: SubscriptionResponse[] = [];
   statusList: ConstantResponse[] = [];
+  customerServices: { [key: string]: string } = {};
   doneTypingInterval = 1000;
   typingTimer: any;
   isResetting: boolean = false;
@@ -31,7 +34,9 @@ export class SubscriptionsComponent {
     public layoutService: LayoutService,
     public translate: TranslateService,
     public constantService: ConstantService,
+    public provisionedService: ProvisionedService,
     public subscripeService: SubscriptionService,
+    public customerService: customerServiceService,
     public messageService: MessageService,
     public confirmationService: ConfirmationService
   ) {
@@ -45,37 +50,78 @@ export class SubscriptionsComponent {
   }
 
   async ngOnInit() {
+    await this.retrieveCustomerService();
     await this.FillData();
     const response = await this.constantService.Search('SubscriptionStatus') as any;
     this.statusList = response?.data ?? [];
   }
 
   async FillData(pageIndex: number = 0) {
-    this.loading = true;
-    this.data = [];
-    this.totalRecords = 0;
+  this.loading = true;
+  this.data = [];
+  this.totalRecords = 0;
 
-    const filter: SubscriptionSearchRequest = {
-      status: this.dataForm.controls['status'].value.toString(),
-      pageIndex: pageIndex.toString(),
-      pageSize: this.pageSize.toString(),
-    };
-console.log('Filter:', filter);
+  const filter: SubscriptionSearchRequest = {
+    uuid: this.dataForm.get('uuid')?.value?.trim(),
+    customerServiceIDFK: '',  
+    status: this.dataForm.controls['status'].value.toString(),
+    pageIndex: pageIndex.toString(),
+    pageSize: this.pageSize.toString(),
+  };
 
-    try {
-      const response = (await this.subscripeService.Search(filter)) as any;
-
-      if (response?.data) {
-        this.data = response.data;
-        this.totalRecords = response.totalRecords ?? response.data.length;
-      }
-    } catch (error) {
-      console.error('Error fetching subscriptions:', error);
-      this.layoutService.showError(this.messageService, 'toast', true, 'Failed to load data');
-    } finally {
-      this.loading = false;
+  try {
+    const response = (await this.subscripeService.Search(filter)) as any;
+    if (response?.data) {
+      this.data = response.data;
+      this.totalRecords = response.totalRecords ?? response.data.length;
     }
+  } catch (error) {
+    this.layoutService.showError(this.messageService, 'toast', true, 'Failed to load data');
+  } finally {
+    this.loading = false;
   }
+}
+
+
+
+retrieveCustomerServiceLabel(row: SubscriptionResponse): string {
+  const customerServiceUUID = row.customerServiceIDFK?.trim();
+  return this.customerServices[customerServiceUUID] || '-';
+}
+
+
+
+ async retrieveCustomerService() {
+  const filter = {
+    uuid: '',
+    CustomerIDFK: '',
+    ServiceIDFK: '',
+    IncludeCustomer: '1',   
+    IncludeService: '1',
+    pageIndex: '0',
+    pageSize: '10'         
+  };
+
+  const response = await this.provisionedService.Search(filter) as any;
+  const customerService = response?.data || [];
+
+  this.customerServices = {};
+
+  const lang = this.layoutService.config.lang || 'en';
+
+  customerService.forEach((cs: any) => {
+    if (cs.uuid) {
+      const customerName = cs.customer?.customerTranslation?.[lang]?.name || 'Unknown Customer';
+      const serviceName = cs.service?.serviceTranslation?.[lang]?.name || 'Unknown Service';
+      this.customerServices[cs.uuid.trim()] = `${customerName} - ${serviceName}`;
+    }
+  });
+
+  console.log('Customer Services Map:', this.customerServices);
+}
+
+
+
 
   Search() {
     this.FillData();
@@ -97,11 +143,11 @@ console.log('Filter:', filter);
   }
 
   paginate(event: any) {
-  this.pageSize = event.rows;
-  this.first = event.first;
-  const pageIndex = event.first / event.rows;  
-  this.FillData(pageIndex);
-}
+    this.pageSize = event.rows
+    this.first = event.first
+    this.FillData(event.first)
+
+  }
 
 
   openAddService(row: SubscriptionResponse | null = null) {
