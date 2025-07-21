@@ -134,7 +134,7 @@
                       </div>
                       <div class="detail-item">
                         <label>{{ 'ServerName_definitions' | translate }}:</label>
-                        <span>{{ getServerNameByFK(env.serverIDFK, env) }}</span>
+                        <span>{{env.server?.ipAddress}}</span>
                       </div>
                       <div class="detail-item">
                         <label>{{ 'databaseName_definitions' | translate }}:</label>
