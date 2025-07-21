@@ -147,5 +147,6 @@
     "Create_Environment":"إنشاء البيئة",
     "ServerIDFK": "الخادم",
     "Select_ServerIDFK": "اختر الخادم",
-    "Select_Customer_Service": "اختر خدمة العملاء"
+    "Select_Customer_Service": "اختر خدمة العملاء",
+    "Successfull_Update": "تم التعديل بنجاح"
 }

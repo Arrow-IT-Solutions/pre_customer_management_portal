@@ -106,8 +106,13 @@ export class AddDatabaseComponent {
 
 
       if (response.requestStatus == "200") {
-        this.databaseService.Dialog.adHostChild.viewContainerRef.clear();
-        this.databaseService.Dialog.adHostDynamic.viewContainerRef.clear();
+        this.messageService.add({
+        key: 'toast',
+        severity: 'success',
+        summary: this.translate.instant('Success'),
+        detail: this.translate.instant('Successfull_Update')
+      });
+      
       }
 
     } else {
@@ -121,13 +126,20 @@ export class AddDatabaseComponent {
         connectionString: await encryptedSTR,
         envIDFK: this.dataForm.controls['envIDFK'].value.toString(),
       };
-      console.log(addDatabase)
+     
       response = await this.databaseService.Add(addDatabase);
 
       if (response != null) {
         if (response.requestStatus == 200) {
-          this.databaseService.SelectedData = response
-          this.databaseService.Dialog.close();
+          this.databaseService.SelectedData = null;
+          this.resetForm();
+          this.messageService.add({
+          key: 'toast',
+          severity: 'success',
+          summary: this.translate.instant('Success'),
+        detail: this.translate.instant('Successfull_Add')
+      });
+
         }
       }
     }

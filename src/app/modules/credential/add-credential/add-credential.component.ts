@@ -6,6 +6,7 @@ import { PortService } from "src/app/layout/service/ports.service";
 import { Component, OnInit } from '@angular/core';
 import { EncryptionService } from "src/app/shared/service/encryption.service";
 import { CredentialRequest, CredentialUpdateRequest } from "../credential.module";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-add-credential',
@@ -24,7 +25,8 @@ export class AddCredentialComponent implements OnInit {
     public messageService: MessageService,
     public credentialService: CredentialService,
     public layoutService: LayoutService,
-    public portService: PortService
+    public portService: PortService,
+    public translate: TranslateService
   ) {
     this.dataForm = this.formBuilder.group({
       userName: ['', Validators.required],
@@ -110,6 +112,12 @@ export class AddCredentialComponent implements OnInit {
         uuid: this.credentialService.SelectedData?.uuid?.toString(),
       };
       response = await this.credentialService.Update(credential);
+        this.messageService.add({
+        key: 'toast',
+        severity: 'success',
+        summary: this.translate.instant('Success'),
+        detail: this.translate.instant('Successfull_Update')
+      });
 
     } else {
       // add
@@ -121,6 +129,13 @@ export class AddCredentialComponent implements OnInit {
         portIDFK: this.dataForm.controls['portIDFK'].value.toString(),
       };
       response = await this.credentialService.Add(addCredential);
+        this.messageService.add({
+        key: 'toast',
+        severity: 'success',
+        summary: this.translate.instant('Success'),
+        detail: this.translate.instant('Successfull_Add')
+      });
+      this.credentialService.SelectedData = null;
       this.resetForm();
     }
 
