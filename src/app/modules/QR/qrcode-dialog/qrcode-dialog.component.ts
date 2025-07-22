@@ -2,7 +2,6 @@ import { Component, Inject, AfterViewInit, ElementRef, ViewChild } from '@angula
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import QRCodeStyling, { Options } from 'qr-code-styling';
-import { ApplicationService } from 'src/app/layout/service/application.service';
 
 @Component({
   selector: 'app-qrcode-dialog',
@@ -18,7 +17,6 @@ export class QRCodeDialogComponent implements AfterViewInit {
   private qrCode!: QRCodeStyling;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: string,
-    public applicationService: ApplicationService,
     public translate: TranslateService
   ) {
     // build an Options object
@@ -55,10 +53,6 @@ export class QRCodeDialogComponent implements AfterViewInit {
 
   ngOnInit() {
 
-    if (this.applicationService.SelectedData) {
-      this.header = this.applicationService.SelectedData.applictionTranslations!['en'].name + ' Application QR'
-
-    }
 
   }
 
