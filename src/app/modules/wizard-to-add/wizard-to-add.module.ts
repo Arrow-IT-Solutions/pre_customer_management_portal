@@ -39,6 +39,23 @@ export interface ProvisionedSession {
   envDatabases?: EnvDatabase[];
   subscriptionUpdate?: SubscriptionUpdateRequest;
   envDatabasesUpdate?: UpdateEnvDatabase[];
+  currentEnvironmentFormData?: {
+    nameEnvEn?: string;
+    nameEnvAr?: string;
+    urlEnv?: string;
+    server?: string;
+    databaseName?: string;
+    userName?: string;
+    password?: string;
+  };
+  currentCustomerServiceFormData?: {
+    customerName?: string;
+    service?: string;
+    startDate?: string;
+    endDate?: string;
+    status?: string;
+    price?: string;
+  };
 }
 export interface ProvisionedServiceRequest extends RequestBase {
   customerIDFK?: string;
