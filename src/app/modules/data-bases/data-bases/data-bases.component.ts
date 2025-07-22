@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { EnvironmentResponse } from '../../environment/environment.module';
 import { EnvironmentService } from 'src/app/Core/services/environments.service';
+import { EncryptionService } from 'src/app/shared/service/encryption.service';
 
 @Component({
   selector: 'app-data-bases',
@@ -19,16 +20,16 @@ import { EnvironmentService } from 'src/app/Core/services/environments.service';
 })
 export class DataBasesComponent implements OnInit {
   dataForm!: FormGroup;
-  doneTypingInterval =1000;
+  doneTypingInterval = 1000;
   typingTimer: any;
   loading = false;
-  pageSize:number = 12;
+  pageSize: number = 12;
   first = 0;
   totalRecords: number = 0;
   data: DatabaseResponse[] = [];
   isResetting: boolean = false;
   formChangesSub!: Subscription;
-  envOptions : EnvironmentResponse[] = [];
+  envOptions: EnvironmentResponse[] = [];
   constructor(
     private formBuilder: FormBuilder,
     public translate: TranslateService,
@@ -41,12 +42,12 @@ export class DataBasesComponent implements OnInit {
     this.dataForm = this.formBuilder.group({
       name: [''],
       UserName: [''],
-       envIDFK: ['']
+      envIDFK: ['']
     });
   }
 
   async ngOnInit() {
-     await this.FillEnvironments();
+    await this.FillEnvironments();
     await this.fillData(0);
     this.formChangesSub = this.dataForm.valueChanges
       .pipe(
@@ -57,25 +58,18 @@ export class DataBasesComponent implements OnInit {
       .subscribe(() => this.fillData(0));
   }
 
- async FillEnvironments() {
+  async FillEnvironments() {
 
-  const response = await this.environmentService.Search({});
-  this.envOptions = (response?.data || []).map((env: any) => {
-    const lang = this.translate.currentLang || 'en';
-    return {
-      uuid: env.uuid,
-      name: env.environmentTranslation?.[lang]?.name || 'Unnamed'
-    };
-  });
-}
+    const response = await this.environmentService.Search({});
+    this.envOptions = (response?.data || []).map((env: any) => {
+      const lang = this.translate.currentLang || 'en';
+      return {
+        uuid: env.uuid,
+        name: env.environmentTranslation?.[lang]?.name || 'Unnamed'
+      };
+    });
+  }
 
-getEnvName(row: DatabaseResponse): string {
-  const env = row.environmentResponse;
-  if (!env || !env.environmentTranslation) return '-';
-
-  const lang = this.translate.currentLang || 'en';
-  return env.environmentTranslation[lang]?.name || '-';
-}
 
   async fillData(pageIndex: number = 0) {
     this.first = pageIndex * this.pageSize;
@@ -85,13 +79,15 @@ getEnvName(row: DatabaseResponse): string {
       name: this.dataForm.get('name')?.value || '',
       userName: this.dataForm.get('UserName')?.value || '',
       envIDFK: this.dataForm.get('envIDFK')?.value || '',
+      includeEnvironment: '1',
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString()
     };
 
     try {
       const response = await this.databaseService.Search(filter) as any;
-      this.data = [...(response?.data || [])];
+      const encryptedData = response?.data || [];
+      this.data = await this.decrypt(encryptedData);
       this.totalRecords = Number(response?.totalRecords || 0);
     } catch {
       this.messageService.add({
@@ -139,7 +135,7 @@ getEnvName(row: DatabaseResponse): string {
   async resetForm() {
     this.isResetting = true;
     this.dataForm.reset();
-    await this.fillData(0);
+    await this.fillData();
     this.isResetting = false;
   }
 
@@ -154,12 +150,12 @@ getEnvName(row: DatabaseResponse): string {
       accept: async () => {
         try {
           const resp = await this.databaseService.Delete(row.uuid!) as any;
-               this.messageService.add({
-          key: 'toast',
-          severity: 'success',
-          summary: this.translate.instant('Success'),
-          detail: this.translate.instant('Deleted_successfully')
-        });
+          this.messageService.add({
+            key: 'toast',
+            severity: 'success',
+            summary: this.translate.instant('Success'),
+            detail: this.translate.instant('Deleted_successfully')
+          });
           this.fillData(Math.floor(this.first / this.pageSize));
         } catch (error) {
           this.messageService.add({
@@ -170,5 +166,20 @@ getEnvName(row: DatabaseResponse): string {
         }
       }
     });
+  }
+  private async decrypt(data: any[]): Promise<any[]> {
+    return await Promise.all(
+      data.map(async (item) => {
+        try {
+          const decryptedPassword = await EncryptionService.decrypt(item.password);
+          const decryptedSTR = await EncryptionService.decrypt(item.connectionString);
+
+          return { ...item, password: decryptedPassword, connectionString: decryptedSTR };
+        } catch (err) {
+          console.warn(`Failed to decrypt password for item with id ${item.id}:`, err);
+          return { ...item, password: '[decryption failed]' };
+        }
+      })
+    );
   }
 }

@@ -8,10 +8,10 @@ import { HttpClientService } from 'src/app/Core/services/http-client.service';
 })
 export class ProvisionedService {
 
- private session: ProvisionedSession | null = null;
+  private session: ProvisionedSession | null = null;
   public Dialog: any | null = null;
   public submitted: any | null = "";
-   setSession(sess: ProvisionedSession) {
+  setSession(sess: ProvisionedSession) {
     this.session = sess;
     sessionStorage.setItem('provisionedSession', JSON.stringify(sess));
   }
@@ -33,36 +33,30 @@ export class ProvisionedService {
     this.session = null;
     sessionStorage.removeItem('provisionedSession');
   }
-        async Add(data: ProvisionedServiceRequest) {
-          const apiUrl = `/api/customerService/AddBulk`;
 
-          return await this.httpClient.post(apiUrl, data);
-        }
+  async Add(data: ProvisionedServiceRequest) {
+    const apiUrl = `/api/customerService/AddBulk`;
 
-          async Search(filter: ProvisionedServiceSearchRequest) {
+    return await this.httpClient.post(apiUrl, data);
+  }
 
-            const apiUrl = `/api/customerService/GetBulk?${this.layoutService.Filter(filter)}`;
+  async Search(filter: ProvisionedServiceSearchRequest) {
 
-              return await this.httpClient.get(apiUrl)
+    const apiUrl = `/api/customerService/GetBulk?${this.layoutService.Filter(filter)}`;
 
-          }
+    return await this.httpClient.get(apiUrl)
+  }
 
-              async Update(data: ProvisionedServiceUpdateRequest) {
-              console.log('🚀 ProvisionedService.Update called with:', JSON.stringify(data, null, 2));
-              console.log('🔍 Subscription in request:', data.subscription);
-              console.log('🔍 Subscription UUID:', data.subscription?.uuid);
+  async Update(data: ProvisionedServiceUpdateRequest) {
+    const apiUrl = `/api/customerService/UpdateBulk`;
+    const response = await this.httpClient.put(apiUrl, data);
+    return response;
+  }
 
-              const apiUrl = `/api/customerService/UpdateBulk`;
-              const response = await this.httpClient.put(apiUrl, data);
+  async Delete(uuid: string) {
 
-              console.log('📥 Response from API:', response);
-              return response;
-            }
+    const apiUrl = `/api/customerService/Bulk${uuid}`;
+    return await this.httpClient.delete(apiUrl, uuid);
 
-                async Delete(uuid: string) {
-
-              const apiUrl = `/api/customerService/Bulk${uuid}`;
-              return await this.httpClient.delete(apiUrl, uuid);
-
-            }
+  }
 }

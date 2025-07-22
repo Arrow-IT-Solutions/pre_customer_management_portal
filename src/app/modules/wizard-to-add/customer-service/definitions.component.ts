@@ -31,7 +31,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
   private isNavigatingToEnvironment = false;
   isEditMode: boolean = false;
   editingServiceId: string | null = null;
-   constructor(
+  constructor(
     public formBuilder: FormBuilder,
     public router: Router,
     public route: ActivatedRoute,
@@ -42,7 +42,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     public provisionedService: ProvisionedService,
     public constantService: ConstantService,
     public translate: TranslateService
-    ) {
+  ) {
     this.dataForm = formBuilder.group({
       customerName: ['', Validators.required],
       service: ['', Validators.required],
@@ -63,100 +63,100 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
 
   }
 
-async ngOnInit() {
-  try {
-    this.loading = true;
-
-    this.route.queryParams.subscribe(params => {
-      if (params['mode'] === 'edit' && params['id']) {
-        this.isEditMode = true;
-        this.editingServiceId = params['id'];
-      }
-    });
-
-    const response = await this.constantService.Search('SubscriptionStatus') as any;
-    this.statusList = response?.data ?? [];
-
-    await this.RetriveCustomer();
-    await this.RetriveService();
-
+  async ngOnInit() {
     try {
-      this.session = this.provisionedService.getSession();
+      this.loading = true;
 
-      const fromBack = this.route.snapshot.queryParams['fromBack'];
+      this.route.queryParams.subscribe(params => {
+        if (params['mode'] === 'edit' && params['id']) {
+          this.isEditMode = true;
+          this.editingServiceId = params['id'];
+        }
+      });
 
-      if (fromBack === 'true' || this.isEditMode) {
-        this.restoreFormFromSession();
-      } else {
+      const response = await this.constantService.Search('SubscriptionStatus') as any;
+      this.statusList = response?.data ?? [];
+
+      await this.RetriveCustomer();
+      await this.RetriveService();
+
+      try {
+        this.session = this.provisionedService.getSession();
+
+        const fromBack = this.route.snapshot.queryParams['fromBack'];
+
+        if (fromBack === 'true' || this.isEditMode) {
+          this.restoreFormFromSession();
+        } else {
+          this.resetForm();
+        }
+      } catch (error) {
+        console.log('No existing session found');
         this.resetForm();
       }
-    } catch (error) {
-      console.log('No existing session found');
+
+    } catch (exceptionVar) {
+      console.log(exceptionVar);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  restoreFormFromSession() {
+    if (this.session) {
+      this.dataForm.patchValue({
+        customerName: this.session.customerIDFK || '',
+        service: this.session.serviceIDFK || '',
+        startDate: this.session.subscription?.startDate ? new Date(this.session.subscription.startDate) : '',
+        endDate: this.session.subscription?.endDate ? new Date(this.session.subscription.endDate) : '',
+        status: this.session.subscription?.status ? Number(this.session.subscription.status) : '', // Convert to number to match dropdown options
+        price: this.session.subscription?.price || ''
+      });
+
+      const statusValue = this.session.subscription?.status;
+      let statusAsNumber: number | undefined;
+      let matchingStatusOption: ConstantResponse | undefined;
+
+      if (statusValue !== undefined && statusValue !== null && statusValue !== '') {
+        statusAsNumber = Number(statusValue);
+        matchingStatusOption = this.statusList.find(opt => opt.key === statusAsNumber);
+      }
+
+      // console.log(' Status matching check:', {
+      //   sessionStatus: statusValue,
+      //   sessionStatusType: typeof statusValue,
+      //   convertedToNumber: statusAsNumber,
+      //   matchingOption: matchingStatusOption,
+      //   allStatusKeys: this.statusList.map(opt => opt.key),
+      //   allStatusKeysTypes: this.statusList.map(opt => typeof opt.key)
+      // });
+    } else {
       this.resetForm();
     }
-
-  } catch (exceptionVar) {
-    console.log(exceptionVar);
-  } finally {
-    this.loading = false;
   }
-}
 
-restoreFormFromSession() {
-  if (this.session) {
-    this.dataForm.patchValue({
-      customerName: this.session.customerIDFK || '',
-      service: this.session.serviceIDFK || '',
-      startDate: this.session.subscription?.startDate ? new Date(this.session.subscription.startDate) : '',
-      endDate: this.session.subscription?.endDate ? new Date(this.session.subscription.endDate) : '',
-      status: this.session.subscription?.status ? Number(this.session.subscription.status) : '', // Convert to number to match dropdown options
-      price: this.session.subscription?.price || ''
-    });
-
-    const statusValue = this.session.subscription?.status;
-    let statusAsNumber: number | undefined;
-    let matchingStatusOption: ConstantResponse | undefined;
-
-    if (statusValue !== undefined && statusValue !== null && statusValue !== '') {
-      statusAsNumber = Number(statusValue);
-      matchingStatusOption = this.statusList.find(opt => opt.key === statusAsNumber);
-    }
-
-    // console.log(' Status matching check:', {
-    //   sessionStatus: statusValue,
-    //   sessionStatusType: typeof statusValue,
-    //   convertedToNumber: statusAsNumber,
-    //   matchingOption: matchingStatusOption,
-    //   allStatusKeys: this.statusList.map(opt => opt.key),
-    //   allStatusKeysTypes: this.statusList.map(opt => typeof opt.key)
-    // });
-  } else {
-    this.resetForm();
-  }
-}
-
-     resetForm() {
+  resetForm() {
     this.dataForm.reset();
   }
-  nextStep(){
+  nextStep() {
     this.isNavigatingToEnvironment = true;
 
     if (this.dataForm.invalid) {
       this.submitted = true;
 
-     // this.markFormGroupTouched(this.dataForm);
+      // this.markFormGroupTouched(this.dataForm);
       this.layoutService.showError(this.messageService, 'toast', true, this.translate.instant("Customer_Service_required"));
       return;
     }
 
     var addSubscripe: SubscriptionRequest = {
-        startDate: new Date(this.dataForm.value.startDate).toISOString(),
-        endDate: new Date(this.dataForm.value.endDate).toISOString(),
-        price: this.dataForm.controls['price'].value.toString(),
-        customerServiceIDFK: 'af7ac44a-bbef-48be-8cde-bbcfe3b9a3ff',
-        status: this.dataForm.controls['status'].value.toString() ,
+      startDate: new Date(this.dataForm.value.startDate).toISOString(),
+      endDate: new Date(this.dataForm.value.endDate).toISOString(),
+      price: this.dataForm.controls['price'].value.toString(),
+      customerServiceIDFK: 'af7ac44a-bbef-48be-8cde-bbcfe3b9a3ff',
+      status: this.dataForm.controls['status'].value.toString(),
 
-      };
+    };
 
     let existingEnvDatabases: any[] = [];
     try {
@@ -190,7 +190,7 @@ restoreFormFromSession() {
     });
   }
 
-    async RetriveCustomer() {
+  async RetriveCustomer() {
 
     var customerID: any;
 
@@ -199,7 +199,7 @@ restoreFormFromSession() {
       name: '',
       uuid: customerID,
       pageIndex: "",
-      pageSize: '100000'
+      pageSize: '10'
 
     }
     const response = await this.customerService.Search(filter) as any
@@ -210,7 +210,7 @@ restoreFormFromSession() {
 
   }
 
-    ReWriteCustomer(): any {
+  ReWriteCustomer(): any {
 
     var customerDTO: any[] = []
 
@@ -233,7 +233,7 @@ restoreFormFromSession() {
 
   }
 
-    async FillCustomer(event: any = null) {
+  async FillCustomer(event: any = null) {
 
     let filterInput = '';
     if (event != null) {
@@ -245,7 +245,7 @@ restoreFormFromSession() {
       name: filterInput,
       uuid: '',
       pageIndex: "",
-      pageSize: '100000'
+      pageSize: '10'
     }
     const response = await this.customerService.Search(filter) as any
 
@@ -254,7 +254,7 @@ restoreFormFromSession() {
   }
 
 
-   async RetriveService() {
+  async RetriveService() {
 
     var serviceID: any;
 
@@ -263,7 +263,7 @@ restoreFormFromSession() {
       name: '',
       uuid: serviceID,
       pageIndex: "",
-      pageSize: '100000'
+      pageSize: '10'
 
     }
     const response = await this.serviceService.Search(filter) as any
@@ -274,7 +274,7 @@ restoreFormFromSession() {
 
   }
 
-    ReWriteService(): any {
+  ReWriteService(): any {
 
     var serviceDTO: any[] = []
 
@@ -297,7 +297,7 @@ restoreFormFromSession() {
 
   }
 
-    async FillService(event: any = null) {
+  async FillService(event: any = null) {
 
     let filterInput = '';
     if (event != null) {
@@ -309,7 +309,7 @@ restoreFormFromSession() {
       name: filterInput,
       uuid: '',
       pageIndex: "",
-      pageSize: '100000'
+      pageSize: '10'
     }
     const response = await this.serviceService.Search(filter) as any
 

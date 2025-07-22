@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { LocalService } from 'src/app/shared/service/local.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -115,6 +116,8 @@ export class LayoutService {
 
     return txt
   }
+
+
 
 
 }

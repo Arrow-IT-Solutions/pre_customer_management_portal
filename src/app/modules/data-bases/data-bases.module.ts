@@ -19,44 +19,42 @@ import { EnvironmentResponse } from '../environment/environment.module';
   imports: [
     CommonModule,
     DataBasesRoutingModule,
-  
+
     ReactiveFormsModule,
     NgPrimeModule,
     TranslateModule
   ],
-  providers:[
-    ConfirmationService  
+  providers: [
+    ConfirmationService
   ]
 })
 export class DataBasesModule { }
-export interface DatabaseRequest extends RequestBase
-{
-uuid?:string;
-name?:string;
-userName?:string;
-connectionString?:string;
-password?:string;
-envIDFK?: string;
+export interface DatabaseRequest extends RequestBase {
+  uuid?: string;
+  name?: string;
+  userName?: string;
+  connectionString?: string;
+  password?: string;
+  envIDFK?: string;
 }
 
-export interface DatabaseUpdateRequest extends RequestBase
-{
-uuid?:string;
-name?:string;
-userName?:string;
-connectionString?:string;
-password?:string;
-envIDFK?: string;
+export interface DatabaseUpdateRequest extends RequestBase {
+  uuid?: string;
+  name?: string;
+  userName?: string;
+  connectionString?: string;
+  password?: string;
+  envIDFK?: string;
 }
 
-export interface DatabaseSearchRequest extends RequestBase
-{
-uuid?:string;
-name?:string;
-userName?:string;
-connectionString?:string;
-password?:string;
-envIDFK?: string;
+export interface DatabaseSearchRequest extends RequestBase {
+  uuid?: string;
+  name?: string;
+  userName?: string;
+  connectionString?: string;
+  password?: string;
+  envIDFK?: string;
+  includeEnvironment: string
 }
 
 export interface DatabaseResponse extends ResponseBase {
@@ -65,7 +63,7 @@ export interface DatabaseResponse extends ResponseBase {
   requestMessage?: string;
   userName?: string;
   password?: string;
-  name?:string;
+  name?: string;
   connectionString?: string;
-  environmentResponse?: EnvironmentResponse;
+  environment?: EnvironmentResponse;
 }

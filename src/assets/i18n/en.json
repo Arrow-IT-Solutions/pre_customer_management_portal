@@ -128,5 +128,6 @@
     "Create_Environment":"Create Environment",
     "Update_Environment": "Update Environment",
     "Select_ServerIDFK" : "Select Server",
-    "Select_Customer_Service" : "Select Customer Service"
+    "Select_Customer_Service" : "Select Customer Service",
+     "Successfull_Update": "Updated Successfully"
 }
