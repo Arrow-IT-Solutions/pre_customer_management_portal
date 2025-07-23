@@ -32,7 +32,7 @@ export class EnvironmentComponent implements OnDestroy {
   private isNavigatingWithinWizard: boolean = false;
   session!: ProvisionedSession;
   envDatabase: EnvDatabase[] = [];
-  private isNavigatingToCustomerService = false;
+  private isNavigatingToCompanyService = false;
   isEditMode: boolean = false;
   editingServiceId: string | null = null;
   isEditingEnvironment: boolean = false;
@@ -70,9 +70,9 @@ export class EnvironmentComponent implements OnDestroy {
     })
 
     this.dataForm.valueChanges.pipe(
-      debounceTime(300) 
+      debounceTime(300)
     ).subscribe(() => {
-      if (!this.loading) { 
+      if (!this.loading) {
         this.updateSessionWithCurrentFormData();
       }
     });
@@ -103,9 +103,9 @@ export class EnvironmentComponent implements OnDestroy {
         this.restoreFormFromSession();
       } catch (error) {
         console.log('No existing session found for environment');
-        
+
         this.session = {};
-        
+
         const savedFormData = sessionStorage.getItem('currentEnvironmentFormData');
         if (savedFormData) {
           try {
@@ -115,7 +115,7 @@ export class EnvironmentComponent implements OnDestroy {
             console.log('Failed to parse saved environment data');
           }
         }
-        
+
         const savedSessionData = sessionStorage.getItem('provisionedSessionData');
         if (savedSessionData) {
           try {
@@ -125,9 +125,9 @@ export class EnvironmentComponent implements OnDestroy {
             console.log('Failed to parse saved session data');
           }
         }
-        
+
         this.provisionedService.setSession(this.session);
-        
+
         this.restoreFormFromSession();
       }
 
@@ -195,7 +195,7 @@ export class EnvironmentComponent implements OnDestroy {
       } catch (parseError) {
         console.log('Environment: No saved form data to restore');
       }
-    }    
+    }
     this.session.envDatabases = this.envDatabase;
 
     const currentFormData = {
@@ -213,9 +213,9 @@ export class EnvironmentComponent implements OnDestroy {
     this.provisionedService.setSession(this.session);
 
     sessionStorage.setItem('currentEnvironmentFormData', JSON.stringify(currentFormData));
-    
+
     const sessionDataToSave = {
-      customerIDFK: this.session.customerIDFK,
+      companyIDFK: this.session.companyIDFK,
       serviceIDFK: this.session.serviceIDFK,
       subscription: this.session.subscription,
       envDatabases: this.session.envDatabases,
@@ -236,7 +236,7 @@ export class EnvironmentComponent implements OnDestroy {
       console.log('No session to clear form data from');
     }
   }
-  
+
   async onSubmit() {
     try {
       this.btnLoading = true;
@@ -269,13 +269,13 @@ export class EnvironmentComponent implements OnDestroy {
 
       const updateProvisioned: ProvisionedServiceUpdateRequest = {
         uuid: this.editingServiceId,
-        customerIDFK: this.session.customerIDFK,
+        companyIDFK: this.session.companyIDFK,
         serviceIDFK: this.session.serviceIDFK,
       };
 
 
       updateProvisioned.subscription = {
-        customerServiceIDFK: this.session.subscription?.uuid == null ? this.editingServiceId : this.session.subscription?.uuid,
+        companyServiceIDFK: this.session.subscription?.uuid == null ? this.editingServiceId : this.session.subscription?.uuid,
         uuid: this.session.subscription?.uuid?.toString(),
         startDate: this.session.subscription?.startDate,
         endDate: this.session.subscription?.endDate,
@@ -339,7 +339,7 @@ export class EnvironmentComponent implements OnDestroy {
 
       const addProvisioned: ProvisionedServiceRequest = {
         subscription: this.session.subscription,
-        customerIDFK: this.session.customerIDFK,
+        companyIDFK: this.session.companyIDFK,
         serviceIDFK: this.session.serviceIDFK,
         envDatabases: encryptedEnvDatabases
       };
@@ -357,16 +357,16 @@ export class EnvironmentComponent implements OnDestroy {
       setTimeout(() => {
         this.envDatabase = [];
         this.resetForm();
-        this.provisionedService.clearSession();       
+        this.provisionedService.clearSession();
         this.clearAllSavedData();
 
         if (this.isEditMode) {
           sessionStorage.removeItem('editingProvisionedServiceId');
 
         } else {
-          this.isNavigatingToCustomerService = true;
+          this.isNavigatingToCompanyService = true;
         }
-        this.router.navigate(['layout-admin/customer-services']);
+        this.router.navigate(['layout-admin/company-services']);
         this.btnLoading = false;
       }, 500);
     } else {
@@ -429,7 +429,7 @@ export class EnvironmentComponent implements OnDestroy {
     this.loading = true;
 
     this.dataForm.reset();
-    
+
     setTimeout(() => {
       this.loading = false;
     }, 100);
@@ -440,11 +440,11 @@ export class EnvironmentComponent implements OnDestroy {
   }
 
   back() {
-    this.isNavigatingToCustomerService = true;
+    this.isNavigatingToCompanyService = true;
 
     this.updateSessionWithCurrentFormData();
 
-    this.router.navigate(['layout-admin/add/customer-service'], {
+    this.router.navigate(['layout-admin/add/company-service'], {
       queryParams: { fromBack: 'true' }
     });
   }
@@ -558,7 +558,7 @@ export class EnvironmentComponent implements OnDestroy {
     this.envDatabase.push(newEnvDatabase);
     this.updateSessionWithCurrentFormData();
     this.clearSavedFormData();
-    this.clearForm(); 
+    this.clearForm();
     this.submitted = false;
 
     this.layoutService.showSuccess(this.messageService, 'toast', true, this.translate.instant('Environment added successfully'));
@@ -616,7 +616,7 @@ export class EnvironmentComponent implements OnDestroy {
   ngOnDestroy() {
     const currentUrl = this.router.url;
     const isStillInWizard = currentUrl.includes('/layout-admin/add/');
-    
+
     if (!isStillInWizard && !this.isNavigatingWithinWizard) {
       this.clearAllSavedData();
     }
@@ -629,7 +629,7 @@ export class EnvironmentComponent implements OnDestroy {
   clearAllSavedData() {
     this.provisionedService.clearSession();
     sessionStorage.removeItem('currentEnvironmentFormData');
-    sessionStorage.removeItem('currentCustomerServiceFormData');
+    sessionStorage.removeItem('currentCompanyServiceFormData');
     sessionStorage.removeItem('provisionedSessionData');
     sessionStorage.removeItem('editingProvisionedServiceId');
   }

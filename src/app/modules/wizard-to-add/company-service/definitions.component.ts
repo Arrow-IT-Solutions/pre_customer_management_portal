@@ -5,15 +5,15 @@ import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { CustomerResponse, CustomerSearchRequest } from '../../customers/customers.module';
 import { ServiceResponse, ServiceSearchRequest } from '../../services/services.module';
-import { CustomersService } from 'src/app/layout/service/customers.service';
 import { ServicesService } from 'src/app/Core/services/services.service';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { ConstantResponse, ConstantService } from 'src/app/Core/services/constant.service';
 import { ProvisionedSession } from '../wizard-to-add.module';
 import { SubscriptionRequest } from '../../subscription/subscription.module';
 import { TranslateService } from '@ngx-translate/core';
+import { CompanyResponse, CompanySearchRequest } from '../../companies/companies.module';
+import { CompaniesService } from 'src/app/layout/service/companies.service';
 
 @Component({
   selector: 'app-definitions',
@@ -26,7 +26,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
   submitted: boolean = false;
   btnLoading: boolean = false;
   loading: boolean = false;
-  customers: CustomerResponse[] = [];
+  companies: CompanyResponse[] = [];
   services: ServiceResponse[] = [];
   statusList: ConstantResponse[] = [];
   session!: ProvisionedSession;
@@ -42,15 +42,20 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public layoutService: LayoutService,
     public messageService: MessageService,
-    public customerService: CustomersService,
+    public companyService: CompaniesService,
     public serviceService: ServicesService,
     public provisionedService: ProvisionedService,
     public constantService: ConstantService,
     public translate: TranslateService
   ) {
     this.dataForm = formBuilder.group({
+<<<<<<< HEAD:src/app/modules/wizard-to-add/customer-service/definitions.component.ts
       customerName: [''],
       service: [''],
+=======
+      companyName: ['', Validators.required],
+      service: ['', Validators.required],
+>>>>>>> db1ee39f723bfc2002e323988027e56ca49d0626:src/app/modules/wizard-to-add/company-service/definitions.component.ts
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       status: ['', Validators.required],
@@ -59,9 +64,9 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     });
 
     this.dataForm.valueChanges.pipe(
-      debounceTime(300) 
+      debounceTime(300)
     ).subscribe(() => {
-      if (!this.loading) { 
+      if (!this.loading) {
         this.updateSessionWithCurrentFormData();
       }
     });
@@ -90,7 +95,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
       const response = await this.constantService.Search('SubscriptionStatus') as any;
       this.statusList = response?.data ?? [];
 
-      await this.RetriveCustomer();
+      await this.RetriveCompanies();
       await this.RetriveService();
 
       try {
@@ -105,13 +110,13 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
 
         this.session = {};
 
-        const savedFormData = sessionStorage.getItem('currentCustomerServiceFormData');
+        const savedFormData = sessionStorage.getItem('currentCompanyServiceFormData');
         if (savedFormData) {
           try {
             const parsedData = JSON.parse(savedFormData);
-            this.session.currentCustomerServiceFormData = parsedData;
+            this.session.currentCompanyServiceFormData = parsedData;
           } catch (parseError) {
-            console.log('Failed to parse saved customer service data');
+            console.log('Failed to parse saved company service data');
           }
         }
 
@@ -136,11 +141,11 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
       this.loading = false;
     }
 
-    this.saveDataSubscription = this.provisionedService.saveCustomerServiceData$.subscribe(() => {
+    this.saveDataSubscription = this.provisionedService.saveCompanyServiceData$.subscribe(() => {
       this.handleSaveDataEvent();
     });
 
-    this.validateFormSubscription = this.provisionedService.validateCustomerServiceForm$.subscribe((data) => {
+    this.validateFormSubscription = this.provisionedService.validateCompanyServiceForm$.subscribe((data) => {
       this.handleFormValidationEvent(data);
     });
   }
@@ -149,14 +154,14 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     try {
       this.updateSessionWithCurrentFormData();
     } catch (error) {
-      console.log('Customer Service: Error saving form data:', error);
+      console.log('Company Service: Error saving form data:', error);
     }
   }
 
   private handleFormValidationEvent(data: {resolve: (value: boolean) => void}) {
-    
+
     const isValid = this.validateForm();
-    
+
     data.resolve(isValid);
   }
 
@@ -164,17 +169,17 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     if (this.dataForm.invalid) {
       this.submitted = true;
       this.markFormGroupTouched(this.dataForm);
-      
+
       this.layoutService.showError(
-        this.messageService, 
-        'toast', 
-        true, 
-        this.translate.instant("Customer_Service_required")
+        this.messageService,
+        'toast',
+        true,
+        this.translate.instant("Company_Service_required")
       );
-      
+
       return false;
     }
-    
+
     return true;
   }
 
@@ -191,58 +196,58 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
 
   private updateSessionWithCurrentFormData() {
     if (this.loading || !this.dataForm) {
-      console.log('Customer Service: Skipping save - form not ready or loading');
+      console.log('Company Service: Skipping save - form not ready or loading');
       return;
     }
 
     try {
       this.session = this.provisionedService.getSession();
     } catch (error) {
-      console.log('Customer Service: Creating new session for customer service data');
+      console.log('Company Service: Creating new session for company service data');
       this.session = {};
       try {
-        const savedData = sessionStorage.getItem('currentCustomerServiceFormData');
+        const savedData = sessionStorage.getItem('currentCompanyServiceFormData');
         if (savedData) {
           const parsedData = JSON.parse(savedData);
-          this.session.currentCustomerServiceFormData = parsedData;
+          this.session.currentCompanyServiceFormData = parsedData;
         }
       } catch (parseError) {
-        console.log('Customer Service: No saved customer service form data to restore');
+        console.log('Company Service: No saved company service form data to restore');
       }
     }
 
     const currentFormData = {
-      customerName: this.dataForm.controls['customerName'].value || '',
+      companyName: this.dataForm.controls['companyName'].value || '',
       service: this.dataForm.controls['service'].value || '',
       startDate: this.dataForm.controls['startDate'].value || '',
       endDate: this.dataForm.controls['endDate'].value || '',
-      status: this.dataForm.controls['status'].value !== null && this.dataForm.controls['status'].value !== undefined ? this.dataForm.controls['status'].value : '', 
+      status: this.dataForm.controls['status'].value !== null && this.dataForm.controls['status'].value !== undefined ? this.dataForm.controls['status'].value : '',
       price: this.dataForm.controls['price'].value || ''
     };
 
-    this.session.currentCustomerServiceFormData = currentFormData;
+    this.session.currentCompanyServiceFormData = currentFormData;
 
     this.provisionedService.setSession(this.session);
-    sessionStorage.setItem('currentCustomerServiceFormData', JSON.stringify(currentFormData));
+    sessionStorage.setItem('currentCompanyServiceFormData', JSON.stringify(currentFormData));
 
     const sessionDataToSave = {
-      customerIDFK: this.session.customerIDFK,
+      companyIDFK: this.session.companyIDFK,
       serviceIDFK: this.session.serviceIDFK,
       subscription: this.session.subscription,
       envDatabases: this.session.envDatabases,
-      currentCustomerServiceFormData: currentFormData
+      currentCompanyServiceFormData: currentFormData
     };
     sessionStorage.setItem('provisionedSessionData', JSON.stringify(sessionDataToSave));
 
   }
 
   private async restoreFormFromSessionData() {
-    if (this.session?.currentCustomerServiceFormData) {
-      const formData = this.session.currentCustomerServiceFormData;
+    if (this.session?.currentCompanyServiceFormData) {
+      const formData = this.session.currentCompanyServiceFormData;
       this.loading = true;
 
-      if (this.customers.length === 0) {
-        await this.RetriveCustomer();
+      if (this.companies.length === 0) {
+        await this.RetriveCompanies();
       }
       if (this.services.length === 0) {
         await this.RetriveService();
@@ -259,7 +264,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
       }
 
       this.dataForm.patchValue({
-        customerName: formData.customerName || '',
+        companyName: formData.companyName || '',
         service: formData.service || '',
         startDate: formData.startDate ? new Date(formData.startDate) : '',
         endDate: formData.endDate ? new Date(formData.endDate) : '',
@@ -277,10 +282,10 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
   private clearSavedFormData() {
     try {
       if (this.session) {
-        delete this.session.currentCustomerServiceFormData;
+        delete this.session.currentCompanyServiceFormData;
         this.provisionedService.setSession(this.session);
       }
-      sessionStorage.removeItem('currentCustomerServiceFormData');
+      sessionStorage.removeItem('currentCompanyServiceFormData');
     } catch (error) {
       console.log('No session to clear form data from');
     }
@@ -288,11 +293,11 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
 
   async restoreFormFromSession() {
     if (this.session) {
-      if (this.session.currentCustomerServiceFormData) {
+      if (this.session.currentCompanyServiceFormData) {
         await this.restoreFormFromSessionData();
       } else {
-        if (this.customers.length === 0) {
-          await this.RetriveCustomer();
+        if (this.companies.length === 0) {
+          await this.RetriveCompanies();
         }
         if (this.services.length === 0) {
           await this.RetriveService();
@@ -300,7 +305,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
 
         const statusValue = this.session.subscription?.status;
         let statusToSet: any = '';
-        
+
         if (statusValue !== undefined && statusValue !== null) {
           const statusAsNumber = Number(statusValue);
           if (!isNaN(statusAsNumber)) {
@@ -311,7 +316,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
         }
 
         this.dataForm.patchValue({
-          customerName: this.session.customerIDFK || '',
+          companyName: this.session.companyIDFK || '',
           service: this.session.serviceIDFK || '',
           startDate: this.session.subscription?.startDate ? new Date(this.session.subscription.startDate) : '',
           endDate: this.session.subscription?.endDate ? new Date(this.session.subscription.endDate) : '',
@@ -327,7 +332,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
   async resetForm() {
     this.loading = true;
 
-    if (this.session?.currentCustomerServiceFormData) {
+    if (this.session?.currentCompanyServiceFormData) {
       await this.restoreFormFromSessionData();
     } else {
       this.dataForm.reset();
@@ -346,7 +351,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
       this.submitted = true;
 
       // this.markFormGroupTouched(this.dataForm);
-      this.layoutService.showError(this.messageService, 'toast', true, this.translate.instant("Customer_Service_required"));
+      this.layoutService.showError(this.messageService, 'toast', true, this.translate.instant("Company_Service_required"));
       return;
     }
 
@@ -354,7 +359,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
       startDate: new Date(this.dataForm.value.startDate).toISOString(),
       endDate: new Date(this.dataForm.value.endDate).toISOString(),
       price: this.dataForm.controls['price'].value.toString(),
-      customerServiceIDFK: 'af7ac44a-bbef-48be-8cde-bbcfe3b9a3ff',
+      companyServiceIDFK: 'af7ac44a-bbef-48be-8cde-bbcfe3b9a3ff',
       status: this.dataForm.controls['status'].value.toString(),
 
     };
@@ -370,7 +375,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     }
 
     const session: ProvisionedSession = {
-      customerIDFK: this.dataForm.controls['customerName'].value.toString(),
+      companyIDFK: this.dataForm.controls['companyName'].value.toString(),
       serviceIDFK: this.dataForm.controls['service'].value.toString(),
       subscription: addSubscripe,
       envDatabases: existingEnvDatabases
@@ -379,7 +384,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     this.provisionedService.setSession(session);
 
     const currentFormData = {
-      customerName: this.dataForm.controls['customerName'].value || '',
+      companyName: this.dataForm.controls['companyName'].value || '',
       service: this.dataForm.controls['service'].value || '',
       startDate: this.dataForm.controls['startDate'].value || '',
       endDate: this.dataForm.controls['endDate'].value || '',
@@ -388,10 +393,10 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     };
 
     const updatedSession = this.provisionedService.getSession();
-    updatedSession.currentCustomerServiceFormData = currentFormData;
+    updatedSession.currentCompanyServiceFormData = currentFormData;
     this.provisionedService.setSession(updatedSession);
 
-    sessionStorage.setItem('currentCustomerServiceFormData', JSON.stringify(currentFormData));
+    sessionStorage.setItem('currentCompanyServiceFormData', JSON.stringify(currentFormData));
 
     this.router.navigate(['layout-admin/add/environment']);
   }
@@ -407,67 +412,67 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  async RetriveCustomer() {
+  async RetriveCompanies() {
 
-    var customerID: any;
+    var companyID: any;
 
-    let filter: CustomerSearchRequest = {
+    let filter: CompanySearchRequest = {
 
       name: '',
-      uuid: customerID,
+      uuid: companyID,
       pageIndex: "",
       pageSize: '10'
 
     }
-    const response = await this.customerService.Search(filter) as any
+    const response = await this.companyService.Search(filter) as any
 
-    this.customers = response.data,
+    this.companies = response.data,
 
-      await this.ReWriteCustomer();
+      await this.ReWriteCompany();
 
   }
 
-  ReWriteCustomer(): any {
+  ReWriteCompany(): any {
 
-    var customerDTO: any[] = []
+    var companyDTO: any[] = []
 
-    this.customers.map(customer => {
-      const translation = customer.customerTranslation?.[this.layoutService.config.lang] as any;
-      const customerName = translation?.name;
+    this.companies.map(company => {
+      const translation = company.companyTranslation?.[this.layoutService.config.lang] as any;
+      const companyName = translation?.name;
 
       var obj =
       {
-        ...customer,
-        name: `${customerName}`.trim()
+        ...company,
+        name: `${companyName}`.trim()
 
       }
 
-      customerDTO.push(obj)
+      companyDTO.push(obj)
 
     })
 
-    this.customers = customerDTO;
+    this.companies = companyDTO;
 
   }
 
-  async FillCustomer(event: any = null) {
+  async FillCompany(event: any = null) {
 
     let filterInput = '';
     if (event != null) {
       filterInput = event.filter
     }
 
-    let filter: CustomerSearchRequest = {
+    let filter: CompanySearchRequest = {
 
       name: filterInput,
       uuid: '',
       pageIndex: "",
       pageSize: '10'
     }
-    const response = await this.customerService.Search(filter) as any
+    const response = await this.companyService.Search(filter) as any
 
-    this.customers = response.data
-    await this.ReWriteCustomer();
+    this.companies = response.data
+    await this.ReWriteCompany();
   }
 
 
@@ -537,7 +542,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     const currentUrl = this.router.url;
     const isStillInWizard = currentUrl.includes('/layout-admin/add/');
-    
+
     if (!isStillInWizard && !this.isNavigatingWithinWizard) {
       this.clearAllSavedData();
     }
@@ -553,7 +558,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
   clearAllSavedData() {
     this.provisionedService.clearSession();
     sessionStorage.removeItem('currentEnvironmentFormData');
-    sessionStorage.removeItem('currentCustomerServiceFormData');
+    sessionStorage.removeItem('currentCompanyServiceFormData');
     sessionStorage.removeItem('provisionedSessionData');
     sessionStorage.removeItem('editingProvisionedServiceId');
   }

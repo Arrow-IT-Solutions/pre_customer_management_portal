@@ -10,14 +10,14 @@
           <div class="col-12 row m-0 p-0">
 
             <div class="col-12 mb-3">
-              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['customerName'].errors}">
-              <p-dropdown [options]="customers" optionLabel="name" optionValue="uuid" formControlName="customerName"
-                [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillCustomer($event)" dir="ltr"></p-dropdown>
-              <label id="label"  [ngClass]="{'error': submitted && form['customerName'].errors,'no-error': !(submitted && form['customerName']?.errors)}">{{ 'CustomerName_Customer' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['customerName'].errors" class="error-validation">{{ 'Field_Required' |
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['companyName'].errors}">
+              <p-dropdown [options]="companies" optionLabel="name" optionValue="uuid" formControlName="companyName"
+                [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillCompany($event)" dir="ltr"></p-dropdown>
+              <label id="label"  [ngClass]="{'error': submitted && form['companyName'].errors,'no-error': !(submitted && form['companyName']?.errors)}">{{ 'CompanyName_Company' | translate }}</label>
+              <!-- <span *ngIf="submitted && form['companyName'].errors" class="error-validation">{{ 'Field_Required' |
                 translate }}</span> -->
             </div>
-             <div *ngIf="submitted && form['customerName'].errors?.['required']" class="text-danger mt-1">
+             <div *ngIf="submitted && form['companyName'].errors?.['required']" class="text-danger mt-1">
               {{ 'field_required' | translate }}
             </div>
             </div>
@@ -26,7 +26,7 @@
               <div class="p-float-label" [ngClass]="{'error_border': submitted && form['service'].errors}">
               <p-dropdown [options]="services" optionLabel="name" optionValue="uuid" formControlName="service"
                 [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillService($event)" dir="ltr"></p-dropdown>
-              <label id="label" [ngClass]="{'error': submitted && form['service'].errors}">{{ 'ServiceName_Customer' | translate }}</label>
+              <label id="label" [ngClass]="{'error': submitted && form['service'].errors}">{{ 'ServiceName_Company' | translate }}</label>
               <!-- <span *ngIf="submitted && form['service'].errors" class="error-validation">{{ 'Field_Required' |
                 translate }}</span> -->
             </div>
@@ -73,7 +73,7 @@
               </p-dropdown>
 
 
-                <label id="label" [ngClass]="{'error': submitted && form['status'].errors,'no-error': !(submitted && form['customerName']?.errors)}">{{ 'status_subscription' | translate }}</label>
+                <label id="label" [ngClass]="{'error': submitted && form['status'].errors,'no-error': !(submitted && form['status']?.errors)}">{{ 'status_subscription' | translate }}</label>
                 <!-- <span *ngIf="submitted && form['status'].errors" class="error-validation">{{ 'Field_Required' |
                   translate }}</span> -->
               </div>

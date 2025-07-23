@@ -30,7 +30,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 export class SubscriptionModule { }
 export interface SubscriptionRequest extends RequestBase {
   uuid?: string;
-  customerServiceIDFK: string;
+  companyServiceIDFK: string;
   startDate: string;
   endDate: string;
   price: string;
@@ -38,7 +38,7 @@ export interface SubscriptionRequest extends RequestBase {
 }
 export interface SubscriptionUpdateRequest extends RequestBase {
   uuid?: string;
-  customerServiceIDFK?: string;
+  companyServiceIDFK?: string;
   startDate?: string;
   endDate?: string;
   price?: string;
@@ -46,19 +46,19 @@ export interface SubscriptionUpdateRequest extends RequestBase {
 }
 export interface SubscriptionSearchRequest extends SearchRequestBase {
   uuid?: string;
-  customerServiceIDFK?: string;
+  companyServiceIDFK?: string;
   status: string;
 
 }
 export interface SubscriptionResponse extends ResponseBase {
   uuid: string;
-  customerServiceIDFK: string;
+  companyServiceIDFK: string;
   startDate: Date;
   endDate: Date;
   price: number;
   status: string;
   statusValue: string;
-  customerService?: string;
+  companyService?: string;
 }
 
 

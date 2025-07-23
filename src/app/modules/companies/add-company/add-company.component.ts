@@ -1,34 +1,33 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { CustomersService } from 'src/app/layout/service/customers.service';
+import { CompaniesService } from 'src/app/layout/service/companies.service';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { CustomerRequest, CustomerUpdateRequest } from '../customers.module';
+import { CompanyRequest, CompanyUpdateRequest } from '../companies.module';
 
 @Component({
-  selector: 'app-add-customer',
-  templateUrl: './add-customer.component.html',
-  styleUrls: ['./add-customer.component.scss'],
+  selector: 'app-add-company',
+  templateUrl: './add-company.component.html',
+  styleUrls: ['./add-company.component.scss'],
   providers: [MessageService]
 })
-export class AddCustomerComponent {
+export class AddCompanyComponent {
   dataForm!: FormGroup;
   submitted: boolean = false;
   btnLoading: boolean = false;
   loading: boolean = false;
   constructor(public formBuilder: FormBuilder,
     public messageService: MessageService,
-    public customer: CustomersService,
+    public company: CompaniesService,
     public layoutService: LayoutService,
-    public customerService: CustomersService
+    public companyService: CompaniesService
   ) {
     this.dataForm = this.formBuilder.group({
       nameEn: ['', Validators.required],
       nameAr: ['', Validators.required],
       primaryContact: ['', Validators.required],
-      email: ['', Validators.required],
-      phone: ['', Validators.required],
-      anyDeskAddress: ['', Validators.required]
+      email: [''],
+      phone: ['', Validators.required]
     })
   }
   get form(): { [key: string]: AbstractControl } {
@@ -38,7 +37,7 @@ export class AddCustomerComponent {
     try {
       this.loading = true;
 
-      if (this.customerService.SelectedData != null) {
+      if (this.companyService.SelectedData != null) {
         await this.FillData();
       }
     } catch (exceptionVar) {
@@ -66,7 +65,7 @@ export class AddCustomerComponent {
 
     let response;
 
-    var customerTranslation = [
+    var companyTranslation = [
       {
         name: this.dataForm.controls['nameAr'].value == null ? '' : this.dataForm.controls['nameAr'].value.toString(),
         language: 'ar'
@@ -77,47 +76,45 @@ export class AddCustomerComponent {
       }
     ];
 
-    if (this.customerService.SelectedData != null) {
+    if (this.companyService.SelectedData != null) {
       // update
-      var updateCustomer: CustomerUpdateRequest = {
-        uuid: this.customerService.SelectedData?.uuid?.toString(),
-        customerTranslation: customerTranslation,
+      var updateCompany: CompanyUpdateRequest = {
+        uuid: this.companyService.SelectedData?.uuid?.toString(),
+        companyTranslation: companyTranslation,
         primaryContact: this.dataForm.controls['primaryContact'].value == null ? null : this.dataForm.controls['primaryContact'].value.toString(),
-        anydeskAddress: this.dataForm.controls['anyDeskAddress'].value == null ? null : this.dataForm.controls['anyDeskAddress'].value.toString(),
         email: this.dataForm.controls['email'].value == null ? null : this.dataForm.controls['email'].value.toString(),
         phone: this.dataForm.controls['phone'].value == null ? null : this.dataForm.controls['phone'].value.toString(),
 
       };
 
-      response = await this.customerService.Update(updateCustomer);
+      response = await this.companyService.Update(updateCompany);
     } else {
       // add
-      var addCustomer: CustomerRequest = {
-        customerTranslation: customerTranslation,
+      var addCompany: CompanyRequest = {
+        companyTranslation: companyTranslation,
         primaryContact: this.dataForm.controls['primaryContact'].value == null ? null : this.dataForm.controls['primaryContact'].value.toString(),
-        anydeskAddress: this.dataForm.controls['anyDeskAddress'].value == null ? null : this.dataForm.controls['anyDeskAddress'].value.toString(),
         email: this.dataForm.controls['email'].value == null ? null : this.dataForm.controls['email'].value.toString(),
         phone: this.dataForm.controls['phone'].value == null ? null : this.dataForm.controls['phone'].value.toString(),
       };
 
 
-      response = await this.customerService.Add(addCustomer);
+      response = await this.companyService.Add(addCompany);
     }
 
     if (response?.requestStatus?.toString() == '200') {
       this.layoutService.showSuccess(this.messageService, 'toast', true, response?.requestMessage);
-      if (this.customerService.SelectedData == null) {
+      if (this.companyService.SelectedData == null) {
         this.resetForm();
         setTimeout(() => {
-          this.customerService.Dialog.adHostChild.viewContainerRef.clear();
-          this.customerService.Dialog.adHostDynamic.viewContainerRef.clear();
-          this.customerService.triggerRefreshCustomers();
+          this.companyService.Dialog.adHostChild.viewContainerRef.clear();
+          this.companyService.Dialog.adHostDynamic.viewContainerRef.clear();
+          this.companyService.triggerRefreshCompanies();
         }, 600);
       } else {
         setTimeout(() => {
-          this.customerService.Dialog.adHostChild.viewContainerRef.clear();
-          this.customerService.Dialog.adHostDynamic.viewContainerRef.clear();
-          this.customerService.triggerRefreshCustomers();
+          this.companyService.Dialog.adHostChild.viewContainerRef.clear();
+          this.companyService.Dialog.adHostDynamic.viewContainerRef.clear();
+          this.companyService.triggerRefreshCompanies();
         }, 600);
       }
     } else {
@@ -134,12 +131,11 @@ export class AddCustomerComponent {
 
   FillData() {
     let temp = {
-      nameAr: this.customerService.SelectedData?.customerTranslation!['ar'].name,
-      nameEn: this.customerService.SelectedData?.customerTranslation!['en'].name,
-      anyDeskAddress: this.customerService.SelectedData?.anydeskAddress,
-      email: this.customerService.SelectedData?.email,
-      phone: this.customerService.SelectedData?.phone,
-      primaryContact: this.customerService.SelectedData?.primaryContact,
+      nameAr: this.companyService.SelectedData?.companyTranslation!['ar'].name,
+      nameEn: this.companyService.SelectedData?.companyTranslation!['en'].name,
+      email: this.companyService.SelectedData?.email,
+      phone: this.companyService.SelectedData?.phone,
+      primaryContact: this.companyService.SelectedData?.primaryContact,
     };
     this.dataForm.patchValue(temp);
   }
