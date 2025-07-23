@@ -99,7 +99,7 @@
     "CustomerName_Customer": "Customer Name",
     "No_Environments_Added": "No environments added",
     "Environments_List": "Environments List",
-    "ServerName_definitions": "Server Name",
+    "ServerName_definitions": "Server",
     "Field_Required": "This field is required",
     "ServerIDFK": "Server",
     "Customer_Service": "Customer Service",
@@ -129,5 +129,16 @@
     "Update_Environment": "Update Environment",
     "Select_ServerIDFK" : "Select Server",
     "Select_Customer_Service" : "Select Customer Service",
-     "Successfull_Update": "Updated Successfully"
+     "Successfull_Update": "Updated Successfully",
+     "localIpAdd_Server":"Local IP Address",
+     "publicIpAdd_Server":"Public IP Address",
+     "userName_Server":"User Name",
+     "password_Server":"Password",
+     "url_Server":"URL",
+     "Application_List":"Application List",
+     "applicationName_application":"Application Name",
+     "port_application":"port",
+     "Url_application":"URL",
+     "userName_application":"User Name",
+     "password_server":"Password"
 }

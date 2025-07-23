@@ -97,7 +97,14 @@ export const navbarData: NavbarData[] = [
         id: 'add',
         routeLink: 'add/customer-service',
         icon:'control_point'
-  }   
+  },
+   {
+        label: 'Add Server',
+        labelar: ' إضافة خادم',
+        id: 'add',
+        routeLink: 'add-server/server-data',
+        icon:'control_point'
+  }  
 
 
 

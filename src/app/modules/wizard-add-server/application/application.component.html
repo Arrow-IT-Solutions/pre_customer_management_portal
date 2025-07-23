@@ -1,0 +1,208 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+  <div class="application row" *ngIf="!loading; else spinner">
+    <div class="col-lg-4 col-md-12">
+      <div class="box-shadow mb-3">
+        <div class="row">
+          <div class="col-12 side-icon">
+            <span class="material-symbols-outlined">info</span>
+            <span>{{ 'Basic_Info_Form' | translate }}</span>
+          </div>
+          <div class="col-12 row m-0 p-0">
+
+            <div class="col-12 mb-3">
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['appName'].errors}">
+                <input pInputText type="text" formControlName="appName" />
+                <label [ngClass]="{'error': submitted && form['appName'].errors}">{{ 'applicationName_application' |
+                  translate }}</label>
+                <span *ngIf="submitted && form['appName'].errors" class="error-validation">{{ 'Field_Required' |
+                  translate }}</span>
+              </div>
+            </div>
+            <div class="col-12 mb-3">
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['port'].errors}">
+                <input pInputText type="text" formControlName="port" />
+                <label [ngClass]="{'error': submitted && form['port'].errors}">{{ 'port_application' |
+                  translate }}</label>
+                <span *ngIf="submitted && form['port'].errors" class="error-validation">{{ 'Field_Required' |
+                  translate }}</span>
+              </div>
+            </div>
+            <div class="col-12 mb-3">
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['url'].errors}">
+                <input pInputText type="text" formControlName="url" />
+                <label [ngClass]="{'error': submitted && form['url'].errors}">{{ 'Url_application' |
+                  translate }}</label>
+                <span *ngIf="submitted && form['url'].errors" class="error-validation">{{ 'Field_Required' |
+                  translate }}</span>
+              </div>
+            </div>
+           
+
+            <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <input pInputText type="text" formControlName="databaseName" />
+                <label>{{ 'userName_application' |
+                  translate }}</label>
+                
+              </div>
+            </div>
+           
+            <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <input pInputText [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password" />
+                <label>{{ 'password_server' | translate
+                  }}</label>
+                
+                <i class="pi" [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'"
+                  (click)="togglePasswordVisibility()">
+                </i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div style="display: flex;align-items: center;justify-content: center;">
+          <p-button type="button" class="btn-primary" (click)="addEnvironment()">
+            {{ isEditingEnvironment ? ('Update_definitions' | translate) : ('Add_definitions' | translate) }}
+          </p-button>
+          <p-button *ngIf="isEditingEnvironment" type="button" class="btn-primary" (click)="cancelEnvironmentEdit()">
+            {{ 'Cancel_definitions' | translate }}
+          </p-button>
+        </div> -->
+
+      </div>
+
+    </div>
+    <form action="" [formGroup]="searchForm" class="col-lg-8 col-md-12">
+      <div class="">
+      <div class="box-shadow mb-3">
+        <div class="row">
+          <div class="col-12 side-icon">
+            <span class="material-symbols-outlined">list</span>
+            <span>{{ 'Application_List' | translate }}</span>
+          </div>
+           <p-accordion class="mt-5 p-0">
+      <p-accordionTab>
+        <ng-template pTemplate="header">
+          <div class="flex align-items-center">
+            <span class="material-symbols-outlined">tune</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="m-0 box2 d-flex">
+            <div class="filter-title">
+              <span class="material-symbols-outlined">filter_alt</span>
+              <span>Filter By</span>
+            </div>
+            <div class="container">
+
+              <div class="col-lg-5 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center">
+                  <span class=" p-0">
+                    
+                    <input class="search-field" type="text" (input)="OnChange()"
+                      placeholder="{{ 'applicationName_application' | translate }}" formControlName="searchAppName" pInputText />
+                  </span>
+                </div>
+              </div>
+               <div class="col-lg-5 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center">
+                  <span class=" p-0">
+                    
+                    <input class="search-field" type="text" (input)="OnChange()"
+                      placeholder="{{ 'port_application' | translate }}" formControlName="searchPort" pInputText />
+                  </span>
+                </div>
+              </div>
+              
+
+            </div>
+
+            <div class="col result">
+              <div class="ms-2 mt-3">
+                <p-button class="reset-btn" (onClick)="resetSearchForm()">
+                  <span class="material-symbols-outlined">restart_alt</span>
+                </p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-accordionTab>
+           </p-accordion>
+
+          <div class="col-12" >
+            <div class="row">
+              <div class="col-md-6 mb-3" >
+                <div class="card environment-card"
+                  >
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">
+                      <span class="badge me-2">{{  1 }}</span>
+                    </h6>
+                    <div class="actions">
+                      <span class="material-symbols-outlined"
+                        title="{{ 'Edit_definitions' | translate }}">edit</span>
+                      <span class="material-symbols-outlined"
+                        title="{{ 'Delete_definitions' | translate }}">delete</span>
+                    </div>
+
+                  </div>
+                  <div class="card-body">
+                    <div class="environment-details">
+                      <div class="detail-item">
+                        <label>{{ 'applicationName_application' | translate }}:</label>
+                        <span></span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'port_application' | translate }}:</label>
+                        <span></span>
+
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'Url_application' | translate }}:</label>
+                        <span></span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'userName_application' | translate }}:</label>
+                        <span></span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'password_server' | translate }}:</label>
+                        <span></span>
+                      </div>
+                     
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-12 text-center py-5" >
+            <div class="no-environments">
+              <h5 class="mt-3 text-muted">{{ 'No_Environments_Added' | translate }}</h5>
+
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    </form>
+
+   
+  </div>
+
+  <div class="col-xs-12 mt-4 text-end"
+    style="padding: 2rem 1rem;">
+
+
+    <p-button type="submit" class="btn-primary" [loading]="btnLoading" [disabled]="btnLoading">{{ 'Save_definitions' | translate }}</p-button>
+
+  </div>
+</form>
+<ng-template #spinner>
+  <mat-spinner id="spinner"></mat-spinner>
+</ng-template>
+<p-toast key="toast"></p-toast>
+

@@ -49,8 +49,8 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     public translate: TranslateService
   ) {
     this.dataForm = formBuilder.group({
-      customerName: ['', Validators.required],
-      service: ['', Validators.required],
+      customerName: [''],
+      service: [''],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       status: ['', Validators.required],

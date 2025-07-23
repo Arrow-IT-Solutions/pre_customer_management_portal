@@ -14,7 +14,11 @@ export class ProvisionedService {
   public submitted: any | null = "";
   
   private saveEnvironmentDataSubject = new Subject<void>();
+  private saveApplicationDataSubject = new Subject<void>();
+
   private saveCustomerServiceDataSubject = new Subject<void>();
+  private saveServerDataSubject = new Subject<void>();
+
   
   private validateCustomerServiceFormSubject = new Subject<{resolve: (value: boolean) => void}>();
   
@@ -66,15 +70,45 @@ export class ProvisionedService {
     console.log('ProvisionedService: Triggering save environment data...');
     this.saveEnvironmentDataSubject.next();
   }
+   triggerSaveApplicationData() {
+    console.log('ProvisionedService: Triggering save application data...');
+    this.saveApplicationDataSubject.next();
+  }
 
   triggerSaveCustomerServiceData() {
     console.log('ProvisionedService: Triggering save customer service data...');
     this.saveCustomerServiceDataSubject.next();
   }
+   triggerSaveServerData() {
+    console.log('ProvisionedService: Triggering save server data...');
+    this.saveServerDataSubject.next();
+  }
 
   async validateCustomerServiceForm(): Promise<boolean> {
     return new Promise((resolve) => {
       console.log('ProvisionedService: Triggering customer service form validation...');
+      let resolved = false;
+      
+      const resolveOnce = (value: boolean) => {
+        if (!resolved) {
+          resolved = true;
+          resolve(value);
+        }
+      };
+      
+      this.validateCustomerServiceFormSubject.next({ resolve: resolveOnce });
+      
+      setTimeout(() => {
+        if (!resolved) {
+          console.log('ProvisionedService: Validation timeout - assuming invalid');
+          resolveOnce(false);
+        }
+      }, 1000);
+    });
+  }
+   async validateServerForm(): Promise<boolean> {
+    return new Promise((resolve) => {
+      console.log('ProvisionedService: Triggering server form validation...');
       let resolved = false;
       
       const resolveOnce = (value: boolean) => {
