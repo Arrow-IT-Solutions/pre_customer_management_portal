@@ -4,26 +4,25 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConstantResponse, ConstantService } from 'src/app/Core/services/constant.service';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { customerServiceResponse } from '../customer-service.module';
-import { customerServiceService } from 'src/app/layout/service/customerService.service';
 import { Router } from '@angular/router';
 import { EnvDatabase, ProvisionedServiceResponse, ProvisionedServiceSearchRequest, ProvisionedSession } from '../../wizard-to-add/wizard-to-add.module';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { SubscriptionRequest } from '../../subscription/subscription.module';
-import { CustomerResponse, CustomerSearchRequest } from '../../customers/customers.module';
 import { ServerResponse } from '../../servers/servers.module';
-import { CustomersService } from 'src/app/layout/service/customers.service';
 import { ServiceResponse, ServiceSearchRequest } from '../../services/services.module';
 import { ServicesService } from 'src/app/Core/services/services.service';
 import { EncryptionService } from 'src/app/shared/service/encryption.service';
+import { CompanyResponse, CompanySearchRequest } from '../../companies/companies.module';
+import { CompanyServiceService } from 'src/app/layout/service/companyService.service';
+import { CompaniesService } from 'src/app/layout/service/companies.service';
 
 @Component({
-  selector: 'app-customer-services',
-  templateUrl: './customer-services.component.html',
-  styleUrls: ['./customer-services.component.scss'],
+  selector: 'app-company-services',
+  templateUrl: './company-services.component.html',
+  styleUrls: ['./company-services.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class CustomerServicesComponent {
+export class CompanyServicesComponent {
   dataForm!: FormGroup;
   loading = false;
   pageSize: number = 12;
@@ -34,8 +33,8 @@ export class CustomerServicesComponent {
   doneTypingInterval = 1000;
   typingTimer: any;
   isResetting: boolean = false;
-  customerServiceTotal: number = 0;
-  customers: CustomerResponse[] = [];
+  companyServiceTotal: number = 0;
+  companies: CompanyResponse[] = [];
   services: ServiceResponse[] = [];
 
   constructor(
@@ -43,16 +42,16 @@ export class CustomerServicesComponent {
     public layoutService: LayoutService,
     public translate: TranslateService,
     public constantService: ConstantService,
-    public customerService: customerServiceService,
+    public companyService: CompanyServiceService,
     public messageService: MessageService,
     public confirmationService: ConfirmationService,
     public provisionedService: ProvisionedService,
-    public customersService: CustomersService,
+    public companiesService: CompaniesService,
     public serviceService: ServicesService,
     public route: Router
   ) {
     this.dataForm = this.formBuilder.group({
-      customerName: [''],
+      companyName: [''],
       service: ['']
     });
 
@@ -60,20 +59,20 @@ export class CustomerServicesComponent {
 
   async ngOnInit() {
     await this.FillData();
-    await this.FillCustomers();
+    await this.FillCompanies();
     await this.FillServices();
   }
 
   async FillData(pageIndex: number = 0) {
     this.loading = true;
     this.data = [];
-    this.customerServiceTotal = 0;
+    this.companyServiceTotal = 0;
     let filter: ProvisionedServiceSearchRequest = {
       uuid: '',
-      CustomerIDFK: this.dataForm.controls['customerName'].value,
-      ServiceIDFK: this.dataForm.controls['service'].value,
-      IncludeCustomer: '1',
-      IncludeService: '1',
+      companyIDFK: this.dataForm.controls['companyName'].value,
+      serviceIDFK: this.dataForm.controls['service'].value,
+      includeCompany: '1',
+      includeService: '1',
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString(),
 
@@ -83,15 +82,16 @@ export class CustomerServicesComponent {
 
     if (response.data == null || response.data.length == 0) {
       this.data = [];
-      this.customerServiceTotal = 0;
+      this.companyServiceTotal = 0;
     } else if (response.data != null && response.data.length != 0) {
       this.data = response.data;
-      this.customerServiceTotal = response.data[0];
+      this.companyServiceTotal = response.data[0];
     }
 
     this.totalRecords = response.totalRecords;
 
     this.loading = false;
+
   }
 
   Search() {
@@ -122,14 +122,14 @@ export class CustomerServicesComponent {
 
 
   openAddService() {
-    this.route.navigate(['layout-admin/add/customer-service'])
+    this.route.navigate(['layout-admin/add/company-service'])
   }
 
-  async OpenAddCustomerService(
+  async OpenAddCompanyService(
     row: ProvisionedServiceResponse | null = null
   ): Promise<void> {
     if (!row) {
-      await this.route.navigate(['layout-admin/add/customer-service']);
+      await this.route.navigate(['layout-admin/add/company-service']);
       return;
     }
 
@@ -161,7 +161,7 @@ export class CustomerServicesComponent {
       })
     );
     const editSession: ProvisionedSession = {
-      customerIDFK: row.customer.uuid,
+      companyIDFK: row.company.uuid,
       serviceIDFK: row.service.uuid,
       subscription: {
         uuid: row.subscription.uuid || row.uuid,
@@ -169,14 +169,14 @@ export class CustomerServicesComponent {
         endDate: row.subscription.endDate.toString(),
         price: row.subscription.price.toString(),
         status: row.subscription.status.toString(),
-        customerServiceIDFK: row.uuid
+        companyServiceIDFK: row.uuid
       } as SubscriptionRequest,
       envDatabases
     };
     sessionStorage.setItem('editingProvisionedServiceId', row.uuid);
     this.provisionedService.setSession(editSession);
     await this.route.navigate(
-      ['layout-admin/add/customer-service'],
+      ['layout-admin/add/company-service'],
       { queryParams: { mode: 'edit', id: row.uuid } }
     );
   }
@@ -207,45 +207,45 @@ export class CustomerServicesComponent {
     });
   }
 
-  async FillCustomers(event: any = null) {
+  async FillCompanies(event: any = null) {
 
-    var customerID: any;
+    var companyID: any;
 
-    let filter: CustomerSearchRequest = {
+    let filter: CompanySearchRequest = {
 
       name: '',
-      uuid: customerID,
+      uuid: companyID,
       pageIndex: "",
       pageSize: '10'
 
     }
-    const response = await this.customersService.Search(filter) as any
+    const response = await this.companiesService.Search(filter) as any
 
-    this.customers = response.data,
+    this.companies = response.data,
 
-      await this.ReWriteCustomer();
+      await this.ReWriteCompany();
   }
 
-  ReWriteCustomer(): any {
+  ReWriteCompany(): any {
 
-    var customerDTO: any[] = []
+    var companyDTO: any[] = []
 
-    this.customers.map(customer => {
-      const translation = customer.customerTranslation?.[this.layoutService.config.lang] as any;
-      const customerName = translation?.name;
+    this.companies.map(company => {
+      const translation = company.companyTranslation?.[this.layoutService.config.lang] as any;
+      const companyName = translation?.name;
 
       var obj =
       {
-        ...customer,
-        name: `${customerName}`.trim()
+        ...company,
+        name: `${companyName}`.trim()
 
       }
 
-      customerDTO.push(obj)
+      companyDTO.push(obj)
 
     })
 
-    this.customers = customerDTO;
+    this.companies = companyDTO;
 
   }
 

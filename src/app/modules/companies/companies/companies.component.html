@@ -22,7 +22,7 @@
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
                     <input class="search-field" type="text" (ngModelChange)="OnChange()"
-                      placeholder="{{ 'name_customer' | translate }}" formControlName="name" pInputText />
+                      placeholder="{{ 'name_Company' | translate }}" formControlName="name" pInputText />
                   </span>
                 </div>
               </div>
@@ -31,7 +31,7 @@
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
                     <input class="search-field" type="text" (ngModelChange)="OnChange()"
-                      placeholder="{{ 'primaryContact_customer' | translate }}" formControlName="primaryContact" pInputText />
+                      placeholder="{{ 'primaryContact_Company' | translate }}" formControlName="primaryContact" pInputText />
                   </span>
                 </div>
               </div>
@@ -40,7 +40,7 @@
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
                     <input class="search-field" type="text" (ngModelChange)="OnChange()"
-                      placeholder="{{ 'email_customer' | translate }}" formControlName="email" pInputText />
+                      placeholder="{{ 'email_Company' | translate }}" formControlName="email" pInputText />
                   </span>
                 </div>
               </div>
@@ -49,19 +49,19 @@
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
                     <input class="search-field" type="text" (ngModelChange)="OnChange()"
-                      placeholder="{{ 'phone_customer' | translate }}" formControlName="phone" pInputText />
+                      placeholder="{{ 'phone_Company' | translate }}" formControlName="phone" pInputText />
                   </span>
                 </div>
               </div>
-              <div class="col-lg-5 col-md-6 col-sm-6 col-xs-12 mt-3">
+              <!-- <div class="col-lg-5 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
                     <input class="search-field" type="text" (ngModelChange)="OnChange()"
-                      placeholder="{{ 'anyDeskAddress_customer' | translate }}" formControlName="anyDeskAddress" pInputText />
+                      placeholder="{{ 'anyDeskAddress_Company' | translate }}" formControlName="anyDeskAddress" pInputText />
                   </span>
                 </div>
-              </div>
+              </div> -->
 
             </div>
 
@@ -89,35 +89,35 @@
           <div class="col-3 card__contents">
             <div class="card-section__items">
             <div class="card__contents__item">
-                  <div class="card-label">{{ 'name_customer' | translate }}</div>
+                  <div class="card-label">{{ 'name_Company' | translate }}</div>
                   <div class="card-info">
-                      {{ row.customerTranslation![layoutService.config.lang]?.name }}
+                      {{ row.companyTranslation![layoutService.config.lang]?.name }}
                   </div>
                 </div>
                 <div class="card__contents__item">
-                  <div class="card-label">{{ 'primaryContact_customer' | translate }}</div>
+                  <div class="card-label">{{ 'primaryContact_Company' | translate }}</div>
                   <div class="card-info">
                     {{ row.primaryContact }}
                   </div>
                 </div>
                 <div class="card__contents__item">
-                  <div class="card-label">{{ 'email_customer' | translate }}</div>
+                  <div class="card-label">{{ 'email_Company' | translate }}</div>
                   <div class="card-info">
                     {{ row.email }}
                   </div>
                 </div>
                 <div class="card__contents__item">
-                  <div class="card-label">{{ 'phone_customer' | translate }}</div>
+                  <div class="card-label">{{ 'phone_Company' | translate }}</div>
                   <div class="card-info">
                     {{ row.phone }}
                   </div>
                 </div>
-                <div class="card__contents__item">
+                <!-- <div class="card__contents__item">
                   <div class="card-label">{{ 'anyDeskAddress_customer' | translate }}</div>
                   <div class="card-info">
                     {{ row.anydeskAddress }}
                   </div>
-                </div>
+                </div> -->
                 </div>
 
 
@@ -128,13 +128,13 @@
               <span class="material-symbols-outlined card__actions__details">more_vert</span>
             </div>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="openAddcustomer(row)">
+              <button mat-menu-item (click)="openAddCompany(row)">
                  <span class="material-symbols-outlined" id="icon">Edit</span>
-                {{ 'Edit_customer' | translate }}
+                {{ 'Edit_Company' | translate }}
               </button>
               <button mat-menu-item (click)="confirmDelete(row)">
                 <span class="material-symbols-outlined" id="icon">delete</span>
-                {{ 'Delete_customer' | translate }}
+                {{ 'Delete_Company' | translate }}
               </button>
             </mat-menu>
 
@@ -207,13 +207,13 @@
 
      <div class="all d-flex">
           <div class="total">
-            {{ "totalCustomer_customer" | translate }}:{{ totalRecords }}
+            {{ "totalCompany_Company" | translate }}:{{ totalRecords }}
           </div>
 
         </div>
         <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
           [first]="first" (onPageChange)="paginate($event)"></p-paginator>
-            <button class="add-button" (click)="openAddcustomer()">
+            <button class="add-button" (click)="openAddCompany()">
       <span class="material-symbols-outlined">add</span>
     </button>
 
@@ -226,7 +226,7 @@
         <p-skeleton height="10rem"></p-skeleton>
       </div>
     </div>
-   
+
   </ng-template>
 </div>
 

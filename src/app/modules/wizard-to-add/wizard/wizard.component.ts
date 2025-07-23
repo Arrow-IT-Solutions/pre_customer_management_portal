@@ -26,8 +26,8 @@ export class WizardComponent implements OnDestroy {
   ngOnInit() {
     this.items = [
       {
-        label: this.isAr() ? 'خدمة العملاء' : 'Customer Service',
-        command: (event) => this.onStepClick(0, 'customer-service')
+        label: this.isAr() ? 'خدمة العملاء' : 'Company Service',
+        command: (event) => this.onStepClick(0, 'company-service')
       },
 
       {
@@ -42,7 +42,7 @@ export class WizardComponent implements OnDestroy {
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       const currentUrl = event.urlAfterRedirects;
-      
+
       if (!currentUrl.includes('/layout-admin/add/')) {
         this.clearWizardData();
       } else {
@@ -55,7 +55,7 @@ export class WizardComponent implements OnDestroy {
     try {
       this.provisionedService.clearSession();
       sessionStorage.removeItem('currentEnvironmentFormData');
-      sessionStorage.removeItem('currentCustomerServiceFormData');
+      sessionStorage.removeItem('currentCompanyServiceFormData');
       sessionStorage.removeItem('provisionedSessionData');
       sessionStorage.removeItem('editingProvisionedServiceId');
     } catch (error) {
@@ -71,7 +71,7 @@ export class WizardComponent implements OnDestroy {
 
   private updateActiveIndex() {
     const currentPath = this.router.url;
-    if (currentPath.includes('customer-service')) {
+    if (currentPath.includes('company-service')) {
       this.activeIndex = 0;
     } else if (currentPath.includes('environment')) {
       this.activeIndex = 1;
@@ -80,14 +80,14 @@ export class WizardComponent implements OnDestroy {
 
   private async onStepClick(stepIndex: number, routePath: string) {
     const currentPath = this.router.url;
-    
+
     if (routePath === 'environment') {
-      const isValid = await this.validateCustomerServiceForm();
+      const isValid = await this.validateCompanyServiceForm();
       if (!isValid) {
-        console.log('Wizard: Customer Service form validation failed - preventing navigation');
-        return; 
+        console.log('Wizard: Company Service form validation failed - preventing navigation');
+        return;
       }
-      console.log('Wizard: Customer Service validation passed - allowing navigation');
+      console.log('Wizard: Company Service validation passed - allowing navigation');
     }
 
     await this.saveCurrentPageData();
@@ -102,8 +102,8 @@ export class WizardComponent implements OnDestroy {
       console.log('Wizard: Current path:', currentPath);
       if (currentPath.includes('environment')) {
         this.provisionedService.triggerSaveEnvironmentData();
-      } else if (currentPath.includes('customer-service')) {
-        this.provisionedService.triggerSaveCustomerServiceData();
+      } else if (currentPath.includes('company-service')) {
+        this.provisionedService.triggerSaveCompanyServiceData();
       }
 
       await new Promise(resolve => setTimeout(resolve, 100));
@@ -112,12 +112,12 @@ export class WizardComponent implements OnDestroy {
     }
   }
 
-  private async validateCustomerServiceForm(): Promise<boolean> {
+  private async validateCompanyServiceForm(): Promise<boolean> {
     try {
-      const isValid = await this.provisionedService.validateCustomerServiceForm();
+      const isValid = await this.provisionedService.validateCompanyServiceForm();
       return isValid;
     } catch (error) {
-      console.log('Error validating customer service form:', error);
+      console.log('Error validating company service form:', error);
       return false;
     }
   }

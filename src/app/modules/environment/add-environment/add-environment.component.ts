@@ -6,11 +6,9 @@ import { EnvironmentRequest, EnvironmentUpdateRequest } from '../environment.mod
 import { EnvironmentService } from 'src/app/Core/services/environments.service';
 import { ServersService } from 'src/app/layout/service/servers.service';
 import { ServerResponse } from '../../servers/servers.module';
-import { customerServiceResponse } from '../../customer-service/customer-service.module';
-import { CustomerSearchRequest } from '../../customers/customers.module';
-import { ProvisionedServiceSearchRequest } from '../../wizard-to-add/wizard-to-add.module';
-import { customerServiceService } from 'src/app/layout/service/customerService.service';
+import { CompanyServiceResponse, ProvisionedServiceSearchRequest } from '../../wizard-to-add/wizard-to-add.module';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
+import { CompanyServiceService } from 'src/app/layout/service/companyService.service';
 
 @Component({
   selector: 'app-add-environment',
@@ -24,20 +22,20 @@ export class AddEnvironmentComponent {
   btnLoading = false;
   loading = false;
   servers: any[] = [];
-  customerServices: customerServiceResponse[] = [];
-  customerServiceOptions: { label: string; value: string }[] = [];
-customerServiceList: any[] = [];
+  companyServices: CompanyServiceResponse[] = [];
+  companyServiceOptions: { label: string; value: string }[] = [];
+  companyServiceList: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private layoutService: LayoutService,
     private environmentService: EnvironmentService,
     private serverService: ServersService,
-    public customerService: customerServiceService,
+    public companyService: CompanyServiceService,
     public provisionedService: ProvisionedService,
     private messageService: MessageService
   ) {
     this.dataForm = this.formBuilder.group({
-      customerServiceIDFK: ['' , Validators.required],
+      companyServiceIDFK: ['' , Validators.required],
       nameEn: ['', Validators.required],
       nameAr: ['', Validators.required],
       url: ['', [Validators.required, Validators.pattern(/https?:\/\/.+/)]],
@@ -51,7 +49,7 @@ customerServiceList: any[] = [];
 
   async ngOnInit() {
     this.loading = true;
-    await this.RetrieveCustomerServices();
+    await this.RetrieveCompanyServices();
     await this.retrieveServers();
     this.resetForm();
 
@@ -78,7 +76,7 @@ customerServiceList: any[] = [];
     }
   }
 
- 
+
 async save() {
 
     let response;
@@ -93,7 +91,7 @@ async save() {
         language: 'en'
       }
     ];
-    
+
 
     if (this.environmentService.SelectedData != null) {
       // update
@@ -101,7 +99,7 @@ async save() {
         uuid: this.environmentService.SelectedData?.uuid?.toString(),
         environmentTranslation: environmentTranslations,
         url: this.dataForm.controls['url'].value == null ? null : this.dataForm.controls['url'].value.toString(),
-        customerServiceIDFK: this.dataForm.controls['customerServiceIDFK'].value,
+        companyServiceIDFK: this.dataForm.controls['companyServiceIDFK'].value,
         serverIDFK: this.dataForm.controls['serverIDFK'].value
 
       };
@@ -112,7 +110,7 @@ async save() {
       var addCustomer: EnvironmentRequest = {
         environmentTranslation: environmentTranslations,
         url: this.dataForm.controls['url'].value == null ? null : this.dataForm.controls['url'].value.toString(),
-        customerServiceIDFK: this.dataForm.controls['customerServiceIDFK'].value,
+        companyServiceIDFK: this.dataForm.controls['companyServiceIDFK'].value,
         serverIDFK: this.dataForm.controls['serverIDFK'].value
       };
 
@@ -157,7 +155,7 @@ async save() {
     const en = environment.environmentTranslation?.['en'];
 
     this.dataForm.patchValue({
-      customerServiceIDFK: this.environmentService.SelectedData?.customerServiceIDFK ?? '',
+      companyServiceIDFK: this.environmentService.SelectedData?.companyServiceIDFK ?? '',
       nameAr: ar?.name || '',
       nameEn: en?.name || '',
       url: environment.url || '',
@@ -185,43 +183,43 @@ async retrieveServers() {
 }
 
 
-  async RetrieveCustomerServices() {
+  async RetrieveCompanyServices() {
      let filter: ProvisionedServiceSearchRequest = {
           uuid: '',
-          CustomerIDFK: '',
-          ServiceIDFK: '',
-          IncludeCustomer: '1',
-          IncludeService: '1',
+          companyIDFK: '',
+          serviceIDFK: '',
+          includeCompany: '1',
+          includeService: '1',
           pageIndex: '0',
           pageSize: '10',
-    
+
         };
-    
+
         const rawResponse = (await this.provisionedService.Search(filter)) as any;
- 
+
     console.log('Raw response:', rawResponse);
 
-  this.customerServiceList = rawResponse.data;
+  this.companyServiceList = rawResponse.data;
 
   const lang = this.layoutService.config.lang || 'en';
 
-  
-  this.customerServiceOptions = (rawResponse.data ?? []).map((item: any) => ({
-    label: `${item.customer?.customerTranslation?.[lang]?.name ?? 'Unknown Customer'} - ${item.service?.serviceTranslation?.[lang]?.name ?? 'Unknown Service'}`,
+
+  this.companyServiceOptions = (rawResponse.data ?? []).map((item: any) => ({
+    label: `${item.company?.companyTranslation?.[lang]?.name ?? 'Unknown Company'} - ${item.service?.serviceTranslation?.[lang]?.name ?? 'Unknown Service'}`,
     value: item.uuid
   }));
 
 
 
 
-    console.log('Customer Services Dropdown:', this.customerServiceOptions);
+    console.log('Company Services Dropdown:', this.companyServiceOptions);
 }
 
-  
-  
-  
-  
-  
+
+
+
+
+
   //   async filterCustomerServices(event: any) {
   // const filterInput = event?.filter || '';
   // const filter: CustomerSearchRequest = {
@@ -245,13 +243,13 @@ async retrieveServers() {
   // });
 // }
 
-  
-  
+
+
   }
 
-  
 
 
 
-  
+
+
 

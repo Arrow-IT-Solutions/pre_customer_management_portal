@@ -12,16 +12,16 @@ export class ProvisionedService {
   private session: ProvisionedSession | null = null;
   public Dialog: any | null = null;
   public submitted: any | null = "";
-  
+
   private saveEnvironmentDataSubject = new Subject<void>();
-  private saveCustomerServiceDataSubject = new Subject<void>();
-  
-  private validateCustomerServiceFormSubject = new Subject<{resolve: (value: boolean) => void}>();
-  
+  private saveCompanyServiceDataSubject = new Subject<void>();
+
+  private validateCompanyServiceFormSubject = new Subject<{resolve: (value: boolean) => void}>();
+
   public saveEnvironmentData$ = this.saveEnvironmentDataSubject.asObservable();
-  public saveCustomerServiceData$ = this.saveCustomerServiceDataSubject.asObservable();
-  public validateCustomerServiceForm$ = this.validateCustomerServiceFormSubject.asObservable();
-  
+  public saveCompanyServiceData$ = this.saveCompanyServiceDataSubject.asObservable();
+  public validateCompanyServiceForm$ = this.validateCompanyServiceFormSubject.asObservable();
+
   setSession(sess: ProvisionedSession) {
     this.session = sess;
     try {
@@ -31,7 +31,7 @@ export class ProvisionedService {
       console.log('ProvisionedService: Error saving session to storage:', error);
     }
   }
-  
+
   constructor(public layoutService: LayoutService, public httpClient: HttpClientService) { }
 
   getSession(): ProvisionedSession {
@@ -51,7 +51,7 @@ export class ProvisionedService {
     }
     return this.session;
   }
-  
+
   clearSession() {
     this.session = null;
     try {
@@ -67,25 +67,25 @@ export class ProvisionedService {
     this.saveEnvironmentDataSubject.next();
   }
 
-  triggerSaveCustomerServiceData() {
-    console.log('ProvisionedService: Triggering save customer service data...');
-    this.saveCustomerServiceDataSubject.next();
+  triggerSaveCompanyServiceData() {
+    console.log('ProvisionedService: Triggering save company service data...');
+    this.saveCompanyServiceDataSubject.next();
   }
 
-  async validateCustomerServiceForm(): Promise<boolean> {
+  async validateCompanyServiceForm(): Promise<boolean> {
     return new Promise((resolve) => {
-      console.log('ProvisionedService: Triggering customer service form validation...');
+      console.log('ProvisionedService: Triggering company service form validation...');
       let resolved = false;
-      
+
       const resolveOnce = (value: boolean) => {
         if (!resolved) {
           resolved = true;
           resolve(value);
         }
       };
-      
-      this.validateCustomerServiceFormSubject.next({ resolve: resolveOnce });
-      
+
+      this.validateCompanyServiceFormSubject.next({ resolve: resolveOnce });
+
       setTimeout(() => {
         if (!resolved) {
           console.log('ProvisionedService: Validation timeout - assuming invalid');
@@ -96,27 +96,27 @@ export class ProvisionedService {
   }
 
   async Add(data: ProvisionedServiceRequest) {
-    const apiUrl = `/api/customerService/AddBulk`;
+    const apiUrl = `/api/companyService/AddBulk`;
 
     return await this.httpClient.post(apiUrl, data);
   }
 
   async Search(filter: ProvisionedServiceSearchRequest) {
 
-    const apiUrl = `/api/customerService/GetBulk?${this.layoutService.Filter(filter)}`;
+    const apiUrl = `/api/companyService/GetBulk?${this.layoutService.Filter(filter)}`;
 
     return await this.httpClient.get(apiUrl)
   }
 
   async Update(data: ProvisionedServiceUpdateRequest) {
-    const apiUrl = `/api/customerService/UpdateBulk`;
+    const apiUrl = `/api/companyService/UpdateBulk`;
     const response = await this.httpClient.put(apiUrl, data);
     return response;
   }
 
   async Delete(uuid: string) {
 
-    const apiUrl = `/api/customerService/Bulk${uuid}`;
+    const apiUrl = `/api/companyService/Bulk${uuid}`;
     return await this.httpClient.delete(apiUrl, uuid);
 
   }
