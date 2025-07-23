@@ -49,8 +49,13 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     public translate: TranslateService
   ) {
     this.dataForm = formBuilder.group({
+<<<<<<< HEAD:src/app/modules/wizard-to-add/customer-service/definitions.component.ts
+      customerName: [''],
+      service: [''],
+=======
       companyName: ['', Validators.required],
       service: ['', Validators.required],
+>>>>>>> db1ee39f723bfc2002e323988027e56ca49d0626:src/app/modules/wizard-to-add/company-service/definitions.component.ts
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       status: ['', Validators.required],

@@ -100,7 +100,7 @@
   "CompanyName_Company": "اسم الشركة",
   "No_Environments_Added": "لم يتم إضافة أي بيئات",
   "Environments_List": "قائمة البيئات",
-  "ServerName_definitions": "اسم الخادم",
+  "ServerName_definitions": " الخادم",
   "Field_Required": "هذا الحقل مطلوب",
   "price_subscription": "السعر",
   "Successfull_Add": "تمت الإضافة بنجاح",
@@ -147,6 +147,22 @@
     "Create_Environment":"إنشاء البيئة",
     "ServerIDFK": "الخادم",
     "Select_ServerIDFK": "اختر الخادم",
+<<<<<<< HEAD
+    "Select_Customer_Service": "اختر خدمة العملاء",
+    "Successfull_Update": "تم التعديل بنجاح",
+    "localIpAdd_Server":"عنوان IPالمحلي",
+    "publicIpAdd_Server":"عنوان IP العام",
+    "userName_Server":"اسم المستخدم",
+    "password_Server":"كلمة المرور",
+    "url_Server":"الرابط",
+    "Application_List":"قائمة التطبيقات",
+    "applicationName_application":"اسم التطبيق",
+    "port_application":"المنفذ",
+    "Url_application":"الرابط",
+    "userName_application":"اسم المستخدم",
+    "password_server":"كلمة المرور"
+=======
     "Select_Company_Service": "اختر خدمة الشركة",
     "Successfull_Update": "تم التعديل بنجاح"
+>>>>>>> db1ee39f723bfc2002e323988027e56ca49d0626
 }

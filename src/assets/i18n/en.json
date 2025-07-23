@@ -98,7 +98,7 @@
     "CompanyName_Company": "Company Name",
     "No_Environments_Added": "No environments added",
     "Environments_List": "Environments List",
-    "ServerName_definitions": "Server Name",
+    "ServerName_definitions": "Server",
     "Field_Required": "This field is required",
     "ServerIDFK": "Server",
     "Company_Service": "Company Service",
@@ -127,6 +127,22 @@
     "Create_Environment":"Create Environment",
     "Update_Environment": "Update Environment",
     "Select_ServerIDFK" : "Select Server",
+<<<<<<< HEAD
+    "Select_Customer_Service" : "Select Customer Service",
+     "Successfull_Update": "Updated Successfully",
+     "localIpAdd_Server":"Local IP Address",
+     "publicIpAdd_Server":"Public IP Address",
+     "userName_Server":"User Name",
+     "password_Server":"Password",
+     "url_Server":"URL",
+     "Application_List":"Application List",
+     "applicationName_application":"Application Name",
+     "port_application":"port",
+     "Url_application":"URL",
+     "userName_application":"User Name",
+     "password_server":"Password"
+=======
     "Select_Company_Service" : "Select Company Service",
      "Successfull_Update": "Updated Successfully"
+>>>>>>> db1ee39f723bfc2002e323988027e56ca49d0626
 }

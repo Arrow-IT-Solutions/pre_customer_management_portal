@@ -14,10 +14,21 @@ export class ProvisionedService {
   public submitted: any | null = "";
 
   private saveEnvironmentDataSubject = new Subject<void>();
+<<<<<<< HEAD
+  private saveApplicationDataSubject = new Subject<void>();
+
+  private saveCustomerServiceDataSubject = new Subject<void>();
+  private saveServerDataSubject = new Subject<void>();
+
+  
+  private validateCustomerServiceFormSubject = new Subject<{resolve: (value: boolean) => void}>();
+  
+=======
   private saveCompanyServiceDataSubject = new Subject<void>();
 
   private validateCompanyServiceFormSubject = new Subject<{resolve: (value: boolean) => void}>();
 
+>>>>>>> db1ee39f723bfc2002e323988027e56ca49d0626
   public saveEnvironmentData$ = this.saveEnvironmentDataSubject.asObservable();
   public saveCompanyServiceData$ = this.saveCompanyServiceDataSubject.asObservable();
   public validateCompanyServiceForm$ = this.validateCompanyServiceFormSubject.asObservable();
@@ -66,10 +77,18 @@ export class ProvisionedService {
     console.log('ProvisionedService: Triggering save environment data...');
     this.saveEnvironmentDataSubject.next();
   }
+   triggerSaveApplicationData() {
+    console.log('ProvisionedService: Triggering save application data...');
+    this.saveApplicationDataSubject.next();
+  }
 
   triggerSaveCompanyServiceData() {
     console.log('ProvisionedService: Triggering save company service data...');
     this.saveCompanyServiceDataSubject.next();
+  }
+   triggerSaveServerData() {
+    console.log('ProvisionedService: Triggering save server data...');
+    this.saveServerDataSubject.next();
   }
 
   async validateCompanyServiceForm(): Promise<boolean> {
@@ -86,6 +105,28 @@ export class ProvisionedService {
 
       this.validateCompanyServiceFormSubject.next({ resolve: resolveOnce });
 
+      setTimeout(() => {
+        if (!resolved) {
+          console.log('ProvisionedService: Validation timeout - assuming invalid');
+          resolveOnce(false);
+        }
+      }, 1000);
+    });
+  }
+   async validateServerForm(): Promise<boolean> {
+    return new Promise((resolve) => {
+      console.log('ProvisionedService: Triggering server form validation...');
+      let resolved = false;
+      
+      const resolveOnce = (value: boolean) => {
+        if (!resolved) {
+          resolved = true;
+          resolve(value);
+        }
+      };
+      
+      this.validateCustomerServiceFormSubject.next({ resolve: resolveOnce });
+      
       setTimeout(() => {
         if (!resolved) {
           console.log('ProvisionedService: Validation timeout - assuming invalid');

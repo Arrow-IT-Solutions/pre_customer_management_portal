@@ -107,6 +107,17 @@ const routes: Routes = [
           )
       },
 
+       {
+        path: 'add-server',
+        loadChildren: () =>
+          import('./modules/wizard-add-server/wizard-add-server.module').then(
+            (m) => m.WizardAddServerModule
+          )
+      },
+     
+
+
+
       {
         path: 'settings',
         loadChildren: () =>
