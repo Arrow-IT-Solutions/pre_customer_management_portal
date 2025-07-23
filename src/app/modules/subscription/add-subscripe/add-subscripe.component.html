@@ -8,19 +8,19 @@
         </div>
         <div class="col-12 row m-0 p-0">
            <div class="col-12 mb-3">
-            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['customerServiceIDFK'].errors}">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['companyServiceIDFK'].errors}">
              <p-dropdown
-              [options]="customerServiceOptions"
+              [options]="companyServiceOptions"
               optionLabel="label"
               optionValue="value"
-              formControlName="customerServiceIDFK"
+              formControlName="companyServiceIDFK"
               [filter]="true"
               [showClear]="true"
               filterBy="label">
             </p-dropdown>
-              <label [ngClass]="{'error': submitted && form['customerServiceIDFK'].errors}">{{ 'Customer_Service' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['companyServiceIDFK'].errors}">{{ 'Company_Service' | translate }}</label>
             </div>
-            <div *ngIf="submitted && form['customerServiceIDFK'].errors?.['required']" class="text-danger mt-1">
+            <div *ngIf="submitted && form['companyServiceIDFK'].errors?.['required']" class="text-danger mt-1">
               {{ 'field_required' | translate }}
             </div>
           </div>
@@ -47,9 +47,9 @@
 
 
 
-         
 
-        
+
+
           <div class="col-12 mb-3">
              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['status'].errors}">
              <p-dropdown
@@ -60,13 +60,13 @@
               </p-dropdown>
 
 
-                <label [ngClass]="{'error': submitted && form['status'].errors}">{{ 'status_subscription' | translate }}</label>               
+                <label [ngClass]="{'error': submitted && form['status'].errors}">{{ 'status_subscription' | translate }}</label>
               </div>
               <div *ngIf="submitted && form['status'].errors?.['required']" class="text-danger mt-1">
               {{ 'field_required' | translate }}
             </div>
           </div>
-        
+
            <div class="col-12 mb-3">
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['price'].errors}">
               <input pInputText type="text" formControlName="price" />
@@ -76,7 +76,7 @@
               {{ 'field_required' | translate }}
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>

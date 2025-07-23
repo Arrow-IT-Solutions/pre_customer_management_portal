@@ -1,42 +1,41 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { CustomersService } from 'src/app/layout/service/customers.service';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { AddCustomerComponent } from '../add-customer/add-customer.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { CustomerResponse, CustomerSearchRequest } from '../customers.module';
+import { CompaniesService } from 'src/app/layout/service/companies.service';
+import { CompanyResponse, CompanySearchRequest } from '../companies.module';
+import { AddCompanyComponent } from '../add-company/add-company.component';
 
 @Component({
-  selector: 'app-customers',
-  templateUrl: './customers.component.html',
-  styleUrls: ['./customers.component.scss'],
+  selector: 'app-companies',
+  templateUrl: './companies.component.html',
+  styleUrls: ['./companies.component.scss'],
   providers: [MessageService,ConfirmationService]
 })
-export class CustomersComponent {
+export class CompaniesComponent {
       dataForm!: FormGroup;
       loading = false;
       pageSize: number = 12;
       first: number = 0;
       totalRecords: number = 0;
-      data: CustomerResponse[] = [];
-      customerTotal: number = 0;
+      data: CompanyResponse[] = [];
+      companyTotal: number = 0;
       doneTypingInterval = 1000;
       typingTimer: any;
       isResetting: boolean = false;
       constructor(public formBuilder:FormBuilder,public layoutService: LayoutService,
-        public translate: TranslateService,public customerService:CustomersService, public messageService: MessageService,
+        public translate: TranslateService,public companyService:CompaniesService, public messageService: MessageService,
         public confirmationService: ConfirmationService) {
         this.dataForm=this.formBuilder.group({
           name:[''],
           primaryContact:[''],
           email:[''],
-          phone:[''],
-          anyDeskAddress:['']
+          phone:['']
 
         })
 
-      this.customerService.refreshCustomers$.subscribe(() => {
+      this.companyService.refreshCompanies$.subscribe(() => {
       this.FillData();
     });
       }
@@ -44,27 +43,26 @@ export class CustomersComponent {
       async FillData(pageIndex: number = 0) {
   this.loading = true;
     this.data = [];
-    this.customerTotal = 0;
-    let filter: CustomerSearchRequest = {
+    this.companyTotal = 0;
+    let filter: CompanySearchRequest = {
       uuid: '',
       name: this.dataForm.controls['name'].value,
       phone: this.dataForm.controls['phone'].value,
       primaryContact: this.dataForm.controls['primaryContact'].value,
       email: this.dataForm.controls['email'].value,
-      anydeskAddress: this.dataForm.controls['anyDeskAddress'].value,
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString(),
 
     };
 
-    const response = (await this.customerService.Search(filter)) as any;
+    const response = (await this.companyService.Search(filter)) as any;
     console.log('data',response)
     if (response.data == null || response.data.length == 0) {
       this.data = [];
-      this.customerTotal = 0;
+      this.companyTotal = 0;
     } else if (response.data != null && response.data.length != 0) {
       this.data = response.data;
-      this.customerTotal = response.data[0];
+      this.companyTotal = response.data[0];
     }
 
     this.totalRecords = response.totalRecords;
@@ -91,23 +89,23 @@ export class CustomersComponent {
     this.FillData(event.first);
 
   }
-      openAddcustomer(row: CustomerResponse | null = null){
+      openAddCompany(row: CompanyResponse | null = null){
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.body.style.overflow = 'hidden';
-    this.customerService.SelectedData = row
-    let content = this.customerService.SelectedData == null ? 'Create_Customer' : 'Update_Customer';
+    this.companyService.SelectedData = row
+    let content = this.companyService.SelectedData == null ? 'Create_Company' : 'Update_Company';
     this.translate.get(content).subscribe((res: string) => {
       content = res
     });
-    var component = this.layoutService.OpenDialog(AddCustomerComponent, content);
-    this.customerService.Dialog = component;
+    var component = this.layoutService.OpenDialog(AddCompanyComponent, content);
+    this.companyService.Dialog = component;
     component.OnClose.subscribe(() => {
       document.body.style.overflow = '';
       this.FillData();
     });
       }
 
-    confirmDelete(row: CustomerResponse) {
+    confirmDelete(row: CompanyResponse) {
 
     console.log(row)
     this.confirmationService.confirm({
@@ -117,7 +115,7 @@ export class CustomersComponent {
       key: 'positionDialog',
       closeOnEscape: true,
       accept: async () => {
-        const response = (await this.customerService.Delete(row.uuid!)) as any;
+        const response = (await this.companyService.Delete(row.uuid!)) as any;
 
         this.confirmationService.close();
 

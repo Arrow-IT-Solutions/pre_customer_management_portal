@@ -19,11 +19,11 @@
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <div class="p-float-label">
-                   <p-dropdown [options]="customers" optionLabel="name" optionValue="uuid" formControlName="customerName"
-                      [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillCustomers($event)"
-                      (ngModelChange)="OnChange()" inputId="customerDropdown"
-                      placeholder="{{ 'customerName_definitions' | translate }}"></p-dropdown>
-                    <label>{{ 'customerName_definitions' | translate }}</label>
+                   <p-dropdown [options]="companies" optionLabel="name" optionValue="uuid" formControlName="companyName"
+                      [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillCompanies($event)"
+                      (ngModelChange)="OnChange()" inputId="companyDropdown"
+                      placeholder="{{ 'companyName_definitions' | translate }}"></p-dropdown>
+                    <label>{{ 'companyName_definitions' | translate }}</label>
 
                   </div>
                 </div>
@@ -69,8 +69,8 @@
         <div class="col-3 card__contents">
           <div class="card-section__items">
              <div class="card__contents__item">
-              <div class="card-label">{{ 'customerName_definitions' | translate }}</div>
-              <div class="card-info">{{ row.customer.customerTranslation![layoutService.config.lang]?.name }}</div>
+              <div class="card-label">{{ 'companyName_definitions' | translate }}</div>
+              <div class="card-info">{{ row.company.companyTranslation![layoutService.config.lang]?.name }}</div>
             </div>
              <div class="card__contents__item">
               <div class="card-label">{{ 'service_definitions' | translate }}</div>
@@ -101,7 +101,7 @@
             <span class="material-symbols-outlined card__actions__details">more_vert</span>
           </div>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="OpenAddCustomerService(row)">
+            <button mat-menu-item (click)="OpenAddCompanyService(row)">
               <span class="material-symbols-outlined" id="icon">Edit</span>
               {{ 'Edit_subscription' | translate }}
             </button>

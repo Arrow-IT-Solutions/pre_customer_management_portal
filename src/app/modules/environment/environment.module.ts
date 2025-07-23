@@ -26,7 +26,7 @@ export class EnvironmentModule { }
 
 export interface EnvironmentRequest extends RequestBase {
   uuid?: string;
-  customerServiceIDFK: string;
+  companyServiceIDFK: string;
   url: string;
   serverIDFK: string;
   environmentTranslation: EnvironmentTranslationRequest[];
@@ -34,7 +34,7 @@ export interface EnvironmentRequest extends RequestBase {
 
 export interface EnvironmentUpdateRequest extends RequestBase {
   uuid: string;
-  customerServiceIDFK?: string;
+  companyServiceIDFK?: string;
   url?: string;
   serverIDFK?: string;
   environmentTranslation?: EnvironmentTranslationUpdateRequest[];
@@ -42,14 +42,14 @@ export interface EnvironmentUpdateRequest extends RequestBase {
 
 export interface EnvironmentSearchRequest extends SearchRequestBase {
   uuid?: string;
-  customerServiceIDFK?: string;
+  companyServiceIDFK?: string;
   serverIDFK?: string;
   name?: string;
 }
 
 export interface EnvironmentResponse extends ResponseBase {
   uuid: string;
-  customerServiceIDFK: string;
+  companyServiceIDFK: string;
   url: string;
   serverIDFK: string;
   environmentTranslation: EnvironmentTranslationResponse[];
