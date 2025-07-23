@@ -240,7 +240,117 @@
         font-weight: bold;
     }
  }
+  .box2{
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    @media(max-width:767px){
+        flex-direction:column ;
+        align-items: center;
+    }
+    .container{
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 2rem;
+       @media(max-width:767px){
+        flex-direction:column ;
+    }
+    }
 
+  }
+.container{
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 2rem;
+        padding: 1rem 1.2rem;   
+}
+::ng-deep .p-accordion {
+        & .p-accordion-header {
+          display: flex;
+          justify-content: flex-end;
+          margin-top: -3rem;
+
+          &:lang(ar) {
+            right: unset;
+            left: 2rem;
+            direction: ltr;
+            position: absolute;
+            top: 4rem;
+          }
+
+          & .p-accordion-header-link {
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            background-color: $white-color;
+            border-color: $light-gray;
+            top: 1px;
+            color: $primary-color;
+            right: 0.75rem;
+
+            & chevronrighticon,
+            & chevrondownicon {
+              display: none;
+            }
+
+            &:lang(ar){
+                top: 0;
+              right: 0;
+            }
+          }
+        }
+
+        & .p-accordion-content {
+          border-radius: 6px;
+          position: relative;
+          top: 0.75rem;
+          padding: 0 0rem 0.75rem;
+          border: none;
+          border: 1px solid $lighter-gray;
+          margin: 0.5rem .75rem 0.5rem 0;
+        }
+}
+.filter-title{
+        display: flex;
+        align-items: center;
+        border-inline-end: 1px solid rgba($light-purple, .5);
+        margin-top: 0.75rem;
+        width: 20%;
+        justify-content: space-evenly;
+        @media(max-width:767px){
+          width: 40%;
+        }
+
+        & .material-symbols-outlined{
+          color: $gray-color;
+          top: 0;
+        }
+}
+
+.reset-btn {
+      ::ng-deep button {
+        background-color: $secoundary-color !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 50% !important;
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        font-size: 1.5rem;
+        transition: background 0.2s;
+        top: auto;
+        margin-right: 1rem !important;
+        margin-top: 2rem !important;
+        .material-symbols-outlined{
+          top: auto;
+        }
+       &:hover {
+          background-color: darken($secoundary-color, 5%) !important;
+        }
+      }
+    }
 // تصميم البيئات
 .environment-card {
   border: 1px solid #e0e0e0;

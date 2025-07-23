@@ -55,7 +55,8 @@ export class EnvironmentComponent implements OnDestroy {
       server: ['', Validators.required],
       databaseName: ['', Validators.required],
       userName: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      EnvName:['']
 
     });
 
@@ -241,6 +242,7 @@ export class EnvironmentComponent implements OnDestroy {
     }
     this.loading = false;
   }
+  OnChange() {}
 
   async Save() {
     if (!this.envDatabase || this.envDatabase.length === 0) {
