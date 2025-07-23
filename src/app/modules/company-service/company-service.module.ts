@@ -1,25 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { CustomerServiceRoutingModule } from './customer-service-routing.module';
-import { CustomerServicesComponent } from './customer-services/customer-services.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ResponseBase } from 'src/app/shared/class/class';
+import { CompanyServiceRoutingModule } from './company-service-routing.module';
+import { CompanyServicesComponent } from './company-services/company-services.component';
 
 
 @NgModule({
   declarations: [
-    CustomerServicesComponent
+    CompanyServicesComponent
   ],
   imports: [
     CommonModule,
-    CustomerServiceRoutingModule,
+    CompanyServiceRoutingModule,
     SharedModule,
     ReactiveFormsModule
   ]
 })
-export class CustomerServiceModule { }
-export interface customerServiceResponse extends ResponseBase {
-  
+export class CompanyServiceModule { }
+export interface companyServiceResponse extends ResponseBase {
+
 }
