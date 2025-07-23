@@ -38,8 +38,8 @@
             </div>
             <div class="col-12 mb-3">
               <div class="p-float-label" [ngClass]="{'error_border': submitted && form['server'].errors}">
-                <p-dropdown #serverDropdown [options]="servers" optionLabel="hostname" optionValue="uuid"
-                  formControlName="server" [filter]="true" [showClear]="true" filterBy="hostname"
+                <p-dropdown #serverDropdown [options]="servers" optionLabel="ipAddress" optionValue="uuid"
+                  formControlName="server" [filter]="true" [showClear]="true" filterBy="ipAddress"
                   (onFilter)="FillServer($event)" dir="ltr"></p-dropdown>
                 <label id="label" [ngClass]="{'error': submitted && form['server'].errors}">{{ 'ServerName_definitions'
                   | translate }}</label>
@@ -210,8 +210,10 @@
       </div>
     </div>
   </div>
+
   <div class="col-xs-12 mt-4 text-end"
     style="padding: 2rem 1rem;">
+
 
     <p-button type="submit" class="btn-primary" [loading]="btnLoading" [disabled]="btnLoading">{{ isEditMode ?
       ('Update_definitions' | translate) : ('Save_definitions' | translate) }}</p-button>

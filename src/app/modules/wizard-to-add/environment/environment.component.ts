@@ -3,6 +3,8 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Dropdown } from 'primeng/dropdown';
+import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { LayoutService } from 'src/app/layout/service/layout.service';
 import { EnvDatabase, ProvisionedServiceRequest, ProvisionedSession, ProvisionedServiceUpdateRequest } from '../wizard-to-add.module';
 import { ServersService } from 'src/app/layout/service/servers.service';
@@ -26,6 +28,7 @@ export class EnvironmentComponent implements OnDestroy {
   loading: boolean = false;
   isPasswordVisible: boolean = false;
   servers: ServerResponse[] = [];
+  private isNavigatingWithinWizard: boolean = false;
   session!: ProvisionedSession;
   envDatabase: EnvDatabase[] = [];
   private isNavigatingToCustomerService = false;
@@ -33,6 +36,7 @@ export class EnvironmentComponent implements OnDestroy {
   editingServiceId: string | null = null;
   isEditingEnvironment: boolean = false;
   editingEnvironmentIndex: number = -1;
+  private saveDataSubscription?: Subscription;
   constructor(
     public formBuilder: FormBuilder,
     public router: Router,
@@ -56,6 +60,14 @@ export class EnvironmentComponent implements OnDestroy {
 
     });
 
+    this.dataForm.valueChanges.pipe(
+      debounceTime(300) 
+    ).subscribe(() => {
+      if (!this.loading) { 
+        this.updateSessionWithCurrentFormData();
+      }
+    });
+
   }
   get form(): { [key: string]: AbstractControl } {
     return this.dataForm.controls;
@@ -72,13 +84,49 @@ export class EnvironmentComponent implements OnDestroy {
 
       await this.RetriveServer();
 
-      this.session = this.provisionedService.getSession();
+      try {
+        this.session = this.provisionedService.getSession();
 
-      if (this.session.envDatabases && this.session.envDatabases.length > 0) {
-        this.envDatabase = [...this.session.envDatabases];
+        if (this.session.envDatabases && this.session.envDatabases.length > 0) {
+          this.envDatabase = [...this.session.envDatabases];
+        }
+
+        this.restoreFormFromSession();
+      } catch (error) {
+        console.log('No existing session found for environment');
+        
+        this.session = {};
+        
+        const savedFormData = sessionStorage.getItem('currentEnvironmentFormData');
+        if (savedFormData) {
+          try {
+            const parsedData = JSON.parse(savedFormData);
+            this.session.currentEnvironmentFormData = parsedData;
+          } catch (parseError) {
+            console.log('Failed to parse saved environment data');
+          }
+        }
+        
+        const savedSessionData = sessionStorage.getItem('provisionedSessionData');
+        if (savedSessionData) {
+          try {
+            const parsedSessionData = JSON.parse(savedSessionData);
+            this.session = { ...this.session, ...parsedSessionData };
+          } catch (parseError) {
+            console.log('Failed to parse saved session data');
+          }
+        }
+        
+        this.provisionedService.setSession(this.session);
+        
+        this.restoreFormFromSession();
       }
 
       this.resetForm();
+
+      this.saveDataSubscription = this.provisionedService.saveEnvironmentData$.subscribe(() => {
+        this.handleSaveDataEvent();
+      });
 
     } catch (exceptionVar) {
       console.log(exceptionVar);
@@ -87,13 +135,106 @@ export class EnvironmentComponent implements OnDestroy {
     }
   }
 
+  private handleSaveDataEvent() {
+    try {
+      this.updateSessionWithCurrentFormData();
+    } catch (error) {
+      console.log('Environment: Error saving form data:', error);
+    }
+  }
+
+  private restoreFormFromSession() {
+    if (this.session?.currentEnvironmentFormData) {
+      const formData = this.session.currentEnvironmentFormData;
+
+      this.loading = true;
+
+      this.dataForm.patchValue({
+        nameEnvEn: formData.nameEnvEn || '',
+        nameEnvAr: formData.nameEnvAr || '',
+        urlEnv: formData.urlEnv || '',
+        server: formData.server || '',
+        databaseName: formData.databaseName || '',
+        userName: formData.userName || '',
+        password: formData.password || ''
+      });
+
+      setTimeout(() => {
+        this.loading = false;
+      }, 100);
+
+    }
+  }
+
+  private updateSessionWithCurrentFormData() {
+    if (this.loading || !this.dataForm) {
+      console.log('Environment: Skipping save - form not ready or loading');
+      return;
+    }
+
+    try {
+      this.session = this.provisionedService.getSession();
+    } catch (error) {
+      console.log('Environment: Creating new session for environment data');
+      this.session = {};
+      try {
+        const savedData = sessionStorage.getItem('currentEnvironmentFormData');
+        if (savedData) {
+          const parsedData = JSON.parse(savedData);
+          this.session.currentEnvironmentFormData = parsedData;
+        }
+      } catch (parseError) {
+        console.log('Environment: No saved form data to restore');
+      }
+    }    
+    this.session.envDatabases = this.envDatabase;
+
+    const currentFormData = {
+      nameEnvEn: this.dataForm.controls['nameEnvEn'].value || '',
+      nameEnvAr: this.dataForm.controls['nameEnvAr'].value || '',
+      urlEnv: this.dataForm.controls['urlEnv'].value || '',
+      server: this.dataForm.controls['server'].value || '',
+      databaseName: this.dataForm.controls['databaseName'].value || '',
+      userName: this.dataForm.controls['userName'].value || '',
+      password: this.dataForm.controls['password'].value || ''
+    };
+
+    this.session.currentEnvironmentFormData = currentFormData;
+
+    this.provisionedService.setSession(this.session);
+
+    sessionStorage.setItem('currentEnvironmentFormData', JSON.stringify(currentFormData));
+    
+    const sessionDataToSave = {
+      customerIDFK: this.session.customerIDFK,
+      serviceIDFK: this.session.serviceIDFK,
+      subscription: this.session.subscription,
+      envDatabases: this.session.envDatabases,
+      currentEnvironmentFormData: currentFormData
+    };
+    sessionStorage.setItem('provisionedSessionData', JSON.stringify(sessionDataToSave));
+
+  }
+
+  private clearSavedFormData() {
+    try {
+      if (this.session) {
+        delete this.session.currentEnvironmentFormData;
+        this.provisionedService.setSession(this.session);
+      }
+      sessionStorage.removeItem('currentEnvironmentFormData');
+    } catch (error) {
+      console.log('No session to clear form data from');
+    }
+  }
+  
   async onSubmit() {
     try {
       this.btnLoading = true;
       this.loading = true;
+      this.updateSessionWithCurrentFormData();
 
       await this.Save();
-
 
     } catch (exceptionVar) {
       this.btnLoading = false;
@@ -207,7 +348,8 @@ export class EnvironmentComponent implements OnDestroy {
       setTimeout(() => {
         this.envDatabase = [];
         this.resetForm();
-        this.provisionedService.clearSession();
+        this.provisionedService.clearSession();       
+        this.clearAllSavedData();
 
         if (this.isEditMode) {
           sessionStorage.removeItem('editingProvisionedServiceId');
@@ -260,7 +402,26 @@ export class EnvironmentComponent implements OnDestroy {
   }
 
   resetForm() {
+    this.loading = true;
+
+    if (this.session?.currentEnvironmentFormData) {
+      this.restoreFormFromSession();
+    } else {
+      this.dataForm.reset();
+      setTimeout(() => {
+        this.loading = false;
+      }, 100);
+    }
+  }
+
+  clearForm() {
+    this.loading = true;
+
     this.dataForm.reset();
+    
+    setTimeout(() => {
+      this.loading = false;
+    }, 100);
   }
 
   togglePasswordVisibility(): void {
@@ -269,6 +430,9 @@ export class EnvironmentComponent implements OnDestroy {
 
   back() {
     this.isNavigatingToCustomerService = true;
+
+    this.updateSessionWithCurrentFormData();
+
     this.router.navigate(['layout-admin/add/customer-service'], {
       queryParams: { fromBack: 'true' }
     });
@@ -299,12 +463,12 @@ export class EnvironmentComponent implements OnDestroy {
     var serverDTO: any[] = []
 
     this.servers.map(server => {
-      const serverName = server.hostname;
+      const serverName = server.ipAddress;
 
       var obj =
       {
         ...server,
-        hostname: `${serverName}`.trim()
+        ipAddress: `${serverName}`.trim()
 
       }
 
@@ -381,10 +545,9 @@ export class EnvironmentComponent implements OnDestroy {
     }
 
     this.envDatabase.push(newEnvDatabase);
-
-    this.updateSession();
-
-    this.resetForm();
+    this.updateSessionWithCurrentFormData();
+    this.clearSavedFormData();
+    this.clearForm(); 
     this.submitted = false;
 
     this.layoutService.showSuccess(this.messageService, 'toast', true, this.translate.instant('Environment added successfully'));
@@ -440,10 +603,24 @@ export class EnvironmentComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (!this.isNavigatingToCustomerService) {
-      this.provisionedService.clearSession();
-      sessionStorage.removeItem('editingProvisionedServiceId');
+    const currentUrl = this.router.url;
+    const isStillInWizard = currentUrl.includes('/layout-admin/add/');
+    
+    if (!isStillInWizard && !this.isNavigatingWithinWizard) {
+      this.clearAllSavedData();
     }
+
+    if (this.saveDataSubscription) {
+      this.saveDataSubscription.unsubscribe();
+    }
+  }
+
+  clearAllSavedData() {
+    this.provisionedService.clearSession();
+    sessionStorage.removeItem('currentEnvironmentFormData');
+    sessionStorage.removeItem('currentCustomerServiceFormData');
+    sessionStorage.removeItem('provisionedSessionData');
+    sessionStorage.removeItem('editingProvisionedServiceId');
   }
 
   async editEnvironment(index: number) {
@@ -524,7 +701,7 @@ export class EnvironmentComponent implements OnDestroy {
   cancelEnvironmentEdit() {
     this.isEditingEnvironment = false;
     this.editingEnvironmentIndex = -1;
-    this.resetForm();
+    this.clearForm();
     this.submitted = false;
   }
 
