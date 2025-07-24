@@ -30,18 +30,18 @@ export class ApplicationsComponent implements OnInit {
   serverOptions: ServerResponse[] = [];
 
   constructor(
-    public formBuilder: FormBuilder, 
+    public formBuilder: FormBuilder,
     public layoutService: LayoutService,
-    public translate: TranslateService, 
+    public translate: TranslateService,
     public applicationService: ApplicationService,
-    public confirmationService: ConfirmationService, 
-    public messageService: MessageService, 
+    public confirmationService: ConfirmationService,
+    public messageService: MessageService,
     public serverService: ServersService
   ) {
     this.dataForm = this.formBuilder.group({
       name: [''],
       password: [''],
-      userName:[''],
+      userName: [''],
       portNumber: [''],
       url: [''],
       serverIDFK: ['']
@@ -54,8 +54,8 @@ export class ApplicationsComponent implements OnInit {
 
     const filter: ApplicationSearchRequest = {
       portNumber: this.dataForm.get('portNumber')?.value || '',
-      name: this.dataForm.get('name')?.value||'',
-      serverIDFK: this.dataForm.get('serverIDFK')?.value||'',
+      name: this.dataForm.get('name')?.value || '',
+      serverIDFK: this.dataForm.get('serverIDFK')?.value || '',
       includeServer: '1',
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString()
@@ -77,7 +77,7 @@ export class ApplicationsComponent implements OnInit {
     this.loading = false;
   }
   async FillServers() {
-    const response = await this.serverService.Search({pageSize:"1000"});
+    const response = await this.serverService.Search({ pageSize: "1000" });
     this.serverOptions = (response?.data || []).map((server: any) => {
       return {
         uuid: server.uuid,
@@ -92,15 +92,11 @@ export class ApplicationsComponent implements OnInit {
     return server.hostname || '-';
   }
   async ngOnInit() {
+    this.loading = true;
     await this.FillServers();
     await this.fillData(0);
-    this.formChangesSub = this.dataForm.valueChanges
-      .pipe(
-        debounceTime(this.doneTypingInterval),
-        distinctUntilChanged(),
-        filter(() => !this.isResetting)
-      )
-      .subscribe(() => this.fillData(0));
+
+    this.loading = false;
   }
 
   async resetForm() {
@@ -155,26 +151,27 @@ export class ApplicationsComponent implements OnInit {
       accept: async () => {
         try {
           const resp = (await this.applicationService.Delete(row.uuid!)) as any;
-          if(resp.requestStatus == '200'){
-          this.messageService.add({
-          key: 'toast',
-          severity: 'success',
-          summary: this.translate.instant('Success'),
-          detail: this.translate.instant('Deleted_successfully')
-        });}
-        else if (resp.requestStatus =='400'){
-                this.messageService.add({
-            severity: 'error',
-             key: 'toast',
-            summary: this.translate.instant('Error'),
-            detail: this.translate.instant('application.Failed_to_delete')
-          });
-        }
+          if (resp.requestStatus == '200') {
+            this.messageService.add({
+              key: 'toast',
+              severity: 'success',
+              summary: this.translate.instant('Success'),
+              detail: this.translate.instant('Deleted_successfully')
+            });
+          }
+          else if (resp.requestStatus == '400') {
+            this.messageService.add({
+              severity: 'error',
+              key: 'toast',
+              summary: this.translate.instant('Error'),
+              detail: this.translate.instant('application.Failed_to_delete')
+            });
+          }
           this.fillData(Math.floor(this.first / this.pageSize));
         } catch (error) {
           this.messageService.add({
             severity: 'error',
-             key: 'toast',
+            key: 'toast',
             summary: this.translate.instant('Error'),
             detail: this.translate.instant('Failed_to_delete')
           });
@@ -184,17 +181,17 @@ export class ApplicationsComponent implements OnInit {
   }
 
   private async decrypt(data: any[]): Promise<any[]> {
-      return await Promise.all(
-        data.map(async (item) => {
-          try {
-            const decryptedPassword = await EncryptionService.decrypt(item.password);
-  
-            return { ...item, password: decryptedPassword };
-          } catch (err) {
-            console.warn(`Failed to decrypt password for item with id ${item.id}:`, err);
-            return { ...item, password: '[decryption failed]' };
-          }
-        })
-      );
-    }
+    return await Promise.all(
+      data.map(async (item) => {
+        try {
+          const decryptedPassword = await EncryptionService.decrypt(item.password);
+
+          return { ...item, password: decryptedPassword };
+        } catch (err) {
+          console.warn(`Failed to decrypt password for item with id ${item.id}:`, err);
+          return { ...item, password: '[decryption failed]' };
+        }
+      })
+    );
+  }
 }
