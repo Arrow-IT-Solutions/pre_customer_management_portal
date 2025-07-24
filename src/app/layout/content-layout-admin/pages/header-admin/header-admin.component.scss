@@ -52,10 +52,11 @@
     }
 
     &__tools{
-            color: $secoundary-color;
+            color: $gray-color;
             width: 100%;
             display: flex;
             justify-content: flex-end;
+            opacity: .7;
 
             & span{
                 margin-inline-start: .5rem;

@@ -9,20 +9,20 @@
         <div class="col-12 row m-0 p-0">
 
           <div class="col-12 mb-3">
-            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['customerServiceIDFK'].errors}">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['companyServiceIDFK'].errors}">
              <p-dropdown
-              [options]="customerServiceOptions"
+              [options]="companyServiceOptions"
               optionLabel="label"
               optionValue="value"
-              formControlName="customerServiceIDFK"
-              placeholder="Select_Customer_Service"
+              formControlName="companyServiceIDFK"
+              placeholder="Select_Company_Service"
               [filter]="true"
               [showClear]="true"
               filterBy="label">
             </p-dropdown>
-              <label [ngClass]="{'error': submitted && form['customerServiceIDFK'].errors}">{{ 'Customer_Service' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['companyServiceIDFK'].errors}">{{ 'Company_Service' | translate }}</label>
             </div>
-            <div *ngIf="submitted && form['customerServiceIDFK'].errors?.['required']" class="text-danger mt-1">
+            <div *ngIf="submitted && form['companyServiceIDFK'].errors?.['required']" class="text-danger mt-1">
               {{ 'field_required' | translate }}
             </div>
           </div>
@@ -47,7 +47,7 @@
             </div>
           </div>
 
-           
+
 
 
 
@@ -86,7 +86,7 @@
                 {{ 'Invalid_URL_Format' | translate }}
               </ng-container>
             </div>
-            
+
           </div>
 
         </div>

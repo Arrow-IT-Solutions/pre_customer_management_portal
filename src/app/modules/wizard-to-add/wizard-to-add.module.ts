@@ -3,16 +3,17 @@ import { CommonModule } from '@angular/common';
 
 import { WizardToAddRoutingModule } from './wizard-to-add-routing.module';
 import { WizardComponent } from './wizard/wizard.component';
-import { DefinitionsComponent } from './customer-service/definitions.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EnvironmentComponent } from './environment/environment.component';
 import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/class/class';
-import { CustomerResponse } from '../customers/customers.module';
 import { ServiceResponse } from '../services/services.module';
 import { EnvironmentResponse, EnvironmentTranslationRequest, EnvironmentTranslationUpdateRequest } from '../environment/environment.module';
 import { SubscriptionRequest, SubscriptionResponse, SubscriptionUpdateRequest } from '../subscription/subscription.module';
 import { DatabaseResponse } from '../data-bases/data-bases.module';
+import { ServerResponse } from '../servers/servers.module';
+import { CompanyResponse } from '../companies/companies.module';
+import { DefinitionsComponent } from './company-service/definitions.component';
 
 
 @NgModule({
@@ -32,15 +33,32 @@ import { DatabaseResponse } from '../data-bases/data-bases.module';
 export class WizardToAddModule { }
 
 export interface ProvisionedSession {
-  customerIDFK?: string;
+  companyIDFK?: string;
   serviceIDFK?: string;
   subscription?: SubscriptionRequest;
   envDatabases?: EnvDatabase[];
   subscriptionUpdate?: SubscriptionUpdateRequest;
   envDatabasesUpdate?: UpdateEnvDatabase[];
+  currentEnvironmentFormData?: {
+    nameEnvEn?: string;
+    nameEnvAr?: string;
+    urlEnv?: string;
+    server?: string;
+    databaseName?: string;
+    userName?: string;
+    password?: string;
+  };
+  currentCompanyServiceFormData?: {
+    companyName?: string;
+    service?: string;
+    startDate?: string;
+    endDate?: string;
+    status?: string;
+    price?: string;
+  };
 }
 export interface ProvisionedServiceRequest extends RequestBase {
-  customerIDFK?: string;
+  companyIDFK?: string;
   serviceIDFK?: string;
   subscription?: SubscriptionRequest;
   envDatabases?: EnvDatabase[];
@@ -54,19 +72,20 @@ export interface EnvDatabase {
   connectionString: string;
   dbUserName: string;
   dbPassword: string;
+  server?: ServerResponse
 }
 
 export interface ProvisionedServiceSearchRequest extends SearchRequestBase {
   uuid?: string;
-  CustomerIDFK?: string;
-  ServiceIDFK?: string;
-  IncludeCustomer?: string;
-  IncludeService?: string;
+  companyIDFK?: string;
+  serviceIDFK?: string;
+  includeCompany?: string;
+  includeService?: string;
 }
 
 export interface ProvisionedServiceResponse extends ResponseBase {
   uuid: string;
-  customer: CustomerResponse;
+  company: CompanyResponse;
   service: ServiceResponse;
   subscription: SubscriptionResponse;
   environments: EnvironmentResponse[];
@@ -76,7 +95,7 @@ export interface ProvisionedServiceResponse extends ResponseBase {
 
 export interface ProvisionedServiceUpdateRequest extends RequestBase {
   uuid: string;
-  customerIDFK?: string;
+  companyIDFK?: string;
   serviceIDFK?: string;
   subscription?: SubscriptionUpdateRequest;
   envDatabases?: UpdateEnvDatabase[];
@@ -93,10 +112,10 @@ export interface UpdateEnvDatabase {
 }
 
 
-export interface CustomerServiceResponse extends ResponseBase {
+export interface CompanyServiceResponse extends ResponseBase {
   uuid: string;
-  customerIDFK: string;
+  companyIDFK: string;
   serviceIDFK: string;
-  customer: CustomerResponse;
+  company: CompanyResponse;
   service: ServiceResponse;
 }

@@ -33,7 +33,7 @@ export const navbarData: NavbarData[] = [
         id: 'services',
         routeLink: 'services'
       },
-      
+
       {
         label: 'Servers',
         labelar: 'الخوادم',
@@ -64,15 +64,15 @@ export const navbarData: NavbarData[] = [
         id: 'credential',
         routeLink: 'credential'
       },
-     
-      
+
+
        {
-        label: 'Customers',
-        labelar: 'العملاء',
-        id: 'customers',
-        routeLink: 'customers'
+        label: 'Companies',
+        labelar: 'الشركات',
+        id: 'companies',
+        routeLink: 'companies'
       },
-      
+
     ]
   },
   {
@@ -81,7 +81,7 @@ export const navbarData: NavbarData[] = [
         id: 'environments',
         routeLink: 'environments',
         icon:'language'
-  }, 
+  },
   {
         label: 'Subscription',
         labelar: 'الاشتراك',
@@ -90,20 +90,31 @@ export const navbarData: NavbarData[] = [
         icon:'library_add'
   },
   {
-        label: 'Customer Services',
-        labelar: 'خدمة العملاء',
-        id: 'customer-services',
-        routeLink: 'customer-services',
+        label: 'Company Services',
+        labelar: 'خدمات الشركات',
+        id: 'company-services',
+        routeLink: 'company-services',
         icon:'group_work'
   },
-  
+
   {
         label: 'Add',
         labelar: 'إضافة',
         id: 'add',
-        routeLink: 'add/customer-service',
+        routeLink: 'add/company-service',
         icon:'control_point'
-  }   
+<<<<<<< HEAD
+  },
+   {
+        label: 'Add Server',
+        labelar: ' إضافة خادم',
+        id: 'add',
+        routeLink: 'add-server/server-data',
+        icon:'control_point'
+  }  
+=======
+  }
+>>>>>>> db1ee39f723bfc2002e323988027e56ca49d0626
 
 
 

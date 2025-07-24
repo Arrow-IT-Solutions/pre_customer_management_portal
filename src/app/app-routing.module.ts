@@ -43,7 +43,7 @@ const routes: Routes = [
           )
       },
        {
-      path: 'environments',   
+      path: 'environments',
       loadChildren: () =>
         import('./modules/environment/environment.module').then(
           (m) => m.EnvironmentModule
@@ -64,10 +64,10 @@ const routes: Routes = [
           )
       },
       {
-        path: 'customers',
+        path: 'companies',
         loadChildren: () =>
-          import('./modules/customers/customers.module').then(
-            (m) => m.CustomersModule
+          import('./modules/companies/companies.module').then(
+            (m) => m.CompaniesModule
           )
       },
        {
@@ -98,7 +98,7 @@ const routes: Routes = [
             (m) => m.SubscriptionModule
           )
       },
-      
+
       {
         path: 'add',
         loadChildren: () =>
@@ -107,13 +107,24 @@ const routes: Routes = [
           )
       },
       {
-        path: 'customer-services',
+        path: 'company-services',
         loadChildren: () =>
-          import('./modules/customer-service/customer-service.module').then(
-            (m) => m.CustomerServiceModule
+          import('./modules/company-service/company-service.module').then(
+            (m) => m.CompanyServiceModule
+          )
+      },
+
+       {
+        path: 'add-server',
+        loadChildren: () =>
+          import('./modules/wizard-add-server/wizard-add-server.module').then(
+            (m) => m.WizardAddServerModule
           )
       },
      
+
+
+
       {
         path: 'settings',
         loadChildren: () =>

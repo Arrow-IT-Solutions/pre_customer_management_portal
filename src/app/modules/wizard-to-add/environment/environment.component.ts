@@ -3,6 +3,8 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Dropdown } from 'primeng/dropdown';
+import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { LayoutService } from 'src/app/layout/service/layout.service';
 import { EnvDatabase, ProvisionedServiceRequest, ProvisionedSession, ProvisionedServiceUpdateRequest } from '../wizard-to-add.module';
 import { ServersService } from 'src/app/layout/service/servers.service';
@@ -10,6 +12,7 @@ import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { ServerResponse, ServerSearchRequest } from '../../servers/servers.module';
 import { TranslateService } from '@ngx-translate/core';
 import { EncryptionService } from 'src/app/shared/service/encryption.service';
+
 
 @Component({
   selector: 'app-environment',
@@ -20,18 +23,21 @@ import { EncryptionService } from 'src/app/shared/service/encryption.service';
 export class EnvironmentComponent implements OnDestroy {
   @ViewChild('serverDropdown') serverDropdown!: Dropdown;
   dataForm!: FormGroup;
+  searchForm!:FormGroup;
   submitted: boolean = false;
   btnLoading: boolean = false;
   loading: boolean = false;
   isPasswordVisible: boolean = false;
   servers: ServerResponse[] = [];
+  private isNavigatingWithinWizard: boolean = false;
   session!: ProvisionedSession;
   envDatabase: EnvDatabase[] = [];
-  private isNavigatingToCustomerService = false;
+  private isNavigatingToCompanyService = false;
   isEditMode: boolean = false;
   editingServiceId: string | null = null;
   isEditingEnvironment: boolean = false;
   editingEnvironmentIndex: number = -1;
+  private saveDataSubscription?: Subscription;
   constructor(
     public formBuilder: FormBuilder,
     public router: Router,
@@ -50,8 +56,25 @@ export class EnvironmentComponent implements OnDestroy {
       server: ['', Validators.required],
       databaseName: ['', Validators.required],
       userName: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      
 
+    });
+
+    this.searchForm=formBuilder.group({
+      EnvName:[''],
+      server:[''],
+      dbName:['']
+
+
+    })
+
+    this.dataForm.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(() => {
+      if (!this.loading) {
+        this.updateSessionWithCurrentFormData();
+      }
     });
 
   }
@@ -59,13 +82,168 @@ export class EnvironmentComponent implements OnDestroy {
     return this.dataForm.controls;
   }
 
+  async ngOnInit() {
+    try {
+      this.loading = true;
+
+      this.editingServiceId = sessionStorage.getItem('editingProvisionedServiceId');
+      if (this.editingServiceId) {
+        this.isEditMode = true;
+      }
+
+      await this.RetriveServer();
+
+      try {
+        this.session = this.provisionedService.getSession();
+
+        if (this.session.envDatabases && this.session.envDatabases.length > 0) {
+          this.envDatabase = [...this.session.envDatabases];
+        }
+
+        this.restoreFormFromSession();
+      } catch (error) {
+        console.log('No existing session found for environment');
+
+        this.session = {};
+
+        const savedFormData = sessionStorage.getItem('currentEnvironmentFormData');
+        if (savedFormData) {
+          try {
+            const parsedData = JSON.parse(savedFormData);
+            this.session.currentEnvironmentFormData = parsedData;
+          } catch (parseError) {
+            console.log('Failed to parse saved environment data');
+          }
+        }
+
+        const savedSessionData = sessionStorage.getItem('provisionedSessionData');
+        if (savedSessionData) {
+          try {
+            const parsedSessionData = JSON.parse(savedSessionData);
+            this.session = { ...this.session, ...parsedSessionData };
+          } catch (parseError) {
+            console.log('Failed to parse saved session data');
+          }
+        }
+
+        this.provisionedService.setSession(this.session);
+
+        this.restoreFormFromSession();
+      }
+
+      this.resetForm();
+
+      this.saveDataSubscription = this.provisionedService.saveEnvironmentData$.subscribe(() => {
+        this.handleSaveDataEvent();
+      });
+
+    } catch (exceptionVar) {
+      console.log(exceptionVar);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  private handleSaveDataEvent() {
+    try {
+      this.updateSessionWithCurrentFormData();
+    } catch (error) {
+      console.log('Environment: Error saving form data:', error);
+    }
+  }
+
+  private restoreFormFromSession() {
+    if (this.session?.currentEnvironmentFormData) {
+      const formData = this.session.currentEnvironmentFormData;
+
+      this.loading = true;
+
+      this.dataForm.patchValue({
+        nameEnvEn: formData.nameEnvEn || '',
+        nameEnvAr: formData.nameEnvAr || '',
+        urlEnv: formData.urlEnv || '',
+        server: formData.server || '',
+        databaseName: formData.databaseName || '',
+        userName: formData.userName || '',
+        password: formData.password || ''
+      });
+
+      setTimeout(() => {
+        this.loading = false;
+      }, 100);
+
+    }
+  }
+
+  private updateSessionWithCurrentFormData() {
+    if (this.loading || !this.dataForm) {
+      console.log('Environment: Skipping save - form not ready or loading');
+      return;
+    }
+
+    try {
+      this.session = this.provisionedService.getSession();
+    } catch (error) {
+      console.log('Environment: Creating new session for environment data');
+      this.session = {};
+      try {
+        const savedData = sessionStorage.getItem('currentEnvironmentFormData');
+        if (savedData) {
+          const parsedData = JSON.parse(savedData);
+          this.session.currentEnvironmentFormData = parsedData;
+        }
+      } catch (parseError) {
+        console.log('Environment: No saved form data to restore');
+      }
+    }
+    this.session.envDatabases = this.envDatabase;
+
+    const currentFormData = {
+      nameEnvEn: this.dataForm.controls['nameEnvEn'].value || '',
+      nameEnvAr: this.dataForm.controls['nameEnvAr'].value || '',
+      urlEnv: this.dataForm.controls['urlEnv'].value || '',
+      server: this.dataForm.controls['server'].value || '',
+      databaseName: this.dataForm.controls['databaseName'].value || '',
+      userName: this.dataForm.controls['userName'].value || '',
+      password: this.dataForm.controls['password'].value || ''
+    };
+
+    this.session.currentEnvironmentFormData = currentFormData;
+
+    this.provisionedService.setSession(this.session);
+
+    sessionStorage.setItem('currentEnvironmentFormData', JSON.stringify(currentFormData));
+
+    const sessionDataToSave = {
+      companyIDFK: this.session.companyIDFK,
+      serviceIDFK: this.session.serviceIDFK,
+      subscription: this.session.subscription,
+      envDatabases: this.session.envDatabases,
+      currentEnvironmentFormData: currentFormData
+    };
+    sessionStorage.setItem('provisionedSessionData', JSON.stringify(sessionDataToSave));
+
+  }
+
+  private clearSavedFormData() {
+    try {
+      if (this.session) {
+        delete this.session.currentEnvironmentFormData;
+        this.provisionedService.setSession(this.session);
+      }
+      sessionStorage.removeItem('currentEnvironmentFormData');
+    } catch (error) {
+      console.log('No session to clear form data from');
+    }
+  }
+
   async onSubmit() {
     try {
       this.btnLoading = true;
       this.loading = true;
+      this.updateSessionWithCurrentFormData();
 
       await this.Save();
-
 
     } catch (exceptionVar) {
       this.btnLoading = false;
@@ -73,6 +251,7 @@ export class EnvironmentComponent implements OnDestroy {
     }
     this.loading = false;
   }
+  OnChange() {}
 
   async Save() {
     if (!this.envDatabase || this.envDatabase.length === 0) {
@@ -88,130 +267,79 @@ export class EnvironmentComponent implements OnDestroy {
         return;
       }
 
-      const validEnvDatabases = this.envDatabase.filter(env => {
-        const hasValidUrl = env.url && env.url.trim() !== '' && env.url !== 'undefined';
-        const hasValidServer = env.serverIDFK && env.serverIDFK.toString().trim() !== '' && env.serverIDFK !== 'undefined';
-        const hasValidDbName = env.dbName && env.dbName.trim() !== '' && env.dbName !== 'undefined';
-        const hasValidUserName = env.dbUserName && env.dbUserName.trim() !== '' && env.dbUserName !== 'undefined';
-        const hasValidPassword = env.dbPassword && env.dbPassword.trim() !== '' && env.dbPassword !== 'undefined';
-
-        const isValid = hasValidUrl && hasValidServer && hasValidDbName && hasValidUserName && hasValidPassword;
-
-
-        return isValid;
-      });
-
-      if (validEnvDatabases.length === 0) {
-        this.layoutService.showError(this.messageService, 'toast', true, 'Please ensure all environment fields are filled correctly');
-        return;
-      }
-
       const updateProvisioned: ProvisionedServiceUpdateRequest = {
-        uuid: this.editingServiceId
+        uuid: this.editingServiceId,
+        companyIDFK: this.session.companyIDFK,
+        serviceIDFK: this.session.serviceIDFK,
       };
 
-      if (this.session.customerIDFK && this.session.customerIDFK.trim() !== '' && this.session.customerIDFK !== 'undefined') {
-        updateProvisioned.customerIDFK = this.session.customerIDFK;
-      }
 
-      if (this.session.serviceIDFK && this.session.serviceIDFK.trim() !== '' && this.session.serviceIDFK !== 'undefined') {
-        updateProvisioned.serviceIDFK = this.session.serviceIDFK;
-      }
-
+      updateProvisioned.subscription = {
+        companyServiceIDFK: this.session.subscription?.uuid == null ? this.editingServiceId : this.session.subscription?.uuid,
+        uuid: this.session.subscription?.uuid?.toString(),
+        startDate: this.session.subscription?.startDate,
+        endDate: this.session.subscription?.endDate,
+        price: this.session.subscription?.price,
+        status: this.session.subscription?.status,
+      };
       if (this.session.subscription) {
-        const subscriptionData: any = {
-          customerServiceIDFK: this.editingServiceId
-        };
 
         if (this.session.subscription.uuid &&
           this.session.subscription.uuid.trim() !== '' &&
           this.session.subscription.uuid !== 'undefined' &&
           this.session.subscription.uuid !== 'null') {
-          subscriptionData.uuid = this.session.subscription.uuid.trim();
+          updateProvisioned.subscription.uuid = this.session.subscription.uuid.trim();
         } else {
-          if (this.editingServiceId) {
-            subscriptionData.uuid = this.editingServiceId;
-          } else {
-            console.log(' This might be a data issue - subscription should have UUID for updates');
-          }
+          updateProvisioned.subscription.uuid = this.editingServiceId;
         }
-
-        if (this.session.subscription.startDate) {
-          subscriptionData.startDate = this.session.subscription.startDate;
-        }
-
-        if (this.session.subscription.endDate) {
-          subscriptionData.endDate = this.session.subscription.endDate;
-        }
-
-        if (this.session.subscription.price) {
-          subscriptionData.price = this.session.subscription.price;
-        }
-
-        if (this.session.subscription.status) {
-          subscriptionData.status = this.session.subscription.status;
-        }
-
-        updateProvisioned.subscription = subscriptionData;
-      } else {
-        console.log(' No subscription data in session');
       }
 
-      if (validEnvDatabases?.length) {
-        const envs: EnvDatabase[] = [];
-        for (const env of validEnvDatabases) {
-          const updateEnv: any = {};
-          updateEnv.url = this.cleanValue(env.url);
-          updateEnv.serverIDFK = this.cleanValue(env.serverIDFK);
-          updateEnv.dbName = this.cleanValue(env.dbName);
-          updateEnv.connectionString = this.cleanValue(env.connectionString);
-          updateEnv.dbUserName = this.cleanValue(env.dbUserName);
-          updateEnv.dbPassword = this.cleanValue(env.dbPassword);
-          const connectionString = this.cleanValue(env.connectionString);
-          const dbPassword = this.cleanValue(env.dbPassword);
-          // ✅ Encrypt sensitive fields
-          updateEnv.connectionString = connectionString
-            ? await EncryptionService.encrypt(connectionString)
-            : undefined;
+      const envs: EnvDatabase[] = await Promise.all(
+        this.envDatabase.map(async ({
+          url,
+          serverIDFK,
+          dbName,
+          connectionString,
+          dbUserName,
+          dbPassword,
+          environmentTranslation
+        }) => {
+          const [encryptedConnStr, encryptedPass] = await Promise.all([
+            connectionString
+              ? EncryptionService.encrypt(connectionString)
+              : undefined,
+            dbPassword
+              ? EncryptionService.encrypt(dbPassword)
+              : undefined
+          ]);
 
-          updateEnv.dbPassword = dbPassword
-            ? await EncryptionService.encrypt(dbPassword)
-            : undefined;
-
-          const envTranslations = Array.isArray(env.environmentTranslation)
-            ? env.environmentTranslation
-              .filter(et =>
-                this.cleanValue(et?.name) && this.cleanValue(et?.language)
-              )
-              .map(et => {
-                return {
-                  uuid: this.cleanValue(et?.uuid),
-                  name: this.cleanValue(et?.name),
-                  language: this.cleanValue(et?.language)
-                };
-              })
+          const envTranslations = Array.isArray(environmentTranslation)
+            ? environmentTranslation
+              .filter(et => et.name && et.language)
+              .map(({ uuid, name, language }) => ({ uuid, name, language }))
             : [];
 
-          if (envTranslations.length > 0) {
-            updateEnv.environmentTranslation = envTranslations;
-          }
+          return {
+            url,
+            serverIDFK: serverIDFK.toString(),
+            dbName,
+            connectionString: encryptedConnStr,
+            dbUserName,
+            dbPassword: encryptedPass,
+            ...(envTranslations.length && { environmentTranslation: envTranslations })
+          } as EnvDatabase;
+        })
+      );
 
-          envs.push(updateEnv as EnvDatabase);
-          updateProvisioned.envDatabases = envs;
-        }
-      }
-
-      console.log(updateProvisioned)
-
-
+      updateProvisioned.envDatabases = envs;
       response = await this.provisionedService.Update(updateProvisioned);
 
     } else {
-
       const encryptedEnvDatabases = await this.encryptEnvDatabases(this.envDatabase);
+
       const addProvisioned: ProvisionedServiceRequest = {
         subscription: this.session.subscription,
-        customerIDFK: this.session.customerIDFK,
+        companyIDFK: this.session.companyIDFK,
         serviceIDFK: this.session.serviceIDFK,
         envDatabases: encryptedEnvDatabases
       };
@@ -230,14 +358,15 @@ export class EnvironmentComponent implements OnDestroy {
         this.envDatabase = [];
         this.resetForm();
         this.provisionedService.clearSession();
+        this.clearAllSavedData();
 
         if (this.isEditMode) {
           sessionStorage.removeItem('editingProvisionedServiceId');
 
         } else {
-          this.isNavigatingToCustomerService = true;
+          this.isNavigatingToCompanyService = true;
         }
-        this.router.navigate(['layout-admin/customer-services']);
+        this.router.navigate(['layout-admin/company-services']);
         this.btnLoading = false;
       }, 500);
     } else {
@@ -271,7 +400,7 @@ export class EnvironmentComponent implements OnDestroy {
 
           return {
             ...item,
-            password: encryptedPassword,
+            dbPassword: encryptedPassword,
             connectionString: encryptedConnectionString
           };
         } catch (err) {
@@ -280,9 +409,30 @@ export class EnvironmentComponent implements OnDestroy {
       })
     );
   }
-
+  
   resetForm() {
+    this.loading = true;
+
+    if (this.session?.currentEnvironmentFormData) {
+      this.restoreFormFromSession();
+    } else {
+      this.dataForm.reset();
+      setTimeout(() => {
+        this.loading = false;
+      }, 100);
+    }
+  }
+
+  resetSearchForm(){}
+
+  clearForm() {
+    this.loading = true;
+
     this.dataForm.reset();
+
+    setTimeout(() => {
+      this.loading = false;
+    }, 100);
   }
 
   togglePasswordVisibility(): void {
@@ -290,100 +440,13 @@ export class EnvironmentComponent implements OnDestroy {
   }
 
   back() {
-    this.isNavigatingToCustomerService = true;
-    this.router.navigate(['layout-admin/add/customer-service'], {
+    this.isNavigatingToCompanyService = true;
+
+    this.updateSessionWithCurrentFormData();
+
+    this.router.navigate(['layout-admin/add/company-service'], {
       queryParams: { fromBack: 'true' }
     });
-  }
-
-  async ngOnInit() {
-    try {
-      this.loading = true;
-
-      this.editingServiceId = sessionStorage.getItem('editingProvisionedServiceId');
-      if (this.editingServiceId) {
-        this.isEditMode = true;
-      }
-
-      await this.RetriveServer();
-
-      this.initializeServerIdMapping();
-
-      this.session = this.provisionedService.getSession();
-
-      console.log('Sess', this.session)
-
-      if (this.session.envDatabases && this.session.envDatabases.length > 0) {
-        this.envDatabase = [...this.session.envDatabases];
-        this.envDatabase.forEach((env, index) => {
-          console.log(`Environment ${index + 1}:`, {
-            url: env.url,
-            serverIDFK: env.serverIDFK,
-            dbName: env.dbName,
-            dbUserName: env.dbUserName,
-            connectionString: env.connectionString,
-            environmentTranslation: env.environmentTranslation
-          });
-
-          const server = this.findServerByMultipleIds(env.serverIDFK);
-          if (!server) {
-            console.warn(`Server with ID ${env.serverIDFK} not found in servers list for environment ${index + 1}`);
-          }
-        });
-      }
-
-      this.resetForm();
-
-    } catch (exceptionVar) {
-      console.log(exceptionVar);
-    } finally {
-      this.loading = false;
-    }
-  }
-
-  private initializeServerIdMapping() {
-
-    this.serverIdMapping = {};
-
-    if (this.session?.envDatabases && this.servers.length > 0) {
-      this.session.envDatabases.forEach((env, index) => {
-        const serverIdFK = env.serverIDFK?.toString();
-
-        if (serverIdFK) {
-          let matchedServer = this.servers.find(s =>
-            s.uuid?.toString() === serverIdFK ||
-            (s as any).serverIDPK?.toString() === serverIdFK ||
-            (s as any).id?.toString() === serverIdFK
-          );
-
-          if (!matchedServer && this.servers[index]) {
-            matchedServer = this.servers[index];
-          }
-
-          // إذا ما زلنا لم نجد، استخدم أول خادم متاح
-          if (!matchedServer && this.servers.length > 0) {
-            matchedServer = this.servers[0];
-          }
-
-          if (matchedServer?.uuid) {
-            this.serverIdMapping[serverIdFK] = matchedServer.uuid;
-          }
-        }
-      });
-    }
-
-    if (this.servers.length > 0) {
-      for (let i = 1; i <= Math.min(this.servers.length, 10); i++) {
-        const serverIndex = i - 1;
-        if (this.servers[serverIndex]?.uuid && !this.serverIdMapping[i.toString()]) {
-          const serverUuid = this.servers[serverIndex].uuid;
-          if (serverUuid) {
-            this.serverIdMapping[i.toString()] = serverUuid;
-          }
-        }
-      }
-    }
-
   }
 
   async RetriveServer() {
@@ -411,12 +474,12 @@ export class EnvironmentComponent implements OnDestroy {
     var serverDTO: any[] = []
 
     this.servers.map(server => {
-      const serverName = server.hostname;
+      const serverName = server.ipAddress;
 
       var obj =
       {
         ...server,
-        hostname: `${serverName}`.trim()
+        ipAddress: `${serverName}`.trim()
 
       }
 
@@ -437,7 +500,8 @@ export class EnvironmentComponent implements OnDestroy {
 
     let filter: ServerSearchRequest = {
 
-      hostname: filterInput,
+      hostname: '',
+      ipAddress: filterInput,
       uuid: '',
       pageIndex: "",
       pageSize: '10'
@@ -451,6 +515,7 @@ export class EnvironmentComponent implements OnDestroy {
   async addEnvironment() {
     if (this.dataForm.invalid) {
       this.submitted = true;
+      this.layoutService.showError(this.messageService, 'toast', true, 'Please fill all required fields');
       return;
     }
 
@@ -459,27 +524,15 @@ export class EnvironmentComponent implements OnDestroy {
       return;
     }
 
-    const nameEnvAr = this.dataForm.controls['nameEnvAr'].value?.trim() || '';
-    const nameEnvEn = this.dataForm.controls['nameEnvEn'].value?.trim() || '';
-    const urlEnv = this.dataForm.controls['urlEnv'].value?.trim() || '';
     const serverValue = this.dataForm.controls['server'].value?.trim() || '';
-    const databaseName = this.dataForm.controls['databaseName'].value?.trim() || '';
-    const userName = this.dataForm.controls['userName'].value?.trim() || '';
-    const password = this.dataForm.controls['password'].value?.trim() || '';
-
-    if (!nameEnvAr || !nameEnvEn || !urlEnv || !serverValue || !databaseName || !userName || !password) {
-      this.layoutService.showError(this.messageService, 'toast', true, 'Please fill all required fields');
-      this.submitted = true;
-      return;
-    }
 
     const environmentTranslations = [
       {
-        name: nameEnvAr,
+        name: this.dataForm.controls['nameEnvAr'].value,
         language: 'ar'
       },
       {
-        name: nameEnvEn,
+        name: this.dataForm.controls['nameEnvEn'].value,
         language: 'en'
       }
     ];
@@ -488,15 +541,14 @@ export class EnvironmentComponent implements OnDestroy {
 
     const selectedServer = this.servers.find(s => s.uuid === serverValue);
 
-
     const newEnvDatabase: EnvDatabase = {
-      url: urlEnv,
+      url: this.dataForm.controls['urlEnv'].value,
       serverIDFK: serverValue,
       environmentTranslation: environmentTranslations,
-      dbName: databaseName,
+      dbName: this.dataForm.controls['databaseName'].value,
       connectionString: connectionString,
-      dbUserName: userName,
-      dbPassword: password
+      dbUserName: this.dataForm.controls['userName'].value,
+      dbPassword: this.dataForm.controls['password'].value
     };
 
     if (selectedServer) {
@@ -504,10 +556,9 @@ export class EnvironmentComponent implements OnDestroy {
     }
 
     this.envDatabase.push(newEnvDatabase);
-
-    this.updateSession();
-
-    this.resetForm();
+    this.updateSessionWithCurrentFormData();
+    this.clearSavedFormData();
+    this.clearForm();
     this.submitted = false;
 
     this.layoutService.showSuccess(this.messageService, 'toast', true, this.translate.instant('Environment added successfully'));
@@ -529,30 +580,12 @@ export class EnvironmentComponent implements OnDestroy {
     return serverName;
   }
 
-  getServerNameByFK(serverFK: any, envData?: any): string {
-    if (envData && envData.server) {
-      const serverName = envData.server.hostname || envData.server.ipAddress || 'Unknown Server';
-      return serverName;
-    }
-
-    if (!this.servers || this.servers.length === 0) {
-      return 'N/A';
-    }
-
-    const serverIdToMatch = serverFK ? serverFK.toString() : '';
-
-    const server = this.findServerByMultipleIds(serverIdToMatch);
-
-    const result = server.hostname || server.ipAddress || 'Unknown Server';
-    return result;
-  }
-
   removeEnvironment(index: number) {
     this.envDatabase.splice(index, 1);
 
     this.updateSession();
 
-    // this.layoutService.showSuccess(this.messageService, 'toast', true, 'تم حذف البيئة بنجاح');
+
   }
 
   getEnvironmentName(environmentTranslation: any[], language: string): string {
@@ -581,10 +614,24 @@ export class EnvironmentComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (!this.isNavigatingToCustomerService) {
-      this.provisionedService.clearSession();
-      sessionStorage.removeItem('editingProvisionedServiceId');
+    const currentUrl = this.router.url;
+    const isStillInWizard = currentUrl.includes('/layout-admin/add/');
+
+    if (!isStillInWizard && !this.isNavigatingWithinWizard) {
+      this.clearAllSavedData();
     }
+
+    if (this.saveDataSubscription) {
+      this.saveDataSubscription.unsubscribe();
+    }
+  }
+
+  clearAllSavedData() {
+    this.provisionedService.clearSession();
+    sessionStorage.removeItem('currentEnvironmentFormData');
+    sessionStorage.removeItem('currentCompanyServiceFormData');
+    sessionStorage.removeItem('provisionedSessionData');
+    sessionStorage.removeItem('editingProvisionedServiceId');
   }
 
   async editEnvironment(index: number) {
@@ -593,156 +640,24 @@ export class EnvironmentComponent implements OnDestroy {
 
     const envToEdit = this.envDatabase[index];
 
-    if (!this.servers || this.servers.length === 0) {
-      console.log(' No servers loaded, reloading servers...');
-      await this.RetriveServer();
-      console.log(' Servers reloaded:', this.servers.length, 'servers found');
+    const enTrans = envToEdit.environmentTranslation.find(t => t.language === 'en')?.name;
+    const arTrans = envToEdit.environmentTranslation.find(t => t.language === 'ar')?.name;
 
-      this.initializeServerIdMapping();
-    }
+    let temp = {
+      nameEnvEn: enTrans,
+      nameEnvAr: arTrans,
+      urlEnv: envToEdit.url,
+      server: envToEdit.server?.uuid,
+      databaseName: envToEdit.dbName,
+      userName: envToEdit.dbUserName,
+      password: envToEdit.dbPassword,
+    };
+    this.dataForm.patchValue(temp);
 
-    let targetServer = this.findServerByMultipleIds(envToEdit.serverIDFK);
-
-    if (!targetServer) {
-      console.warn(' Server not found on first try, trying alternative methods...');
-
-      await this.RetriveServer();
-      this.initializeServerIdMapping();
-
-      targetServer = this.findServerByMultipleIds(envToEdit.serverIDFK);
-
-      if (!targetServer) {
-        if (this.servers.length > 0) {
-          targetServer = this.servers[0];
-          this.serverIdMapping[envToEdit.serverIDFK.toString()] = targetServer.uuid || '';
-        } else {
-          this.layoutService.showError(this.messageService, 'toast', true,
-            `Server with ID "${envToEdit.serverIDFK}" not found and no servers available. Please contact administrator.`);
-          return;
-        }
-      }
-    }
-
-
-    this.setFormValues(envToEdit, targetServer);
 
     setTimeout(() => {
       document.querySelector('.box-shadow')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
-  }
-
-  private serverIdMapping: { [key: string]: string } = {};
-
-  private findServerByMultipleIds(serverId: any): any {
-    if (!this.servers || !serverId) {
-      console.warn('No servers or serverId provided');
-      return null;
-    }
-
-    const searchId = serverId.toString();
-
-    let server = this.servers.find(s => {
-      const matches = s.uuid?.toString() === searchId ||
-        (s as any).serverIDPK?.toString() === searchId ||
-        (s as any).id?.toString() === searchId ||
-        (s as any).serverId?.toString() === searchId;
-
-
-      return matches;
-    });
-
-    if (server) {
-      return server;
-    }
-
-    const mappedUuid = this.serverIdMapping[searchId];
-    if (mappedUuid) {
-      server = this.servers.find(s => s.uuid === mappedUuid);
-      if (server) {
-        return server;
-      }
-    }
-
-    const numericId = parseInt(searchId);
-    if (!isNaN(numericId) && numericId > 0 && numericId <= this.servers.length) {
-      const serverByIndex = this.servers[numericId - 1];
-      if (serverByIndex && serverByIndex.uuid) {
-        const serverUuid = serverByIndex.uuid;
-        if (serverUuid) {
-          this.serverIdMapping[searchId] = serverUuid;
-          return serverByIndex;
-        }
-      }
-    }
-
-    if ((searchId === "1" || searchId === "2") && this.servers.length > 0) {
-      const fallbackServer = this.servers[0];
-      this.serverIdMapping[searchId] = fallbackServer.uuid || '';
-      return fallbackServer;
-    }
-
-    return null;
-  }
-
-  private setFormValues(envToEdit: EnvDatabase, targetServer?: any) {
-
-    let serverToUse = targetServer;
-    if (!serverToUse) {
-      serverToUse = this.findServerByMultipleIds(envToEdit.serverIDFK);
-    }
-
-    let serverIdToUse = envToEdit.serverIDFK;
-
-    if (serverToUse && serverToUse.uuid) {
-      serverIdToUse = serverToUse.uuid;
-      console.log('Server details:', {
-        hostname: serverToUse.hostname,
-        uuid: serverToUse.uuid,
-        originalId: envToEdit.serverIDFK
-      });
-
-      this.serverIdMapping[envToEdit.serverIDFK.toString()] = serverToUse.uuid;
-    } else {
-      console.error(' No valid server found for form setting');
-      this.layoutService.showError(this.messageService, 'toast', true,
-        `Cannot load server data for editing. Server ID: ${envToEdit.serverIDFK}`);
-      return;
-    }
-
-    const serverExists = this.servers.some(s => s.uuid === serverIdToUse);
-
-    if (!serverExists) {
-      console.error('ERROR: Server UUID not found in dropdown options!');
-      console.log('Expected UUID:', serverIdToUse);
-      console.log('Available UUIDs:', this.servers.map(s => s.uuid));
-      return;
-    }
-
-    setTimeout(() => {
-
-      this.dataForm.patchValue({
-        nameEnvEn: this.getEnvironmentName(envToEdit.environmentTranslation, 'en'),
-        nameEnvAr: this.getEnvironmentName(envToEdit.environmentTranslation, 'ar'),
-        urlEnv: envToEdit.url,
-        server: serverIdToUse,
-        databaseName: envToEdit.dbName,
-        userName: envToEdit.dbUserName,
-        password: envToEdit.dbPassword
-      });
-
-      this.cdr.detectChanges();
-
-      setTimeout(() => {
-        const currentServerValue = this.dataForm.get('server')?.value;
-        if (currentServerValue === serverIdToUse) {
-          console.log(' Server value set successfully!');
-        } else {
-          console.warn(' Server value not set correctly, retrying...');
-          this.dataForm.patchValue({ server: serverIdToUse });
-          this.cdr.detectChanges();
-        }
-      }, 200);
-    }, 150);
   }
 
   saveEnvironmentEdit() {
@@ -762,17 +677,18 @@ export class EnvironmentComponent implements OnDestroy {
       }
     ];
 
+    const serverValue = this.dataForm.controls['server'].value?.trim() || '';
+
+    const selectedServer = this.servers.find(s => s.uuid === serverValue);
+
+
+
     const connectionString = this.buildConnectionString();
-    const selectedServerUuid = this.dataForm.controls['server'].value;
 
-    const selectedServer = this.servers.find(s => s.uuid === selectedServerUuid);
-
-    const originalEnv = this.envDatabase[this.editingEnvironmentIndex];
-    let serverIDFKToSave = originalEnv.serverIDFK;
 
     const updatedEnvDatabase: EnvDatabase = {
       url: this.dataForm.controls['urlEnv'].value || '',
-      serverIDFK: serverIDFKToSave,
+      serverIDFK: this.dataForm.controls['server'].value.toString(),
       environmentTranslation: environmentTranslations,
       dbName: this.dataForm.controls['databaseName'].value || '',
       connectionString: connectionString,
@@ -782,7 +698,6 @@ export class EnvironmentComponent implements OnDestroy {
 
     if (selectedServer) {
       (updatedEnvDatabase as any).server = selectedServer;
-      this.serverIdMapping[serverIDFKToSave] = selectedServerUuid;
     }
 
     this.envDatabase[this.editingEnvironmentIndex] = updatedEnvDatabase;
@@ -797,18 +712,8 @@ export class EnvironmentComponent implements OnDestroy {
   cancelEnvironmentEdit() {
     this.isEditingEnvironment = false;
     this.editingEnvironmentIndex = -1;
-    this.resetForm();
+    this.clearForm();
     this.submitted = false;
   }
 
-  cleanValue(val: any): string | undefined {
-    if (typeof val === 'string') {
-      const trimmed = val.trim();
-      return trimmed && trimmed !== 'undefined' ? trimmed : undefined;
-    } else if (val !== undefined && val !== null) {
-      const strVal = val.toString().trim();
-      return strVal && strVal !== 'undefined' ? strVal : undefined;
-    }
-    return undefined;
-  }
 }

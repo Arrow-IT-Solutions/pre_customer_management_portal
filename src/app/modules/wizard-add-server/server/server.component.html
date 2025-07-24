@@ -1,0 +1,87 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" *ngIf="!loading; else spinner">
+  <div class="server-data row">
+    <div class="col-lg-12 col-md-12" style="margin: auto;">
+      <div class="box-shadow mb-3">
+        <div class="row">
+          <div class="col-12 side-icon">
+            <span class="material-symbols-outlined">info</span>
+            <span>{{ 'Basic_Info_Form' | translate }}</span>
+          </div>
+          <div class="col-12 row m-0 p-0">
+
+             <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && dataForm['localIpAdd'].errors}">
+              <input pInputText type="text" formControlName="localIpAdd"/>
+              <label  [ngClass]="{'error': submitted && dataForm['localIpAdd'].errors,'no-error': !(submitted && dataForm['localIpAdd']?.errors)}">{{ 'localIpAdd_Server' | translate }}</label>
+            </div>
+             <div *ngIf="submitted && dataForm['localIpAdd'].errors?.['required']" class="text-danger mt-1">
+              {{ 'field_required' | translate }}
+            </div>
+            </div> 
+            
+
+            <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && dataForm['publicIpAdd'].errors}">
+              <input pInputText type="text" formControlName="publicIpAdd"/>
+              <label  [ngClass]="{'error': submitted && dataForm['publicIpAdd'].errors,'no-error': !(submitted && dataForm['publicIpAdd']?.errors)}">{{ 'publicIpAdd_Server' | translate }}</label>
+            </div>
+             <div *ngIf="submitted && dataForm['publicIpAdd'].errors?.['required']" class="text-danger mt-1">
+              {{ 'field_required' | translate }}
+            </div>
+            </div>
+
+            <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="userName"/>
+              <label>{{ 'userName_Server' | translate }}</label>
+            </div>
+           
+            </div>
+
+            <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="password" formControlName="password"/>
+              <label>{{ 'password_Server' | translate }}</label>
+               <i class="pi" [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'"
+                  (click)="togglePasswordVisibility()">
+                </i>
+            </div>
+           
+            </div>
+
+            <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="url"/>
+              <label>{{ 'url_Server' | translate }}</label>
+            </div>
+           
+            </div>
+
+          </div>
+
+
+          
+        </div>
+      </div>
+      </div>
+      
+      
+
+   </div>
+
+
+
+
+
+    <div class="col-xs-12 mt-4 text-end" style="padding: 2rem 1rem;">
+      <!-- <p-button type="Submit" class="btn-primary">{{ 'Cancle_definitions' | translate }}</p-button> -->
+
+      <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{  ('Next_definitions' | translate) }}</p-button>
+     <!-- <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ isEditMode ? ('Update_definitions' | translate) : ('Next_definitions' | translate) }}</p-button> -->
+    </div>
+</form>
+<ng-template #spinner>
+<mat-spinner id="spinner"></mat-spinner>
+</ng-template>
+<p-toast key="toast"></p-toast>
+

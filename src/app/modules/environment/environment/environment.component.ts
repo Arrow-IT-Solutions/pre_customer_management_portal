@@ -4,16 +4,16 @@ import {
   EnvironmentSearchRequest,
   EnvironmentResponse,
   EnvironmentTranslationResponse
-} from '../environment.module';  
+} from '../environment.module';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from 'src/app/layout/service/layout.service';
 import { AddEnvironmentComponent } from '../add-environment/add-environment.component';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { EnvironmentService } from 'src/app/Core/services/environments.service';
 import { ServersService } from 'src/app/layout/service/servers.service';
-import { customerServiceService } from 'src/app/layout/service/customerService.service';
 import { ProvisionedServiceSearchRequest } from '../../wizard-to-add/wizard-to-add.module';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
+import { CompanyServiceService } from 'src/app/layout/service/companyService.service';
 
 @Component({
   selector: 'app-environment',
@@ -31,7 +31,7 @@ export class EnvironmentComponent {
   dataForm!: FormGroup;
   data: EnvironmentResponse[] = [];
 servers: { [key: string]: string } = {};
-customerServices: { [key: string]: string } = {};
+companyServices: { [key: string]: string } = {};
 
 
   loading = false;
@@ -48,7 +48,7 @@ customerServices: { [key: string]: string } = {};
     public messageService: MessageService,
     private serverService: ServersService,
     public provisionedService: ProvisionedService,
-    public customerService: customerServiceService,
+    public companyService: CompanyServiceService,
     public confirmationService: ConfirmationService
   ) {
     this.dataForm = this.formBuilder.group({
@@ -62,7 +62,7 @@ customerServices: { [key: string]: string } = {};
 
   async ngOnInit() {
     await this.retrieveServer();
-    await this.retrieveCustomerService();
+    await this.retrieveCompanyService();
     await this.FillData();
   }
 
@@ -73,7 +73,7 @@ customerServices: { [key: string]: string } = {};
     const filter: EnvironmentSearchRequest = {
       name: this.dataForm.get('name')?.value?.trim(),
       uuid: this.dataForm.get('uuid')?.value?.trim(),
-      customerServiceIDFK: '', 
+      companyServiceIDFK: '',
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString()
     };
@@ -92,40 +92,40 @@ retrieveServers(row: EnvironmentResponse): string {
 }
 
 
-retrieveCustomerServiceLabel(env: EnvironmentResponse): string {
-  const customerServiceUUID = env.customerServiceIDFK?.trim();
-  return this.customerServices[customerServiceUUID] || '-';
+retrieveCompanyServiceLabel(env: EnvironmentResponse): string {
+  const companyServiceUUID = env.companyServiceIDFK?.trim();
+  return this.companyServices[companyServiceUUID] || '-';
 }
 
 
 
- async retrieveCustomerService() {
+ async retrieveCompanyService() {
   const filter = {
     uuid: '',
-    CustomerIDFK: '',
+    companyIDFK: '',
     ServiceIDFK: '',
-    IncludeCustomer: '1',   
-    IncludeService: '1',
+    includeCompany: '1',
+    includeService: '1',
     pageIndex: '0',
-    pageSize: '10'         
+    pageSize: '10'
   };
 
   const response = await this.provisionedService.Search(filter) as any;
-  const customerService = response?.data || [];
+  const companyService = response?.data || [];
 
-  this.customerServices = {};
+  this.companyServices = {};
 
   const lang = this.layoutService.config.lang || 'en';
 
-  customerService.forEach((cs: any) => {
+  companyService.forEach((cs: any) => {
     if (cs.uuid) {
-      const customerName = cs.customer?.customerTranslation?.[lang]?.name || 'Unknown Customer';
+      const companyName = cs.company?.companyTranslation?.[lang]?.name || 'Unknown Company';
       const serviceName = cs.service?.serviceTranslation?.[lang]?.name || 'Unknown Service';
-      this.customerServices[cs.uuid.trim()] = `${customerName} - ${serviceName}`;
+      this.companyServices[cs.uuid.trim()] = `${companyName} - ${serviceName}`;
     }
   });
 
-  console.log('Customer Services Map:', this.customerServices);
+  console.log('Company Services Map:', this.companyServices);
 }
 
 
@@ -184,7 +184,7 @@ console.log('Server Map:', this.servers);
           try {
             const resp = await this.environmentService.Delete(row.uuid!) as any;
             this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
-            this.FillData(); 
+            this.FillData();
           } catch (error) {
             this.messageService.add({
               severity: 'error',
@@ -202,7 +202,7 @@ console.log('Server Map:', this.servers);
     await this.FillData();
     this.isResetting = false;
   }
-  
+
 
   OnChange() {
     if (this.isResetting) return;

@@ -2,26 +2,59 @@ import { Injectable } from '@angular/core';
 import { ProvisionedServiceRequest, ProvisionedServiceSearchRequest, ProvisionedServiceUpdateRequest, ProvisionedSession } from 'src/app/modules/wizard-to-add/wizard-to-add.module';
 import { LayoutService } from './layout.service';
 import { HttpClientService } from 'src/app/Core/services/http-client.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProvisionedService {
 
- private session: ProvisionedSession | null = null;
+  private session: ProvisionedSession | null = null;
   public Dialog: any | null = null;
   public submitted: any | null = "";
-   setSession(sess: ProvisionedSession) {
+
+  private saveEnvironmentDataSubject = new Subject<void>();
+<<<<<<< HEAD
+  private saveApplicationDataSubject = new Subject<void>();
+
+  private saveCustomerServiceDataSubject = new Subject<void>();
+  private saveServerDataSubject = new Subject<void>();
+
+  
+  private validateCustomerServiceFormSubject = new Subject<{resolve: (value: boolean) => void}>();
+  
+=======
+  private saveCompanyServiceDataSubject = new Subject<void>();
+
+  private validateCompanyServiceFormSubject = new Subject<{resolve: (value: boolean) => void}>();
+
+>>>>>>> db1ee39f723bfc2002e323988027e56ca49d0626
+  public saveEnvironmentData$ = this.saveEnvironmentDataSubject.asObservable();
+  public saveCompanyServiceData$ = this.saveCompanyServiceDataSubject.asObservable();
+  public validateCompanyServiceForm$ = this.validateCompanyServiceFormSubject.asObservable();
+
+  setSession(sess: ProvisionedSession) {
     this.session = sess;
-    sessionStorage.setItem('provisionedSession', JSON.stringify(sess));
+    try {
+      sessionStorage.setItem('provisionedSession', JSON.stringify(sess));
+      console.log('ProvisionedService: Session saved successfully');
+    } catch (error) {
+      console.log('ProvisionedService: Error saving session to storage:', error);
+    }
   }
+
   constructor(public layoutService: LayoutService, public httpClient: HttpClientService) { }
 
   getSession(): ProvisionedSession {
     if (!this.session) {
-      const data = sessionStorage.getItem('provisionedSession');
-      if (data) {
-        this.session = JSON.parse(data);
+      try {
+        const data = sessionStorage.getItem('provisionedSession');
+        if (data) {
+          this.session = JSON.parse(data);
+          console.log('ProvisionedService: Session restored from storage');
+        }
+      } catch (error) {
+        console.log('ProvisionedService: Error reading session from storage:', error);
       }
     }
     if (!this.session) {
@@ -29,40 +62,103 @@ export class ProvisionedService {
     }
     return this.session;
   }
+
   clearSession() {
     this.session = null;
-    sessionStorage.removeItem('provisionedSession');
+    try {
+      sessionStorage.removeItem('provisionedSession');
+      console.log('ProvisionedService: Session cleared successfully');
+    } catch (error) {
+      console.log('ProvisionedService: Error clearing session:', error);
+    }
   }
-        async Add(data: ProvisionedServiceRequest) {
-          const apiUrl = `/api/customerService/AddBulk`;
 
-          return await this.httpClient.post(apiUrl, data);
+  triggerSaveEnvironmentData() {
+    console.log('ProvisionedService: Triggering save environment data...');
+    this.saveEnvironmentDataSubject.next();
+  }
+   triggerSaveApplicationData() {
+    console.log('ProvisionedService: Triggering save application data...');
+    this.saveApplicationDataSubject.next();
+  }
+
+  triggerSaveCompanyServiceData() {
+    console.log('ProvisionedService: Triggering save company service data...');
+    this.saveCompanyServiceDataSubject.next();
+  }
+   triggerSaveServerData() {
+    console.log('ProvisionedService: Triggering save server data...');
+    this.saveServerDataSubject.next();
+  }
+
+  async validateCompanyServiceForm(): Promise<boolean> {
+    return new Promise((resolve) => {
+      console.log('ProvisionedService: Triggering company service form validation...');
+      let resolved = false;
+
+      const resolveOnce = (value: boolean) => {
+        if (!resolved) {
+          resolved = true;
+          resolve(value);
         }
+      };
 
-          async Search(filter: ProvisionedServiceSearchRequest) {
+      this.validateCompanyServiceFormSubject.next({ resolve: resolveOnce });
 
-            const apiUrl = `/api/customerService/GetBulk?${this.layoutService.Filter(filter)}`;
+      setTimeout(() => {
+        if (!resolved) {
+          console.log('ProvisionedService: Validation timeout - assuming invalid');
+          resolveOnce(false);
+        }
+      }, 1000);
+    });
+  }
+   async validateServerForm(): Promise<boolean> {
+    return new Promise((resolve) => {
+      console.log('ProvisionedService: Triggering server form validation...');
+      let resolved = false;
+      
+      const resolveOnce = (value: boolean) => {
+        if (!resolved) {
+          resolved = true;
+          resolve(value);
+        }
+      };
+      
+      this.validateCustomerServiceFormSubject.next({ resolve: resolveOnce });
+      
+      setTimeout(() => {
+        if (!resolved) {
+          console.log('ProvisionedService: Validation timeout - assuming invalid');
+          resolveOnce(false);
+        }
+      }, 1000);
+    });
+  }
 
-              return await this.httpClient.get(apiUrl)
+  async Add(data: ProvisionedServiceRequest) {
+    const apiUrl = `/api/companyService/AddBulk`;
 
-          }
+    return await this.httpClient.post(apiUrl, data);
+  }
 
-              async Update(data: ProvisionedServiceUpdateRequest) {
-              console.log('🚀 ProvisionedService.Update called with:', JSON.stringify(data, null, 2));
-              console.log('🔍 Subscription in request:', data.subscription);
-              console.log('🔍 Subscription UUID:', data.subscription?.uuid);
+  async Search(filter: ProvisionedServiceSearchRequest) {
 
-              const apiUrl = `/api/customerService/UpdateBulk`;
-              const response = await this.httpClient.put(apiUrl, data);
+    const apiUrl = `/api/companyService/GetBulk?${this.layoutService.Filter(filter)}`;
 
-              console.log('📥 Response from API:', response);
-              return response;
-            }
+    return await this.httpClient.get(apiUrl)
+  }
 
-                async Delete(uuid: string) {
+  async Update(data: ProvisionedServiceUpdateRequest) {
+    const apiUrl = `/api/companyService/UpdateBulk`;
+    const response = await this.httpClient.put(apiUrl, data);
+    return response;
+  }
 
-              const apiUrl = `/api/customerService/Bulk${uuid}`;
-              return await this.httpClient.delete(apiUrl, uuid);
+  async Delete(uuid: string) {
 
-            }
+    const apiUrl = `/api/companyService/Bulk${uuid}`;
+    return await this.httpClient.delete(apiUrl, uuid);
+
+  }
 }

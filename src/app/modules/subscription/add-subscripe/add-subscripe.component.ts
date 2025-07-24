@@ -7,12 +7,10 @@ import { ConstantService } from 'src/app/Core/services/constant.service';
 import { ConstantResponse } from 'src/app/Core/services/constant.service';
 import { SubscriptionRequest, SubscriptionUpdateRequest } from '../subscription.module';
 import { SubscriptionService } from 'src/app/Core/services/subscription.service';
-import { CustomerSearchRequest } from '../../customers/customers.module';
-import { CustomerServiceResponse, ProvisionedServiceSearchRequest } from '../../wizard-to-add/wizard-to-add.module';
-import { CustomersService } from 'src/app/layout/service/customers.service';
-import { customerServiceResponse } from '../../customer-service/customer-service.module';
-import { customerServiceService } from 'src/app/layout/service/customerService.service';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
+import { CompanyServiceResponse, ProvisionedServiceSearchRequest } from '../../wizard-to-add/wizard-to-add.module';
+import { companyServiceResponse } from '../../company-service/company-service.module';
+import { CompanyServiceService } from 'src/app/layout/service/companyService.service';
 
 @Component({
   selector: 'app-add-subscripe',
@@ -26,16 +24,16 @@ export class AddSubscripeComponent {
   btnLoading = false;
   loading = false;
   statusList: ConstantResponse[] = [];
-  customerServices: customerServiceResponse[] = [];
-  customerServiceOptions: { label: string; value: string }[] = [];
-customerServiceList: any[] = [];
+  companyServices: CompanyServiceResponse[] = [];
+  companyServiceOptions: { label: string; value: string }[] = [];
+  companyServiceList: any[] = [];
 
   constructor(
     public formBuilder: FormBuilder,
     public layoutService: LayoutService,
     public subscripeService: SubscriptionService,
     public constantService: ConstantService,
-    public customerService: customerServiceService,
+    public companyService: CompanyServiceService,
     public provisionedService: ProvisionedService,
     public messageService: MessageService,
     public translate: TranslateService
@@ -45,7 +43,7 @@ customerServiceList: any[] = [];
       endDate: ['', Validators.required],
       price: ['', Validators.required],
       status: ['', Validators.required],
-      customerServiceIDFK: ['', Validators.required]
+      companyServiceIDFK: ['', Validators.required]
     });
   }
 
@@ -54,7 +52,7 @@ customerServiceList: any[] = [];
       this.loading = true;
       const response = await this.constantService.Search('SubscriptionStatus') as any;
       this.statusList = response?.data ?? [];
-      await this.RetrieveCustomerServices();
+      await this.RetrieveCompanyServices();
       this.resetForm();
 
       if (this.subscripeService.SelectedData != null) {
@@ -97,12 +95,12 @@ customerServiceList: any[] = [];
     }
   }
 
-  
+
 async Save() {
 
     let response;
 
-   
+
 
     if (this.subscripeService.SelectedData != null) {
       // update
@@ -110,7 +108,7 @@ async Save() {
         startDate: new Date(this.dataForm.value.startDate).toISOString(),
         endDate: new Date(this.dataForm.value.endDate).toISOString(),
         price: this.dataForm.controls['price'].value.toString(),
-        customerServiceIDFK: this.dataForm.controls['customerServiceIDFK'].value,
+        companyServiceIDFK: this.dataForm.controls['companyServiceIDFK'].value,
         uuid: this.subscripeService.SelectedData?.uuid?.toString(),
         status: this.dataForm.controls['status'].value.toString(),
 
@@ -122,7 +120,7 @@ async Save() {
          startDate: new Date(this.dataForm.value.startDate).toISOString(),
         endDate: new Date(this.dataForm.value.endDate).toISOString(),
         price: this.dataForm.controls['price'].value.toString(),
-        customerServiceIDFK: this.dataForm.controls['customerServiceIDFK'].value,
+        companyServiceIDFK: this.dataForm.controls['companyServiceIDFK'].value,
         status: this.dataForm.controls['status'].value.toString() ,
 
       };
@@ -136,7 +134,7 @@ async Save() {
       if (this.subscripeService.SelectedData == null) {
         this.resetForm();
         setTimeout(() => {
-          
+
           this.subscripeService.Dialog.adHostChild.viewContainerRef.clear();
           this.subscripeService.Dialog.adHostDynamic.viewContainerRef.clear();
           this.subscripeService.triggerRefreshSubscription();
@@ -149,7 +147,7 @@ async Save() {
         }, 600);
       }
     } else {
-        console.error('Error response:', response); 
+        console.error('Error response:', response);
       this.layoutService.showError(this.messageService, 'toast', true, response?.requestMessage);
     }
 
@@ -167,7 +165,7 @@ async Save() {
     endDate: this.subscripeService.SelectedData?.endDate ? new Date(this.subscripeService.SelectedData.endDate) : null,
     price: this.subscripeService.SelectedData?.price,
     status: Number(this.subscripeService.SelectedData?.status),
-    customerServiceIDFK: this.subscripeService.SelectedData?.customerServiceIDFK ?? ''
+    companyServiceIDFK: this.subscripeService.SelectedData?.companyServiceIDFK ?? ''
 
     };
     console.log('Patch values:', temp);
@@ -177,41 +175,41 @@ async Save() {
   getStatusLabel(): string {
     return this.layoutService.config.lang == 'ar' ? 'nameAr' : 'nameEn';
   }
-  getCustomerServiceLabel(): string {
+  getCompanyServiceLabel(): string {
   return this.layoutService.config.lang === 'ar' ? 'nameAr' : 'nameEn';
 }
 
 
- async RetrieveCustomerServices() {
+ async RetrieveCompanyServices() {
      let filter: ProvisionedServiceSearchRequest = {
           uuid: '',
-          CustomerIDFK: '',
-          ServiceIDFK: '',
-          IncludeCustomer: '1',
-          IncludeService: '1',
+          companyIDFK: '',
+          serviceIDFK: '',
+          includeCompany: '1',
+          includeService: '1',
           pageIndex: '0',
           pageSize: '10',
-    
+
         };
-    
+
         const rawResponse = (await this.provisionedService.Search(filter)) as any;
- 
+
     console.log('Raw response:', rawResponse);
 
-  this.customerServiceList = rawResponse.data;
+  this.companyServiceList = rawResponse.data;
 
   const lang = this.layoutService.config.lang || 'en';
 
-  
-  this.customerServiceOptions = (rawResponse.data ?? []).map((item: any) => ({
-    label: `${item.customer?.customerTranslation?.[lang]?.name ?? 'Unknown Customer'} - ${item.service?.serviceTranslation?.[lang]?.name ?? 'Unknown Service'}`,
+
+  this.companyServiceOptions = (rawResponse.data ?? []).map((item: any) => ({
+    label: `${item.company?.companyTranslation?.[lang]?.name ?? 'Unknown Company'} - ${item.service?.serviceTranslation?.[lang]?.name ?? 'Unknown Service'}`,
     value: item.uuid
   }));
 
 
 
 
-    console.log('Customer Services Dropdown:', this.customerServiceOptions);
+    console.log('Company Services Dropdown:', this.companyServiceOptions);
 }
 
 
