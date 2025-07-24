@@ -77,6 +77,13 @@ const routes: Routes = [
             (m) => m.PortModule
           )
       },
+       {
+        path: 'applications',
+        loadChildren: () =>
+          import('./modules/applications/application.module').then(
+            (m) => m.ApplicationModule
+          )
+      },
       {
         path: 'credential',
         loadChildren: () =>

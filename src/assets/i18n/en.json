@@ -41,7 +41,7 @@
     "number_port": "Port Number",
     "Edit_port": "Edit",
     "Delete_port": "Delete",
-    "totalports_ports": "Total",
+    "total": "Total",
     "userName_credential": "User Name",
     "Edit_credential": "Edit",
     "Delete_credential": "Delete",
@@ -129,5 +129,13 @@
     "Update_Environment": "Update Environment",
     "Select_ServerIDFK" : "Select Server",
     "Select_Customer_Service" : "Select Customer Service",
-     "Successfull_Update": "Updated Successfully"
+     "Successfull_Update": "Updated Successfully",
+     "nameApp": "Application Name ",
+    "password": "Password ",
+    "userName":"Username",
+    "url": "URL",
+    "Create_application": "Create Application",
+    "Update_application": "Update Application",
+    "Fill_Required_Fields":"Please fill all required fields"
+
 }
