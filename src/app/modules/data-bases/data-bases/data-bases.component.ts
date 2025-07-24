@@ -47,15 +47,11 @@ export class DataBasesComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.loading = true;
     await this.FillEnvironments();
     await this.fillData(0);
-    this.formChangesSub = this.dataForm.valueChanges
-      .pipe(
-        debounceTime(this.doneTypingInterval),
-        distinctUntilChanged(),
-        filter(() => !this.isResetting)
-      )
-      .subscribe(() => this.fillData(0));
+
+    this.loading = false;
   }
 
   async FillEnvironments() {

@@ -50,75 +50,77 @@ export class SubscriptionsComponent {
   }
 
   async ngOnInit() {
+    this.loading = true;
     await this.retrieveCompanyService();
     await this.FillData();
     const response = await this.constantService.Search('SubscriptionStatus') as any;
     this.statusList = response?.data ?? [];
+    this.loading = false;
   }
 
   async FillData(pageIndex: number = 0) {
-  this.loading = true;
-  this.data = [];
-  this.totalRecords = 0;
+    this.loading = true;
+    this.data = [];
+    this.totalRecords = 0;
 
-  const filter: SubscriptionSearchRequest = {
-    uuid: this.dataForm.get('uuid')?.value?.trim(),
-    companyServiceIDFK: '',
-    status: this.dataForm.controls['status'].value.toString(),
-    pageIndex: pageIndex.toString(),
-    pageSize: this.pageSize.toString(),
-  };
+    const filter: SubscriptionSearchRequest = {
+      uuid: this.dataForm.get('uuid')?.value?.trim(),
+      companyServiceIDFK: '',
+      status: this.dataForm.controls['status'].value.toString(),
+      pageIndex: pageIndex.toString(),
+      pageSize: this.pageSize.toString(),
+    };
 
-  try {
-    const response = (await this.subscripeService.Search(filter)) as any;
-    if (response?.data) {
-      this.data = response.data;
-      this.totalRecords = response.totalRecords ?? response.data.length;
+    try {
+      const response = (await this.subscripeService.Search(filter)) as any;
+      if (response?.data) {
+        this.data = response.data;
+        this.totalRecords = response.totalRecords ?? response.data.length;
+      }
+    } catch (error) {
+      this.layoutService.showError(this.messageService, 'toast', true, 'Failed to load data');
+    } finally {
+      this.loading = false;
     }
-  } catch (error) {
-    this.layoutService.showError(this.messageService, 'toast', true, 'Failed to load data');
-  } finally {
-    this.loading = false;
   }
-}
 
 
 
-retrieveCompanyServiceLabel(row: SubscriptionResponse): string {
-  const companyServiceUUID = row.companyServiceIDFK?.trim();
-  return this.companyServices[companyServiceUUID] || '-';
-}
+  retrieveCompanyServiceLabel(row: SubscriptionResponse): string {
+    const companyServiceUUID = row.companyServiceIDFK?.trim();
+    return this.companyServices[companyServiceUUID] || '-';
+  }
 
 
 
- async retrieveCompanyService() {
-  const filter = {
-    uuid: '',
-    companyIDFK: '',
-    serviceIDFK: '',
-    includeCompany: '1',
-    includeService: '1',
-    pageIndex: '0',
-    pageSize: '10'
-  };
+  async retrieveCompanyService() {
+    const filter = {
+      uuid: '',
+      companyIDFK: '',
+      serviceIDFK: '',
+      includeCompany: '1',
+      includeService: '1',
+      pageIndex: '0',
+      pageSize: '10'
+    };
 
-  const response = await this.provisionedService.Search(filter) as any;
-  const companyService = response?.data || [];
+    const response = await this.provisionedService.Search(filter) as any;
+    const companyService = response?.data || [];
 
-  this.companyServices = {};
+    this.companyServices = {};
 
-  const lang = this.layoutService.config.lang || 'en';
+    const lang = this.layoutService.config.lang || 'en';
 
-  companyService.forEach((cs: any) => {
-    if (cs.uuid) {
-      const companyName = cs.company?.companyTranslation?.[lang]?.name || 'Unknown Company';
-      const serviceName = cs.service?.serviceTranslation?.[lang]?.name || 'Unknown Service';
-      this.companyServices[cs.uuid.trim()] = `${companyName} - ${serviceName}`;
-    }
-  });
+    companyService.forEach((cs: any) => {
+      if (cs.uuid) {
+        const companyName = cs.company?.companyTranslation?.[lang]?.name || 'Unknown Company';
+        const serviceName = cs.service?.serviceTranslation?.[lang]?.name || 'Unknown Service';
+        this.companyServices[cs.uuid.trim()] = `${companyName} - ${serviceName}`;
+      }
+    });
 
-  console.log('Company Services Map:', this.companyServices);
-}
+    console.log('Company Services Map:', this.companyServices);
+  }
 
 
 
@@ -170,26 +172,26 @@ retrieveCompanyServiceLabel(row: SubscriptionResponse): string {
   }
 
   async confirmDelete(row: SubscriptionResponse) {
-      this.confirmationService.confirm({
-        message: this.translate.instant('Do_you_want_to_delete_this_record?'),
-        header: this.translate.instant('Delete_Confirmation'),
-        icon: 'pi pi-info-circle',
-        acceptLabel: this.translate.instant('Yes'),
-        rejectLabel: this.translate.instant('No'),
-        key: 'confirmDialog',
-        accept: async () => {
-          try {
-            const resp = await this.subscripeService.Delete(row.uuid!) as any;
-            this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
-            this.FillData();
-          } catch (error) {
-            this.messageService.add({
-              severity: 'error',
-              summary: this.translate.instant('Error'),
-              detail: this.translate.instant('database.Failed_to_delete')
-            });
-          }
+    this.confirmationService.confirm({
+      message: this.translate.instant('Do_you_want_to_delete_this_record?'),
+      header: this.translate.instant('Delete_Confirmation'),
+      icon: 'pi pi-info-circle',
+      acceptLabel: this.translate.instant('Yes'),
+      rejectLabel: this.translate.instant('No'),
+      key: 'confirmDialog',
+      accept: async () => {
+        try {
+          const resp = await this.subscripeService.Delete(row.uuid!) as any;
+          this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
+          this.FillData();
+        } catch (error) {
+          this.messageService.add({
+            severity: 'error',
+            summary: this.translate.instant('Error'),
+            detail: this.translate.instant('database.Failed_to_delete')
+          });
         }
-      });
-    }
+      }
+    });
+  }
 }
