@@ -40,7 +40,7 @@
     "number_port": "Port Number",
     "Edit_port": "Edit",
     "Delete_port": "Delete",
-    "totalports_ports": "Total",
+    "total": "Total",
     "userName_credential": "User Name",
     "Edit_credential": "Edit",
     "Delete_credential": "Delete",
@@ -127,9 +127,15 @@
     "Create_Environment":"Create Environment",
     "Update_Environment": "Update Environment",
     "Select_ServerIDFK" : "Select Server",
-<<<<<<< HEAD
     "Select_Customer_Service" : "Select Customer Service",
      "Successfull_Update": "Updated Successfully",
+     "nameApp": "Application Name ",
+    "password": "Password ",
+    "userName":"Username",
+    "url": "URL",
+    "Create_application": "Create Application",
+    "Update_application": "Update Application",
+    "Fill_Required_Fields":"Please fill all required fields",
      "localIpAdd_Server":"Local IP Address",
      "publicIpAdd_Server":"Public IP Address",
      "userName_Server":"User Name",
@@ -140,9 +146,7 @@
      "port_application":"port",
      "Url_application":"URL",
      "userName_application":"User Name",
-     "password_server":"Password"
-=======
+     "password_server":"Password",
     "Select_Company_Service" : "Select Company Service",
      "Successfull_Update": "Updated Successfully"
->>>>>>> db1ee39f723bfc2002e323988027e56ca49d0626
 }

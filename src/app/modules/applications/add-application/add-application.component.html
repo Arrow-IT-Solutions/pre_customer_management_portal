@@ -1,0 +1,90 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="add-application">
+  <div class="add-application">
+    <div class="box-shadow mb-3">
+      <div class="row">
+        <div class="col-12 side-icon">
+          <span class="material-symbols-outlined">info</span>
+          <span>{{ 'Basic_Info_Form' | translate }}</span>
+        </div>
+        <div class="col-12 mb-3">
+          <div class="p-float-label" [ngClass]="{'error_border': submitted && form['serverIDFK'].errors}">
+                  <p-dropdown 
+                    [options]="serverOptions"
+                    optionLabel="hostname"
+                    optionValue="uuid"
+                    formControlName="serverIDFK"
+                    placeholder="{{ 'Select_server' | translate }}">
+                  </p-dropdown>
+
+            <label [ngClass]="{'error': submitted && form['serverIDFK'].errors}">{{ 'hostname' | translate }}</label>
+          </div>
+          <div *ngIf="submitted && form['serverIDFK'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
+        </div>
+        <div class="col-12 row m-0 p-0">
+          <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['portNumber'].errors}">
+              <input pInputText type="text" formControlName="portNumber" />
+              <label [ngClass]="{'error': submitted && form['portNumber'].errors}">{{ 'number_port' | translate }}</label>
+            </div>
+                      <div *ngIf="submitted && form['portNumber'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
+          </div>
+        
+          
+        </div>
+        <div class="col-12 row m-0 p-0">
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['name'].errors}">
+              <input pInputText type="text" formControlName="name" />
+              <label [ngClass]="{'error': submitted && form['name'].errors}">{{ 'appname' | translate }}</label>
+            </div>
+                      <div *ngIf="submitted && form['name'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
+          </div>
+                  <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['url'].errors}">
+              <input pInputText type="text" formControlName="url" />
+              <label [ngClass]="{'error': submitted && form['url'].errors}">{{ 'url' | translate }}</label>
+            </div>
+                      <div *ngIf="submitted && form['url'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
+          </div>
+
+        <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['userName'].errors}">
+              <input pInputText type="text" formControlName="userName" />
+              <label [ngClass]="{'error': submitted && form['userName'].errors}">{{ 'userName' | translate }}</label>
+            </div>
+          </div>
+        
+         <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['password'].errors}">
+              <input pInputText type="text" formControlName="password" />
+              <label [ngClass]="{'error': submitted && form['password'].errors}">{{ 'password' | translate }}</label>
+            </div>
+          </div>
+        
+          
+        </div>
+
+      </div>
+    </div>
+
+
+   <div class="col-xs-12 text-end mt-4">
+      <p-button type="Submit" class="btn-primary"  [loading]="btnLoading">{{'save' | translate}}</p-button>
+    </div>
+  </div>
+</form>
+
+<p-toast key="toast"></p-toast>
+
+
+
+
