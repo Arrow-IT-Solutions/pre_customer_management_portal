@@ -58,6 +58,12 @@ export const navbarData: NavbarData[] = [
         id: 'companies',
         routeLink: 'companies'
       },
+      {
+        label: 'Employees',
+        labelar: 'الموظفين',
+        id: 'employees',
+        routeLink: 'employees'
+      },
 
     ]
   },
