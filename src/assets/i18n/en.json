@@ -97,6 +97,7 @@
     "ServiceName_Company": "Service Name",
     "CompanyName_Company": "Company Name",
     "No_Environments_Added": "No environments added",
+    "No_Matching_Environments": "No matching environments found",
     "Environments_List": "Environments List",
     "ServerName_definitions": "Server",
     "Field_Required": "This field is required",

@@ -27,11 +27,13 @@ export class EnvironmentComponent implements OnDestroy {
   submitted: boolean = false;
   btnLoading: boolean = false;
   loading: boolean = false;
+  filterLoading: boolean = false;
   isPasswordVisible: boolean = false;
   servers: ServerResponse[] = [];
   private isNavigatingWithinWizard: boolean = false;
   session!: ProvisionedSession;
   envDatabase: EnvDatabase[] = [];
+  filteredEnvDatabase: EnvDatabase[] = [];
   private isNavigatingToCompanyService = false;
   isEditMode: boolean = false;
   editingServiceId: string | null = null;
@@ -57,7 +59,7 @@ export class EnvironmentComponent implements OnDestroy {
       databaseName: ['', Validators.required],
       userName: ['', Validators.required],
       password: ['', Validators.required],
-      
+
 
     });
 
@@ -75,6 +77,12 @@ export class EnvironmentComponent implements OnDestroy {
       if (!this.loading) {
         this.updateSessionWithCurrentFormData();
       }
+    });
+
+    this.searchForm.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(() => {
+      this.applyFilters();
     });
 
   }
@@ -98,6 +106,7 @@ export class EnvironmentComponent implements OnDestroy {
 
         if (this.session.envDatabases && this.session.envDatabases.length > 0) {
           this.envDatabase = [...this.session.envDatabases];
+          this.filteredEnvDatabase = [...this.envDatabase];
         }
 
         this.restoreFormFromSession();
@@ -132,6 +141,7 @@ export class EnvironmentComponent implements OnDestroy {
       }
 
       this.resetForm();
+      this.applyFilters();
 
       this.saveDataSubscription = this.provisionedService.saveEnvironmentData$.subscribe(() => {
         this.handleSaveDataEvent();
@@ -197,6 +207,7 @@ export class EnvironmentComponent implements OnDestroy {
       }
     }
     this.session.envDatabases = this.envDatabase;
+    this.applyFilters();
 
     const currentFormData = {
       nameEnvEn: this.dataForm.controls['nameEnvEn'].value || '',
@@ -251,7 +262,9 @@ export class EnvironmentComponent implements OnDestroy {
     }
     this.loading = false;
   }
-  OnChange() {}
+  OnChange() {
+    this.applyFilters();
+  }
 
   async Save() {
     if (!this.envDatabase || this.envDatabase.length === 0) {
@@ -409,7 +422,7 @@ export class EnvironmentComponent implements OnDestroy {
       })
     );
   }
-  
+
   resetForm() {
     this.loading = true;
 
@@ -421,9 +434,58 @@ export class EnvironmentComponent implements OnDestroy {
         this.loading = false;
       }, 100);
     }
+    setTimeout(() => {
+      this.applyFilters();
+    }, 150);
   }
 
-  resetSearchForm(){}
+  resetSearchForm() {
+    this.searchForm.reset();
+    this.searchForm.patchValue({
+      EnvName: '',
+      server: '',
+      dbName: ''
+    });
+    this.filteredEnvDatabase = [...this.envDatabase];
+  }
+
+  applyFilters() {
+    if (!this.envDatabase || this.envDatabase.length === 0) {
+      this.filteredEnvDatabase = [];
+      return;
+    }
+
+   // this.filterLoading = true;
+
+    setTimeout(() => {
+      const filters = this.searchForm.value;
+
+      this.filteredEnvDatabase = this.envDatabase.filter(env => {
+        const envNameEn = this.getEnvironmentName(env.environmentTranslation, 'en')?.toLowerCase() || '';
+        const envNameAr = this.getEnvironmentName(env.environmentTranslation, 'ar')?.toLowerCase() || '';
+        const serverName = env.server?.ipAddress?.toLowerCase() || '';
+        const dbName = env.dbName?.toLowerCase() || '';
+
+        const envNameFilter = filters.EnvName?.toLowerCase() || '';
+        const serverFilter = filters.server?.toLowerCase() || '';
+        const dbNameFilter = filters.dbName?.toLowerCase() || '';
+
+        const matchesEnvName = !envNameFilter ||
+          envNameEn.includes(envNameFilter) ||
+          envNameAr.includes(envNameFilter);
+
+        const matchesServer = !serverFilter ||
+          serverName.includes(serverFilter);
+
+        const matchesDbName = !dbNameFilter ||
+          dbName.includes(dbNameFilter);
+
+        return matchesEnvName && matchesServer && matchesDbName;
+      });
+
+     // this.filterLoading = false;
+    }, 100);
+  }
 
   clearForm() {
     this.loading = true;
@@ -556,6 +618,7 @@ export class EnvironmentComponent implements OnDestroy {
     }
 
     this.envDatabase.push(newEnvDatabase);
+    this.applyFilters();
     this.updateSessionWithCurrentFormData();
     this.clearSavedFormData();
     this.clearForm();
@@ -581,11 +644,14 @@ export class EnvironmentComponent implements OnDestroy {
   }
 
   removeEnvironment(index: number) {
-    this.envDatabase.splice(index, 1);
+    const environmentToRemove = this.filteredEnvDatabase[index];
+    const originalIndex = this.envDatabase.findIndex(env => env === environmentToRemove);
 
-    this.updateSession();
-
-
+    if (originalIndex !== -1) {
+      this.envDatabase.splice(originalIndex, 1);
+      this.applyFilters();
+      this.updateSession();
+    }
   }
 
   getEnvironmentName(environmentTranslation: any[], language: string): string {
@@ -602,6 +668,14 @@ export class EnvironmentComponent implements OnDestroy {
 
   getEnvironmentDisplayName(environmentTranslation: any[]): string {
     return this.layoutService.config.lang === 'ar' ? this.getEnvironmentName(environmentTranslation, 'ar') : this.getEnvironmentName(environmentTranslation, 'en');
+  }
+
+  getEnvironmentDisplayIndex(env: EnvDatabase): number {
+    return this.envDatabase.findIndex(e => e === env) + 1;
+  }
+
+  getEnvironmentOriginalIndex(env: EnvDatabase): number {
+    return this.envDatabase.findIndex(e => e === env);
   }
 
   updateSession() {
@@ -636,9 +710,8 @@ export class EnvironmentComponent implements OnDestroy {
 
   async editEnvironment(index: number) {
     this.isEditingEnvironment = true;
-    this.editingEnvironmentIndex = index;
-
-    const envToEdit = this.envDatabase[index];
+    const envToEdit = this.filteredEnvDatabase[index];
+    this.editingEnvironmentIndex = this.envDatabase.findIndex(env => env === envToEdit);
 
     const enTrans = envToEdit.environmentTranslation.find(t => t.language === 'en')?.name;
     const arTrans = envToEdit.environmentTranslation.find(t => t.language === 'ar')?.name;
@@ -653,7 +726,6 @@ export class EnvironmentComponent implements OnDestroy {
       password: envToEdit.dbPassword,
     };
     this.dataForm.patchValue(temp);
-
 
     setTimeout(() => {
       document.querySelector('.box-shadow')?.scrollIntoView({ behavior: 'smooth' });
@@ -701,7 +773,7 @@ export class EnvironmentComponent implements OnDestroy {
     }
 
     this.envDatabase[this.editingEnvironmentIndex] = updatedEnvDatabase;
-
+    this.applyFilters();
     this.updateSession();
 
     this.cancelEnvironmentEdit();

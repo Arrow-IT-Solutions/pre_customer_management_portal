@@ -50,7 +50,7 @@ export interface EmployeeUpdateRequest extends RequestBase {
   deviceType?: string,
   gender?: string,
   birthDate?: string,
-  profileImage?: string,
+  image?: string,
   phone?: string
   email?: string
 
