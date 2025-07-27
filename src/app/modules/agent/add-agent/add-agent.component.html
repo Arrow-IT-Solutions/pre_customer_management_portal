@@ -1,0 +1,87 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="add-agent">
+  <div class="add-agent">
+    <div class="box-shadow mb-3">
+      <div class="row">
+        <div class="col-12 side-icon">
+          <span class="material-symbols-outlined">info</span>
+          <span>{{ 'Basic_Info_Agent' | translate }}</span>
+        </div>
+
+        <div class="col-12 row m-0 p-0">
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="nameAr" />
+              <label>{{ 'NameAr_Agent' | translate }}</label>
+              <span *ngIf="submitted && form['nameAr'].errors" class="error-validation">
+                {{ 'Field_Required' | translate }}
+              </span>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="nameEn" />
+              <label>{{ 'NameEn_Agent' | translate }}</label>
+              <span *ngIf="submitted && form['nameEn'].errors" class="error-validation">
+                {{ 'Field_Required' | translate }}
+              </span>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="phone" />
+              <label>{{ 'Phone_Agent' | translate }}</label>
+              <span *ngIf="submitted && form['phone'].errors" class="error-validation">
+                {{ 'Field_Required' | translate }}
+              </span>
+            </div>
+          </div>
+
+           <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['password'].errors}">
+              <input pInputText [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password" />
+              <label [ngClass]="{'error': submitted && form['password'].errors}">{{ 'password_database' | translate }}</label>
+              <i class="pi" [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'" (click)="togglePasswordVisibility()"></i>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <input pInputText type="text" formControlName="anyDeskAddress" />
+              <label>{{ 'AnyDesk_Agent' | translate }}</label>
+              <span *ngIf="submitted && form['anyDeskAddress'].errors" class="error-validation">
+                {{ 'Field_Required' | translate }}
+              </span>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label">
+              <p-dropdown
+                [options]="companyOptions"
+                optionLabel="companyName"
+                optionValue="uuid"
+                formControlName="companyIDFK">
+              </p-dropdown>
+              <label>{{ 'Company_Name' | translate }}</label>
+              <span *ngIf="submitted && form['companyIDFK'].errors" class="error-validation">
+                {{ 'Field_Required' | translate }}
+              </span>
+            </div>
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 text-end mt-4">
+      <p-button type="submit" class="btn-primary" [loading]="btnLoading">
+        {{ 'save' | translate }}
+      </p-button>
+    </div>
+  </div>
+</form>
+
+<p-toast key="toast"></p-toast>

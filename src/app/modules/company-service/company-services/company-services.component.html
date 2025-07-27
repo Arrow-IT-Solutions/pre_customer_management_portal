@@ -1,0 +1,154 @@
+<div class="customer-service">
+
+  <div [formGroup]="dataForm" class="row mb-4 m-0  p-0">
+    <p-accordion class="mt-5 p-0">
+      <p-accordionTab>
+        <ng-template pTemplate="header">
+          <div class="flex align-items-center">
+            <span class="material-symbols-outlined">tune</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="m-0 box2 d-flex">
+            <div class="filter-title">
+              <span class="material-symbols-outlined">filter_alt</span>
+              <span>Filter By</span>
+            </div>
+            <div class="container">
+
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center gap-3">
+                  <div class="p-float-label">
+                   <p-dropdown [options]="companies" optionLabel="name" optionValue="uuid" formControlName="companyName"
+                      [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillCompanies($event)"
+                      (ngModelChange)="OnChange()" inputId="companyDropdown"
+                      placeholder="{{ 'companyName_definitions' | translate }}"></p-dropdown>
+                    <label>{{ 'companyName_definitions' | translate }}</label>
+
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center gap-3">
+                  <div class="p-float-label">
+                    <p-dropdown [options]="services" optionLabel="name" optionValue="uuid" formControlName="service"
+                      [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillServices($event)"
+                      (ngModelChange)="OnChange()" inputId="serviceDropdown"
+                      placeholder="{{ 'service_definitions' | translate }}"></p-dropdown>
+                    <label>{{ 'service_definitions' | translate }}</label>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="col result">
+              <div class="ms-2 mt-3">
+                <p-button class="reset-btn" (onClick)="resetform()">
+                  <span class="material-symbols-outlined">restart_alt</span>
+                </p-button>
+              </div>
+            </div>
+          </div>
+
+        </ng-template>
+      </p-accordionTab>
+    </p-accordion>
+
+  </div>
+  <ng-container>
+
+    <div class="box" *ngIf="data.length > 0; else ListView">
+      <div class="card mx-0 mb-2" *ngFor="let row of data">
+        <div class="icon-container">
+          <span class="material-symbols-outlined fill">group_work</span>
+        </div>
+
+        <div class="col-3 card__contents">
+          <div class="card-section__items">
+             <div class="card__contents__item">
+              <div class="card-label">{{ 'companyName_definitions' | translate }}</div>
+              <div class="card-info">{{ row.company.companyTranslation![layoutService.config.lang]?.name }}</div>
+            </div>
+             <div class="card__contents__item">
+              <div class="card-label">{{ 'service_definitions' | translate }}</div>
+              <div class="card-info">{{ row.service.serviceTranslation![layoutService.config.lang]?.name }}</div>
+            </div>
+
+            <div class="card__contents__item">
+              <div class="card-label">{{ 'startDate_subscription' | translate }}</div>
+              <div class="card-info">{{ row.subscription.startDate | date: 'shortDate' }}</div>
+            </div>
+            <div class="card__contents__item">
+              <div class="card-label">{{ 'endDate_subscription' | translate }}</div>
+              <div class="card-info">{{ row.subscription.endDate | date: 'shortDate' }}</div>
+            </div>
+            <div class="card__contents__item">
+              <div class="card-label">{{ 'status_subscription' | translate }}</div>
+              <div class="card-info">{{ row.subscription.statusValue }}</div>
+            </div>
+            <!-- <div class="card__contents__item">
+              <div class="card-label">{{ 'price_subscription' | translate }}</div>
+              <div class="card-info"></div>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="one">
+          <div [matMenuTriggerFor]="menu" class="card__actions">
+            <span class="material-symbols-outlined card__actions__details">more_vert</span>
+          </div>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="OpenAddCompanyService(row)">
+              <span class="material-symbols-outlined" id="icon">Edit</span>
+              {{ 'Edit_subscription' | translate }}
+            </button>
+            <!-- (click)="confirmDelete()" -->
+            <button mat-menu-item (click)="confirmDelete(row)">
+              <span class="material-symbols-outlined" id="icon">delete</span>
+              {{ 'Delete_subscription' | translate }}
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <div class="all d-flex">
+      <div class="total">
+        {{ "totalEnvironments_environment" | translate }}: {{ totalRecords }}
+
+      </div>
+    </div>
+
+    <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+      [first]="first" (onPageChange)="paginate($event)"></p-paginator>
+    <button class="add-button" (click)="openAddService()">
+      <span class="material-symbols-outlined">add</span>
+    </button>
+
+
+  </ng-container>
+
+  <ng-template #ListView>
+   <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="row mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
+      </div>
+    </div>
+  </ng-template>
+  <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
+    <ng-template pTemplate="footer">
+      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}"
+        (click)="confirmDialog.reject()"></button>
+      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}"
+        (click)="confirmDialog.accept()"></button>
+    </ng-template>
+  </p-confirmDialog>
+</div>
+<p-toast key="toast"></p-toast>
+

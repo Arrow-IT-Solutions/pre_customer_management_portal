@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WizardComponent } from './wizard/wizard.component';
-import { DefinitionsComponent } from './customer-service/definitions.component';
 import { EnvironmentComponent } from './environment/environment.component';
+import { DefinitionsComponent } from './company-service/definitions.component';
 
 const routes: Routes = [
    {
@@ -10,17 +10,17 @@ const routes: Routes = [
     component:WizardComponent,
     children: [
       {
-        path: 'customer-service',
+        path: 'company-service',
         component:DefinitionsComponent,
       },
-    
+
       {
         path: 'environment',
         component:EnvironmentComponent,
       },
     ],
   }
-  
+
 ];
 
 @NgModule({

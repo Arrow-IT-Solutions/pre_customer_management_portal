@@ -9,6 +9,7 @@ import { LayoutService } from 'src/app/layout/service/layout.service';
 import { AddServerComponent } from '../add-server/add-server.component';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ServersService } from 'src/app/layout/service/servers.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-servers',
@@ -38,7 +39,8 @@ export class ServersComponent {
     public translate: TranslateService,
     public layoutService: LayoutService,
     public messageService: MessageService,
-    public confirmationService: ConfirmationService
+    public confirmationService: ConfirmationService,
+    public route:Router
   ) {
     this.dataForm = this.formBuilder.group({
       hostname: [''],
@@ -73,22 +75,23 @@ export class ServersComponent {
   }
 
   openAddServer(row: ServerResponse | null = null) {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.body.style.overflow = 'hidden';
-    this.serverService.SelectedData = row;
+    // window.scrollTo({ top: 0, behavior: 'smooth' });
+    // document.body.style.overflow = 'hidden';
+    // this.serverService.SelectedData = row;
 
-    let content = row == null ? 'Create_Server' : 'Update_Server';
-    this.translate.get(content).subscribe((res: string) => {
-      content = res;
-    });
+    // let content = row == null ? 'Create_Server' : 'Update_Server';
+    // this.translate.get(content).subscribe((res: string) => {
+    //   content = res;
+    // });
 
-    const component = this.layoutService.OpenDialog(AddServerComponent, content);
-    this.serverService.Dialog = component;
+    // const component = this.layoutService.OpenDialog(AddServerComponent, content);
+    // this.serverService.Dialog = component;
 
-    component.OnClose.subscribe(() => {
-      document.body.style.overflow = '';
-      this.FillData();
-    });
+    // component.OnClose.subscribe(() => {
+    //   document.body.style.overflow = '';
+    //   this.FillData();
+    // });
+  this.route.navigate(['layout-admin/add-server/server-data'])
   }
 
   async confirmDelete(row: ServerResponse) {

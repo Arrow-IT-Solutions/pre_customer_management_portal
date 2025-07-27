@@ -98,109 +98,7 @@
   }
 }
 
-.upload-images {
-  box-shadow: 0px 0 5px 0px rgba(0, 0, 0, 0.1294117647);
-  border: none;
-  border-radius: 10px;
-  padding: 1.7rem;
-  background-color: #ffffff;
 
-  &__button {
-    width: 100%;
-    min-height: 170px;
-    background-color: $bg-color;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 2rem;
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='11' ry='11' stroke='%23333' stroke-width='2' stroke-dasharray='6%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
-    border-radius: 11px;
-    border-color: $secondary-color;
-    cursor: pointer;
-
-    & .material-symbols-outlined {
-      font-size: 60px;
-      color: $secondary-color;
-    }
-
-    & P {
-      width: 100%;
-      text-align: center;
-      margin-top: 0.5rem;
-    }
-  }
-
-  &__file {
-    background-color: $bg-color;
-    padding: 0.2rem 0.5rem;
-    margin-top: 1rem;
-    position: relative;
-    border-radius: 10px;
-
-    & .file-thumbnail {
-      //width: 35px;
-      height: 50px;
-      //clip-path: inset(8px 0px);
-      display: inline-block;
-      margin-inline-end: 0.5rem;
-
-      & img {
-        height: 100%;
-      }
-    }
-
-    & .file-name {
-      margin-inline-end: 0.5rem;
-
-      &:lang(ar) {
-        display: inline-block;
-      }
-    }
-
-    & .file-size {
-      opacity: 0.6;
-    }
-
-    & .file-delete {
-      position: absolute;
-      top: 0.75rem;
-      right: 1rem;
-      color: $secondary-color;
-      cursor: pointer;
-
-      &:lang(ar) {
-        right: unset;
-        left: 1rem;
-      }
-    }
-
-    &:lang(ar) {
-      direction: rtl;
-    }
-  }
-
-  .file-input {
-    display: none;
-  }
-
-  & .side-icon {
-    background-color: $bg-color;
-    color: $secondary-color;
-    font-size: $large-icon;
-    width: 45px;
-    height: 45px;
-    margin-right: 1rem;
-    border-radius: 10px;
-
-    & .material-symbols-outlined {
-      top: 8px;
-    }
-  }
-
-
-}
 .pi{
     position: absolute;
    right: 1rem;
@@ -219,6 +117,7 @@
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
+    margin-top: 1rem;
     .items{
         display: flex;
         width: 100%;
@@ -240,7 +139,121 @@
         font-weight: bold;
     }
  }
+  .box2{
+    display: flex;
+    flex-direction: row;
+    column-gap: 0.2rem;
+    
+    
 
+    @media(max-width:767px){
+        flex-direction:column ;
+        align-items: center;
+    }
+    
+
+  }
+.container{
+        display: flex;
+        // flex-wrap: wrap;
+        column-gap: 0.4rem;
+        padding: 1rem 0;
+          @media(max-width:767px){
+        flex-direction:column ;
+        padding: 1rem 1rem;
+    } 
+        
+}
+::ng-deep .p-accordion {
+        & .p-accordion-header {
+          display: flex;
+          justify-content: flex-end;
+          margin-top: -3rem;
+
+          // &:lang(ar) {
+          //   right: unset;
+          //   left: 2rem;
+          //   direction: ltr;
+          //   position: absolute;
+          //   top: 4rem;
+          // }
+
+          & .p-accordion-header-link {
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            background-color: $white-color;
+            border-color: $light-gray;
+            top: 1px;
+            color: $primary-color;
+            right: 0.75rem;
+
+            & chevronrighticon,
+            & chevrondownicon {
+              display: none;
+            }
+
+            &:lang(ar){
+                top: 0;
+              right: 0;
+            }
+          }
+        }
+
+        & .p-accordion-content {
+          border-radius: 6px;
+          position: relative;
+          top: 0.75rem;
+          padding: 0 0rem 0.75rem;
+          border: none;
+          border: 1px solid $lighter-gray;
+          margin: 0.5rem .75rem 0.5rem 0;
+        }
+}
+.filter-title{
+        display: flex;
+        align-items: center;
+        border-inline-end: 1px solid rgba($light-purple, .5);
+        margin-top: 0.75rem;
+        width: 20%;
+        justify-content: space-evenly;
+        
+        @media(max-width:767px){
+          width: 40%;
+        }
+
+        & .material-symbols-outlined{
+          color: $gray-color;
+          top: 0;
+        }
+}
+
+.reset-btn {
+      ::ng-deep button {
+        background-color: $secoundary-color !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 50% !important;
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        font-size: 1.5rem;
+        transition: background 0.2s;
+        top: auto;
+        margin-right: 0.3rem !important;
+        margin-top: 2rem !important;
+        margin-left: 0.2rem;
+       
+        .material-symbols-outlined{
+          top: auto;
+        }
+       &:hover {
+          background-color: darken($secoundary-color, 5%) !important;
+        }
+      }
+    }
 // تصميم البيئات
 .environment-card {
   border: 1px solid #e0e0e0;
