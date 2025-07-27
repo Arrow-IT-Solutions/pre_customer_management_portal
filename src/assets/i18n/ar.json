@@ -160,5 +160,12 @@
     "startDate_viewDetails":"تاريخ البداية",
     "endDate_viewDetails":"تاريخ النهاية ",
     "status_viewDetails":"الحالة",
-    "price_viewDetails":"السعر"
+    "price_viewDetails":"السعر",
+    "serverInfo_viewDetails":"معلومات المخدم",
+    "localIPAdd_viewDetails":"عنوان IP المحلي",
+    "publicIPAdd_viewDetails":"عنوان IP العام",
+    "userName_viewDetails":"اسم المستخدم",
+    "password_viewDetails":"كلمة المرور",
+    "URL_viewDetails":"الرابط"
+
 }

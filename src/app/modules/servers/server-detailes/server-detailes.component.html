@@ -1,0 +1,158 @@
+
+<div class="detailsContainer row" *ngIf="!loading; else spinner">
+    <div class="col-lg-4 col-md-12">
+      <div class="box-shadow mb-3">
+        <div class="row">
+          <div class="col-12 side-icon">
+            <span class="material-symbols-outlined">info</span>
+            <span>{{ 'serverInfo_viewDetails' | translate }}</span>
+          </div>
+          <div class="col-12 row m-0 p-0">
+           <div class="card-section__items">
+             <div class="card__contents__item mt-2">
+              <div class="card-label">{{ 'localIPAdd_viewDetails' | translate }}:</div>
+              <div class="card-info">local IP Add</div>
+             </div>
+             <div class="card__contents__item mt-3">
+              <div class="card-label">{{ 'publicIPAdd_viewDetails' | translate }}:</div>
+              <div class="card-info">public IP Add</div>
+             </div>
+              <div class="card__contents__item mt-3">
+              <div class="card-label">{{ 'userName_viewDetails' | translate }}:</div>
+              <div class="card-info">user Name</div>
+             </div>
+              <div class="card__contents__item mt-3">
+              <div class="card-label">{{ 'password_viewDetails' | translate }}:</div>
+              <div class="card-info">12345</div>
+             </div>
+             <div class="card__contents__item mt-3">
+              <div class="card-label">{{ 'URL_viewDetails' | translate }}:</div>
+              <div class="card-info">http://localhost:4200/#/layout-admin/add-server/server-data</div>
+             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    
+    <div class="col-lg-8 col-md-12">
+      <div class="box-shadow mb-3">
+        <div class="row">
+            <div class="col-12 header-container">
+             <div class="col-lg-5 col-sm-6 side-icon">
+            <span class="material-symbols-outlined">list</span>
+            <span>{{ 'Application_List' | translate }}</span>
+            </div>
+            <form action="" [formGroup]="searchFrom">
+            <p-accordion class="mt-5 p-0">
+            <p-accordionTab>
+            <ng-template pTemplate="header">
+            <div class="flex align-items-center">
+            <span class="material-symbols-outlined">tune</span>
+            </div>
+            </ng-template>
+            <ng-template pTemplate="content">
+            <div class="m-0 box2 d-flex">
+            <div class="filter-title">
+              <span class="material-symbols-outlined">filter_alt</span>
+              <span>Filter By</span>
+            </div>
+            <div class="container">
+
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center">
+                  <span class=" p-0">
+                    
+                    <input class="search-field" type="text" (input)="OnChange()"
+                      placeholder="{{ 'applicationName_application' | translate }}" formControlName="AppName" pInputText />
+                  </span>
+                </div>
+              </div>
+               <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center">
+                  <span class=" p-0">
+                    
+                    <input class="search-field" type="text" (input)="OnChange()"
+                      placeholder="{{ 'port_application' | translate }}" formControlName="port" pInputText />
+                  </span>
+                </div>
+              </div>
+              
+            </div>
+
+            <div class="col result">
+              <div class="ms-2 mt-3">
+                <p-button class="reset-btn" (onClick)="resetSearchForm()">
+                  <span class="material-symbols-outlined">restart_alt</span>
+                </p-button>
+              </div>
+            </div>
+            </div>
+            </ng-template>
+           </p-accordionTab>
+            </p-accordion>
+            </form>
+            </div>
+         
+          <!-- *ngIf="envDatabase.length > 0" -->
+          <div class="col-12">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="card environment-card">
+                  <div class="card-header d-flex justify-content-center align-items-center">
+                      <span class="badge me-2">{{ 1 }}</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="environment-details">
+                      <div class="detail-item">
+                        <label>{{ 'applicationName_application' | translate }}:</label>
+                        <span></span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'port_application' | translate }}:</label>
+                        <span ></span>
+
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'Url_application' | translate }}:</label>
+                        <span></span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'userName_application' | translate }}:</label>
+                        <span></span>
+                      </div>
+                      <div class="detail-item">
+                        <label>{{ 'password_server' | translate }}:</label>
+                        <span></span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-12 text-center py-5" *ngIf="envDatabase.length === 0">
+            <div class="no-environments">
+              <h5 class="mt-3 text-muted">{{ 'No_Environments_Added' | translate }}</h5>
+
+            </div>
+          </div> -->
+        </div>
+         <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+      [first]="first" (onPageChange)="paginate($event)"></p-paginator>
+      </div>
+     
+    </div>
+  </div>
+
+
+<ng-template #spinner>
+  <mat-spinner id="spinner"></mat-spinner>
+</ng-template>
+<p-toast key="toast"></p-toast>
+
+
