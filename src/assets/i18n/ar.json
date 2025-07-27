@@ -151,5 +151,14 @@
     "userName_application":"اسم المستخدم",
     "password_server":"كلمة المرور",
     "Select_Company_Service": "اختر خدمة الشركة",
-    "Successfull_Update": "تم التعديل بنجاح"
+    "Successfull_Update": "تم التعديل بنجاح",
+    "view_Company":"عرض",
+    "companyService_viewDetails":"خدمات الشركة",
+    "companyName_viewDetails":"اسم الشركة",
+    "server_viewDetails":"المخدم",
+    "subscription_viewDetails":"معلومات الاشتراك",
+    "startDate_viewDetails":"تاريخ البداية",
+    "endDate_viewDetails":"تاريخ النهاية ",
+    "status_viewDetails":"الحالة",
+    "price_viewDetails":"السعر"
 }

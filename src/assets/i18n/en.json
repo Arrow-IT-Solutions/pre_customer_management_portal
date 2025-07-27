@@ -148,5 +148,14 @@
      "userName_application":"User Name",
      "password_server":"Password",
     "Select_Company_Service" : "Select Company Service",
-     "Successfull_Update": "Updated Successfully"
+     "Successfull_Update": "Updated Successfully",
+     "view_Company":"View",
+     "companyService_viewDetails":"Company Service info",
+     "companyName_viewDetails":"Company Name",
+     "server_viewDetails":"Server",
+     "subscription_viewDetails":"Subscription info",
+     "startDate_viewDetails":"Start Date",
+     "endDate_viewDetails":"End Date",
+     "status_viewDetails":"Status",
+     "price_viewDetails":"Price"
 }
