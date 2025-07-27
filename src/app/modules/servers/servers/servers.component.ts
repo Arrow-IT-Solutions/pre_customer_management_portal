@@ -144,4 +144,8 @@ export class ServersComponent {
     this.link = link;
     this.visible = true;
   }
+
+  viewDetails(){
+    this.route.navigate(['layout-admin/servers/server-details']);
+  }
 }

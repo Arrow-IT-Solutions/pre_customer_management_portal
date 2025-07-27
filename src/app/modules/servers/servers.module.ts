@@ -7,12 +7,14 @@ import { AddServerComponent } from './add-server/add-server.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/class/class';
+import { ServerDetailesComponent } from './server-detailes/server-detailes.component';
 
 
 @NgModule({
   declarations: [
     ServersComponent,
-    AddServerComponent
+    AddServerComponent,
+    ServerDetailesComponent
   ],
   imports: [
     CommonModule,
