@@ -165,7 +165,9 @@
   "agentAnyDesk_agent": "عنوان AnyDesk",
   "Edit_Agent": "تعديل الوكيل",
   "Delete_Agent": "حذف الوكيل",
-  "totalAgents_agent": "إجمالي الوكيل"
+  "totalAgents_agent": "إجمالي الوكيل",
+  "View_Company_Agents": "عرض عملاء الشركة"
+
  
  
 }

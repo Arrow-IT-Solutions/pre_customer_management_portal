@@ -84,6 +84,7 @@ companiesList: { label: string; value: string }[] = [];
     label: company.companyTranslation?.[this.layoutService.config.lang]?.name ?? '—',
     value: company.uuid?.trim() ?? ''
   }));
+  
   console.log('companies response:', response);
 console.log('mapped companiesList:', this.companiesList);
 
@@ -91,6 +92,13 @@ console.log('mapped companiesList:', this.companiesList);
 
 
    
+filterByCompany(companyUUID: string) {
+  console.log("company UUID " , companyUUID)
+  this.dataForm.get('companyIDFK')?.setValue(companyUUID);
+  this.FillData();
+}
+
+
 
 
 
@@ -216,6 +224,8 @@ console.log('mapped companiesList:', this.companiesList);
  
   
     
+
+  
   
     
 }

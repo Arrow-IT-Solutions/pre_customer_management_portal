@@ -164,5 +164,6 @@
   "Delete_Agent": "Delete Agent",
   "totalAgents_agent": "Total Agents",
   "Yes": "Yes",
-  "No": "No"
+  "No": "No",
+  "View_CompanyAgents":"View Company Agents"
 }
