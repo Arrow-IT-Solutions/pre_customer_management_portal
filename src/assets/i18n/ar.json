@@ -131,7 +131,6 @@
     "ServerIDFK": "الخادم",
     "Select_ServerIDFK": "اختر الخادم",
     "Select_Customer_Service": "اختر خدمة العملاء",
-    "Successfull_Update": "تم التعديل بنجاح",
     "nameApp": "اسم التطبيق",
     "password": "كلمة السر",
     "userName":"اسم المستخدم",
@@ -151,5 +150,22 @@
     "userName_application":"اسم المستخدم",
     "password_server":"كلمة المرور",
     "Select_Company_Service": "اختر خدمة الشركة",
-    "Successfull_Update": "تم التعديل بنجاح"
+    "Successfull_Update": "تم التعديل بنجاح",
+    "Basic_Info_Agent": "المعلومات الأساسية",
+    "Create_Agent":"إنشاء وكيل",
+    "NameAr_Agent": "الاسم (عربي)",
+    "NameEn_Agent": "الاسم (إنجليزي)",
+    "Phone_Agent": "رقم الهاتف",
+    "AnyDeskAddress": "عنوان AnyDesk",
+    "password_anydesk": "كلمة مرور AnyDesk",
+    "Company_Name": "اسم الشركة",
+  "agentName_agent": "اسم الوكيل",
+  "companyName_agent": "اسم الشركة",
+  "agentPhone_agent": "رقم الهاتف",
+  "agentAnyDesk_agent": "عنوان AnyDesk",
+  "Edit_Agent": "تعديل الوكيل",
+  "Delete_Agent": "حذف الوكيل",
+  "totalAgents_agent": "إجمالي الوكيل"
+ 
+ 
 }

@@ -46,17 +46,11 @@ export const navbarData: NavbarData[] = [
         id: 'servers',
         routeLink: 'servers'
       },
-       {
+      {
         label: 'DataBases',
         labelar: 'قواعد البيانات',
         id: 'dataBases',
         routeLink: 'DataBases'
-      },
-      {
-        label: 'Ports',
-        labelar: 'المنافذ',
-        id: 'ports',
-        routeLink: 'ports'
       },
       {
         label: 'Applications',
@@ -65,14 +59,6 @@ export const navbarData: NavbarData[] = [
         routeLink: 'applications'
       },
       {
-        label: 'Credential',
-        labelar: 'الاعتمادية',
-        id: 'credential',
-        routeLink: 'credential'
-      },
-
-
-       {
         label: 'Companies',
         labelar: 'الشركات',
         id: 'companies',
@@ -82,41 +68,42 @@ export const navbarData: NavbarData[] = [
     ]
   },
   {
-        label: 'Environments',
-        labelar: 'بيئة',
-        id: 'environments',
-        routeLink: 'environments',
-        icon:'language'
+    label: 'Environments',
+    labelar: 'بيئة',
+    id: 'environments',
+    routeLink: 'environments',
+    icon: 'language'
   },
   {
-        label: 'Subscription',
-        labelar: 'الاشتراك',
-        id: 'subscription',
-        routeLink: 'subscription',
-        icon:'library_add'
+    label: 'Subscription',
+    labelar: 'الاشتراك',
+    id: 'subscription',
+    routeLink: 'subscription',
+    icon: 'library_add'
   },
   {
-        label: 'Company Services',
-        labelar: 'خدمات الشركات',
-        id: 'company-services',
-        routeLink: 'company-services',
-        icon:'group_work'
+    label: 'Company Services',
+    labelar: 'خدمات الشركات',
+    id: 'company-services',
+    routeLink: 'company-services',
+    icon: 'group_work'
   },
 
   {
-        label: 'Add',
-        labelar: 'إضافة',
-        id: 'add',
-        routeLink: 'add/company-service',
-        icon:'control_point'
+    label: 'Add',
+    labelar: 'إضافة',
+    id: 'add',
+    routeLink: 'add/company-service',
+    icon: 'control_point'
   },
-   {
-        label: 'Add Server',
-        labelar: ' إضافة خادم',
-        id: 'add',
-        routeLink: 'add-server/server-data',
-        icon:'control_point'
-  }  
+  {
+    label: 'Add Server',
+    labelar: ' إضافة خادم',
+    id: 'add',
+    routeLink: 'add-server/server-data',
+    icon: 'control_point'
+  }
+
 
 
 ];

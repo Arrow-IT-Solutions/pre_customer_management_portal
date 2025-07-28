@@ -7,11 +7,13 @@ import { AddAgentComponent } from '../add-agent/add-agent.component';
 import { AgentResponse, AgentSearchRequest, AgentTranslationResponse } from '../agent.module';
 import { AgentsService } from 'src/app/Core/services/agents.service';
 import { PasswordComponent } from '../../password/password/password.component';
+import { CompaniesService } from 'src/app/layout/service/companies.service';
+import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 
 @Component({
   selector: 'app-agents',
-  templateUrl: './agents.component.html',
-  styleUrls: ['./agents.component.scss'],
+  templateUrl: './agent.component.html',
+  styleUrls: ['./agent.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
 export class AgentComponent {
@@ -26,16 +28,20 @@ export class AgentComponent {
   isResetting: boolean = false;
   link = '';
   visible: boolean = false;
+companiesList: { label: string; value: string }[] = [];
+
 
   constructor(
     public formBuilder: FormBuilder,
     public agentService: AgentsService,
     public translate: TranslateService,
     public layoutService: LayoutService,
+    private companyService: CompaniesService, 
     public messageService: MessageService,
     public confirmationService: ConfirmationService
   ) {
     this.dataForm = this.formBuilder.group({
+      uuid: [''],
       name: [''],
       companyIDFK: ['']
     });
@@ -46,20 +52,55 @@ export class AgentComponent {
   }
 
   async ngOnInit() {
+    await this.retrieveCompanies();
     await this.FillData();
+   
   }
 
   Search() {
     this.FillData();
   }
-  
+
+ retrieveCompanyLabel(row: AgentResponse): string {
+  const companyUUID = row.companyIDFK?.trim();
+  const match = this.companiesList.find(c => c.value === companyUUID);
+  return match?.label || '-';
+}
+
+
+ 
+ async retrieveCompanies() {
+  const filter = {
+    name: '',
+    uuid: '',
+    pageIndex: '0',
+    pageSize: '10' 
+  };
+
+  const response = await this.companyService.Search(filter) as any;
+  const companies = response?.data || [];
+
+  this.companiesList = companies.map((company: any) => ({
+    label: company.companyTranslation?.[this.layoutService.config.lang]?.name ?? '—',
+    value: company.uuid?.trim() ?? ''
+  }));
+  console.log('companies response:', response);
+console.log('mapped companiesList:', this.companiesList);
+
+}
+
+
+   
+
+
+
   async FillData(pageIndex: number = 0) {
     this.loading = true;
     this.data = [];
     this.totalRecords = 0;
     let filter: AgentSearchRequest = {
       name: this.dataForm.controls['name'].value,
-      phone: this.dataForm.controls['phone'].value,
+      companyIDFK: this.dataForm.controls['companyIDFK'].value,
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString(),
     };

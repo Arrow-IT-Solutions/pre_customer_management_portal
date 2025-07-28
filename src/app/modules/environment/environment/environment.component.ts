@@ -30,8 +30,8 @@ export class EnvironmentComponent {
 
   dataForm!: FormGroup;
   data: EnvironmentResponse[] = [];
-servers: { [key: string]: string } = {};
-companyServices: { [key: string]: string } = {};
+  servers: { [key: string]: string } = {};
+  companyServices: { [key: string]: string } = {};
 
 
   loading = false;
@@ -61,9 +61,11 @@ companyServices: { [key: string]: string } = {};
   }
 
   async ngOnInit() {
+    this.loading = true;
     await this.retrieveServer();
     await this.retrieveCompanyService();
     await this.FillData();
+    this.loading = false;
   }
 
   async FillData(pageIndex: number = 0) {
@@ -79,79 +81,78 @@ companyServices: { [key: string]: string } = {};
     };
 
     const response = await this.environmentService.Search(filter) as any;
-console.log('Environment API Response:', response);
 
     this.data = response?.data || [];
     this.totalRecords = Number(response?.totalRecords || 0);
     this.loading = false;
   }
 
-retrieveServers(row: EnvironmentResponse): string {
-  const serverUUID = row.serverIDFK;
-  return this.servers[serverUUID?.trim()] || '-';
-}
+  retrieveServers(row: EnvironmentResponse): string {
+    const serverUUID = row.serverIDFK;
+    return this.servers[serverUUID?.trim()] || '-';
+  }
 
 
-retrieveCompanyServiceLabel(env: EnvironmentResponse): string {
-  const companyServiceUUID = env.companyServiceIDFK?.trim();
-  return this.companyServices[companyServiceUUID] || '-';
-}
+  retrieveCompanyServiceLabel(env: EnvironmentResponse): string {
+    const companyServiceUUID = env.companyServiceIDFK?.trim();
+    return this.companyServices[companyServiceUUID] || '-';
+  }
 
 
 
- async retrieveCompanyService() {
-  const filter = {
-    uuid: '',
-    companyIDFK: '',
-    ServiceIDFK: '',
-    includeCompany: '1',
-    includeService: '1',
-    pageIndex: '0',
-    pageSize: '10'
-  };
+  async retrieveCompanyService() {
+    const filter = {
+      uuid: '',
+      companyIDFK: '',
+      ServiceIDFK: '',
+      includeCompany: '1',
+      includeService: '1',
+      pageIndex: '0',
+      pageSize: '10'
+    };
 
-  const response = await this.provisionedService.Search(filter) as any;
-  const companyService = response?.data || [];
+    const response = await this.provisionedService.Search(filter) as any;
+    const companyService = response?.data || [];
 
-  this.companyServices = {};
+    this.companyServices = {};
 
-  const lang = this.layoutService.config.lang || 'en';
+    const lang = this.layoutService.config.lang || 'en';
 
-  companyService.forEach((cs: any) => {
-    if (cs.uuid) {
-      const companyName = cs.company?.companyTranslation?.[lang]?.name || 'Unknown Company';
-      const serviceName = cs.service?.serviceTranslation?.[lang]?.name || 'Unknown Service';
-      this.companyServices[cs.uuid.trim()] = `${companyName} - ${serviceName}`;
-    }
-  });
+    companyService.forEach((cs: any) => {
+      if (cs.uuid) {
+        const companyName = cs.company?.companyTranslation?.[lang]?.name || 'Unknown Company';
+        const serviceName = cs.service?.serviceTranslation?.[lang]?.name || 'Unknown Service';
+        this.companyServices[cs.uuid.trim()] = `${companyName} - ${serviceName}`;
+      }
+    });
 
-  console.log('Company Services Map:', this.companyServices);
-}
+    console.log('Company Services Map:', this.companyServices);
+  }
 
 
 
   async retrieveServer() {
-  const filter = {
-    name: '',
-    uuid: '',
-    pageIndex: '0',
-    pageSize: '10'
-  };
+    const filter = {
+      name: '',
+      uuid: '',
+      pageIndex: '0',
+      pageSize: '10'
+    };
 
-  const response = await this.serverService.Search(filter) as any;
-  const servers = response?.data || [];
+    const response = await this.serverService.Search(filter) as any;
+    const servers = response?.data || [];
 
-this.servers = {};
-servers.forEach((server: any) => {
-  if (server.uuid) {
-    this.servers[server.uuid.trim()] = server.hostname || '—';
+    this.servers = {};
+    servers.forEach((server: any) => {
+      if (server.uuid) {
+        this.servers[server.uuid.trim()] = server.hostname || '—';
+      }
+    });
+
+    console.log('Server Map:', this.servers);
+
+
   }
-});
-
-console.log('Server Map:', this.servers);
-
-
-}
 
 
   openAddEnvironment(row: EnvironmentResponse | null = null) {
@@ -173,28 +174,28 @@ console.log('Server Map:', this.servers);
   }
 
   async confirmDelete(row: EnvironmentResponse) {
-      this.confirmationService.confirm({
-        message: this.translate.instant('Do_you_want_to_delete_this_record?'),
-        header: this.translate.instant('Delete_Confirmation'),
-        icon: 'pi pi-info-circle',
-        acceptLabel: this.translate.instant('Yes'),
-        rejectLabel: this.translate.instant('No'),
-        key: 'confirmDialog',
-        accept: async () => {
-          try {
-            const resp = await this.environmentService.Delete(row.uuid!) as any;
-            this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
-            this.FillData();
-          } catch (error) {
-            this.messageService.add({
-              severity: 'error',
-              summary: this.translate.instant('Error'),
-              detail: this.translate.instant('database.Failed_to_delete')
-            });
-          }
+    this.confirmationService.confirm({
+      message: this.translate.instant('Do_you_want_to_delete_this_record?'),
+      header: this.translate.instant('Delete_Confirmation'),
+      icon: 'pi pi-info-circle',
+      acceptLabel: this.translate.instant('Yes'),
+      rejectLabel: this.translate.instant('No'),
+      key: 'confirmDialog',
+      accept: async () => {
+        try {
+          const resp = await this.environmentService.Delete(row.uuid!) as any;
+          this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
+          this.FillData();
+        } catch (error) {
+          this.messageService.add({
+            severity: 'error',
+            summary: this.translate.instant('Error'),
+            detail: this.translate.instant('database.Failed_to_delete')
+          });
         }
-      });
-    }
+      }
+    });
+  }
 
   async resetform() {
     this.isResetting = true;

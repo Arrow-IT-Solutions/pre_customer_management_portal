@@ -8,6 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { AgentRequest, AgentUpdateRequest } from '../agent.module';
 import { PasswordComponent } from '../../password/password/password.component';
 import { EncryptionService } from 'src/app/shared/service/encryption.service';
+import { CompanyResponse, CompanySearchRequest } from '../../companies/companies.module';
+import { CompaniesService } from 'src/app/layout/service/companies.service';
 
 @Component({
   selector: 'app-add-agent',
@@ -22,12 +24,15 @@ export class AddAgentComponent {
   file: any;
   fileInput: any;
   img: boolean = true;
-  companyOptions: any[] = [];
+  company: CompanyResponse[] = [];
+  companyOptions: { label: string; value: string }[] = [];
+  companyList: any[] = []; 
   isPasswordVisible: boolean = false;
   constructor(
     public formBuilder: FormBuilder,
     public layoutService: LayoutService,
     public agentService: AgentsService,
+    private companyService: CompaniesService, 
     public constantService: ConstantService,
     public messageService: MessageService,
     public translate: TranslateService
@@ -38,14 +43,14 @@ export class AddAgentComponent {
       phone: ['', Validators.required],
       password: [''],
       anyDeskAddress: ['', Validators.required],
-      companyIDFK: [null, Validators.required],
+      companyIDFK: ['', Validators.required],
     });
+    
   }
   async ngOnInit() {
     try {
       this.loading = true;
-      const CompanyResponse = await this.constantService.Search('Company') as any;
-      this.companyOptions = CompanyResponse.data;
+      await this.RetrieveCompany();
       this.resetForm();
 
       if (this.agentService.SelectedData != null) {
@@ -58,9 +63,9 @@ export class AddAgentComponent {
     }
   }
 
-  get form(): { [key: string]: AbstractControl } {
-      return this.dataForm.controls;
-    }
+
+
+
   togglePasswordVisibility(): void {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
@@ -79,18 +84,20 @@ export class AddAgentComponent {
       this.btnLoading = false;
     }
   }
-
+  get form(): { [key: string]: AbstractControl } {
+    return this.dataForm.controls;
+  }
   async Save() {
   
       let response;
   
       var agentTranslation = [
         {
-          firstName: this.dataForm.controls['NameAr'].value == null ? '' : this.dataForm.controls['NameAr'].value.toString(),
+          name: this.dataForm.controls['nameAr'].value == null ? '' : this.dataForm.controls['nameAr'].value.toString(),
           language: 'ar'
         },
         {
-          firstName: this.dataForm.controls['NameEn'].value == null ? '' : this.dataForm.controls['NameEn'].value.toString(),
+          name: this.dataForm.controls['nameEn'].value == null ? '' : this.dataForm.controls['nameEn'].value.toString(),
           language: 'en'
         }
       ];
@@ -98,16 +105,15 @@ export class AddAgentComponent {
       if (this.agentService.SelectedData != null) {
         // update
   
-        var employee: AgentUpdateRequest = {
+        var agent: AgentUpdateRequest = {
           uuid: this.agentService.SelectedData?.uuid?.toString(),
           agentTranslation: agentTranslation,
           companyIDFK: this.dataForm.controls['companyIDFK'].value.toString(),
-          phone: this.dataForm.controls['Phone'].value.toString(),
+          phone: this.dataForm.controls['phone'].value.toString(),
           anyDeskAddress: this.dataForm.controls['anyDeskAddress'].value,
-          password: (await EncryptionService.encrypt(this.dataForm.controls['password'].value.toString())),
-
+          password: this.dataForm.controls['password'].value.toString(),
         };
-        response = await this.agentService.Update(employee);
+        response = await this.agentService.Update(agent);
   
   
         if (response.requestStatus == "200") {
@@ -126,14 +132,14 @@ export class AddAgentComponent {
       } else {
         // add
   
-        var addEmployee: AgentRequest = {
+        var addAgent: AgentRequest = {
           agentTranslation: agentTranslation,
-         companyIDFK: this.dataForm.controls['companyIDFK'].value.toString(),
-          phone: this.dataForm.controls['Phone'].value.toString(),
+          companyIDFK: this.dataForm.controls['companyIDFK'].value.toString(),
+          phone: this.dataForm.controls['phone'].value.toString(),
           anyDeskAddress: this.dataForm.controls['anyDeskAddress'].value,
-          password: (await EncryptionService.encrypt(this.dataForm.controls['password'].value.toString())),
+          password: this.dataForm.controls['password'].value.toString(),
         };
-        response = await this.agentService.Add(addEmployee);
+        response = await this.agentService.Add(addAgent);
         if (response != null) {
           if (response.requestStatus == 200) {
             this.layoutService.showSuccess(this.messageService, 'toast', true, response?.requestMessage);
@@ -145,7 +151,8 @@ export class AddAgentComponent {
               this.agentService.Dialog.adHostDynamic.viewContainerRef.clear();
               this.agentService.triggerRefreshAgents();
             }, 600);
-  
+           console.log(addAgent);
+
           } else {
             this.layoutService.showError(this.messageService, 'toast', true, response?.requestMessage);
           }
@@ -164,18 +171,53 @@ export class AddAgentComponent {
 
     console.log('HERE')
     let temp = {
-      NameAr: this.agentService.SelectedData?.agentTranslation?.['ar']?.name || '',
-      NameEn: this.agentService.SelectedData?.agentTranslation?.['en']?.name || '',
-      Phone: this.agentService.SelectedData?.phone,
+      nameAr: this.agentService.SelectedData?.agentTranslation?.['ar']?.name || '',
+      nameEn: this.agentService.SelectedData?.agentTranslation?.['en']?.name || '',
+      phone: this.agentService.SelectedData?.phone,
       companyIDFK: this.agentService.SelectedData?.companyIDFK ?? '',
       anyDeskAddress: this.agentService.SelectedData?.anyDeskAddress || '',
-      password: this.agentService.SelectedData?.password || '',
+      password: '',
     };     
 
-   
+    console.log('Patch values:', temp);
     this.dataForm.patchValue(temp);
 
   }
+  getCompanyLabel(): string {
+  return this.layoutService.config.lang === 'ar' ? 'nameAr' : 'nameEn';
+}
+async RetrieveCompany() {
+     let filter: CompanySearchRequest = {
+          uuid: '',
+          name: '',
+          primaryContact: '',
+          phone: '',
+          email: '',
+          pageIndex: '0',
+          pageSize: '10'
+
+        };
+
+        const rawResponse = (await this.companyService.Search(filter)) as any;
+
+    console.log('Raw response:', rawResponse);
+
+  this.companyList = rawResponse.data;
+
+  const lang = this.layoutService.config.lang || 'en';
+
+
+  this.companyOptions = (rawResponse.data ?? []).map((item: CompanyResponse) => ({
+  label: item.companyTranslation?.[lang]?.name ?? 'Unknown Company',
+  value: item.uuid
+}));
+
+
+
+
+
+    console.log('Company Services Dropdown:', this.companyOptions);
+}
   async OpenInfoPage(response) {
   
       window.scrollTo({ top: 0, behavior: 'smooth' });
