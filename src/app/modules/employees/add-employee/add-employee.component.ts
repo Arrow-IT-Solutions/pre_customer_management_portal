@@ -111,7 +111,7 @@ export class AddEmployeeComponent {
         gender: this.dataForm.controls['clientGender'].value.toString(),
         birthDate: birthDate.toISOString(),
         phone: this.dataForm.controls['clientPhone'].value.toString(),
-        profileImage: this.file,
+        image: this.file,
         deviceType: '',
         email: this.dataForm.controls['username'].value
 

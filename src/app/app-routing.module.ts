@@ -128,8 +128,14 @@ const routes: Routes = [
             (m) => m.WizardAddServerModule
           )
       },
-     
 
+       {
+        path: 'employees',
+        loadChildren: () =>
+          import('./modules/employees/employees.module').then(
+            (m) => m.EmployeesModule
+          )
+      },
 
 
       {
