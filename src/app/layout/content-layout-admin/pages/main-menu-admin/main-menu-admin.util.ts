@@ -28,6 +28,12 @@ export const navbarData: NavbarData[] = [
     icon: 'apps',
     items: [
       {
+        label: 'Agents',
+        labelar: 'العملاء',
+        id: 'agents',
+        routeLink: 'agents'
+      },
+      {
         label: 'Services',
         labelar: 'الخدمات',
         id: 'services',
