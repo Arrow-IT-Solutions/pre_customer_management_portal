@@ -175,6 +175,14 @@
           display: flex;
           justify-content: flex-end;
           margin-top: -3.8rem;
+          @media(max-width:767px){
+            position: absolute;
+            right: 1rem;
+           
+          }
+          
+              
+            
 
           // &:lang(ar) {
           //   right: unset;
@@ -207,6 +215,11 @@
             }
           }
         }
+        & .p-accordion-header:lang(ar){
+            @media(max-width:767px){
+                left: 2rem;
+              right: unset;
+            }}
 
         & .p-accordion-content {
           border-radius: 6px;
@@ -218,6 +231,7 @@
           margin: 0.5rem .75rem 0.5rem 0;
         }
 }
+
 .filter-title{
         display: flex;
         align-items: center;
