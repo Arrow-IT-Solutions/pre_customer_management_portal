@@ -9,79 +9,86 @@
           </div>
           <div class="col-12 row m-0 p-0">
 
-             <div class="col-12 mb-3">
-            <div class="p-float-label" [ngClass]="{'error_border': submitted && dataForm['localIpAdd'].errors}">
-              <input pInputText type="text" formControlName="localIpAdd"/>
-              <label  [ngClass]="{'error': submitted && dataForm['localIpAdd'].errors,'no-error': !(submitted && dataForm['localIpAdd']?.errors)}">{{ 'localIpAdd_Server' | translate }}</label>
-            </div>
-             <div *ngIf="submitted && dataForm['localIpAdd'].errors?.['required']" class="text-danger mt-1">
-              {{ 'field_required' | translate }}
-            </div>
-            </div> 
-            
-
             <div class="col-12 mb-3">
-            <div class="p-float-label" [ngClass]="{'error_border': submitted && dataForm['publicIpAdd'].errors}">
-              <input pInputText type="text" formControlName="publicIpAdd"/>
-              <label  [ngClass]="{'error': submitted && dataForm['publicIpAdd'].errors,'no-error': !(submitted && dataForm['publicIpAdd']?.errors)}">{{ 'publicIpAdd_Server' | translate }}</label>
-            </div>
-             <div *ngIf="submitted && dataForm['publicIpAdd'].errors?.['required']" class="text-danger mt-1">
-              {{ 'field_required' | translate }}
-            </div>
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['hostname']?.errors}">
+                <input pInputText type="text" formControlName="hostname" />
+                <label
+                  [ngClass]="{'error': submitted && form['hostname']?.errors,'no-error': !(submitted && form['hostname']?.errors)}">{{
+                  'localIpAdd_Server' | translate }}</label>
+              </div>
+              <div *ngIf="submitted && form['hostname'].errors?.['required']" class="text-danger mt-1">
+                {{ 'field_required' | translate }}
+              </div>
             </div>
 
+
             <div class="col-12 mb-3">
-            <div class="p-float-label">
-              <input pInputText type="text" formControlName="userName"/>
-              <label>{{ 'userName_Server' | translate }}</label>
-            </div>
-           
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['ipAddress']?.errors}">
+                <input pInputText type="text" formControlName="ipAddress" />
+                <label
+                  [ngClass]="{'error': submitted && form['ipAddress']?.errors,'no-error': !(submitted && form['ipAddress']?.errors)}">{{
+                  'publicIpAdd_Server' | translate }}</label>
+              </div>
+              <div *ngIf="submitted && form['ipAddress'].errors?.['required']" class="text-danger mt-1">
+                {{ 'field_required' | translate }}
+              </div>
             </div>
 
             <div class="col-12 mb-3">
-            <div class="p-float-label">
-              <input pInputText type="password" formControlName="password"/>
-              <label>{{ 'password_Server' | translate }}</label>
-               <i class="pi" [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'"
+              <div class="p-float-label">
+                <input pInputText type="text" formControlName="username" />
+                <label>{{ 'userName_Server' | translate }}</label>
+              </div>
+
+            </div>
+
+            <div class="col-12 mb-3">
+              <div class="p-float-label">
+                <input pInputText [type]="isPasswordVisible ? 'text' : 'password'" formControlName="password" />
+                <label>{{ 'password_Server' | translate }}</label>
+                <i class="pi" [ngClass]="isPasswordVisible ? 'pi-eye-slash' : 'pi-eye'"
                   (click)="togglePasswordVisibility()">
                 </i>
-            </div>
-           
+              </div>
+
             </div>
 
             <div class="col-12 mb-3">
-            <div class="p-float-label">
-              <input pInputText type="text" formControlName="url"/>
-              <label>{{ 'url_Server' | translate }}</label>
-            </div>
-           
+              <div class="p-float-label">
+                <input pInputText type="text" formControlName="url" />
+                <label>{{ 'url_Server' | translate }}</label>
+              </div>
+
             </div>
 
           </div>
+          <div class="col-12 mb-3 p-field-checkbox">
+            <p-checkbox formControlName="fillAppsNow" inputId="fillAppsNowCheck" [binary]="true">
+            </p-checkbox>
+            <label for="fillAppsNowCheck">
+              {{'FillApps_Server' | translate}}
+            </label>
+          </div>
 
 
-          
         </div>
       </div>
-      </div>
-      
-      
-
-   </div>
-
-
-
-
-
-    <div class="col-xs-12 mt-4 text-end" style="padding: 2rem 1rem;">
-      <!-- <p-button type="Submit" class="btn-primary">{{ 'Cancle_definitions' | translate }}</p-button> -->
-
-      <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{  ('Next_definitions' | translate) }}</p-button>
-     <!-- <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ isEditMode ? ('Update_definitions' | translate) : ('Next_definitions' | translate) }}</p-button> -->
     </div>
+
+
+
+  </div>
+
+
+
+
+
+  <div class="col-xs-12 mt-4 text-end" style="padding: 2rem 1rem;">
+    <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ ('Next_definitions' | translate) }}</p-button>
+    <!-- <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ isEditMode ? ('Update_definitions' | translate) : ('Next_definitions' | translate) }}</p-button> -->
+  </div>
 </form>
 <ng-template #spinner>
-<mat-spinner id="spinner"></mat-spinner>
+  <mat-spinner id="spinner"></mat-spinner>
 </ng-template>
 <p-toast key="toast"></p-toast>
-

@@ -1,108 +1,88 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router, RouterOutlet, NavigationEnd, Event as RouterEvent } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
+import { ServersService } from 'src/app/layout/service/servers.service';
+import { WizardStep } from 'src/app/shared/models/wizrd-step';
+import { ServerComponent } from '../server/server.component';
+import { ApplicationComponent } from '../application/application.component';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-wizard',
   templateUrl: './wizard.component.html',
   styleUrls: ['./wizard.component.scss']
 })
-export class WizardComponent {
-   items: MenuItem[];
-    activeIndex = 0;
 
-     constructor(
-     public layoutService: LayoutService,
-     private router: Router,
-     private route: ActivatedRoute,
-     private provisionedService: ProvisionedService) {}
-     
-      ngOnInit() {
-         this.items = [
-           {
-             label: this.isAr() ? 'المخدم' : 'Server',
-             command: (event) => this.onStepClick(0, 'server')
-           },
-     
-           {
-             label: this.isAr() ? 'التطبيق': 'Application',
-             command: (event) => this.onStepClick(1, 'application')
-           },
-         ];
-     
-       
-       }
-     
-       private clearWizardData() {
-         try {
-           this.provisionedService.clearSession();
-           sessionStorage.removeItem('currentServerFormData');
-           sessionStorage.removeItem('currentApplicationFormData');
-           sessionStorage.removeItem('provisionedSessionData');
-           sessionStorage.removeItem('editingProvisionedServiceId');
-         } catch (error) {
-           console.log('Error clearing wizard data:', error);
-         }
-       }
-     
-      
-     
-       private updateActiveIndex() {
-         const currentPath = this.router.url;
-         if (currentPath.includes('server-data')) {
-           this.activeIndex = 0;
-         } else if (currentPath.includes('application')) {
-           this.activeIndex = 1;
-         }
-       }
-     
-       private async onStepClick(stepIndex: number, routePath: string) {
-         const currentPath = this.router.url;
-         
-         if (routePath === 'application') {
-           const isValid = await this.validateServerForm();
-           if (!isValid) {
-             console.log('Wizard: Server form validation failed - preventing navigation');
-             return; 
-           }
-           console.log('Wizard: Server validation passed - allowing navigation');
-         }
-     
-         await this.saveCurrentPageData();
-     
-         this.activeIndex = stepIndex;
-         this.router.navigate([`layout-admin/add-server/${routePath}`]);
-       }
-     
-       private async saveCurrentPageData() {
-         try {
-           const currentPath = this.router.url;
-           console.log('Wizard: Current path:', currentPath);
-           if (currentPath.includes('application')) {
-             this.provisionedService.triggerSaveApplicationData();
-           } else if (currentPath.includes('server-data')) {
-             this.provisionedService.triggerSaveServerData();
-           }
-     
-           await new Promise(resolve => setTimeout(resolve, 100));
-         } catch (error) {
-           console.log('Error saving current page data:', error);
-         }
-       }
-     
-       private async validateServerForm(): Promise<boolean> {
-         try {
-           const isValid = await this.provisionedService.validateServerForm();
-           return isValid;
-         } catch (error) {
-           console.log('Error validating server form:', error);
-           return false;
-         }
-       }
+export class WizardComponent implements OnInit, OnDestroy {
+  @ViewChild(RouterOutlet) outlet!: RouterOutlet;
+  private routerSub!: Subscription;
 
-   isAr(): boolean {
+  items: MenuItem[];
+  activeIndex = 0;
+
+  constructor(
+    public layoutService: LayoutService,
+    private router: Router,
+    private serverService: ServersService) { }
+
+  ngOnInit() {
+
+    // Clear when *leaving* the wizard URL
+    this.routerSub = this.router.events.subscribe(evt => {
+      if (evt instanceof NavigationEnd) {
+        const path = evt.urlAfterRedirects.toLowerCase();
+        if (!path.includes('/add-server/')) {
+          sessionStorage.removeItem('wizardServer');
+          sessionStorage.removeItem('wizardApps');
+          this.serverService.serverHelper = null as any;
+          this.serverService.SelectedData = null as any;
+        }
+      }
+    });
+    this.items = [
+      {
+        label: this.isAr() ? 'المخدم' : 'Server',
+        command: (event) => this.onStepClick(0, 'server-data')
+      },
+
+      {
+        label: this.isAr() ? 'التطبيق' : 'Application',
+        command: (event) => this.onStepClick(1, 'application')
+      },
+    ];
+    this.syncActiveIndex();
+  }
+
+  private syncActiveIndex() {
+    this.activeIndex = this.router.url.includes('application') ? 1 : 0;
+  }
+
+  private async onStepClick(stepIndex: number, routePath: string) {
+
+    // no‑op if you click the tab you’re already on
+    if (stepIndex === this.activeIndex) {
+      return;
+    }
+    const comp = this.outlet.component as WizardStep;
+
+    if (stepIndex > this.activeIndex) {
+      // moving forward: validate & save current step
+      if (!comp.validate()) {
+        return;
+      }
+    } else if (stepIndex < this.activeIndex) {
+      // moving back: allow current to save its data
+      comp.saveData();
+    }
+
+    this.activeIndex = stepIndex;
+    this.saveCurrentPageData();
+    this.router.navigate([`layout-admin/add-server/${routePath}`]);
+  }
+
+  isAr(): boolean {
     if (this.layoutService.config.lang == 'ar') {
       return true;
     } else {
@@ -110,5 +90,35 @@ export class WizardComponent {
     }
   }
 
+  private async saveCurrentPageData() {
+    const h = this.serverService.serverHelper;
+    if (h) {
+      sessionStorage.setItem(
+        'wizardServer',
+        JSON.stringify({ ...h, timestamp: Date.now() })
+      );
+    }
+  }
 
+  private clearWizardData() {
+    sessionStorage.removeItem('wizardServer');
+    sessionStorage.removeItem('wizardApps');
+
+  }
+
+  finishWizard() {
+    this.clearWizardData();
+    this.router.navigate(['/layout-admin/servers']);
+  }
+
+  cancelWizard() {
+    this.clearWizardData();
+    this.router.navigate(['/layout-admin/servers']);
+  }
+
+  ngOnDestroy() {
+    this.serverService.finish();
+
+  }
 }
+

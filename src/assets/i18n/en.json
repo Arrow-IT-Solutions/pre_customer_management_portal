@@ -148,5 +148,8 @@
      "userName_application":"User Name",
      "password_server":"Password",
     "Select_Company_Service" : "Select Company Service",
-     "Successfull_Update": "Updated Successfully"
+    "FillApps_Server" : "Do you want to fill server applications now?",
+    "Add_App" : "Add",
+    "Update_App" : "Update"
+
 }

@@ -120,7 +120,7 @@
   "Environment updated successfully": "تم تحديث البيئة بنجاح",
   "Cancel_definitions": "إلغاء",
   "Create_Server":"إنشاء الخادم",
-  "Update_Server":"تحديث الخادم",   
+  "Update_Server":"تحديث الخادم",
     "Update_Service": "تعديل الخدمة",
     "Create_Service": "إنشاء خدمة",
     "Update_Subscripe": "تعديل الاشتراك",
@@ -151,5 +151,7 @@
     "userName_application":"اسم المستخدم",
     "password_server":"كلمة المرور",
     "Select_Company_Service": "اختر خدمة الشركة",
-    "Successfull_Update": "تم التعديل بنجاح"
+    "FillApps_Server" : "هل تريد إضافة تطبيقات الخادم الان؟",
+    "Add_App" : "إضافة",
+    "Update_App" : "تعديل"
 }

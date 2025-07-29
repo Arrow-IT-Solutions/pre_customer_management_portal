@@ -7,6 +7,7 @@ import { AddServerComponent } from './add-server/add-server.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/class/class';
+import { ApplicationRequest } from '../applications/application.module';
 
 
 @NgModule({
@@ -39,12 +40,16 @@ export interface ServerSearchRequest extends RequestBase {
   uuid?: string;
   hostname?: string;
   ipAddress?: string;
+
 }
 
 export interface ServerResponse extends ResponseBase {
   uuid?: string;
   hostname?: string;
   ipAddress?: string;
+  url: string,
+  username: string,
+  password: string,
 }
 export interface ServerRequest extends RequestBase {
   uuid?: string;
@@ -68,4 +73,15 @@ export interface ServerResponse extends ResponseBase {
   uuid?: string;
   ipAddress?: string;
   hostname?: string;
+}
+
+export interface ProvisionedServerRequest {
+  uuid?: string;
+  hostname?: string;
+  ipAddress?: string;
+  url?: string;
+  username?: string;
+  password?: string;
+  applications: ApplicationRequest[];
+  deletedApps?: string[];
 }
