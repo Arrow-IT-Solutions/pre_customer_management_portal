@@ -53,9 +53,9 @@ export class ApplicationsComponent implements OnInit {
     this.loading = true;
 
     const filter: ApplicationSearchRequest = {
-      portNumber: this.dataForm.get('portNumber')?.value || '',
-      name: this.dataForm.get('name')?.value || '',
-      serverIDFK: this.dataForm.get('serverIDFK')?.value || '',
+      name: this.dataForm.controls['name'].value?.toString()|| '',
+       portNumber:this.dataForm.controls['portNumber'].value?.toString()||'',
+      serverIDFK: this.dataForm.controls['serverIDFK'].value?.toString()|| '',
       includeServer: '1',
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString()

@@ -145,7 +145,9 @@ export class ServersComponent {
     this.visible = true;
   }
 
-  viewDetails(){
+  viewDetails(server: ServerResponse){
+    this.serverService.SelectedData = server;
+    console.log('Selected Server', server)
     this.route.navigate(['layout-admin/servers/server-details']);
   }
 }
