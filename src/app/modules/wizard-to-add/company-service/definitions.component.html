@@ -67,19 +67,10 @@
                 <div class="p-float-label" [ngClass]="{'error_border': submitted && form['status'].errors}">
                   <p-dropdown [options]="statusList" optionLabel="value" optionValue="key" formControlName="status"
                     dir="ltr">
+                    <label id="label"
+                      [ngClass]="{'error': submitted && form['status'].errors,'no-error': !(submitted && form['status']?.errors)}">{{
+                      'status_subscription' | translate }}</label>
                   </p-dropdown>
-
-
-
-                <!-- <label id="label" [ngClass]="{'error': submitted && form['status'].errors,'no-error': !(submitted && form['status']?.errors)}">{{ 'status_subscription' | translate }}</label> -->
-                <!-- <span *ngIf="submitted && form['status'].errors" class="error-validation">{{ 'Field_Required' |
-
-                  <label id="label"
-                    [ngClass]="{'error': submitted && form['status'].errors,'no-error': !(submitted && form['status']?.errors)}">{{
-                    'status_subscription' | translate }}</label>
-                  <!-- <span *ngIf="submitted && form['status'].errors" class="error-validation">{{ 'Field_Required' |
-
-                  translate }}</span> -->
                 </div>
                 <div *ngIf="submitted && form['status'].errors?.['required']" class="text-danger mt-1">
                   {{ 'field_required' | translate }}
@@ -91,30 +82,18 @@
                   <input pInputText type="text" formControlName="price" />
                   <label [ngClass]="{'error': submitted && form['price'].errors}">{{ 'price_subscription' | translate
                     }}</label>
-                  <!-- <span *ngIf="submitted && form['price'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span> -->
                 </div>
                 <div *ngIf="submitted && form['price'].errors?.['required']" class="text-danger mt-1">
                   {{ 'field_required' | translate }}
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
       </div>
-
     </div>
-
-
-
-
-
     <div class="col-xs-12 mt-4 text-end" style="padding: 2rem 1rem;">
-      <!-- <p-button type="Submit" class="btn-primary">{{ 'Cancle_definitions' | translate }}</p-button> -->
-
       <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ ('Next_definitions' | translate) }}</p-button>
-      <!-- <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ isEditMode ? ('Update_definitions' | translate) : ('Next_definitions' | translate) }}</p-button> -->
     </div>
   </div>
 </form>

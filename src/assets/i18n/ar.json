@@ -171,9 +171,6 @@
   "Delete_Agent": "حذف الوكيل",
   "totalAgents_agent": "إجمالي الوكيل",
   "View_Company_Agents": "عرض عملاء الشركة",
-  "Edit_Agent": "تعديل",
-  "Delete_Agent": "حذف",
-  "totalAgents_agent": "إجمالي الوكيل",
     "view_Company":"عرض",
     "companyService_viewDetails":"خدمات الشركة",
     "companyName_viewDetails":"اسم الشركة",
@@ -211,5 +208,6 @@
     "Employee-phone":"رقم الهاتف",
     "Employee-username":"اسم المستخدم",
     "Employee-gender":"الجنس",
-    "Birthdate_Employee":"تاريخ الميلاد"
+    "Birthdate_Employee":"تاريخ الميلاد",
+    "No_Apps_Added" : "الرجاء إضافة تطبيقات الخادم"
 }
