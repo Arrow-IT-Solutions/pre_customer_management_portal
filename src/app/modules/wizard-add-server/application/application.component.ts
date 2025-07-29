@@ -26,6 +26,7 @@ export class ApplicationComponent implements OnInit, WizardStep {
   isEditingApp: boolean = false;
   editingAppIndex: number = -1;
   applications: ApplicationRequest[] = [];
+  filteredApplications: ApplicationRequest[] = [];
   isEditMode: boolean = false;
   deltedApps: string[];
 
@@ -59,6 +60,8 @@ export class ApplicationComponent implements OnInit, WizardStep {
   async ngOnInit() {
     // 1) If we’re editing an existing server that already has apps, take those first:
 
+    this.OnChange()
+
     if (this.serverService.SelectedData) {
       this.FillApps(this.serverService.SelectedData.uuid);
     }
@@ -67,6 +70,7 @@ export class ApplicationComponent implements OnInit, WizardStep {
     const helperApps = this.serverService.serverHelper?.applications;
     if (helperApps?.length) {
       this.applications = [...helperApps];
+      this.filteredApplications = [...helperApps]
     }
     // 2) Otherwise, see if there’s a draft in sessionStorage:
     else {
@@ -74,6 +78,7 @@ export class ApplicationComponent implements OnInit, WizardStep {
       if (raw) {
         try {
           this.applications = JSON.parse(raw);
+          this.filteredApplications = JSON.parse(raw)
         } catch { /* ignore bad JSON */ }
       }
     }
@@ -112,6 +117,7 @@ export class ApplicationComponent implements OnInit, WizardStep {
     const response = (await this.applicationService.Search(filter)) as any;
     const encryptedData = response?.data || [];
     this.applications = await this.decrypt(encryptedData);
+    this.filteredApplications = [...this.applications];
 
   }
 
@@ -130,7 +136,14 @@ export class ApplicationComponent implements OnInit, WizardStep {
   }
 
   OnChange() {
+    const nameTerm = this.searchForm.get('searchAppName')!.value?.toLowerCase().trim() || '';
+    const portTerm = this.searchForm.get('searchPort')!.value?.toLowerCase().trim() || '';
 
+    this.filteredApplications = this.applications.filter(app => {
+      const matchesName = !nameTerm || app.name?.toLowerCase().includes(nameTerm);
+      const matchesPort = !portTerm || app.portNumber?.toLowerCase().includes(portTerm);
+      return matchesName && matchesPort;
+    });
   }
 
   async Save() {
@@ -194,7 +207,8 @@ export class ApplicationComponent implements OnInit, WizardStep {
   }
 
   resetSearchForm() {
-
+    this.searchForm.reset();
+    this.OnChange()
   }
 
   clearForm() {
@@ -234,6 +248,8 @@ export class ApplicationComponent implements OnInit, WizardStep {
     }
 
     this.applications.push(addApplication);
+    this.OnChange();
+    this.filterApps();
     this.updateSession();
     this.clearForm();
     this.submitted = false;
@@ -267,6 +283,7 @@ export class ApplicationComponent implements OnInit, WizardStep {
     };
 
     this.applications[this.editingAppIndex] = updatedApp;
+    this.filterApps();
 
     this.cancelAppEdit();
 
@@ -303,6 +320,8 @@ export class ApplicationComponent implements OnInit, WizardStep {
       helper.deletedApps = helper.deletedApps || [];
       helper.deletedApps.push(removed.uuid);
     }
+    this.OnChange();
+    this.filterApps();
 
 
   }
@@ -353,6 +372,18 @@ export class ApplicationComponent implements OnInit, WizardStep {
     sessionStorage.removeItem('wizardApps');
     this.serverService.SelectedData = null;
     this.serverService.serverHelper = null;
+  }
+
+  filterApps() {
+    const nameTerm = this.searchForm.value.searchAppName.toLowerCase();
+    const portTerm = this.searchForm.value.searchPort.toLowerCase();
+
+    this.filteredApplications = this.applications.filter(app => {
+      return (
+        (!nameTerm || app.name?.toLowerCase().includes(nameTerm)) &&
+        (!portTerm || app.portNumber?.toLowerCase().includes(portTerm))
+      );
+    });
   }
 
 }
