@@ -26,51 +26,47 @@ import { ServerResponse } from '../servers/servers.module';
 
 })
 export class ApplicationModule { }
-export interface ApplicationRequest extends RequestBase
-{
-uuid?:string;
-portNumber?:string;
-serverIDFK?: string;
-url?: string;
-userName?: string;
-password?: string;
-name?: string;
-
-}
-
-export interface ApplicationUpdateRequest extends RequestBase
-{
-uuid?:string;
-portNumber?:string;
-serverIDFK?: string;
-url?: string;
-userName?: string;
-password?: string;
-name?: string;
-
-}
-
-export interface ApplicationSearchRequest extends RequestBase
-{
-uuid?:string;
-portNumber?:string;
-serverIDFK?: string;
-name?:string;
-includeServer?:string;
-url?: string;
-
-}
-
-export interface ApplicationResponse extends ResponseBase
-{
-uuid?:string;
- requestStatus?:string;
- requestMessage?:string;
- name?:string;
-  password?:string;
+export interface ApplicationRequest extends RequestBase {
+  uuid?: string;
+  portNumber?: string;
+  serverIDFK?: string;
   url?: string;
- userName?:string;
-portNumber?:string;
-serverIDFK?: string;
- serverResponse?: ServerResponse;
+  userName?: string;
+  password: string;
+  name?: string;
+
+}
+
+export interface ApplicationUpdateRequest extends RequestBase {
+  uuid?: string;
+  portNumber?: string;
+  serverIDFK?: string;
+  url?: string;
+  userName?: string;
+  password?: string;
+  name?: string;
+
+}
+
+export interface ApplicationSearchRequest extends RequestBase {
+  uuid?: string;
+  portNumber?: string;
+  serverIDFK?: string;
+  name?: string;
+  includeServer?: string;
+  url?: string;
+
+}
+
+export interface ApplicationResponse extends ResponseBase {
+  uuid?: string;
+  requestStatus?: string;
+  requestMessage?: string;
+  name?: string;
+  password?: string;
+  url?: string;
+  userName?: string;
+  portNumber?: string;
+  serverIDFK?: string;
+  serverResponse?: ServerResponse;
 }

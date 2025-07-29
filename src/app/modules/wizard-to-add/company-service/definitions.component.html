@@ -11,88 +11,93 @@
 
             <div class="col-12 mb-3">
               <div class="p-float-label" [ngClass]="{'error_border': submitted && form['companyName'].errors}">
-              <p-dropdown [options]="companies" optionLabel="name" optionValue="uuid" formControlName="companyName"
-                [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillCompany($event)" dir="ltr"></p-dropdown>
-              <label id="label"  [ngClass]="{'error': submitted && form['companyName'].errors,'no-error': !(submitted && form['companyName']?.errors)}">{{ 'CompanyName_Company' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['companyName'].errors" class="error-validation">{{ 'Field_Required' |
-                translate }}</span> -->
-            </div>
-             <div *ngIf="submitted && form['companyName'].errors?.['required']" class="text-danger mt-1">
-              {{ 'field_required' | translate }}
-            </div>
+                <p-dropdown [options]="companies" optionLabel="name" optionValue="uuid" formControlName="companyName"
+                  [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillCompany($event)"
+                  dir="ltr"></p-dropdown>
+                <label id="label"
+                  [ngClass]="{'error': submitted && form['companyName'].errors,'no-error': !(submitted && form['companyName']?.errors)}">{{
+                  'CompanyName_Company' | translate }}</label>
+              </div>
+              <div *ngIf="submitted && form['companyName'].errors?.['required']" class="text-danger mt-1">
+                {{ 'field_required' | translate }}
+              </div>
             </div>
 
-             <div class="col-12 mb-3 mt-2">
+            <div class="col-12 mb-3 mt-2">
               <div class="p-float-label" [ngClass]="{'error_border': submitted && form['service'].errors}">
-              <p-dropdown [options]="services" optionLabel="name" optionValue="uuid" formControlName="service"
-                [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillService($event)" dir="ltr"></p-dropdown>
-              <label id="label" [ngClass]="{'error': submitted && form['service'].errors}">{{ 'ServiceName_Company' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['service'].errors" class="error-validation">{{ 'Field_Required' |
+                <p-dropdown [options]="services" optionLabel="name" optionValue="uuid" formControlName="service"
+                  [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillService($event)"
+                  dir="ltr"></p-dropdown>
+                <label id="label" [ngClass]="{'error': submitted && form['service'].errors}">{{ 'ServiceName_Company' |
+                  translate }}</label>
+              </div>
+              <div *ngIf="submitted && form['service'].errors?.['required']" class="text-danger mt-1">
+                {{ 'field_required' | translate }}
+              </div>
+            </div>
+            <label style="font-weight: bold;font-size: 1rem;">{{ 'details_subscription' | translate }}:</label>
+            <br><br>
+            <div class="col-12 mb-3">
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['startDate'].errors}">
+                <p-calendar [showIcon]="true" formControlName="startDate"></p-calendar>
+                <label [ngClass]="{'error': submitted && form['startDate'].errors}">{{ 'startDate_subscription' |
+                  translate }}</label>
+                <!-- <span *ngIf="submitted && form['startDate'].errors" class="error-validation">{{ 'Field_Required' |
                 translate }}</span> -->
+              </div>
+              <div *ngIf="submitted && form['startDate'].errors?.['required']" class="text-danger mt-1">
+                {{ 'field_required' | translate }}
+              </div>
             </div>
-             <div *ngIf="submitted && form['service'].errors?.['required']" class="text-danger mt-1">
-              {{ 'field_required' | translate }}
-            </div>
-            </div>
-              <label style="font-weight: bold;font-size: 1rem;">{{ 'details_subscription' | translate }}:</label>
-               <br><br>
-          <div class="col-12 mb-3">
-            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['startDate'].errors}">
-              <p-calendar [showIcon]="true" formControlName="startDate" ></p-calendar>
-              <label [ngClass]="{'error': submitted && form['startDate'].errors}">{{ 'startDate_subscription' | translate }}</label>
-               <!-- <span *ngIf="submitted && form['startDate'].errors" class="error-validation">{{ 'Field_Required' |
+            <div class="col-12 mb-3">
+              <div class="p-float-label" [ngClass]="{'error_border': submitted && form['endDate'].errors}">
+                <p-calendar [showIcon]="true" formControlName="endDate"></p-calendar>
+                <label [ngClass]="{'error': submitted && form['endDate'].errors}">{{ 'endDate_subscription' | translate
+                  }}</label>
+                <!-- <span *ngIf="submitted && form['endDate'].errors" class="error-validation">{{ 'Field_Required' |
                 translate }}</span> -->
+              </div>
+              <div *ngIf="submitted && form['endDate'].errors?.['required']" class="text-danger mt-1">
+                {{ 'field_required' | translate }}
+              </div>
             </div>
-             <div *ngIf="submitted && form['startDate'].errors?.['required']" class="text-danger mt-1">
-              {{ 'field_required' | translate }}
-            </div>
-          </div>
-           <div class="col-12 mb-3">
-            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['endDate'].errors}">
-              <p-calendar [showIcon]="true" formControlName="endDate"  ></p-calendar>
-              <label [ngClass]="{'error': submitted && form['endDate'].errors}">{{ 'endDate_subscription' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['endDate'].errors" class="error-validation">{{ 'Field_Required' |
-                translate }}</span> -->
-            </div>
-             <div *ngIf="submitted && form['endDate'].errors?.['required']" class="text-danger mt-1">
-              {{ 'field_required' | translate }}
-            </div>
-          </div>
 
-          <div class="col-12 mb-3">
+            <div class="col-12 mb-3">
               <div class="col-12 mb-3">
-             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['status'].errors}">
-             <p-dropdown
-                [options]="statusList"
-                optionLabel="value"
-                optionValue="key"
-                formControlName="status"
-                dir="ltr"
+                <div class="p-float-label" [ngClass]="{'error_border': submitted && form['status'].errors}">
+                  <p-dropdown [options]="statusList" optionLabel="value" optionValue="key" formControlName="status"
+                    dir="ltr">
+                  </p-dropdown>
 
-                >
-              </p-dropdown>
 
 
                 <!-- <label id="label" [ngClass]="{'error': submitted && form['status'].errors,'no-error': !(submitted && form['status']?.errors)}">{{ 'status_subscription' | translate }}</label> -->
                 <!-- <span *ngIf="submitted && form['status'].errors" class="error-validation">{{ 'Field_Required' |
-                  translate }}</span> -->
-              </div>
-               <div *ngIf="submitted && form['status'].errors?.['required']" class="text-danger mt-1">
-              {{ 'field_required' | translate }}
-            </div>
-          </div>
 
-          <div >
-            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['price'].errors}" >
-              <input pInputText type="text" formControlName="price"   />
-              <label [ngClass]="{'error': submitted && form['price'].errors}">{{ 'price_subscription' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['price'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span> -->
+                  <label id="label"
+                    [ngClass]="{'error': submitted && form['status'].errors,'no-error': !(submitted && form['status']?.errors)}">{{
+                    'status_subscription' | translate }}</label>
+                  <!-- <span *ngIf="submitted && form['status'].errors" class="error-validation">{{ 'Field_Required' |
+
+                  translate }}</span> -->
+                </div>
+                <div *ngIf="submitted && form['status'].errors?.['required']" class="text-danger mt-1">
+                  {{ 'field_required' | translate }}
+                </div>
+              </div>
+
+              <div>
+                <div class="p-float-label" [ngClass]="{'error_border': submitted && form['price'].errors}">
+                  <input pInputText type="text" formControlName="price" />
+                  <label [ngClass]="{'error': submitted && form['price'].errors}">{{ 'price_subscription' | translate
+                    }}</label>
+                  <!-- <span *ngIf="submitted && form['price'].errors" class="error-validation">{{ 'Field_Required' | translate }}</span> -->
+                </div>
+                <div *ngIf="submitted && form['price'].errors?.['required']" class="text-danger mt-1">
+                  {{ 'field_required' | translate }}
+                </div>
+              </div>
             </div>
-             <div *ngIf="submitted && form['price'].errors?.['required']" class="text-danger mt-1">
-              {{ 'field_required' | translate }}
-            </div>
-          </div>
-          </div>
 
 
           </div>
@@ -108,12 +113,12 @@
     <div class="col-xs-12 mt-4 text-end" style="padding: 2rem 1rem;">
       <!-- <p-button type="Submit" class="btn-primary">{{ 'Cancle_definitions' | translate }}</p-button> -->
 
-      <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{  ('Next_definitions' | translate) }}</p-button>
- <!-- <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ isEditMode ? ('Update_definitions' | translate) : ('Next_definitions' | translate) }}</p-button> -->
+      <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ ('Next_definitions' | translate) }}</p-button>
+      <!-- <p-button type="Submit" class="btn-primary" (click)="nextStep()">{{ isEditMode ? ('Update_definitions' | translate) : ('Next_definitions' | translate) }}</p-button> -->
     </div>
   </div>
 </form>
 <ng-template #spinner>
-<mat-spinner id="spinner"></mat-spinner>
+  <mat-spinner id="spinner"></mat-spinner>
 </ng-template>
 <p-toast key="toast"></p-toast>

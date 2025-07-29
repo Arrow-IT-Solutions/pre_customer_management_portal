@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from 'src/app/Core/services/http-client.service';
 import { LayoutService } from './layout.service';
-import { ServerRequest, ServerResponse, ServerSearchRequest, ServerUpdateRequest } from 'src/app/modules/servers/servers.module';
+import { ProvisionedServerRequest, ServerRequest, ServerResponse, ServerSearchRequest, ServerUpdateRequest } from 'src/app/modules/servers/servers.module';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -9,9 +9,12 @@ import { Subject } from 'rxjs';
 })
 export class ServersService {
 
+
   public SelectedData: ServerResponse | null = null;
   public Dialog: any | null = null;
   private refreshServersSubject = new Subject<void>();
+
+  serverHelper: ProvisionedServerRequest | null = null;
 
   refreshServers$ = this.refreshServersSubject.asObservable();
 
@@ -21,6 +24,7 @@ export class ServersService {
   constructor(public layoutService: LayoutService, public httpClient: HttpClientService) { }
 
   public submitted: any | null = "";
+
   async Add(data: ServerRequest) {
     const apiUrl = `/api/server`;
 
@@ -46,5 +50,20 @@ export class ServersService {
 
     return await this.httpClient.get(apiUrl)
 
+  }
+
+  async AddProvisioned(data: ProvisionedServerRequest) {
+    const apiUrl = `/api/server/add`;
+
+    return await this.httpClient.post(apiUrl, data);
+  }
+
+  finish() {
+    sessionStorage.removeItem('wizardServer');
+    sessionStorage.removeItem('wizardApps');
+
+    // wipe out in‑memory copies too
+    this.serverHelper = null;
+    this.SelectedData = null;
   }
 }

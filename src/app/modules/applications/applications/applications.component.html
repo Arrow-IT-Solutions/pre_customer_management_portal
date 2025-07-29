@@ -29,7 +29,8 @@
                     optionLabel="hostname"
                     optionValue="uuid"
                     formControlName="serverIDFK"
-                    placeholder="{{ 'Select_server' | translate }}">
+                    placeholder="{{ 'Select_server' | translate }}"
+                    (onChange)="OnChange()">
                   </p-dropdown>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">

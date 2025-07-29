@@ -11,11 +11,11 @@
            <div class="card-section__items">
              <div class="card__contents__item mt-2">
               <div class="card-label">{{ 'companyName_viewDetails' | translate }}:</div>
-              <div class="card-info">companyName</div>
+              <div class="card-info">{{ data.company.companyTranslation?.[layoutService.config.lang]?.name|| '-' }}</div>
              </div>
              <div class="card__contents__item mt-2">
-              <div class="card-label">{{ 'server_viewDetails' | translate }}:</div>
-              <div class="card-info">server</div>
+              <div class="card-label">{{ 'service_viewDetails' | translate }}:</div>
+              <div class="card-info">{{ data.service.serviceTranslation?.[layoutService.config.lang]?.name || '-' }}</div>
              </div>
             </div>
           </div>
@@ -33,19 +33,19 @@
            <div class="card-section__items">
              <div class="card__contents__item mt-2">
               <div class="card-label">{{ 'startDate_viewDetails' | translate }}:</div>
-              <div class="card-info">10-7-2025</div>
+              <div class="card-info">{{ data.subscription.startDate }}</div>
              </div>
              <div class="card__contents__item mt-2">
               <div class="card-label">{{ 'endDate_viewDetails' | translate }}:</div>
-              <div class="card-info">30-7-2025</div>
+              <div class="card-info">{{ data.subscription.endDate|| '-' }}</div>
              </div>
              <div class="card__contents__item mt-2">
               <div class="card-label">{{ 'status_viewDetails' | translate }}:</div>
-              <div class="card-info">Active</div>
+              <div class="card-info">{{ data.subscription.statusValue|| '-' }}</div>
              </div>
              <div class="card__contents__item mt-2">
               <div class="card-label">{{ 'price_viewDetails' | translate }}:</div>
-              <div class="card-info">100</div>
+              <div class="card-info">{{ data.subscription.price|| '-' }}</div>
              </div>
             </div>
             </div>
@@ -75,7 +75,7 @@
             <div class="m-0 box2 d-flex">
             <div class="filter-title">
               <span class="material-symbols-outlined">filter_alt</span>
-              <span>Filter By</span>
+              <span>{{'Filter_By' | translate}}</span>
             </div>
             <div class="container">
 
@@ -125,52 +125,53 @@
           <!-- *ngIf="envDatabase.length > 0" -->
           <div class="col-12">
             <div class="row">
-              <div class="col-md-6 mb-3">
+              <div class="col-md-6 mb-3" *ngFor="let env of envDatabase; let i = index">
                 <div class="card environment-card">
                   <div class="card-header d-flex justify-content-center align-items-center">
-                      <span class="badge me-2">{{ 1 }}</span>
+                      <span class="badge me-2">{{ i+1 }}</span>
                   </div>
                   <div class="card-body">
                     <div class="environment-details">
                       <div class="detail-item">
                         <label>{{ 'NameEnvironmentEn_definitions' | translate }}:</label>
-                        <!-- {{ getEnvironmentName(env.environmentTranslation, 'en') || 'N/A' }} -->
+                         {{ env.environment.environmentTranslation?.en?.name || 'N/A' }}
                         <span></span>
                       </div>
                       <div class="detail-item">
                         <label>{{ 'NameEnvironmentAr_definitions' | translate }}:</label>
-                        <!-- {{ getEnvironmentName(env.environmentTranslation, 'ar') || 'N/A' }} -->
+                             {{ env.environment.environmentTranslation?.ar?.name || 'N/A' }}
                         <span ></span>
 
                       </div>
                       <div class="detail-item">
                         <label>{{ 'UrlEnvironment_definitions' | translate }}:</label>
-                        <!-- {{ env.url || 'N/A' }} -->
+                        {{ env.environment.url || 'N/A' }}
                         <span></span>
                       </div>
                       <div class="detail-item">
                         <label>{{ 'ServerName_definitions' | translate }}:</label>
-                        <!-- {{env.server?.ipAddress}} -->
+                        {{env.environment.server?.hostName}} 
                         <span></span>
                       </div>
                       <div class="detail-item">
                         <label>{{ 'databaseName_definitions' | translate }}:</label>
-                        <!-- {{ env.dbName || 'N/A' }} -->
+                         {{ env.name|| 'N/A' }} 
                         <span></span>
                       </div>
                       <div class="detail-item">
                         <label>{{ 'userName_definitions' | translate }}:</label>
-                        <!-- {{ env.dbUserName || 'N/A' }} -->
+                         {{ env.userName || 'N/A' }}
                         <span></span>
                       </div>
                       <div class="detail-item">
                         <label>{{ 'password_definitions' | translate }}:</label>
-                        <!-- {{ env.dbPassword || 'N/A' }} -->
+                   {{ env.password}}
+
                         <span></span>
                       </div>
                       <div class="detail-item">
                         <label>Connection String:</label>
-                        <!-- {{ env.connectionString || 'N/A' }} -->
+                        {{ env.connectionString || 'N/A' }}
                         <span class="connection-string"></span>
                       </div>
                     </div>

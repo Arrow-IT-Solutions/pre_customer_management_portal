@@ -40,7 +40,7 @@
           <div class="col-12 mb-3">
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['name'].errors}">
               <input pInputText type="text" formControlName="name" />
-              <label [ngClass]="{'error': submitted && form['name'].errors}">{{ 'appname' | translate }}</label>
+              <label [ngClass]="{'error': submitted && form['name'].errors}">{{ 'nameApp' | translate }}</label>
             </div>
                       <div *ngIf="submitted && form['name'].errors?.['required']" class="text-danger mt-1">
             {{ 'field_required' | translate }}
