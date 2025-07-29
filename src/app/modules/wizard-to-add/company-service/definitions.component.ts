@@ -178,16 +178,6 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  private getFormErrors(): any {
-    let errors: any = {};
-    Object.keys(this.dataForm.controls).forEach(key => {
-      const control = this.dataForm.get(key);
-      if (control && !control.valid && control.errors) {
-        errors[key] = control.errors;
-      }
-    });
-    return errors;
-  }
 
   private updateSessionWithCurrentFormData() {
     if (this.loading || !this.dataForm) {
@@ -274,17 +264,6 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private clearSavedFormData() {
-    try {
-      if (this.session) {
-        delete this.session.currentCompanyServiceFormData;
-        this.provisionedService.setSession(this.session);
-      }
-      sessionStorage.removeItem('currentCompanyServiceFormData');
-    } catch (error) {
-      console.log('No session to clear form data from');
-    }
-  }
 
   async restoreFormFromSession() {
     if (this.session) {
