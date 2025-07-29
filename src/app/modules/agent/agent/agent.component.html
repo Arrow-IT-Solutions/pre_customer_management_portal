@@ -109,6 +109,10 @@
               <span class="material-symbols-outlined" id="icon">delete</span>
               {{ 'Delete_Agent' | translate }}
             </button>
+            <button mat-menu-item (click)="filterByCompany(agent.companyIDFK)">
+              <span class="material-symbols-outlined" id="icon">event</span>
+              {{ 'View_CompanyAgents' | translate }}
+            </button>
           </mat-menu>
         </div>
       </div>
