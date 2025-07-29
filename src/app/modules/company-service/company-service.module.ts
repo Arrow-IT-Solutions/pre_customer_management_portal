@@ -5,11 +5,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ResponseBase } from 'src/app/shared/class/class';
 import { CompanyServiceRoutingModule } from './company-service-routing.module';
 import { CompanyServicesComponent } from './company-services/company-services.component';
+import { ServicesDetailsComponent } from './services-details/services-details.component';
 
 
 @NgModule({
   declarations: [
-    CompanyServicesComponent
+    CompanyServicesComponent,
+    ServicesDetailsComponent
   ],
   imports: [
     CommonModule,

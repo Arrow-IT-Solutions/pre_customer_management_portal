@@ -72,9 +72,9 @@ export class DataBasesComponent implements OnInit {
     this.loading = true;
 
     const filter: DatabaseSearchRequest = {
-      name: this.dataForm.get('name')?.value || '',
-      userName: this.dataForm.get('UserName')?.value || '',
-      envIDFK: this.dataForm.get('envIDFK')?.value || '',
+      name: this.dataForm.controls['name']?.value || '',
+      userName: this.dataForm.controls['userName']?.value || '',
+      envIDFK: this.dataForm.controls['envIDFK']?.value || '',
       includeEnvironment: '1',
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString()

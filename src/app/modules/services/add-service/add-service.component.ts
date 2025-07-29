@@ -26,7 +26,7 @@ export class AddServiceComponent {
     this.dataForm = this.formBuilder.group({
       nameEn: ['', Validators.required],
       nameAr: ['', Validators.required],
-      desc: ['', Validators.required] 
+      desc: ['', Validators.required]
     });
   }
 
@@ -35,21 +35,20 @@ export class AddServiceComponent {
   }
 
   async ngOnInit() {
-      try {
-        this.loading = true;
-        this.resetForm();
-  
-        if (this.servicesService.SelectedData != null) {
-          await this.FillData();
-        }
-      } catch (exceptionVar) {
-        console.log(exceptionVar);
-      } finally {
-        this.loading = false;
-      }
-    }
+    try {
+      this.loading = true;
+      this.resetForm();
 
-  
+      if (this.servicesService.SelectedData != null) {
+        await this.FillData();
+      }
+    } catch (exceptionVar) {
+      console.log(exceptionVar);
+    } finally {
+      this.loading = false;
+    }
+  }
+
   async onSubmit() {
     this.submitted = true;
 
@@ -68,53 +67,53 @@ export class AddServiceComponent {
   }
 
   async Save() {
-  let response;
-  const sharedDescription = this.dataForm.controls['desc'].value || '';
+    let response;
+    const sharedDescription = this.dataForm.controls['desc'].value || '';
 
-  const serviceTranslations = [
-    {
-      name: this.dataForm.controls['nameAr'].value || '',
-      description: sharedDescription,
-      language: 'ar'
-    },
-    {
-      name: this.dataForm.controls['nameEn'].value || '',
-      description: sharedDescription,
-      language: 'en'
-    }
-  ];
+    const serviceTranslations = [
+      {
+        name: this.dataForm.controls['nameAr'].value || '',
+        description: sharedDescription,
+        language: 'ar'
+      },
+      {
+        name: this.dataForm.controls['nameEn'].value || '',
+        description: sharedDescription,
+        language: 'en'
+      }
+    ];
 
-  if (this.servicesService.SelectedData) {
-    const serviceUpdate: ServiceUpdateRequest = {
-      uuid: this.servicesService.SelectedData.uuid,
-      description: sharedDescription, 
-      serviceTranslation: serviceTranslations
-    };
-    response = await this.servicesService.Update(serviceUpdate);
-  } else {
-    const serviceAdd: ServiceRequest = {
-      description: sharedDescription,
-      serviceTranslation: serviceTranslations
-    };
-    response = await this.servicesService.Add(serviceAdd);
-  }
-
-  if (response?.requestStatus?.toString() === '200') {
-    this.layoutService.showSuccess(this.messageService, 'toast', true, response?.requestMessage);
-    if (!this.servicesService.SelectedData) {
-      this.resetForm();
+    if (this.servicesService.SelectedData) {
+      const serviceUpdate: ServiceUpdateRequest = {
+        uuid: this.servicesService.SelectedData.uuid,
+        description: sharedDescription,
+        serviceTranslation: serviceTranslations
+      };
+      response = await this.servicesService.Update(serviceUpdate);
     } else {
-     setTimeout(() => {
+      const serviceAdd: ServiceRequest = {
+        description: sharedDescription,
+        serviceTranslation: serviceTranslations
+      };
+      response = await this.servicesService.Add(serviceAdd);
+    }
+
+    if (response?.requestStatus?.toString() === '200') {
+      this.layoutService.showSuccess(this.messageService, 'toast', true, response?.requestMessage);
+      if (!this.servicesService.SelectedData) {
+        this.resetForm();
+      } else {
+        setTimeout(() => {
           this.servicesService.Dialog.adHostChild.viewContainerRef?.clear();
           this.servicesService.Dialog.adHostDynamic.viewContainerRef?.clear();
         }, 600);
       }
-    }  else {
-    this.layoutService.showError(this.messageService, 'toast', true, response?.requestMessage);
-  }
+    } else {
+      this.layoutService.showError(this.messageService, 'toast', true, response?.requestMessage);
+    }
 
-  this.submitted = false;
-}
+    this.submitted = false;
+  }
 
 
   resetForm() {
@@ -122,16 +121,16 @@ export class AddServiceComponent {
   }
 
   async FillData() {
-  const ar = this.servicesService.SelectedData?.serviceTranslation?.['ar'];
-  const en = this.servicesService.SelectedData?.serviceTranslation?.['en'];
+    const ar = this.servicesService.SelectedData?.serviceTranslation?.['ar'];
+    const en = this.servicesService.SelectedData?.serviceTranslation?.['en'];
 
-  const temp = {
-    nameAr: ar?.name || '',
-    nameEn: en?.name || '',
-    desc: this.servicesService.SelectedData?.description || ''
-  };
+    const temp = {
+      nameAr: ar?.name || '',
+      nameEn: en?.name || '',
+      desc: this.servicesService.SelectedData?.description || ''
+    };
 
-  this.dataForm.patchValue(temp);
-}
+    this.dataForm.patchValue(temp);
+  }
 
 }

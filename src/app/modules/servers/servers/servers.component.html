@@ -77,6 +77,10 @@
           </div>
           <mat-menu #menu="matMenu">
             <ng-template matMenuContent let-server="server">
+              <button mat-menu-item (click)="viewDetails(server)">
+                 <span class="material-symbols-outlined" id="icon">view_list</span>
+                {{ 'view_Company' | translate }}
+              </button>
               <button mat-menu-item (click)="openAddServer(server)">
                 <span class="material-symbols-outlined" id="icon">edit</span>
                 {{ 'Edit_Server' | translate }}

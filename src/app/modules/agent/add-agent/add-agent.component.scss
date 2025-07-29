@@ -79,3 +79,15 @@
     left: 0;
     z-index: 10;
   }
+  .pi{
+    position: absolute;
+   right: 1rem;
+   margin-top: 1rem;
+   cursor: pointer;
+   color: $gray-color;
+
+}
+.pi:lang(ar){
+    right: unset;
+    left: 1rem;
+}

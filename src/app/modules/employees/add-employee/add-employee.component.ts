@@ -69,6 +69,11 @@ export class AddEmployeeComponent {
   }
 
   async onSubmit() {
+     this.submitted = true;
+    if (this.dataForm.invalid) {
+      this.layoutService.showError(this.messageService, 'toast', true, 'Please fill all required fields');
+      return;
+    }
     try {
       this.btnLoading = true;
 
@@ -111,7 +116,7 @@ export class AddEmployeeComponent {
         gender: this.dataForm.controls['clientGender'].value.toString(),
         birthDate: birthDate.toISOString(),
         phone: this.dataForm.controls['clientPhone'].value.toString(),
-        profileImage: this.file,
+        image: this.file,
         deviceType: '',
         email: this.dataForm.controls['username'].value
 

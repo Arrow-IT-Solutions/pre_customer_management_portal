@@ -1,6 +1,7 @@
 @import '../../../../assets/scss/varialbles.scss';
 
-.environment {
+.detailsContainer {
+    padding: 2rem 1rem;
   &__title {
     margin-bottom: 20px;
   }
@@ -11,6 +12,10 @@
     padding: 1.7rem;
     background-color: $white-color;
     // min-height: 15rem;
+  }
+  .header-container{
+    // display: flex;
+    // justify-content: space-between;
   }
 
   & .side-icon {
@@ -84,6 +89,7 @@
       color: $blue-color;
       transition: 0.2s;
       margin-inline-end: 0.5rem;
+      
 
       &:hover {
         background-color: rgba($blue-color, 0.05);
@@ -169,7 +175,7 @@
           display: flex;
           justify-content: flex-end;
           margin-top: -3.8rem;
-          @media(max-width:767px){
+           @media(max-width:767px){
             position: absolute;
             right: 1rem; 
           }
@@ -190,7 +196,9 @@
             top: 1px;
             color: $primary-color;
             right: 0.75rem;
-           
+            @media(max-width:767px){
+                // margin-inline-start: 1rem;
+            }
 
             & chevronrighticon,
             & chevrondownicon {
@@ -282,7 +290,7 @@
 
     border-bottom: 1px solid #e1e5e9;
 
-    padding: 1rem;
+    // padding: 1rem;
     border-radius: 8px 8px 0 0;
 
     h6 {
@@ -489,4 +497,14 @@
       }
     }
   }
+}
+.card-label{
+    // font-weight: 600;
+    font-size: 1rem;
+    
+}
+.card-info{
+    color: $gray-color;
+    opacity: .9;
+    font-size: 0.9rem;
 }

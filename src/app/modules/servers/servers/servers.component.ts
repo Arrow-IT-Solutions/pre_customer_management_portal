@@ -40,7 +40,7 @@ export class ServersComponent {
     public layoutService: LayoutService,
     public messageService: MessageService,
     public confirmationService: ConfirmationService,
-    public route:Router
+    public route: Router
   ) {
     this.dataForm = this.formBuilder.group({
       hostname: [''],
@@ -75,23 +75,9 @@ export class ServersComponent {
   }
 
   openAddServer(row: ServerResponse | null = null) {
-    // window.scrollTo({ top: 0, behavior: 'smooth' });
-    // document.body.style.overflow = 'hidden';
-    // this.serverService.SelectedData = row;
+    this.serverService.SelectedData = row;
 
-    // let content = row == null ? 'Create_Server' : 'Update_Server';
-    // this.translate.get(content).subscribe((res: string) => {
-    //   content = res;
-    // });
-
-    // const component = this.layoutService.OpenDialog(AddServerComponent, content);
-    // this.serverService.Dialog = component;
-
-    // component.OnClose.subscribe(() => {
-    //   document.body.style.overflow = '';
-    //   this.FillData();
-    // });
-  this.route.navigate(['layout-admin/add-server/server-data'])
+    this.route.navigate(['layout-admin/add-server/server-data'])
   }
 
   async confirmDelete(row: ServerResponse) {
@@ -143,5 +129,11 @@ export class ServersComponent {
   showDialog(link: string) {
     this.link = link;
     this.visible = true;
+  }
+
+  viewDetails(server: ServerResponse){
+    this.serverService.SelectedData = server;
+    console.log('Selected Server', server)
+    this.route.navigate(['layout-admin/servers/server-details']);
   }
 }
