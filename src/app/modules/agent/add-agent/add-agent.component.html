@@ -9,45 +9,57 @@
 
         <div class="col-12 row m-0 p-0">
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['nameAr'].errors}">
               <input pInputText type="text" formControlName="nameAr" />
-              <label>{{ 'NameAr_Agent' | translate }}</label>
-              <span *ngIf="submitted && form['nameAr'].errors" class="error-validation">
+              <label [ngClass]="{'error': submitted && form['nameAr'].errors}">{{ 'NameAr_Agent' | translate }}</label>
+              <!-- <span *ngIf="submitted && form['nameAr'].errors" class="error-validation">
                 {{ 'Field_Required' | translate }}
-              </span>
+              </span> -->
             </div>
+             <div *ngIf="submitted && form['nameAr'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>
 
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['nameEn'].errors}">
               <input pInputText type="text" formControlName="nameEn" />
-              <label>{{ 'NameEn_Agent' | translate }}</label>
-              <span *ngIf="submitted && form['nameEn'].errors" class="error-validation">
+              <label [ngClass]="{'error': submitted && form['nameEn'].errors}">{{ 'NameEn_Agent' | translate }}</label>
+              <!-- <span *ngIf="submitted && form['nameEn'].errors" class="error-validation">
                 {{ 'Field_Required' | translate }}
-              </span>
+              </span> -->
             </div>
+             <div *ngIf="submitted && form['nameEn'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>
 
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['phone'].errors}">
               <input pInputText type="text" formControlName="phone" />
-              <label>{{ 'Phone_Agent' | translate }}</label>
-              <span *ngIf="submitted && form['phone'].errors" class="error-validation">
+              <label [ngClass]="{'error': submitted && form['phone'].errors}">{{ 'Phone_Agent' | translate }}</label>
+              <!-- <span *ngIf="submitted && form['phone'].errors" class="error-validation">
                 {{ 'Field_Required' | translate }}
-              </span>
+              </span> -->
             </div>
+             <div *ngIf="submitted && form['phone'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>
 
          
 
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['anyDeskAddress'].errors}">
               <input pInputText type="text" formControlName="anyDeskAddress" />
-              <label>{{ 'AnyDeskAddress' | translate }}</label>
-              <span *ngIf="submitted && form['anyDeskAddress'].errors" class="error-validation">
+              <label [ngClass]="{'error': submitted && form['anyDeskAddress'].errors}">{{ 'AnyDeskAddress' | translate }}</label>
+              <!-- <span *ngIf="submitted && form['anyDeskAddress'].errors" class="error-validation">
                 {{ 'Field_Required' | translate }}
-              </span>
+              </span> -->
             </div>
+             <div *ngIf="submitted && form['anyDeskAddress'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>
 
             <div class="col-12 mb-3">
@@ -56,12 +68,15 @@
               <label [ngClass]="{'error': submitted && form['password'].errors}">{{ 'password_anydesk' | translate }}</label>
               <i class="pi" [ngClass]="isPasswordVisible ?  'pi-eye' : 'pi-eye-slash'" (click)="togglePasswordVisibility()"></i>
             </div>
+             <div *ngIf="submitted && form['password'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
            
           </div>
 
 
           <div class="col-12 mb-3">
-            <div class="p-float-label">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['companyIDFK'].errors}">
              <p-dropdown
               [options]="companyOptions"
               optionLabel="label"
@@ -72,11 +87,14 @@
               filterBy="label">
             </p-dropdown>
 
-              <label>{{ 'Company_Name' | translate }}</label>
-              <span *ngIf="submitted && form['companyIDFK'].errors" class="error-validation">
+              <label [ngClass]="{'error': submitted && form['companyIDFK'].errors}">{{ 'Company_Name' | translate }}</label>
+              <!-- <span *ngIf="submitted && form['companyIDFK'].errors" class="error-validation">
                 {{ 'Field_Required' | translate }}
-              </span>
+              </span> -->
             </div>
+             <div *ngIf="submitted && form['companyIDFK'].errors?.['required']" class="text-danger mt-1">
+            {{ 'field_required' | translate }}
+          </div>
           </div>
 
           

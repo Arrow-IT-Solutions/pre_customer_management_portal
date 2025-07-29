@@ -62,28 +62,31 @@
   <ng-container *ngIf="!loading; else ListView">
     <div class="box">
       <div class="card mx-0 mb-2" *ngFor="let agent of data">
-        
+         <div class="icon-container">
+          <span class="material-symbols-outlined fill">account_box</span>
+        </div>
 
         <div class="col-3 card__contents">
-          <div class="card-section__items">
-            <div class="card__contents__item">
+          
+          <div class="items">
+            <div class="item">
               <div class="card-label">{{ 'agentName_agent' | translate }}</div>
               <div class="card-info">
                 {{ agent.agentTranslation?.[layoutService.config.lang]?.name }}
               </div>
             </div>
 
-            <div class="card__contents__item">
+            <div class="item">
               <div class="card-label">{{ 'agentPhone_agent' | translate }}</div>
               <div class="card-info">{{ agent.phone }}</div>
             </div>
 
-            <div class="card__contents__item">
+            <div class="item">
               <div class="card-label">{{ 'agentAnyDesk_agent' | translate }}</div>
               <div class="card-info">{{ agent.anyDeskAddress }}</div>
             </div>
 
-            <div class="card__contents__item">
+            <div class="item">
               <div class="card-label">{{ 'companyName_agent' | translate }}</div>
 <div class="card-info">{{ retrieveCompanyLabel(agent) }}</div>
             </div>

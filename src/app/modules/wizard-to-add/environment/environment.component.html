@@ -96,12 +96,13 @@
       <div class="">
       <div class="box-shadow mb-3">
         <div class="row">
-          <div class="col-12 side-icon">
+          <div class="">
+          <div class="col-lg-6 col-md-9 col-sm-3 side-icon">
             <span class="material-symbols-outlined">list</span>
             <span>{{ 'Environments_List' | translate }}</span>
           </div>
            <p-accordion class="mt-5 p-0">
-      <p-accordionTab>
+          <p-accordionTab>
         <ng-template pTemplate="header">
           <div class="flex align-items-center">
             <span class="material-symbols-outlined">tune</span>
@@ -159,7 +160,7 @@
         </ng-template>
       </p-accordionTab>
            </p-accordion>
-
+            </div>
           <div class="col-12" *ngIf="filterLoading && envDatabase.length > 0">
             <div class="text-center py-3">
               <mat-spinner style="margin: auto; width: 30px; height: 30px;"></mat-spinner>

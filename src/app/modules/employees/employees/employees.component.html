@@ -1,14 +1,5 @@
 <div [formGroup]="dataForm" class="employees">
   <div class="row mb-4 m-0 flex-row-reverse p-2">
-    <div class="col-lg-3 col-md-10 col p-0 employees__search">
-      <div class="flex flex-wrap justify-content-center gap-3">
-        <span class="p-input-icon-left p-0">
-          <i class="pi pi-search"></i>
-          <input class="search-field" type="text" (ngModelChange)="OnChange()"
-            placeholder="{{ 'Search_EmployeeName' | translate }}" formControlName="employeeName" pInputText />
-        </span>
-      </div>
-    </div>
     <p-accordion class="p-0">
       <p-accordionTab>
         <ng-template pTemplate="header">
@@ -23,7 +14,13 @@
               <span>Filter By</span>
             </div>
             <div class="container">
-
+               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="p-float-label">
+                  <input type="text" pInputText formControlName="employeeName" (ngModelChange)="OnChange()"
+                    class="search-field" type="text" />
+                  <label>{{ 'Search_EmployeeName' | translate }}</label>
+                </div>
+              </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="p-float-label">
                   <input type="text" pInputText formControlName="phone" (ngModelChange)="OnChange()"
@@ -84,7 +81,7 @@
 
           <div class="col-lg-9 col-md-12 col-sm-12 card__contents">
             <div class="card-section">
-              <div class="card-section__title">info</div>
+              
               <div class="card-section__items">
                 <div class="card__contents__item">
                   <div class="card-label">{{ 'EmployeeName' | translate }}</div>
@@ -101,15 +98,16 @@
                     {{row.user.username}}
                   </div>
                 </div>
-
-              </div>
-            </div>
-
-            <div class="card-section d-flex box3">
-              <div class="card__contents__item">
+                <div class="card__contents__item">
                 <div class="card-label">{{ 'employee-phone' | translate }}</div>
                 <div class="card-info">{{row.phone}}</div>
               </div>
+
+              </div>
+            </div>
+             <div class="card-section">
+            <div class="card-section__items">
+              
               <div class="card__contents__item">
                 <div class="card-label">{{ 'employee-gender' | translate }}</div>
                 <div class="card-info">{{row.genderValue}}</div>
@@ -127,13 +125,14 @@
               </div>
 
             </div>
+            </div>
 
-            <div class="card-section">
+            <!-- <div class="card-section">
               <div class="card-section__title"></div>
               <div class="card-section__items">
 
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="one">
             <div [matMenuTriggerFor]="menu" class="card__actions">
@@ -141,15 +140,15 @@
             </div>
             <mat-menu #menu="matMenu">
               <button mat-menu-item (click)="openDialog(row)">
-                <span class="material-symbols-outlined" id="icon_edit">Edit</span>
+                <span class="material-symbols-outlined" id="icon">Edit</span>
                 {{ 'Edit_Employee' | translate }}
               </button>
               <button mat-menu-item (click)="resetPass(row)">
-                <span class="material-symbols-outlined" id="icon_edit">Edit</span>
+                <span class="material-symbols-outlined" id="icon">Edit</span>
                 {{ 'ResetPassword_Employee' | translate }}
               </button>
               <button mat-menu-item (click)="confirmDelete(row)">
-                <span class="material-symbols-outlined" id="icon_delete">delete</span>
+                <span class="material-symbols-outlined" id="icon">delete</span>
                 {{ 'Delete_Employee' | translate }}
               </button>
             </mat-menu>

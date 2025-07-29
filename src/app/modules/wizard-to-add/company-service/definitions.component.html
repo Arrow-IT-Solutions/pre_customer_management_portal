@@ -70,10 +70,15 @@
                   </p-dropdown>
 
 
+
+                <!-- <label id="label" [ngClass]="{'error': submitted && form['status'].errors,'no-error': !(submitted && form['status']?.errors)}">{{ 'status_subscription' | translate }}</label> -->
+                <!-- <span *ngIf="submitted && form['status'].errors" class="error-validation">{{ 'Field_Required' |
+
                   <label id="label"
                     [ngClass]="{'error': submitted && form['status'].errors,'no-error': !(submitted && form['status']?.errors)}">{{
                     'status_subscription' | translate }}</label>
                   <!-- <span *ngIf="submitted && form['status'].errors" class="error-validation">{{ 'Field_Required' |
+
                   translate }}</span> -->
                 </div>
                 <div *ngIf="submitted && form['status'].errors?.['required']" class="text-danger mt-1">
