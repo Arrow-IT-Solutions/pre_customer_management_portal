@@ -36,6 +36,13 @@ const routes: Routes = [
     // canActivate: [AuthGuardService],
     children: [
       {
+        path: 'agents',
+        loadChildren: () =>
+          import('./modules/agent/agent.module').then(
+            (m) => m.AgentModule
+          )
+      },
+      {
         path: 'services',
         loadChildren: () =>
           import('./modules/services/services.module').then(
@@ -121,8 +128,14 @@ const routes: Routes = [
             (m) => m.WizardAddServerModule
           )
       },
-     
 
+       {
+        path: 'employees',
+        loadChildren: () =>
+          import('./modules/employees/employees.module').then(
+            (m) => m.EmployeesModule
+          )
+      },
 
 
       {

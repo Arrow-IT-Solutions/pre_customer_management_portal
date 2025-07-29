@@ -1,5 +1,6 @@
-<div class="servers">
-  <div [formGroup]="dataForm" class="row mb-4 m-0  p-0">
+<div class="agents">
+
+  <div [formGroup]="dataForm" class="row mb-4 m-0 p-0">
     <p-accordion class="mt-5 p-0">
       <p-accordionTab>
         <ng-template pTemplate="header">
@@ -14,11 +15,13 @@
               <span>Filter By</span>
             </div>
             <div class="container">
+
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input class="search-field" type="text" (input)="OnChange()" placeholder="{{ 'hostName_servers' | translate }}" formControlName="hostname" pInputText />
+                    <input class="search-field" type="text" (input)="OnChange()"
+                      placeholder="{{ 'agentName_agent' | translate }}" formControlName="name" pInputText />
                   </span>
                 </div>
               </div>
@@ -27,11 +30,20 @@
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <span class="p-input-icon-left p-0">
                     <i class="pi pi-search"></i>
-                    <input class="search-field" type="text" (input)="OnChange()" placeholder="{{ 'IpAddress_servers' | translate }}"
-                      formControlName="ipaddress" pInputText />
+                <p-dropdown
+  [options]="companiesList"
+  formControlName="companyIDFK"
+  (onChange)="OnChange()"
+  placeholder="{{ 'companyName_agent' | translate }}"
+  [showClear]="true"
+  class="search-field"
+></p-dropdown>
+
+
                   </span>
                 </div>
               </div>
+
             </div>
 
             <div class="col result">
@@ -49,47 +61,51 @@
 
   <ng-container *ngIf="!loading; else ListView">
     <div class="box">
-      <div class="card mx-0 mb-2" *ngFor="let server of data">
-        <div class="icon-container">
-          <span class="material-symbols-outlined fill">https</span>
-        </div>
+      <div class="card mx-0 mb-2" *ngFor="let agent of data">
+        
 
         <div class="col-3 card__contents">
           <div class="card-section__items">
             <div class="card__contents__item">
-              <div class="card-label">{{ 'hostName_servers' | translate }}</div>
+              <div class="card-label">{{ 'agentName_agent' | translate }}</div>
               <div class="card-info">
-                {{ server.hostname }}
+                {{ agent.agentTranslation?.[layoutService.config.lang]?.name }}
               </div>
             </div>
+
             <div class="card__contents__item">
-              <div class="card-label">{{ 'IpAddress_servers' | translate }}</div>
-              <div class="card-info">
-                {{ server.ipAddress }}
-              </div>
+              <div class="card-label">{{ 'agentPhone_agent' | translate }}</div>
+              <div class="card-info">{{ agent.phone }}</div>
             </div>
+
+            <div class="card__contents__item">
+              <div class="card-label">{{ 'agentAnyDesk_agent' | translate }}</div>
+              <div class="card-info">{{ agent.anyDeskAddress }}</div>
+            </div>
+
+            <div class="card__contents__item">
+              <div class="card-label">{{ 'companyName_agent' | translate }}</div>
+<div class="card-info">{{ retrieveCompanyLabel(agent) }}</div>
+            </div>
+
+            
+
           </div>
         </div>
 
         <div class="one">
-          <div [matMenuTriggerFor]="menu" [matMenuTriggerData]="{ server: server }" class="card__actions">
+          <div [matMenuTriggerFor]="menu" class="card__actions">
             <span class="material-symbols-outlined card__actions__details">more_vert</span>
           </div>
           <mat-menu #menu="matMenu">
-            <ng-template matMenuContent let-server="server">
-              <button mat-menu-item (click)="viewDetails()">
-                 <span class="material-symbols-outlined" id="icon">view_list</span>
-                {{ 'view_Company' | translate }}
-              </button>
-              <button mat-menu-item (click)="openAddServer(server)">
-                <span class="material-symbols-outlined" id="icon">edit</span>
-                {{ 'Edit_Server' | translate }}
-              </button>
-              <button mat-menu-item (click)="confirmDelete(server)">
-                <span class="material-symbols-outlined" id="icon">delete</span>
-                {{ 'Delete_Server' | translate }}
-              </button>
-            </ng-template>
+            <button mat-menu-item (click)="openAddAgent(agent)">
+              <span class="material-symbols-outlined" id="icon">edit</span>
+              {{ 'Edit_Agent' | translate }}
+            </button>
+            <button mat-menu-item (click)="confirmDelete(agent)">
+              <span class="material-symbols-outlined" id="icon">delete</span>
+              {{ 'Delete_Agent' | translate }}
+            </button>
           </mat-menu>
         </div>
       </div>
@@ -97,36 +113,27 @@
 
     <div class="all d-flex">
       <div class="total">
-        {{ "totalServers_Servers" | translate }}: {{ totalRecords }}
+        {{ 'totalAgents_agent' | translate }}: {{ totalRecords }}
       </div>
-
     </div>
-    <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+
+   <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
       [first]="first" (onPageChange)="paginate($event)"></p-paginator>
-    <button class="add-button" (click)="openAddServer()">
+    <button class="add-button" (click)="openAddAgent()">
       <span class="material-symbols-outlined">add</span>
     </button>
+
+
   </ng-container>
 
   <ng-template #ListView>
     <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+      <div *ngFor="let list of [1, 2, 3]" class="row mx-0 mt-2">
         <p-skeleton height="10rem"></p-skeleton>
       </div>
     </div>
-    <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
-        <p-skeleton height="10rem"></p-skeleton>
-      </div>
-    </div>
-    <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
-        <p-skeleton height="10rem"></p-skeleton>
-      </div>
-    </div>
-
   </ng-template>
-  <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
+  <p-confirmDialog #confirmDialog key="positionDialog" position="bottom" [baseZIndex]="10000" onHide="true">
     <ng-template pTemplate="footer">
       <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}"
         (click)="confirmDialog.reject()"></button>
@@ -135,5 +142,4 @@
     </ng-template>
   </p-confirmDialog>
 </div>
-
 <p-toast key="toast"></p-toast>

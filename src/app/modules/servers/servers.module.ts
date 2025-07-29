@@ -8,12 +8,14 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/class/class';
 import { ApplicationRequest } from '../applications/application.module';
+import { ServerDetailesComponent } from './server-detailes/server-detailes.component';
 
 
 @NgModule({
   declarations: [
     ServersComponent,
-    AddServerComponent
+    AddServerComponent,
+    ServerDetailesComponent
   ],
   imports: [
     CommonModule,

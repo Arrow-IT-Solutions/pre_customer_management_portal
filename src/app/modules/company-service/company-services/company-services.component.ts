@@ -290,5 +290,8 @@ export class CompanyServicesComponent {
     this.services = serviceDTO;
 
   }
+  viewDetails(){
+    this.route.navigate(['layout-admin/company-services/services-details'])
+  }
 
 }
