@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ProvisionedServiceRequest, ProvisionedServiceSearchRequest, ProvisionedServiceUpdateRequest, ProvisionedSession } from 'src/app/modules/wizard-to-add/wizard-to-add.module';
+import { ProvisionedServiceRequest, ProvisionedServiceResponse, ProvisionedServiceSearchRequest, ProvisionedServiceUpdateRequest, ProvisionedSession } from 'src/app/modules/wizard-to-add/wizard-to-add.module';
 import { LayoutService } from './layout.service';
 import { HttpClientService } from 'src/app/Core/services/http-client.service';
 import { Subject } from 'rxjs';
@@ -13,6 +13,7 @@ export class ProvisionedService {
   public Dialog: any | null = null;
   public submitted: any | null = "";
 
+  public selectedData: ProvisionedServiceResponse | null = null;
   private saveEnvironmentDataSubject = new Subject<void>();
   private saveApplicationDataSubject = new Subject<void>();
 
