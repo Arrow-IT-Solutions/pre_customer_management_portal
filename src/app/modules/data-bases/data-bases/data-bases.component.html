@@ -34,9 +34,13 @@
                 </div>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
-                <p-dropdown [options]="envOptions" optionLabel="name" optionValue="uuid" formControlName="envIDFK"
-                  placeholder="{{ 'SelectEnvironment' | translate }}" (onChange)="OnChange()">
+              
+                  <div class="p-float-label">
+              <p-dropdown [options]="envOptions" optionLabel="name" optionValue="uuid" formControlName="envIDFK"
+                  placeholder="" (onChange)="OnChange()" [showClear]="true" dir="ltr">
                 </p-dropdown>
+               <label id="label" for="">{{ 'SelectEnvironment' | translate }}</label>
+              </div>
               </div>
             </div>
 

@@ -16,9 +16,11 @@
               formControlName="companyServiceIDFK"
               [filter]="true"
               [showClear]="true"
-              filterBy="label">
+              filterBy="label"
+              dir="ltr"
+              >
             </p-dropdown>
-              <label [ngClass]="{'error': submitted && form['companyServiceIDFK'].errors}">{{ 'Company_Service' | translate }}</label>
+              <label id="label" [ngClass]="{'error': submitted && form['companyServiceIDFK'].errors}">{{ 'Company_Service' | translate }}</label>
             </div>
             <div *ngIf="submitted && form['companyServiceIDFK'].errors?.['required']" class="text-danger mt-1">
               {{ 'field_required' | translate }}
@@ -56,11 +58,13 @@
                 [options]="statusList"
                 optionLabel="value"
                 optionValue="key"
-                formControlName="status">
+                formControlName="status"
+                dir="ltr"
+                >
               </p-dropdown>
 
 
-                <label [ngClass]="{'error': submitted && form['status'].errors}">{{ 'status_subscription' | translate }}</label>
+                <label id="label" [ngClass]="{'error': submitted && form['status'].errors}">{{ 'status_subscription' | translate }}</label>
               </div>
               <div *ngIf="submitted && form['status'].errors?.['required']" class="text-danger mt-1">
               {{ 'field_required' | translate }}

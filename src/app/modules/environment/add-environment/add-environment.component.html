@@ -18,9 +18,11 @@
               placeholder="Select_Company_Service"
               [filter]="true"
               [showClear]="true"
-              filterBy="label">
+              filterBy="label"
+              dir="ltr"
+              >
             </p-dropdown>
-              <label [ngClass]="{'error': submitted && form['companyServiceIDFK'].errors}">{{ 'Company_Service' | translate }}</label>
+              <label id="label" [ngClass]="{'error': submitted && form['companyServiceIDFK'].errors}">{{ 'Company_Service' | translate }}</label>
             </div>
             <div *ngIf="submitted && form['companyServiceIDFK'].errors?.['required']" class="text-danger mt-1">
               {{ 'field_required' | translate }}
@@ -62,10 +64,11 @@
                 [showClear]="true"
                 filterBy="label"
                 placeholder="{{ 'Select_ServerIDFK' | translate }}"
+                dir="ltr"
               >
               </p-dropdown>
 
-              <label [ngClass]="{'error': submitted && form['serverIDFK'].errors}">{{ 'ServerIDFK' | translate }}</label>
+              <label id="label" [ngClass]="{'error': submitted && form['serverIDFK'].errors}">{{ 'ServerIDFK' | translate }}</label>
             </div>
            <div *ngIf="submitted && form['serverIDFK'].errors?.['required']" class="text-danger mt-1">
               {{ 'field_required' | translate }}

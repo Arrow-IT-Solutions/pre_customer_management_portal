@@ -27,21 +27,12 @@
               </div>
 
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
-                <div class="flex flex-wrap justify-content-center gap-3">
-                  <span class="p-input-icon-left p-0">
-                    <i class="pi pi-search"></i>
-                <p-dropdown
-  [options]="companiesList"
-  formControlName="companyIDFK"
-  (onChange)="OnChange()"
-  placeholder="{{ 'companyName_agent' | translate }}"
-  [showClear]="true"
-  class="search-field"
-></p-dropdown>
-
-
-                  </span>
-                </div>
+                
+                <div class="p-float-label">
+              <p-dropdown [options]="companiesList" formControlName="companyIDFK" (onChange)="OnChange()"[showClear]="true"
+                   class="search-field" dir="ltr"></p-dropdown>
+               <label id="label" for="">{{ 'companyName_agent' | translate }}</label>
+              </div>
               </div>
 
             </div>

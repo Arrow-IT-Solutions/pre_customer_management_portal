@@ -24,14 +24,12 @@
                 </div>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
-                  <p-dropdown 
-                    [options]="serverOptions"
-                    optionLabel="hostname"
-                    optionValue="uuid"
-                    formControlName="serverIDFK"
-                    placeholder="{{ 'Select_server' | translate }}"
-                    (onChange)="OnChange()">
-                  </p-dropdown>
+                       <div class="p-float-label">
+                     <p-dropdown [options]="serverOptions" optionLabel="hostname" optionValue="uuid" formControlName="serverIDFK"
+                       placeholder="" (onChange)="OnChange()" [showClear]="true" dir="ltr">
+                      </p-dropdown>
+               <label id="label" for="">{{ 'Select_server' | translate }}</label>
+              </div>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
                  <span class="p-input-icon-left p-0">
@@ -122,18 +120,8 @@
   </ng-container>
 
   <ng-template #ListView>
-    <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
-        <p-skeleton height="10rem"></p-skeleton>
-      </div>
-    </div>
-    <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
-        <p-skeleton height="10rem"></p-skeleton>
-      </div>
-    </div>
-    <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+     <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="row mx-0 mt-2">
         <p-skeleton height="10rem"></p-skeleton>
       </div>
     </div>

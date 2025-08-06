@@ -15,7 +15,7 @@ export class ServerDetailesComponent {
   loading: boolean = false;
   searchFrom!: FormGroup;
   dataFrom!: FormGroup;
-  data: ServerResponse
+  data: ServerResponse;
   pageSize: number = 12;
   first: number = 0;
   apps: ApplicationResponse[];
