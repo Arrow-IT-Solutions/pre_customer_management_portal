@@ -208,5 +208,8 @@
      "Employee-username":"username",
      "Employee-gender":"gender",
      "Birthdate_Employee":"Birthdate",
-     "No_Apps_Added" : "No Apps Added"
+     "No_Apps_Added" : "No Apps Added",
+     "appname":"App Name",
+     "Create_Employee":"Create Employee"
+     
 }

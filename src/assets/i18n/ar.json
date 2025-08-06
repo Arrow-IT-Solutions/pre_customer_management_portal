@@ -209,5 +209,8 @@
     "Employee-username":"اسم المستخدم",
     "Employee-gender":"الجنس",
     "Birthdate_Employee":"تاريخ الميلاد",
-    "No_Apps_Added" : "الرجاء إضافة تطبيقات الخادم"
+    "No_Apps_Added" : "الرجاء إضافة تطبيقات الخادم",
+    "appname":"اسم التطبيق",
+    "View_CompanyAgents":"عرض وكلاءالشركة",
+    "Create_Employee":"إنشاء موظف"
 }

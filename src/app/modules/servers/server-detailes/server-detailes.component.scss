@@ -124,6 +124,7 @@
     flex-direction: column;
     row-gap: 1rem;
     margin-top: 1rem;
+
     .items{
         display: flex;
         width: 100%;
@@ -278,12 +279,25 @@
       }
     }
 // تصميم البيئات
+.card-container{
+  
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+}
 .environment-card {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   margin-bottom: 1rem;
   transition: box-shadow 0.3s ease;
   background: white;
+  width: 48%;
+  @media(max-width:767px){
+    width: 100%;
+  }
+  
+ 
 
   &:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);

@@ -22,8 +22,8 @@
                    <p-dropdown [options]="companies" optionLabel="name" optionValue="uuid" formControlName="companyName"
                       [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillCompanies($event)"
                       (ngModelChange)="OnChange()" inputId="companyDropdown"
-                      placeholder="{{ 'companyName_definitions' | translate }}"></p-dropdown>
-                    <label>{{ 'companyName_definitions' | translate }}</label>
+                         dir="ltr"></p-dropdown>
+                    <label id="label">{{ 'companyName_definitions' | translate }}</label>
 
                   </div>
                 </div>
@@ -35,8 +35,8 @@
                     <p-dropdown [options]="services" optionLabel="name" optionValue="uuid" formControlName="service"
                       [filter]="true" [showClear]="true" filterBy="name" (onFilter)="FillServices($event)"
                       (ngModelChange)="OnChange()" inputId="serviceDropdown"
-                      placeholder="{{ 'service_definitions' | translate }}"></p-dropdown>
-                    <label>{{ 'service_definitions' | translate }}</label>
+                       dir="ltr"></p-dropdown>
+                    <label id="label">{{ 'service_definitions' | translate }}</label>
 
                   </div>
                 </div>

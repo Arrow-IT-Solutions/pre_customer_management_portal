@@ -21,6 +21,8 @@ export class ServerComponent implements OnInit, WizardStep {
   btnLoading: boolean = false;
   loading: boolean = false;
   isPasswordVisible: boolean = false;
+  private isNavigatingToApplication = false;
+  private isNavigatingWithinWizard = false;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -158,6 +160,7 @@ export class ServerComponent implements OnInit, WizardStep {
   }
 
   async nextStep() {
+  
     try {
 
       let response

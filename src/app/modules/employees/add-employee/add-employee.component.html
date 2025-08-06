@@ -4,15 +4,14 @@
       <div class="row">
         <div class="col-12 side-icon">
           <span class="material-symbols-outlined">info</span>
-          <span>{{ 'Basic_Info_Employee' | translate }}</span>
+          <span>{{ 'Basic_Info_Form' | translate }}</span>
         </div>
         <div class="col-12 row m-0 p-0">
           <div class="col-12 mb-3">
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['firstNameAr'].errors}">
               <input pInputText type="text" formControlName="firstNameAr" />
               <label [ngClass]="{'error': submitted && form['firstNameAr'].errors}">{{ 'FirstNameAr_Employee' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['firstNameAr'].errors" class="error-validation">{{ 'Field_Required' |
-                translate }}</span> -->
+            
             </div>
               <div *ngIf="submitted && form['firstNameAr'].errors?.['required']" class="text-danger mt-1">
             {{ 'field_required' | translate }}
@@ -22,8 +21,7 @@
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['lastNameAr'].errors}">
               <input pInputText type="text" formControlName="lastNameAr"/>
               <label [ngClass]="{'error': submitted && form['lastNameAr'].errors}">{{ 'LastNameAr_Employee' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['lastNameAr'].errors" class="error-validation">{{ 'Field_Required' |
-                translate }}</span> -->
+              
             </div>
               <div *ngIf="submitted && form['lastNameAr'].errors?.['required']" class="text-danger mt-1">
             {{ 'field_required' | translate }}
@@ -33,8 +31,7 @@
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['firstNameEn'].errors}">
               <input pInputText type="text" formControlName="firstNameEn" />
               <label [ngClass]="{'error': submitted && form['firstNameEn'].errors}">{{ 'FirstNameEn_Employee' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['firstNameEn'].errors" class="error-validation">{{ 'Field_Required' |
-                translate }}</span> -->
+          
             </div>
               <div *ngIf="submitted && form['firstNameEn'].errors?.['required']" class="text-danger mt-1">
             {{ 'field_required' | translate }}
@@ -44,8 +41,7 @@
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['lastNameEn'].errors}">
               <input pInputText type="text" formControlName="lastNameEn" />
               <label [ngClass]="{'error': submitted && form['lastNameEn'].errors}">{{ 'LastNameEn_Employee' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['lastNameEn'].errors" class="error-validation">{{ 'Field_Required' |
-                translate }}</span> -->
+            
             </div>
               <div *ngIf="submitted && form['lastNameEn'].errors?.['required']" class="text-danger mt-1">
             {{ 'field_required' | translate }}
@@ -56,8 +52,7 @@
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['clientPhone'].errors}">
               <input pInputText type="text" formControlName="clientPhone" />
               <label [ngClass]="{'error': submitted && form['clientPhone'].errors}">{{ 'Employee-phone' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['clientPhone'].errors" class="error-validation">{{ 'Field_Required' |
-                translate }}</span> -->
+             
             </div>
               <div *ngIf="submitted && form['clientPhone'].errors?.['required']" class="text-danger mt-1">
             {{ 'field_required' | translate }}
@@ -67,8 +62,7 @@
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['username'].errors}">
               <input pInputText type="text" formControlName="username" />
               <label [ngClass]="{'error': submitted && form['username'].errors}">{{ 'Employee-username' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['username'].errors" class="error-validation">{{ 'Field_Required' |
-                translate }}</span> -->
+             
             </div>
               <div *ngIf="submitted && form['username'].errors?.['required']" class="text-danger mt-1">
             {{ 'field_required' | translate }}
@@ -79,8 +73,7 @@
               <p-dropdown [options]="gender" optionLabel="value" optionValue="key"
                 formControlName="clientGender"></p-dropdown>
               <label [ngClass]="{'error': submitted && form['clientGender'].errors}">{{ 'Employee-gender' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['clientGender'].errors" class="error-validation">{{ 'Field_Required' |
-                translate }}</span> -->
+             
             </div>
               <div *ngIf="submitted && form['clientGender'].errors?.['required']" class="text-danger mt-1">
             {{ 'field_required' | translate }}
@@ -91,8 +84,7 @@
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['birthDate'].errors}">
               <p-calendar [showIcon]="true" formControlName="birthDate"></p-calendar>
               <label [ngClass]="{'error': submitted && form['birthDate'].errors}">{{ 'Birthdate_Employee' | translate }}</label>
-              <!-- <span *ngIf="submitted && form['birthDate'].errors" class="error-validation">{{ 'Field_Required' |
-                translate }}</span> -->
+             
             </div>
               <div *ngIf="submitted && form['birthDate'].errors?.['required']" class="text-danger mt-1">
             {{ 'field_required' | translate }}

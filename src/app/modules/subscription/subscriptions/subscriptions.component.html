@@ -20,9 +20,9 @@
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <div class="p-float-label">
                     <p-dropdown [options]="statusList" optionLabel="value" optionValue="key" (onChange)="Search()"
-                      formControlName="status">
+                      formControlName="status" dir="ltr" [showClear]="true">
                     </p-dropdown>
-                    <label>{{ 'status_subscription' | translate }}</label>
+                    <label id="label">{{ 'status_subscription' | translate }}</label>
 
                   </div>
                 </div>
@@ -87,11 +87,11 @@
           </div>
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openAddService(row)">
-              <span class="material-symbols-outlined">Edit</span>
+              <span class="material-symbols-outlined" id="icon">Edit</span>
               {{ 'Edit_subscription' | translate }}
             </button>
             <button mat-menu-item (click)="confirmDelete(row)">
-              <span class="material-symbols-outlined">delete</span>
+              <span class="material-symbols-outlined" id="icon">delete</span>
               {{ 'Delete_subscription' | translate }}
             </button>
           </mat-menu>

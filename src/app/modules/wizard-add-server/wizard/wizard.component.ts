@@ -39,6 +39,9 @@ export class WizardComponent implements OnInit, OnDestroy {
           this.serverService.serverHelper = null as any;
           this.serverService.SelectedData = null as any;
         }
+        else{
+          this.updateActiveIndex();
+        }
       }
     });
     this.items = [
@@ -52,12 +55,32 @@ export class WizardComponent implements OnInit, OnDestroy {
         command: (event) => this.onStepClick(1, 'application')
       },
     ];
-    this.syncActiveIndex();
+   this.updateActiveIndex();
+
+    //  this.navigationSubscription = this.router.events.pipe(
+    //   filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    // ).subscribe((event: NavigationEnd) => {
+    //   const currentUrl = event.urlAfterRedirects;
+
+    //   if (!currentUrl.includes('/layout-admin/add/')) {
+    //     this.clearWizardData();
+    //   } else {
+    //     this.updateActiveIndex();
+    //   }
+    // });
+  }
+   private updateActiveIndex() {
+    const currentPath = this.router.url;
+    if (currentPath.includes('server-data')) {
+      this.activeIndex = 0;
+    } else if (currentPath.includes('application')) {
+      this.activeIndex = 1;
+    }
   }
 
-  private syncActiveIndex() {
-    this.activeIndex = this.router.url.includes('application') ? 1 : 0;
-  }
+  // private syncActiveIndex() {
+  //   this.activeIndex = this.router.url.includes('application') ? 1 : 0;
+  // }
 
   private async onStepClick(stepIndex: number, routePath: string) {
 
