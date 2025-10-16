@@ -6,12 +6,14 @@ import { ResponseBase } from 'src/app/shared/class/class';
 import { CompanyServiceRoutingModule } from './company-service-routing.module';
 import { CompanyServicesComponent } from './company-services/company-services.component';
 import { ServicesDetailsComponent } from './services-details/services-details.component';
+import { AlertModelComponent } from './alert-model/alert-model.component';
 
 
 @NgModule({
   declarations: [
     CompanyServicesComponent,
-    ServicesDetailsComponent
+    ServicesDetailsComponent,
+    AlertModelComponent
   ],
   imports: [
     CommonModule,

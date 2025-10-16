@@ -168,8 +168,8 @@
           </div>
 
           <div class="col-12" *ngIf="filteredEnvDatabase.length > 0 && !filterLoading">
-            <div class="row">
-              <div class="col-md-6 mb-3" *ngFor="let env of filteredEnvDatabase; let i = index">
+            <div class="col" style="max-height: 30rem;overflow-y: auto;">
+              <div class="col-md-6 mb-3 mt-2" style="width: 100%;" *ngFor="let env of filteredEnvDatabase; let i = index" >
                 <div class="card environment-card"
                   [ngClass]="{'editing': isEditingEnvironment && editingEnvironmentIndex === getEnvironmentOriginalIndex(env)}">
                   <div class="card-header d-flex justify-content-between align-items-center">
@@ -186,6 +186,8 @@
                   </div>
                   <div class="card-body">
                     <div class="environment-details">
+    
+                      <div style="display: flex;justify-content: space-between;align-items: center;border-bottom: 1px solid #f1f3f4;">
                       <div class="detail-item">
                         <label>{{ 'NameEnvironmentEn_definitions' | translate }}:</label>
                         <span>{{ getEnvironmentName(env.environmentTranslation, 'en') || 'N/A' }}</span>
@@ -195,10 +197,12 @@
                         <span >{{ getEnvironmentName(env.environmentTranslation, 'ar') || 'N/A' }}</span>
 
                       </div>
-                      <div class="detail-item">
+                        <div class="detail-item">
                         <label>{{ 'UrlEnvironment_definitions' | translate }}:</label>
                         <span>{{ env.url || 'N/A' }}</span>
                       </div>
+                      </div>
+                    <div style="display: flex;justify-content: space-between;align-items: center;border-bottom: 1px solid #f1f3f4;">
                       <div class="detail-item">
                         <label>{{ 'ServerName_definitions' | translate }}:</label>
                         <span>{{env.server?.ipAddress}}</span>
@@ -214,6 +218,7 @@
                       <div class="detail-item">
                         <label>{{ 'password_definitions' | translate }}:</label>
                         <span>{{ env.dbPassword || 'N/A' }}</span>
+                      </div>
                       </div>
                       <div class="detail-item">
                         <label>Connection String:</label>

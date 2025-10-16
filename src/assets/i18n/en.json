@@ -211,6 +211,16 @@
      "No_Apps_Added" : "No Apps Added",
      "appname":"App Name",
      "Create_Employee":"Create Employee",
-     "service_viewDetails" : "Service"
+     "service_viewDetails" : "Service",
 
+     "Renew_Company":"Renew Company",
+     "company_name":"Company name",
+     "renew_period":"Renew Period",
+     "number_period":"Number",
+     "type_period":"Type",
+     "new_endDate":"New EndDate",
+     "total_Renews":"Total Renews",
+     "UnLock_card":"UnLock",
+     "Lock_card":"Lock"
+     
 }

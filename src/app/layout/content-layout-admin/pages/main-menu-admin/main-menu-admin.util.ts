@@ -87,6 +87,13 @@ export const navbarData: NavbarData[] = [
     routeLink: 'subscription',
     icon: 'library_add'
   },
+   {
+    label: 'Renews',
+    labelar: 'الاشراكات الجديدة',
+    id: 'renews',
+    routeLink: 'renews',
+    icon: 'autorenew'
+  },
   {
     label: 'Company Services',
     labelar: 'خدمات الشركات',
@@ -96,8 +103,8 @@ export const navbarData: NavbarData[] = [
   },
 
   {
-    label: 'Add',
-    labelar: 'إضافة',
+    label: 'Add Service ',
+    labelar: ' إضافة خدمة',
     id: 'add',
     routeLink: 'add/company-service',
     icon: 'control_point'

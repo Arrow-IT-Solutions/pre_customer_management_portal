@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { ProvisionedServiceResponse } from '../../wizard-to-add/wizard-to-add.module';
 import { LayoutService } from 'src/app/layout/service/layout.service';
@@ -141,6 +141,12 @@ export class ServicesDetailsComponent implements OnInit {
       });
     }
   }
+
+openAlertModel(){
+  // this.alertModal.showAlert();
+  console.log("alert")
+  console.log("alertModal",this.alertModal)
+}
 
 
 
