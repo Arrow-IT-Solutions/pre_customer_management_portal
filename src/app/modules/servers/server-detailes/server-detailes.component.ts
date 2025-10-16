@@ -5,13 +5,20 @@ import { ServersService } from 'src/app/layout/service/servers.service';
 import { ApplicationResponse, ApplicationSearchRequest } from '../../applications/application.module';
 import { ServerResponse } from '../servers.module';
 import { EncryptionService } from 'src/app/shared/service/encryption.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-server-detailes',
   templateUrl: './server-detailes.component.html',
-  styleUrls: ['./server-detailes.component.scss']
+  styleUrls: ['./server-detailes.component.scss'],
+  providers: [MessageService, ConfirmationService]
+
 })
 export class ServerDetailesComponent {
+  showDecrypted = false;
+  displayDialog = false;
+  enteredKey = '';
   loading: boolean = false;
   searchFrom!: FormGroup;
   dataFrom!: FormGroup;
@@ -24,7 +31,9 @@ export class ServerDetailesComponent {
   constructor(
     public formBuilder: FormBuilder,
     public serverService: ServersService,
-    public applicationService: ApplicationService
+    public applicationService: ApplicationService,
+    public messageService: MessageService,
+    public confirmationService: ConfirmationService,
   ) {
     this.searchFrom = this.formBuilder.group({
       AppName: [''],
@@ -42,9 +51,9 @@ export class ServerDetailesComponent {
 
   async FillData() {
 
-    if (this.serverService.SelectedData) {
-      this.data = this.serverService.SelectedData
-      this.decryptedPass = await EncryptionService.decrypt(this.serverService.SelectedData.password)
+    if (this.serverService.ServerDetails) {
+      this.data = this.serverService.ServerDetails
+      this.decryptedPass = await EncryptionService.decrypt(this.serverService.ServerDetails.password)
     }
 
     this.loading = true;
@@ -101,5 +110,33 @@ export class ServerDetailesComponent {
     const response = await this.applicationService.Search(filter)
     this.apps = await this.decrypt(response.data);
     this.totalRecords = this.apps.length
+  }
+
+  unlockPassword() {
+    this.enteredKey = '';
+    this.displayDialog = true;
+  }
+
+  validateKey() {
+    const validKey = EncryptionService.base64Key; // since your service uses static members
+
+    if (this.enteredKey === validKey) {
+      this.showDecrypted = true;
+      this.displayDialog = false;
+
+      this.messageService.add({
+        key: 'toast',
+        severity: 'success',
+        summary: 'Unlocked',
+        detail: 'Decrypted successfully.'
+      });
+    } else {
+      this.messageService.add({
+        key: 'toast',
+        severity: 'error',
+        summary: 'Invalid Key',
+        detail: 'The provided key is incorrect.'
+      });
+    }
   }
 }

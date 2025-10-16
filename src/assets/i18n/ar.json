@@ -212,5 +212,6 @@
     "No_Apps_Added" : "الرجاء إضافة تطبيقات الخادم",
     "appname":"اسم التطبيق",
     "View_CompanyAgents":"عرض وكلاءالشركة",
-    "Create_Employee":"إنشاء موظف"
+    "Create_Employee":"إنشاء موظف",
+    "service_viewDetails" : "الخدمة"
 }

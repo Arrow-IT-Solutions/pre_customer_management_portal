@@ -103,6 +103,7 @@ export class AddServiceComponent {
       if (!this.servicesService.SelectedData) {
         this.resetForm();
       } else {
+
         setTimeout(() => {
           this.servicesService.Dialog.adHostChild.viewContainerRef?.clear();
           this.servicesService.Dialog.adHostDynamic.viewContainerRef?.clear();

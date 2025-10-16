@@ -28,7 +28,7 @@ export class AgentComponent {
   isResetting: boolean = false;
   link = '';
   visible: boolean = false;
-companiesList: { label: string; value: string }[] = [];
+  companiesList: { label: string; value: string }[] = [];
 
 
   constructor(
@@ -36,7 +36,7 @@ companiesList: { label: string; value: string }[] = [];
     public agentService: AgentsService,
     public translate: TranslateService,
     public layoutService: LayoutService,
-    private companyService: CompaniesService, 
+    private companyService: CompaniesService,
     public messageService: MessageService,
     public confirmationService: ConfirmationService
   ) {
@@ -54,49 +54,49 @@ companiesList: { label: string; value: string }[] = [];
   async ngOnInit() {
     await this.retrieveCompanies();
     await this.FillData();
-   
+
   }
 
   Search() {
     this.FillData();
   }
 
- retrieveCompanyLabel(row: AgentResponse): string {
-  const companyUUID = row.companyIDFK?.trim();
-  const match = this.companiesList.find(c => c.value === companyUUID);
-  return match?.label || '-';
-}
+  retrieveCompanyLabel(row: AgentResponse): string {
+    const companyUUID = row.companyIDFK?.trim();
+    const match = this.companiesList.find(c => c.value === companyUUID);
+    return match?.label || '-';
+  }
 
 
- 
- async retrieveCompanies() {
-  const filter = {
-    name: '',
-    uuid: '',
-    pageIndex: '0',
-    pageSize: '10' 
-  };
 
-  const response = await this.companyService.Search(filter) as any;
-  const companies = response?.data || [];
+  async retrieveCompanies() {
+    const filter = {
+      name: '',
+      uuid: '',
+      pageIndex: '0',
+      pageSize: '10'
+    };
 
-  this.companiesList = companies.map((company: any) => ({
-    label: company.companyTranslation?.[this.layoutService.config.lang]?.name ?? '—',
-    value: company.uuid?.trim() ?? ''
-  }));
-  
-  console.log('companies response:', response);
-console.log('mapped companiesList:', this.companiesList);
+    const response = await this.companyService.Search(filter) as any;
+    const companies = response?.data || [];
 
-}
+    this.companiesList = companies.map((company: any) => ({
+      label: company.companyTranslation?.[this.layoutService.config.lang]?.name ?? '—',
+      value: company.uuid?.trim() ?? ''
+    }));
+
+    console.log('companies response:', response);
+    console.log('mapped companiesList:', this.companiesList);
+
+  }
 
 
-   
-filterByCompany(companyUUID: string) {
-  console.log("company UUID " , companyUUID)
-  this.dataForm.get('companyIDFK')?.setValue(companyUUID);
-  this.FillData();
-}
+
+  filterByCompany(companyUUID: string) {
+    console.log("company UUID ", companyUUID)
+    this.dataForm.get('companyIDFK')?.setValue(companyUUID);
+    this.FillData();
+  }
 
 
 
@@ -126,9 +126,9 @@ filterByCompany(companyUUID: string) {
 
     this.loading = false;
   }
- 
+
   OnChange() {
-    if (this.isResetting) { return }; 
+    if (this.isResetting) { return };
 
     clearTimeout(this.typingTimer);
     this.typingTimer = setTimeout(() => {
@@ -137,16 +137,16 @@ filterByCompany(companyUUID: string) {
 
   }
 
-   paginate(event: any) {
-      this.pageSize = event.rows
-      this.first = event.first
-      this.FillData(event.first)
-  
-    }
-    showDialog(link: string) {
-      this.link = link;
-      this.visible = true;
-    }
+  paginate(event: any) {
+    this.pageSize = event.rows
+    this.first = event.first
+    this.FillData(event.first)
+
+  }
+  showDialog(link: string) {
+    this.link = link;
+    this.visible = true;
+  }
 
   async resetform() {
     this.isResetting = true;
@@ -165,67 +165,45 @@ filterByCompany(companyUUID: string) {
       content = res;
     });
 
-    var component = this.layoutService.OpenDialog(AddAgentComponent, content);
+    const component = this.layoutService.OpenDialog(AddAgentComponent, content);
     this.agentService.Dialog = component;
 
     component.OnClose.subscribe(() => {
       document.body.style.overflow = '';
-      if (row == null)
-        this.OpenInfoPage(this.agentService.SelectedData)
-      });    
+      this.FillData();
+    });
   }
 
-    
-
-  async OpenInfoPage(response) {
-  
-      console.log('here')
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      document.body.style.overflow = 'hidden';
-      this.agentService.SelectedData = response
-      console.log('selectedData', this.agentService.SelectedData)
-      let content = 'Info';
-      this.translate.get(content).subscribe((res: string) => {
-        content = res
-      });
-     var component = this.layoutService.OpenDialog(PasswordComponent, content);
-     this.agentService.Dialog = component;
-      component.OnClose.subscribe(() => {
-        document.body.style.overflow = '';
-        this.FillData();
-      });
-    }
-  
   confirmDelete(row: AgentResponse) {
-  
-      console.log(row)
-      this.confirmationService.confirm({
-        message: this.translate.instant("Do_you_want_to_delete_this_record?"),
-        header: this.translate.instant("Delete_Confirmation"),
-        icon: 'pi pi-info-circle',
-        key: 'positionDialog',
-        closeOnEscape: true,
-        accept: async () => {
-          const response = (await this.agentService.Delete(row.uuid!)) as any;
-  
-          this.confirmationService.close();
-  
-          this.layoutService.showSuccess(this.messageService, 'toast', true, response.requestMessage);
-  
-          this.FillData();
-  
-        },
-        reject: () => {
-          // this.msgs = [{severity:'info', summary:'Rejected', detail:'You have rejected'}];
-        },
-      });
-    }
 
- 
-  
-    
+    console.log(row)
+    this.confirmationService.confirm({
+      message: this.translate.instant("Do_you_want_to_delete_this_record?"),
+      header: this.translate.instant("Delete_Confirmation"),
+      icon: 'pi pi-info-circle',
+      key: 'positionDialog',
+      closeOnEscape: true,
+      accept: async () => {
+        const response = (await this.agentService.Delete(row.uuid!)) as any;
 
-  
-  
-    
+        this.confirmationService.close();
+
+        this.layoutService.showSuccess(this.messageService, 'toast', true, response.requestMessage);
+
+        this.FillData();
+
+      },
+      reject: () => {
+        // this.msgs = [{severity:'info', summary:'Rejected', detail:'You have rejected'}];
+      },
+    });
+  }
+
+
+
+
+
+
+
+
 }

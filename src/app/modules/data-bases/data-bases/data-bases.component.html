@@ -34,13 +34,13 @@
                 </div>
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
-              
-                  <div class="p-float-label">
-              <p-dropdown [options]="envOptions" optionLabel="name" optionValue="uuid" formControlName="envIDFK"
-                  placeholder="" (onChange)="OnChange()" [showClear]="true" dir="ltr">
-                </p-dropdown>
-               <label id="label" for="">{{ 'SelectEnvironment' | translate }}</label>
-              </div>
+
+                <div class="p-float-label">
+                  <p-dropdown [options]="envOptions" optionLabel="name" optionValue="uuid" formControlName="envIDFK"
+                    placeholder="" (onChange)="OnChange()" [showClear]="true" dir="ltr">
+                  </p-dropdown>
+                  <label id="label" for="">{{ 'SelectEnvironment' | translate }}</label>
+                </div>
               </div>
             </div>
 
@@ -59,7 +59,7 @@
 
   <ng-container *ngIf="!loading; else ListView">
     <div class="row mx-0 mt-2 box">
-      <div *ngFor="let row of data" class="card col-12 mx-0 mb-2">
+      <div *ngFor="let row of data; let i = index" class="card col-12 mx-0 mb-2">
         <div class="icon-container">
           <span class="material-symbols-outlined fill">database</span>
         </div>
@@ -76,16 +76,21 @@
             <div class="card__contents__item">
               <div class="card-label">{{ 'userName_database' | translate }}</div>
               <div class="card-info">
-                {{ row.userName || '-' }}
+                {{ unlockedRows.has(row.uuid || i) ? row.userName : '••••••••••••' }}
+                <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
+                  (click)="unlock(row.uuid || i, 'username')"></button>
               </div>
             </div>
 
             <div class="card__contents__item">
               <div class="card-label">{{ 'password_database' | translate }}</div>
               <div class="card-info">
-                {{ row.password || '-' }}
+                {{ unlockedRows.has(row.uuid || i) ? row.password : '••••••••••••' }}
+                <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
+                  (click)="unlock(row.uuid || i, 'password')"></button>
               </div>
             </div>
+
             <div class="card__contents__item">
               <div class="card-label">{{ 'environment' | translate }}</div>
               <div class="card-info">
@@ -100,7 +105,9 @@
             <div class="card__contents__item">
               <div class="card-label">{{ 'connectionString_database' | translate }}</div>
               <div class="card-info">
-                {{ row.connectionString || '-' }}
+                {{ unlockedRows.has(row.uuid || i) ? row.connectionString : '••••••••••••' }}
+                <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
+                  (click)="unlock(row.uuid || i, 'connectionString')"></button>
               </div>
             </div>
           </div>
@@ -158,3 +165,16 @@
 </div>
 
 <p-toast key="toast"></p-toast>
+
+<p-dialog header="Unlock Data" [(visible)]="displayDialog" [modal]="true" [style]="{ width: '400px' }">
+  <div class="p-fluid">
+    <div class="field">
+      <label for="privateKey">Enter Private Key</label>
+      <input id="privateKey" type="password" pInputText [(ngModel)]="enteredKey" />
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" icon="pi pi-times" (onClick)="displayDialog = false"></p-button>
+    <p-button label="Unlock" icon="pi pi-check" (onClick)="validateKey()"></p-button>
+  </ng-template>
+</p-dialog>

@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  ServiceSearchRequest,
-  ServiceResponse,
-  ServiceTranslationResponse
-} from '../services.module';
+import { ServiceSearchRequest, ServiceResponse } from '../services.module';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from 'src/app/layout/service/layout.service';
 import { AddServiceComponent } from '../add-service/add-service.component';
@@ -26,7 +22,7 @@ export class ServicesComponent {
 
   dataForm!: FormGroup;
   data: ServiceResponse[] = [];
-  
+
   loading = false;
   isResetting: boolean = false;
 
@@ -42,12 +38,12 @@ export class ServicesComponent {
     public confirmationService: ConfirmationService
   ) {
     this.dataForm = this.formBuilder.group({
-    name: [''],
-    nameAr: ['', Validators.required],
-    nameEn: ['', Validators.required],
-    description: ['', Validators.required]
-});
- this.serviceService.refreshServices$.subscribe(() => {
+      name: [''],
+      nameAr: ['', Validators.required],
+      nameEn: ['', Validators.required],
+      description: ['', Validators.required]
+    });
+    this.serviceService.refreshServices$.subscribe(() => {
       this.FillData();
     });
   }
@@ -55,7 +51,7 @@ export class ServicesComponent {
   async ngOnInit() {
     await this.FillData();
   }
-   Search() {
+  Search() {
     this.FillData();
   }
 
@@ -73,7 +69,7 @@ export class ServicesComponent {
 
     const response = (await this.serviceService.Search(filter)) as any;
 
-     if (response.data == null || response.data.length == 0) {
+    if (response.data == null || response.data.length == 0) {
       this.data = [];
       this.totalRecords = 0;
     } else if (response.data != null && response.data.length != 0) {
@@ -86,9 +82,9 @@ export class ServicesComponent {
     this.loading = false;
   }
 
-  
 
- openAddService(row: ServiceResponse | null = null) {
+
+  openAddService(row: ServiceResponse | null = null) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.body.style.overflow = 'hidden';
     this.serviceService.SelectedData = row;
@@ -107,7 +103,7 @@ export class ServicesComponent {
     });
   }
 
-async confirmDelete(row: ServiceResponse) {
+  async confirmDelete(row: ServiceResponse) {
     this.confirmationService.confirm({
       message: this.translate.instant('Do_you_want_to_delete_this_record?'),
       header: this.translate.instant('Delete_Confirmation'),
@@ -119,7 +115,7 @@ async confirmDelete(row: ServiceResponse) {
         try {
           const resp = await this.serviceService.Delete(row.uuid!) as any;
           this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
-          this.FillData(); 
+          this.FillData();
         } catch (error) {
           this.messageService.add({
             severity: 'error',
@@ -131,7 +127,7 @@ async confirmDelete(row: ServiceResponse) {
     });
   }
 
-  
+
 
   async resetform() {
     this.isResetting = true;
@@ -140,7 +136,7 @@ async confirmDelete(row: ServiceResponse) {
     this.isResetting = false;
   }
 
-    paginate(event: any) {
+  paginate(event: any) {
     this.pageSize = event.rows
     this.first = event.first
     this.FillData(event.first)
@@ -149,8 +145,8 @@ async confirmDelete(row: ServiceResponse) {
 
 
 
-   OnChange() {
-    if (this.isResetting) { return }; 
+  OnChange() {
+    if (this.isResetting) { return };
 
     clearTimeout(this.typingTimer);
     this.typingTimer = setTimeout(() => {

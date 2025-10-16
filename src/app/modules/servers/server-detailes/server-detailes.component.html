@@ -5,6 +5,8 @@
         <div class="col-12 side-icon">
           <span class="material-symbols-outlined">info</span>
           <span>{{ 'serverInfo_viewDetails' | translate }}</span>
+          <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
+            (click)="unlockPassword()"></button>
         </div>
         <div class="col-12 row m-0 p-0">
           <div class="card-section__items">
@@ -18,11 +20,11 @@
             </div>
             <div class="card__contents__item mt-3">
               <div class="card-label">{{ 'userName_viewDetails' | translate }}:</div>
-              <div class="card-info">{{ data.username }}</div>
+              {{ showDecrypted ? data.username : '••••••••••••' }}
             </div>
             <div class="card__contents__item mt-3">
               <div class="card-label">{{ 'password_viewDetails' | translate }}:</div>
-              <div class="card-info">{{ decryptedPass }}</div>
+              {{ showDecrypted ? data.password : '••••••••••••' }}
             </div>
             <div class="card__contents__item mt-3">
               <div class="card-label">{{ 'URL_viewDetails' | translate }}:</div>
@@ -97,39 +99,39 @@
         </div>
 
         <div class="card-container">
-            
-              <div class="card environment-card" *ngFor="let app of apps;let i = index">
-                <div class="card-header d-flex justify-content-center align-items-center">
-                  <span class="badge me-2">{{ i + 1 }}</span>
-                </div>
-                <div class="card-body">
-                  <div class="environment-details">
-                    <div class="detail-item">
-                      <label>{{ 'applicationName_application' | translate }}:</label>
-                      <span>{{app.name}}</span>
-                    </div>
-                    <div class="detail-item">
-                      <label>{{ 'port_application' | translate }}:</label>
-                      <span>{{app.portNumber}}</span>
 
-                    </div>
-                    <div class="detail-item">
-                      <label>{{ 'Url_application' | translate }}:</label>
-                      <span>{{app.url}}</span>
-                    </div>
-                    <div class="detail-item">
-                      <label>{{ 'userName_application' | translate }}:</label>
-                      <span>{{app.userName}}</span>
-                    </div>
-                    <div class="detail-item">
-                      <label>{{ 'password_server' | translate }}:</label>
-                      <span>{{app.password}}</span>
-                    </div>
-
-                  </div>
+          <div class="card environment-card" *ngFor="let app of apps;let i = index">
+            <div class="card-header d-flex justify-content-center align-items-center">
+              <span class="badge me-2">{{ i + 1 }}</span>
+            </div>
+            <div class="card-body">
+              <div class="environment-details">
+                <div class="detail-item">
+                  <label>{{ 'applicationName_application' | translate }}:</label>
+                  <span>{{app.name}}</span>
                 </div>
+                <div class="detail-item">
+                  <label>{{ 'port_application' | translate }}:</label>
+                  <span>{{app.portNumber}}</span>
+
+                </div>
+                <div class="detail-item">
+                  <label>{{ 'Url_application' | translate }}:</label>
+                  <span>{{app.url}}</span>
+                </div>
+                <div class="detail-item">
+                  <label>{{ 'userName_application' | translate }}:</label>
+                  <span>{{app.userName}}</span>
+                </div>
+                <div class="detail-item">
+                  <label>{{ 'password_server' | translate }}:</label>
+                  <span>{{app.password}}</span>
+                </div>
+
               </div>
-            
+            </div>
+          </div>
+
         </div>
 
         <!-- <div class="col-12 text-center py-5" *ngIf="apps?.length === 0">
@@ -150,3 +152,16 @@
   <mat-spinner id="spinner"></mat-spinner>
 </ng-template>
 <p-toast key="toast"></p-toast>
+
+<p-dialog header="Unlock Password" [(visible)]="displayDialog" [modal]="true" [style]="{ width: '400px' }">
+  <div class="p-fluid">
+    <div class="field">
+      <label for="privateKey">Enter Private Key</label>
+      <input id="privateKey" type="password" pInputText [(ngModel)]="enteredKey" />
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" icon="pi pi-times" (onClick)="displayDialog = false"></p-button>
+    <p-button label="Unlock" icon="pi pi-check" (onClick)="validateKey()"></p-button>
+  </ng-template>
+</p-dialog>

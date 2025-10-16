@@ -23,7 +23,7 @@ import { EncryptionService } from 'src/app/shared/service/encryption.service';
 export class EnvironmentComponent implements OnDestroy {
   @ViewChild('serverDropdown') serverDropdown!: Dropdown;
   dataForm!: FormGroup;
-  searchForm!:FormGroup;
+  searchForm!: FormGroup;
   submitted: boolean = false;
   btnLoading: boolean = false;
   loading: boolean = false;
@@ -63,10 +63,10 @@ export class EnvironmentComponent implements OnDestroy {
 
     });
 
-    this.searchForm=formBuilder.group({
-      EnvName:[''],
-      server:[''],
-      dbName:['']
+    this.searchForm = formBuilder.group({
+      EnvName: [''],
+      server: [''],
+      dbName: ['']
 
 
     })
@@ -455,7 +455,7 @@ export class EnvironmentComponent implements OnDestroy {
       return;
     }
 
-   // this.filterLoading = true;
+    // this.filterLoading = true;
 
     setTimeout(() => {
       const filters = this.searchForm.value;
@@ -483,7 +483,7 @@ export class EnvironmentComponent implements OnDestroy {
         return matchesEnvName && matchesServer && matchesDbName;
       });
 
-     // this.filterLoading = false;
+      // this.filterLoading = false;
     }, 100);
   }
 
