@@ -212,5 +212,14 @@
     "No_Apps_Added" : "الرجاء إضافة تطبيقات الخادم",
     "appname":"اسم التطبيق",
     "View_CompanyAgents":"عرض وكلاءالشركة",
-    "Create_Employee":"إنشاء موظف"
+    "Create_Employee":"إنشاء موظف",
+    "Renew_Company":"تجديد الاشتراك",
+    "company_name":"اسم الشركة",
+    "renew_period":"مدة تجديد الاشتراك",
+    "number_period":"الرقم",
+    "type_period":"النمط",
+    "new_endDate":"تاريخ الانتهاء الجديد",
+    "total_Renews":"المجموع",
+    "UnLock_card":"فك التشفير",
+    "Lock_card":"تشفير"
 }

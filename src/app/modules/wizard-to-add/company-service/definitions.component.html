@@ -67,10 +67,10 @@
                 <div class="p-float-label" [ngClass]="{'error_border': submitted && form['status'].errors}">
                   <p-dropdown [options]="statusList" optionLabel="value" optionValue="key" formControlName="status"
                     dir="ltr">
-                    <label id="label"
+                  </p-dropdown>
+                  <label id="label"
                       [ngClass]="{'error': submitted && form['status'].errors,'no-error': !(submitted && form['status']?.errors)}">{{
                       'status_subscription' | translate }}</label>
-                  </p-dropdown>
                 </div>
                 <div *ngIf="submitted && form['status'].errors?.['required']" class="text-danger mt-1">
                   {{ 'field_required' | translate }}

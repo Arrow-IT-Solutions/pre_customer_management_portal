@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { ProvisionedServiceResponse } from '../../wizard-to-add/wizard-to-add.module';
 import { LayoutService } from 'src/app/layout/service/layout.service';
 import { EncryptionService } from 'src/app/shared/service/encryption.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AlertModelComponent } from '../alert-model/alert-model.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-services-details',
   templateUrl: './services-details.component.html',
-  styleUrls: ['./services-details.component.scss']
+  styleUrls: ['./services-details.component.scss'],
+  providers: [MessageService]
 })
 export class ServicesDetailsComponent implements OnInit {
   loading: boolean = false;
@@ -23,12 +26,14 @@ export class ServicesDetailsComponent implements OnInit {
   companyserviceUUID: string = '';
   envDatabase: any[] = [];
   lang: string ='en';
+  @ViewChild(AlertModelComponent) alertModal!: AlertModelComponent;
   constructor(
     public formBuilder: FormBuilder,
     public route: ActivatedRoute,
     public provisionedService: ProvisionedService,
     public layoutService: LayoutService,
     public translate: TranslateService,
+    public router: Router,
    private encryptionService: EncryptionService,
 
   ) {
@@ -101,6 +106,12 @@ private async decrypt(encrypted: string): Promise<string> {
     console.warn('Decryption failed:', err);
     return '[decryption failed]';
   }
+}
+
+openAlertModel(){
+  // this.alertModal.showAlert();
+  console.log("alert")
+  console.log("alertModal",this.alertModal)
 }
 
 

@@ -1,6 +1,6 @@
 @import "../../../../assets/scss/varialbles.scss";
 
-.subscription {
+.renews {
     padding: 1rem 1rem 1rem 1rem;
     position: relative;
 
@@ -9,15 +9,15 @@
     }
     .container{
         display: flex;
-        flex-wrap: nowrap;
-        column-gap: 0.5rem;
-        padding: 1rem 0;
+        flex-wrap: wrap;
+        column-gap: 2rem;
+        padding: 1rem 1.2rem;
 
         .result{
             // padding-left: 5rem;
-            // padding-top: 1rem;
+            
 
-        .result_button{
+           .result_button{
         width: 3rem !important;
         height: 3rem !important;
         border-radius: 50% !important;
@@ -27,6 +27,8 @@
 
         padding: 0 !important;
         padding-right: 1rem !important;
+        margin-top: 3rem !important;
+        
            }
             @media(max-width:767px){
 
@@ -173,7 +175,7 @@
       top: -5px;
     }
   }
-   .box2{
+ .box2{
     display: flex;
     flex-direction: row;
     column-gap: 2rem;
@@ -229,11 +231,10 @@
           background-color: darken($secoundary-color, 5%) !important;
         }
       }
-}
-& .card {
-     width: 100%;
+    }
+  & .card {
+     width: 32%;
     display: flex;
-    align-items: center;
     flex-direction: row;
     padding: 1rem;
     max-height: 14rem;
@@ -244,7 +245,7 @@
     border-color: rgba($gray-color, 0.5);
     // column-gap: 1rem;
     @media (max-width:767px) {
-      max-height: 25rem;
+      max-height: 15rem;
       width: 100%;
       flex-direction: column;
 
@@ -256,7 +257,7 @@
     }
     .icon-container{
       display: flex;
-      margin-bottom: 2rem;
+      margin-bottom: 10rem;
 
       @media (max-width:767px) {
         padding-top: 0;
@@ -271,7 +272,7 @@
         color: $primary-color;
        }
 
-}
+     }
 
 
 
@@ -353,12 +354,11 @@
 
     &__items{
         display: flex;
-        width: 100%;
-        justify-content: space-around;
-        // flex-direction: column;
+        width: 95%;
+        flex-direction: column;
 
 
-       padding: 1rem;
+       padding: 0.5rem;
 
 
         @media (max-width:767px){
@@ -382,7 +382,7 @@
     &__contents {
 
 
-      width: 95%;
+      width: 80%;
 
       @media(max-width:767px){
       }
@@ -536,10 +536,6 @@
 }
 #icon{
   color: $gray-color;
-}
-#label:lang(ar){
-  margin-right: 2rem;
-  
 }
 
 

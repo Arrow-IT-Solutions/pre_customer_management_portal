@@ -1,4 +1,4 @@
-<div class="subscription">
+<div class="renews">
 
   <div [formGroup]="dataForm" class="row mb-4 m-0  p-0">
     <p-accordion class="mt-5 p-0">
@@ -15,28 +15,19 @@
               <span>Filter By</span>
             </div>
             <div class="container">
-               <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
-                <div class="flex flex-wrap justify-content-center gap-3">
-                  <span class="p-input-icon-left p-0">
-                    <i class="pi pi-search"></i>
-                    <input class="search-field" type="text" (input)="OnChange()"
-                      placeholder="{{ 'Company_Service' | translate }}" formControlName="com_service" pInputText />
-                  </span>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
+             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <div class="p-float-label">
-                    <p-dropdown [options]="statusList" optionLabel="value" optionValue="key" (onChange)="Search()"
-                      formControlName="status" dir="ltr" [showClear]="true">
+                    <p-dropdown [options]="" optionLabel="value" optionValue="key" (onChange)="Search()"
+                      formControlName="com_name" dir="ltr" [showClear]="true">
                     </p-dropdown>
-                    <label id="label">{{ 'status_subscription' | translate }}</label>
+                    <label id="label">{{ 'company_name' | translate }}</label>
 
                   </div>
                 </div>
 
               </div>
-               <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
+              <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                <div class="p-float-label">
                 <p-calendar [showIcon]="true" formControlName="startDate"></p-calendar>
@@ -44,7 +35,7 @@
               </div>
               </div>
               </div>
-               <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                <div class="p-float-label">
                 <p-calendar [showIcon]="true" formControlName="endDate"></p-calendar>
@@ -52,7 +43,21 @@
               </div>
               </div>
               </div>
-             
+               <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center gap-3">
+                  <div class="p-float-label">
+                    <p-dropdown [options]="" optionLabel="value" optionValue="key" (onChange)="Search()"
+                      formControlName="type_period" dir="ltr" [showClear]="true">
+                    </p-dropdown>
+                    <label id="label">{{ 'type_period' | translate }}</label>
+
+                  </div>
+                </div>
+
+              </div>
+              
+
+
 
 
             </div>
@@ -65,45 +70,38 @@
               </div>
             </div>
           </div>
-
         </ng-template>
       </p-accordionTab>
     </p-accordion>
 
   </div>
   <ng-container *ngIf="!loading; else ListView">
-
     <div class="box">
-      <div *ngFor="let row of data" class="card mx-0 mb-2">
+      <div class="card mx-0 mb-2">
         <div class="icon-container">
-          <span class="material-symbols-outlined fill">library_add</span>
+          <span class="material-symbols-outlined fill">autorenew</span>
         </div>
 
         <div class="col-3 card__contents">
           <div class="card-section__items">
             <div class="card__contents__item">
-            <div class="card-label">{{ 'Company_Service' | translate }}</div>
-            <div class="card-info">
-              {{ retrieveCompanyServiceLabel(row) }}
-            </div>
-            </div>
-            <div class="card__contents__item">
-              <div class="card-label">{{ 'startDate_subscription' | translate }}</div>
-              <div class="card-info">{{ row.startDate | date: 'yyyy-MM-dd' }}</div>
+              <div class="card-label">{{ 'company_name' | translate }}</div>
+              <div class="card-info">
+                Gym
+              </div>
             </div>
             <div class="card__contents__item">
-              <div class="card-label">{{ 'endDate_subscription' | translate }}</div>
-              <div class="card-info">{{ row.endDate | date: 'yyyy-MM-dd' }}</div>
+              <div class="card-label">{{ 'renew_period' | translate }}</div>
+              <div class="card-info">
+               2 months
+              </div>
             </div>
-            <div class="card__contents__item">
-              <div class="card-label">{{ 'status_subscription' | translate }}</div>
-              <div class="card-info">{{ row.statusValue }}</div>
+             <div class="card__contents__item">
+              <div class="card-label">{{ 'new_endDate' | translate }}</div>
+              <div class="card-info">
+               {{'1-12-2026' | date: 'yyyy-MM-dd'}}
+              </div>
             </div>
-            <div class="card__contents__item">
-              <div class="card-label">{{ 'price_subscription' | translate }}</div>
-              <div class="card-info">{{ row.price }}</div>
-            </div>
-          
           </div>
         </div>
 
@@ -112,18 +110,16 @@
             <span class="material-symbols-outlined card__actions__details">more_vert</span>
           </div>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openRenew(row)">
-                 <span class="material-symbols-outlined" id="icon">autorenew</span>
-                {{ 'Renew_Company' | translate }}
+            <ng-template matMenuContent>
+              <button mat-menu-item >
+                <span class="material-symbols-outlined" id="icon">edit</span>
+                {{ 'Edit_subscription' | translate }}
               </button>
-            <button mat-menu-item (click)="openAddService(row)">
-              <span class="material-symbols-outlined" id="icon">Edit</span>
-              {{ 'Edit_subscription' | translate }}
-            </button>
-            <button mat-menu-item (click)="confirmDelete(row)">
-              <span class="material-symbols-outlined" id="icon">delete</span>
-              {{ 'Delete_subscription' | translate }}
-            </button>
+              <button mat-menu-item >
+                <span class="material-symbols-outlined" id="icon">delete</span>
+                {{ 'Delete_subscription' | translate }}
+              </button>
+            </ng-template>
           </mat-menu>
         </div>
       </div>
@@ -131,36 +127,49 @@
 
 
 
+
+
+
     <div class="all d-flex">
       <div class="total">
-        {{ "totalEnvironments_environment" | translate }}: {{ totalRecords }}
-
+        {{ "total_Renews" | translate }}: {{ totalRecords }}
       </div>
-    </div>
 
+    </div>
     <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
       [first]="first" (onPageChange)="paginate($event)"></p-paginator>
-    <button class="add-button" (click)="openAddService()">
-      <span class="material-symbols-outlined">add</span>
-    </button>
+   
 
 
   </ng-container>
 
   <ng-template #ListView>
     <div class="row">
-      <div *ngFor="let list of [1, 2, 3]" class="row mx-0 mt-2">
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
         <p-skeleton height="10rem"></p-skeleton>
       </div>
     </div>
+    <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
+      </div>
+    </div>
+    <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="col mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
+      </div>
+    </div>
+
   </ng-template>
-  <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
+  <!-- <p-confirmDialog #confirmDialog key="confirmDialog" position="bottom" [baseZIndex]="10000" onHide="true">
     <ng-template pTemplate="footer">
       <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}"
         (click)="confirmDialog.reject()"></button>
       <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}"
         (click)="confirmDialog.accept()"></button>
     </ng-template>
-  </p-confirmDialog>
+  </p-confirmDialog> -->
 </div>
+
 <p-toast key="toast"></p-toast>
+
