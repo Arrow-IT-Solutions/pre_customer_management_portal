@@ -144,6 +144,13 @@ const routes: Routes = [
           import('./modules/settings/settings.module').then(
             (m) => m.SettingsModule
           )
+      },
+       {
+        path: 'renews',
+        loadChildren: () =>
+          import('./modules/renews/renews.module').then(
+            (m) => m.RenewsModule
+          )
       }
 
     ]

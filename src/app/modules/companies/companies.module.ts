@@ -11,7 +11,8 @@ import { CompaniesRoutingModule } from './companies-routing.module';
 @NgModule({
   declarations: [
     CompaniesComponent,
-    AddCompanyComponent
+    AddCompanyComponent,
+   
   ],
   imports: [
     CommonModule,

@@ -9,6 +9,7 @@ import { SubscriptionSearchRequest, SubscriptionResponse } from '../subscription
 import { ConstantResponse, ConstantService } from 'src/app/Core/services/constant.service';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { CompanyServiceService } from 'src/app/layout/service/companyService.service';
+import { RenewComponent } from '../renew/renew.component';
 
 @Component({
   selector: 'app-subscriptions',
@@ -41,7 +42,11 @@ export class SubscriptionsComponent {
     public confirmationService: ConfirmationService
   ) {
     this.dataForm = this.formBuilder.group({
-      status: ['']
+      status: [''],
+      com_service:[''],
+      startDate:[''],
+      endDate:['']
+
     });
 
     this.subscripeService.refreshList$.subscribe(() => {
@@ -170,6 +175,22 @@ export class SubscriptionsComponent {
       this.FillData();
     });
   }
+
+  openRenew(row: SubscriptionResponse | null = null){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.body.style.overflow = 'hidden';
+       this.companyService.SelectedData = row
+      let content ='Renew_Company';
+      this.translate.get(content).subscribe((res: string) => {
+        content = res
+      });
+      var component = this.layoutService.OpenDialog(RenewComponent, content);
+      this.companyService.Dialog = component;
+      component.OnClose.subscribe(() => {
+        document.body.style.overflow = '';
+        this.FillData();
+      });
+      }
 
   async confirmDelete(row: SubscriptionResponse) {
     this.confirmationService.confirm({

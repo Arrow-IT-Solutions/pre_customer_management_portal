@@ -89,7 +89,7 @@ export class CompaniesComponent {
     this.FillData(event.first);
 
   }
-      openAddCompany(row: CompanyResponse | null = null){
+    openAddCompany(row: CompanyResponse | null = null){
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.body.style.overflow = 'hidden';
     this.companyService.SelectedData = row
@@ -103,7 +103,8 @@ export class CompaniesComponent {
       document.body.style.overflow = '';
       this.FillData();
     });
-      }
+    }
+    
 
     confirmDelete(row: CompanyResponse) {
 

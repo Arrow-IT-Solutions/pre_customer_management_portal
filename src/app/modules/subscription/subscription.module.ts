@@ -8,13 +8,15 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/class/class';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { RenewComponent } from './renew/renew.component';
 
 
 
 @NgModule({
   declarations: [
     SubscriptionsComponent,
-    AddSubscripeComponent
+    AddSubscripeComponent,
+    RenewComponent
   ],
   imports: [
     CommonModule,

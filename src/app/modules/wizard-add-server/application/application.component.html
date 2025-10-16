@@ -130,8 +130,8 @@
             </p-accordion>
 
             <div class="col-12" *ngIf="applications.length > 0">
-              <div class="row">
-                <div class="col-md-6 mb-3" *ngFor="let app of filteredApplications; let i = index">
+              <div class="col" style="max-height: 20rem;overflow-y: auto;">
+                <div class="col-md-6 mb-3" style="width: 100%;" *ngFor="let app of filteredApplications; let i = index">
                   <div class="card environment-card" [ngClass]="{'editing': isEditingApp && editingAppIndex === i}">
                     <div class="card-header d-flex justify-content-between align-items-center">
                       <h6 class="mb-0">
@@ -147,6 +147,7 @@
                     </div>
                     <div class="card-body">
                       <div class="environment-details">
+                        <div style="display: flex;justify-content: space-between;align-items: center;border-bottom: 1px solid #f1f3f4;">
                         <div class="detail-item">
                           <label>{{ 'applicationName_application' | translate }}:</label>
                           <span>{{app.name}}</span>
@@ -168,6 +169,8 @@
                           <label>{{ 'password_server' | translate }}:</label>
                           <span>{{app.password}}</span>
                         </div>
+                        </div>
+                        
                       </div>
                     </div>
                   </div>
