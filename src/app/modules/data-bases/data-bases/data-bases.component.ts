@@ -12,6 +12,7 @@ import { EnvironmentResponse } from '../../environment/environment.module';
 import { EnvironmentService } from 'src/app/Core/services/environments.service';
 import { EncryptionService } from 'src/app/shared/service/encryption.service';
 
+
 @Component({
   selector: 'app-data-bases',
   templateUrl: './data-bases.component.html',
@@ -19,6 +20,11 @@ import { EncryptionService } from 'src/app/shared/service/encryption.service';
   providers: [MessageService, ConfirmationService]
 })
 export class DataBasesComponent implements OnInit {
+  unlockedRows: Set<string | number> = new Set();
+  displayDialog = false;
+  enteredKey = '';
+  selectedRowKey: string | number | null = null;
+  selectedField: 'password' | 'connectionString' | 'username' | null = null;
   dataForm!: FormGroup;
   doneTypingInterval = 1000;
   typingTimer: any;
@@ -163,6 +169,7 @@ export class DataBasesComponent implements OnInit {
       }
     });
   }
+
   private async decrypt(data: any[]): Promise<any[]> {
     return await Promise.all(
       data.map(async (item) => {
@@ -177,5 +184,35 @@ export class DataBasesComponent implements OnInit {
         }
       })
     );
+  }
+
+  unlock(rowKey: string | number, field: 'password' | 'connectionString' | 'username') {
+    this.selectedRowKey = rowKey;
+    this.selectedField = field;
+    this.enteredKey = '';
+    this.displayDialog = true;
+  }
+
+  validateKey() {
+    const validKey = EncryptionService.base64Key;
+
+    if (this.enteredKey === validKey && this.selectedRowKey != null) {
+      this.unlockedRows.add(this.selectedRowKey);
+      this.displayDialog = false;
+
+      this.messageService.add({
+        key: 'toast',
+        severity: 'success',
+        summary: 'Unlocked',
+        detail: `Decrypted ${this.selectedField} successfully.`
+      });
+    } else {
+      this.messageService.add({
+        key: 'toast',
+        severity: 'error',
+        summary: 'Invalid Key',
+        detail: 'The provided key is incorrect.'
+      });
+    }
   }
 }

@@ -11,6 +11,8 @@ export class ServersService {
 
 
   public SelectedData: ServerResponse | null = null;
+  public ServerDetails: ServerResponse | null = null;
+
   public Dialog: any | null = null;
   private refreshServersSubject = new Subject<void>();
 

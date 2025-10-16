@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class EncryptionService {
 
-  private static readonly base64Key = 'Z7RrRG/bODKvYRtLDZZnmqlWhTuFwXp0NCDzZ7jodUo=';
+  public static readonly base64Key = 'Z7RrRG/bODKvYRtLDZZnmqlWhTuFwXp0NCDzZ7jodUo=';
   private static readonly ivLength = 12;
 
   private static async getKey(): Promise<CryptoKey> {

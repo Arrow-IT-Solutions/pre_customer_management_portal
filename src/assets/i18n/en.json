@@ -211,6 +211,8 @@
      "No_Apps_Added" : "No Apps Added",
      "appname":"App Name",
      "Create_Employee":"Create Employee",
+     "service_viewDetails" : "Service",
+
      "Renew_Company":"Renew Company",
      "company_name":"Company name",
      "renew_period":"Renew Period",
