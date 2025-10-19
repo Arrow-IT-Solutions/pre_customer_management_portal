@@ -20,6 +20,7 @@ import { EncryptionService } from 'src/app/shared/service/encryption.service';
   providers: [MessageService, ConfirmationService]
 })
 export class DataBasesComponent implements OnInit {
+  showDecrypted = false;
   unlockedRows: Set<string | number> = new Set();
   displayDialog = false;
   enteredKey = '';
@@ -199,6 +200,7 @@ export class DataBasesComponent implements OnInit {
     if (this.enteredKey === validKey && this.selectedRowKey != null) {
       this.unlockedRows.add(this.selectedRowKey);
       this.displayDialog = false;
+      this.showDecrypted=true;
 
       this.messageService.add({
         key: 'toast',
