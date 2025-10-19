@@ -131,11 +131,13 @@
           <div class="row">
             <div class="col-md-6 mb-3" *ngFor="let env of envDatabase; let i = index">
               <div class="card environment-card">
-                <div class="card-header d-flex justify-content-center align-items-center">
+                <div class="card-header d-flex justify-content-between align-items-center">
                   <span class="badge me-2">{{ i+1 }}</span>
-                  <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
+                  <!-- <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
                     (click)="unlock(i, env)">
-                  </button>
+                  </button> -->
+                   <button *ngIf="!showDecrypted" id="lock" pButton type="button" icon="pi pi-lock-open" (click)="unlock(i, env)"><span>{{'UnLock_card' | translate}}</span></button>
+                   <button *ngIf="showDecrypted" id="lock" pButton type="button" icon="pi pi-lock"><span>{{'Lock_card' | translate}}</span></button>
                 </div>
                 <div class="card-body">
                   <div class="environment-details">
@@ -186,7 +188,7 @@
                       <span class="connection-string"></span>
                     </div>
                   </div>
-                  <button id="lock" (click)="openAlertModel()"><span class="material-symbols-outlined fill">lock</span>{{'UnLock_card' | translate}}</button>
+                  
                   <!-- <button id="lock"><span class="material-symbols-outlined fill">lock</span>{{'Lock_card' | translate}}</button> -->
 
                 </div>
