@@ -145,7 +145,7 @@ export class ServicesDetailsComponent implements OnInit {
 openAlertModel(){
   // this.alertModal.showAlert();
   console.log("alert")
-  console.log("alertModal",this.alertModal)
+  
 }
 
 

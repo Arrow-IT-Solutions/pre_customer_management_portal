@@ -84,7 +84,9 @@
             <div class="card__contents__item">
             <div class="card-label">{{ 'Company_Service' | translate }}</div>
             <div class="card-info">
-              {{ retrieveCompanyServiceLabel(row) }}
+             {{ row.companyService.company.companyTranslation?.[layoutService.config.lang]?.name }} -
+             {{ row.companyService.service.serviceTranslation?.[layoutService.config.lang]?.name }}
+
             </div>
             </div>
             <div class="card__contents__item">
