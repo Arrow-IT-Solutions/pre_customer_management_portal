@@ -15,6 +15,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   providers: [MessageService, ConfirmationService]
 })
 export class ServicesDetailsComponent implements OnInit {
+  showDecrypted = false;
   displayDialog = false;
   selectedEnvIndex: number | null = null;
   enteredKey = '';
@@ -125,6 +126,7 @@ export class ServicesDetailsComponent implements OnInit {
 
     if (this.enteredKey === validKey && this.selectedEnvIndex !== null) {
       this.unlockedEnvs.add(this.selectedEnvIndex);
+      this.showDecrypted=true;
       this.displayDialog = false;
       this.messageService.add({
         key: 'toast',

@@ -77,8 +77,8 @@
               <div class="card-label">{{ 'userName_database' | translate }}</div>
               <div class="card-info">
                 {{ unlockedRows.has(row.uuid || i) ? row.userName : '••••••••••••' }}
-                <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
-                  (click)="unlock(row.uuid || i, 'username')"></button>
+                <!-- <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
+                  (click)="unlock(row.uuid || i, 'username')"></button> -->
               </div>
             </div>
 
@@ -86,8 +86,8 @@
               <div class="card-label">{{ 'password_database' | translate }}</div>
               <div class="card-info">
                 {{ unlockedRows.has(row.uuid || i) ? row.password : '••••••••••••' }}
-                <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
-                  (click)="unlock(row.uuid || i, 'password')"></button>
+                <!-- <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
+                  (click)="unlock(row.uuid || i, 'password')"></button> -->
               </div>
             </div>
 
@@ -106,12 +106,13 @@
               <div class="card-label">{{ 'connectionString_database' | translate }}</div>
               <div class="card-info">
                 {{ unlockedRows.has(row.uuid || i) ? row.connectionString : '••••••••••••' }}
-                <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
-                  (click)="unlock(row.uuid || i, 'connectionString')"></button>
+                <!-- <button pButton type="button" icon="pi pi-lock-open" class="p-button-text p-0 ms-2"
+                  (click)="unlock(row.uuid || i, 'connectionString')"></button> -->
               </div>
             </div>
           </div>
-
+            <button *ngIf="!showDecrypted" id="lock" pButton type="button" icon="pi pi-lock-open" (click)="unlock(row.uuid || i, 'connectionString')"><span>{{'UnLock_card' | translate}}</span></button>
+          <button *ngIf="showDecrypted" id="lock" pButton type="button" icon="pi pi-lock"><span>{{'Lock_card' | translate}}</span></button>
         </div>
 
         <div class="one">
