@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/layout.service';
+import { RenewRequest, RenewResponse, RenewSearchRequest } from '../renews.module';
+import { RenewService } from 'src/app/Core/services/renew.service';
+import { RenewComponent } from '../../subscription/renew/renew.component';
 
 @Component({
   selector: 'app-renews',
@@ -10,7 +13,7 @@ import { LayoutService } from 'src/app/layout/service/layout.service';
   styleUrls: ['./renews.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class RenewsComponent {
+export class RenewsComponent implements OnInit {
     pageSize: number = 12;
     first: number = 0;
     totalRecords: number = 0;
@@ -20,13 +23,15 @@ export class RenewsComponent {
     isResetting: boolean = false;
     doneTypingInterval = 1000;
     typingTimer: any;
+    data: RenewResponse[] = [];
   
     constructor(
       public formBuilder: FormBuilder,
       public translate: TranslateService,
       public layoutService: LayoutService,
       public messageService: MessageService,
-      public confirmationService: ConfirmationService
+      public confirmationService: ConfirmationService,
+      public renewService :RenewService
     ) {
       this.dataForm = this.formBuilder.group({
       com_name: [''],
@@ -41,20 +46,56 @@ export class RenewsComponent {
     async ngOnInit() {
       await this.FillData();
     }
+
      Search() {
       this.FillData();
     }
   
     async FillData(pageIndex: number = 0) {
      
+     let filter: RenewSearchRequest =
+      {
+        uuid: '',
+        subscriptionIDFK: '',
+        companyServiceIDFK: '',
+        durationValue: '',
+        durationType: '',
+        FromDate:  '',
+        ToDate: '',
+      }
+     const response=await this.renewService.Search(filter);
+     console.log("Response Renew",response);
+     this.data = response.data;
+     this.totalRecords = response.totalRecords;
+ 
+     
     }
   
   
-  async confirmDelete() {
-      
-    }
-  
-    
+ async confirmDelete(row: RenewResponse) {
+    this.confirmationService.confirm({
+      message: this.translate.instant('Do_you_want_to_delete_this_record?'),
+      header: this.translate.instant('Delete_Confirmation'),
+      icon: 'pi pi-info-circle',
+      acceptLabel: this.translate.instant('Yes'),
+      rejectLabel: this.translate.instant('No'),
+      key: 'confirmDialog',
+      accept: async () => {
+        try {
+          const resp = await this.renewService.Delete(row.uuid!) as any;
+          this.layoutService.showSuccess(this.messageService, 'toast', true, resp?.requestMessage || 'Deleted');
+          this.FillData();
+         
+        } catch (error) {
+          this.messageService.add({
+            severity: 'error',
+            summary: this.translate.instant('Error'),
+            detail: this.translate.instant('database.Failed_to_delete')
+          });
+        }
+      }
+    });
+  }
   
     async resetform() {
       this.isResetting = true;
@@ -86,5 +127,30 @@ export class RenewsComponent {
       
       this.visible = true;
     }
+    openDialog(row:RenewResponse | null =null){
+    
+
+       window.scrollTo({ top: 0, behavior: 'smooth' });
+          document.body.style.overflow = 'hidden';
+          this.renewService.SelectedData = row;
+      
+          let content = row == null ? 'Create_Renew' : 'Update_Renew';
+          this.translate.get(content).subscribe((res: string) => {
+            content = res;
+          });
+      
+          const component = this.layoutService.OpenDialog(RenewComponent,content);
+          this.renewService.Dialog = component;
+      
+          component.OnClose.subscribe(() => {
+            document.body.style.overflow = '';
+            this.renewService.SelectedData=null;
+            this.FillData();
+          });
+
+    }
+    
+ 
+
 
 }
