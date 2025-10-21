@@ -9,7 +9,7 @@
           <span>{{ 'serverInfo_viewDetails' | translate }}</span>
           </div>
           <button *ngIf="!showDecrypted" id="lock" pButton type="button" icon="pi pi-lock-open" (click)="unlockPassword()"><span>{{'UnLock_card' | translate}}</span></button>
-          <button *ngIf="showDecrypted" id="lock" pButton type="button" icon="pi pi-lock"><span>{{'Lock_card' | translate}}</span></button>
+          <button *ngIf="showDecrypted" id="lock" pButton type="button" icon="pi pi-lock" (click)="lock()"><span>{{'Lock_card' | translate}}</span></button>
         </div>
         <div class="col-12 row m-0 p-0">
           <div class="card-section__items">
