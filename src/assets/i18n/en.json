@@ -221,6 +221,10 @@
      "new_endDate":"New EndDate",
      "total_Renews":"Total Renews",
      "UnLock_card":"UnLock",
-     "Lock_card":"Lock"
+     "Lock_card":"Lock",
+     "Update_Agent":"Update Agent",
+     "Password_ResetPassword":"Reset Password",
+     "Update_Employee":"Update Employee"
+    
      
 }

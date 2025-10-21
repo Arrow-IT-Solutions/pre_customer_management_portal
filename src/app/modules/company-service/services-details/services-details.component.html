@@ -82,7 +82,7 @@
 
                       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mt-3">
                         <div class="flex flex-wrap justify-content-center">
-                          <span class=" p-0">
+                          <span class="p-0">
 
                             <input class="search-field" type="text" (input)="OnChange()"
                               placeholder="{{ 'NameEnvironment_definitions' | translate }}" formControlName="EnvName"
@@ -92,7 +92,7 @@
                       </div>
                       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mt-3">
                         <div class="flex flex-wrap justify-content-center">
-                          <span class=" p-0">
+                          <span class="p-0">
 
                             <input class="search-field" type="text" (input)="OnChange()"
                               placeholder="{{ 'ServerName_definitions' | translate }}" formControlName="server"
@@ -102,7 +102,7 @@
                       </div>
                       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mt-3">
                         <div class="flex flex-wrap justify-content-center">
-                          <span class=" p-0">
+                          <span class="p-0">
 
                             <input class="search-field" type="text" (input)="OnChange()"
                               placeholder="{{ 'databaseName_definitions' | translate }}" formControlName="dbName"
@@ -137,7 +137,7 @@
                     (click)="unlock(i, env)">
                   </button> -->
                    <button *ngIf="!showDecrypted" id="lock" pButton type="button" icon="pi pi-lock-open" (click)="unlock(i, env)"><span>{{'UnLock_card' | translate}}</span></button>
-                   <button *ngIf="showDecrypted" id="lock" pButton type="button" icon="pi pi-lock"><span>{{'Lock_card' | translate}}</span></button>
+                   <button *ngIf="showDecrypted" id="lock" pButton type="button" icon="pi pi-lock" (click)="lock()"><span>{{'Lock_card' | translate}}</span></button>
                 </div>
                 <div class="card-body">
                   <div class="environment-details">

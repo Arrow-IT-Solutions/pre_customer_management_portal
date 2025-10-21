@@ -72,6 +72,9 @@ export class SubscriptionsComponent {
       uuid: this.dataForm.get('uuid')?.value?.trim(),
       companyServiceIDFK: '',
       status: this.dataForm.controls['status'].value.toString(),
+      companyService: this.dataForm.controls['com_service'].value.toString(),
+      startDate: this.dataForm.controls['startDate'].value.toString(),
+      endDate: this.dataForm.controls['endDate'].value.toString(),
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString(),
     };
@@ -130,9 +133,9 @@ export class SubscriptionsComponent {
 
 
 
-  Search() {
-    this.FillData();
-  }
+  // Search() {
+  //   this.FillData();
+  // }
 
   OnChange() {
     if (this.isResetting) return;

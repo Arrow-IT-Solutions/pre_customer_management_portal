@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
-import { ProvisionedServiceResponse } from '../../wizard-to-add/wizard-to-add.module';
+import { ProvisionedServiceResponse, ProvisionedServiceSearchRequest } from '../../wizard-to-add/wizard-to-add.module';
 import { LayoutService } from 'src/app/layout/service/layout.service';
 import { EncryptionService } from 'src/app/shared/service/encryption.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,7 +24,7 @@ export class ServicesDetailsComponent implements OnInit {
   selectedEnv: any;
   loading: boolean = false;
   searchFrom!: FormGroup;
-  dataFrom!: FormGroup;
+  dataForm!: FormGroup;
   data: ProvisionedServiceResponse;
   pageSize: number = 12;
   first: number = 0;
@@ -32,6 +32,10 @@ export class ServicesDetailsComponent implements OnInit {
   companyserviceUUID: string = '';
   envDatabase: any[] = [];
   lang: string = 'en';
+  doneTypingInterval = 1000;
+  typingTimer: any;
+  isResetting: boolean = false;
+  dataArray: ProvisionedServiceResponse[] = [];
   constructor(
     public formBuilder: FormBuilder,
     public route: ActivatedRoute,
@@ -84,8 +88,13 @@ export class ServicesDetailsComponent implements OnInit {
 
 
 
-  OnChange() {
-    this.viewData();
+   OnChange() {
+    if (this.isResetting) return;
+    clearTimeout(this.typingTimer);
+    this.typingTimer = setTimeout(() => {
+      this.viewData();
+      console.log("onChange")
+    }, this.doneTypingInterval);
   }
 
   resetSearchForm() {
@@ -113,7 +122,9 @@ export class ServicesDetailsComponent implements OnInit {
       return '[decryption failed]';
     }
   }
-
+   lock(){
+    this.showDecrypted=false;
+   }
   unlock(index: number, env: any) {
     this.selectedEnvIndex = index;
     this.selectedEnv = env;
@@ -144,11 +155,7 @@ export class ServicesDetailsComponent implements OnInit {
     }
   }
 
-openAlertModel(){
-  // this.alertModal.showAlert();
-  console.log("alert")
-  
-}
+
 
 
 
