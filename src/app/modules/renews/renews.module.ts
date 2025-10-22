@@ -55,4 +55,5 @@ export interface RenewSearchRequest extends SearchRequestBase{
   durationType?:string,
    FromDate?: string;   
     ToDate?: string; 
+    companyName?:string;
 }
