@@ -18,9 +18,7 @@
              <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <div class="p-float-label">
-                    <p-dropdown [options]="" optionLabel="value" optionValue="key" (onChange)="Search()"
-                      formControlName="com_name" dir="ltr" [showClear]="true">
-                    </p-dropdown>
+                    <input pInputText type="text" formControlName="com_name" (input)="OnChange()" placeholder="{{ 'company_name' | translate }}" />
                     <label id="label">{{ 'company_name' | translate }}</label>
 
                   </div>
@@ -30,7 +28,8 @@
               <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                <div class="p-float-label">
-                <p-calendar [showIcon]="true" formControlName="startDate" (onChange)="Search()"></p-calendar>
+                <p-calendar [showIcon]="true" formControlName="startDate" (onSelect)="OnChange()">
+                </p-calendar>
                 <label>{{ 'startDate_subscription' | translate}}</label>
               </div>
               </div>
@@ -38,7 +37,8 @@
                 <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                <div class="p-float-label">
-                <p-calendar [showIcon]="true" formControlName="endDate" (onChange)="Search()"></p-calendar>
+                <p-calendar [showIcon]="true" formControlName="endDate" (onSelect)="OnChange()">
+                </p-calendar>
                 <label>{{ 'endDate_subscription' | translate}}</label>
               </div>
               </div>
@@ -46,7 +46,7 @@
                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <div class="p-float-label">
-                    <p-dropdown [options]="" optionLabel="value" optionValue="key" (onChange)="Search()"
+                    <p-dropdown [options]="durationTypeList" optionLabel="value" optionValue="key"
                       formControlName="type_period" dir="ltr" [showClear]="true" (onChange)="OnChange()">
                     </p-dropdown>
                     <label id="label">{{ 'type_period' | translate }}</label>

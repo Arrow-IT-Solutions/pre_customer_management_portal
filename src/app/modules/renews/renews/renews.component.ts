@@ -6,6 +6,7 @@ import { LayoutService } from 'src/app/layout/service/layout.service';
 import { RenewRequest, RenewResponse, RenewSearchRequest } from '../renews.module';
 import { RenewService } from 'src/app/Core/services/renew.service';
 import { RenewComponent } from '../../subscription/renew/renew.component';
+import { ConstantResponse, ConstantService } from 'src/app/Core/services/constant.service';
 
 @Component({
   selector: 'app-renews',
@@ -14,11 +15,13 @@ import { RenewComponent } from '../../subscription/renew/renew.component';
   providers: [MessageService, ConfirmationService]
 })
 export class RenewsComponent implements OnInit {
+    dataForm!: FormGroup;
     pageSize: number = 12;
     first: number = 0;
     totalRecords: number = 0;
+    statusList: ConstantResponse[] = [];
     visible: boolean = false;
-    dataForm!: FormGroup;
+    durationTypeList: ConstantResponse[] = [];
     loading = false;
     isResetting: boolean = false;
     doneTypingInterval = 1000;
@@ -31,7 +34,8 @@ export class RenewsComponent implements OnInit {
       public layoutService: LayoutService,
       public messageService: MessageService,
       public confirmationService: ConfirmationService,
-      public renewService :RenewService
+      public renewService :RenewService,
+      public constantService: ConstantService,
     ) {
       this.dataForm = this.formBuilder.group({
       com_name: [''],
@@ -45,6 +49,8 @@ export class RenewsComponent implements OnInit {
   
     async ngOnInit() {
       await this.FillData();
+       const durationTypeResponse = await this.constantService.Search('DurationType') as any;
+      this.durationTypeList = durationTypeResponse.data;
     }
 
      Search() {
@@ -52,22 +58,39 @@ export class RenewsComponent implements OnInit {
     }
   
     async FillData(pageIndex: number = 0) {
-     
+      this.loading = true;
+      this.data = [];
+      this.totalRecords = 0;
+ 
      let filter: RenewSearchRequest =
       {
         uuid: '',
         subscriptionIDFK: '',
         companyServiceIDFK: '',
         durationValue: '',
-        durationType: '',
-        FromDate:  '',
-        ToDate: '',
+        durationType:this.dataForm.controls['type_period'].value ?? '',
+        FromDate: this.dataForm.controls['startDate'].value
+                   ? new Date(this.dataForm.controls['startDate'].value).toISOString().split('T')[0]
+                   : '',
+        ToDate: this.dataForm.controls['endDate'].value
+                ? new Date(this.dataForm.controls['endDate'].value).toISOString().split('T')[0]
+                : '',
+        companyName: this.dataForm.controls['com_name'].value,
+        pageIndex: pageIndex.toString(),
+        pageSize: this.pageSize.toString()
       }
-     const response=await this.renewService.Search(filter);
-     console.log("Response Renew",response);
-     this.data = response.data;
-     this.totalRecords = response.totalRecords;
- 
+  try {
+      const response = (await this.renewService.Search(filter)) as any;
+      console.log('response',response)
+      if (response?.data) {
+        this.data = response.data;
+        this.totalRecords = response.totalRecords ?? response.data.length;
+      }
+    } catch (error) {
+      this.layoutService.showError(this.messageService, 'toast', true, 'Failed to load data');
+    } finally {
+      this.loading = false;
+    }
      
     }
   
@@ -114,7 +137,9 @@ export class RenewsComponent implements OnInit {
   
   
      OnChange() {
+       console.log(this.dataForm.value);
       if (this.isResetting) { return }; 
+       
   
       clearTimeout(this.typingTimer);
       this.typingTimer = setTimeout(() => {
@@ -149,6 +174,7 @@ export class RenewsComponent implements OnInit {
           });
 
     }
+ 
     
  
 
