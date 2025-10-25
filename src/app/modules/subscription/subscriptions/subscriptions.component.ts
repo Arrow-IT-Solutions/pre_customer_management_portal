@@ -10,6 +10,7 @@ import { ConstantResponse, ConstantService } from 'src/app/Core/services/constan
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { CompanyServiceService } from 'src/app/layout/service/companyService.service';
 import { RenewComponent } from '../renew/renew.component';
+import { RenewService } from 'src/app/Core/services/renew.service';
 
 @Component({
   selector: 'app-subscriptions',
@@ -39,7 +40,8 @@ export class SubscriptionsComponent {
     public subscripeService: SubscriptionService,
     public companyService: CompanyServiceService,
     public messageService: MessageService,
-    public confirmationService: ConfirmationService
+    public confirmationService: ConfirmationService,
+    
   ) {
     this.dataForm = this.formBuilder.group({
       status: [''],
@@ -72,12 +74,16 @@ export class SubscriptionsComponent {
       uuid: this.dataForm.get('uuid')?.value?.trim(),
       companyServiceIDFK: '',
       status: this.dataForm.controls['status'].value.toString(),
+      companyService: this.dataForm.controls['com_service'].value.toString(),
+      startDate: this.dataForm.controls['startDate'].value.toString(),
+      endDate: this.dataForm.controls['endDate'].value.toString(),
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString(),
     };
 
     try {
       const response = (await this.subscripeService.Search(filter)) as any;
+      console.log('response',response)
       if (response?.data) {
         this.data = response.data;
         this.totalRecords = response.totalRecords ?? response.data.length;
@@ -130,9 +136,9 @@ export class SubscriptionsComponent {
 
 
 
-  Search() {
-    this.FillData();
-  }
+  // Search() {
+  //   this.FillData();
+  // }
 
   OnChange() {
     if (this.isResetting) return;
@@ -179,13 +185,16 @@ export class SubscriptionsComponent {
   openRenew(row: SubscriptionResponse | null = null){
       window.scrollTo({ top: 0, behavior: 'smooth' });
       document.body.style.overflow = 'hidden';
-       this.companyService.SelectedData = row
+       this.subscripeService.SelectedData = row
+      
       let content ='Renew_Company';
       this.translate.get(content).subscribe((res: string) => {
         content = res
       });
       var component = this.layoutService.OpenDialog(RenewComponent, content);
+       
       this.companyService.Dialog = component;
+      
       component.OnClose.subscribe(() => {
         document.body.style.overflow = '';
         this.FillData();

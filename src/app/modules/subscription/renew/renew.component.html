@@ -1,6 +1,6 @@
 <form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="renew">
   <div class="renew">
-    <div class="box-shadow mb-3">
+    <div class="box-shadow mb-3" >
       <div class="row">
         <div class="col-12 side-icon">
           <span class="material-symbols-outlined">info</span>
@@ -9,7 +9,7 @@
         <div class="col-12 row m-0 p-0">
           <div class="col-12 mb-3" style="display: flex;flex-direction: column;row-gap: 0.5rem;">
               <label style="font-weight: bold;">{{ 'company_name' | translate }}:</label>
-              <label>Gym</label>
+              <label> {{ subscriptionService.SelectedData?.companyService?.company?.companyTranslation?.[layoutService.config.lang]?.name }}</label>
           </div>
         </div>
         <div class="col-12 mb-3">
@@ -17,13 +17,15 @@
 
             <div style="display: flex;gap: 0.5rem;margin-top: 0.5rem;">
             <div style="width: 50%;" class="p-float-label" [ngClass]="{'error_border': submitted && form['period_number'].errors}">
-              <input pInputText type="text" formControlName="period_number" />
+              <input pInputText type="text" (onChange)="calculateNewEndDate()"
+ formControlName="period_number" />
               <label [ngClass]="{'error': submitted && form['period_number'].errors}">{{ 'number_period' | translate }}</label>
 
             </div>
              <div style="width: 50%;" class="p-float-label" [ngClass]="{'error_border': submitted && form['period_type'].errors}">
              <p-dropdown
-                [options]=""
+                (onChange)="calculateNewEndDate()"
+                [options]="durationTypeList"
                 optionLabel="value"
                 optionValue="key"
                 formControlName="period_type"
@@ -42,7 +44,7 @@
         <div class="col-12 row m-0 p-0">
           <div class="col-12 mb-3" style="display: flex;flex-direction: column;row-gap: 0.5rem;">
               <div class="card-label" style="font-weight: bold;">{{ 'new_endDate' | translate }}</div>
-              <div class="card-info">{{ 31-12-2025 | date: 'yyyy-MM-dd' }}</div>
+              <div class="card-info">{{ newEndDate | date: 'yyyy-MM-dd' }}</div>
           </div>
         </div>
       </div>

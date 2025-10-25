@@ -169,7 +169,7 @@
   "agentAnyDesk_agent": "عنوان AnyDesk",
   "Edit_Agent": "تعديل الوكيل",
   "Delete_Agent": "حذف الوكيل",
-  "totalAgents_agent": "إجمالي الوكيل",
+  "totalAgents_agent": "إجمالي الوكلاء",
   "View_Company_Agents": "عرض عملاء الشركة",
     "view_Company":"عرض",
     "companyService_viewDetails":"خدمات الشركة",
@@ -224,6 +224,8 @@
     "UnLock_card":"فك التشفير",
     "Lock_card":"تشفير",
     "Company_Details":"معلومات الشركة",
-    "Agents_List":"الوكلاء"
-
+    "Agents_List":"الوكلاء",
+    "Update_Agent":"تعديل الوكيل",
+    "Password_ResetPassword":"إعادة تعيين كلمة المرور",
+    "Update_Employee":"تعديل الموظف"
 }

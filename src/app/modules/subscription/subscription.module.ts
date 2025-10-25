@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/class/class';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { RenewComponent } from './renew/renew.component';
+import { CompanyServiceResponse } from '../wizard-to-add/wizard-to-add.module';
 
 
 
@@ -50,6 +51,9 @@ export interface SubscriptionSearchRequest extends SearchRequestBase {
   uuid?: string;
   companyServiceIDFK?: string;
   status: string;
+  companyService:string;
+  startDate:string;
+  endDate:string;
 
 }
 export interface SubscriptionResponse extends ResponseBase {
@@ -60,7 +64,7 @@ export interface SubscriptionResponse extends ResponseBase {
   price: number;
   status: string;
   statusValue: string;
-  companyService?: string;
+  companyService: CompanyServiceResponse;
 }
 
 
