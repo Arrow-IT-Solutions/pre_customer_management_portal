@@ -48,4 +48,9 @@ public SelectedData: CompanyResponse | null = null;
 
     }
 
+    async getCompanyById(uuid: string) {
+     const apiUrl = `/api/company/${uuid}`;
+     return await this.httpClient.get(apiUrl);
+    }
+
 }

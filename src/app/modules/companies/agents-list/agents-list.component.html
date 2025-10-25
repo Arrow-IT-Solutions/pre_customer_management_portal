@@ -1,0 +1,156 @@
+<div class="detailsContainer row"  >
+
+  <div [formGroup]="dataForm" class="row mb-4 m-0 p-0">
+    <p-accordion class="mt-5 p-0">
+      <p-accordionTab>
+        <ng-template pTemplate="header">
+          <div class="flex align-items-center">
+            <span class="material-symbols-outlined">tune</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="m-0 box2 d-flex">
+            <div class="filter-title">
+              <span class="material-symbols-outlined">filter_alt</span>
+              <span>Filter By</span>
+            </div>
+            <div class="container">
+
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center gap-3">
+                  <span class="p-input-icon-left p-0">
+                    <i class="pi pi-search"></i>
+                    <input class="search-field" type="text" (input)="OnChange()"
+                      placeholder="{{ 'agentName_agent' | translate }}" formControlName="name" pInputText />
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col result">
+              <div class="ms-2 mt-3">
+                <p-button class="reset-btn" (onClick)="resetform()">
+                  <span class="material-symbols-outlined">restart_alt</span>
+                </p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+
+
+
+  <div class="col-lg-4 col-md-12 mb-3">
+    <div class="box-shadow">
+      <div class="row">
+        <div class="col-12 side-icon mb-2">
+          <span class="material-symbols-outlined">info</span>
+          <span>{{ 'Company_Details' | translate }}</span>
+        </div>
+        <div class="col-12">
+          <div class="card-section__items">
+            <div class="card__contents__item mt-2">
+              <div class="card-label">{{ 'companyName_viewDetails' | translate }}:</div>
+              <div class="card-info fw-bold">{{ companyName || '-' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+             <div class="col-12 mb-3" *ngIf="showAddForm">
+          <div class="inline-form-container box-shadow p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="fw-bold m-0">
+                {{ selectedAgent ? ('Update_Agent' | translate) : ('Create_Agent' | translate) }}
+              </h5>
+              <button class="btn btn-sm btn-outline-danger" (click)="closeAddAgentForm()">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+
+            <app-inline-add-agent>
+              [agent]="selectedAgent"
+              (onClose)="closeAddAgentForm(true)">
+            </app-inline-add-agent>
+          </div>
+        </div>
+  </div>
+
+  
+  
+
+  <div class="col-lg-8 col-md-12">
+    <div class="box-shadow">
+      
+      <div class="row">
+
+        
+
+        <div class="col-12 header-container mb-3 d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center">
+            <span class="material-symbols-outlined me-2">list</span>
+            <span class="fw-bold">{{ 'Agents_List' | translate }}</span>
+          </div>
+
+
+       <button 
+         class="add-button" 
+         *ngIf="!showAddForm"  
+          (click)="openAddAgent()">
+         <span class="material-symbols-outlined">add</span>
+       </button>
+        </div>
+
+
+
+
+        <div class="col-12">
+          <div class="row">
+            <div class="col-md-6 mb-3" 
+              *ngFor="let agent of data ;let i = index">
+              <div class="card environment-card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <span class="badge bg-primary">{{ first + i + 1 }}</span>
+                  <span class="fw-semibold">
+                    {{ agent.agentTranslation?.[layoutService.config.lang]?.name }}
+                  </span>
+                </div>
+                <div class="card-body">
+                  <div class="environment-details">
+                    <div class="detail-item mb-2">
+                      <label class="fw-semibold me-2">Agent Name:</label>
+                      <span>{{ agent.agentTranslation?.[layoutService.config.lang]?.name }}</span>
+                    </div>
+                    <div class="detail-item mb-2">
+                      <label class="fw-semibold me-2">Phone Number:</label>
+                      <span>{{ agent.phone }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <label class="fw-semibold me-2">AnyDesk Address:</label>
+                      <span>{{ agent.anyDeskAddress }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+   <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+      [first]="first" (onPageChange)="paginate($event)"></p-paginator>
+
+      </div>
+    </div>
+  </div>
+
+
+
+<ng-template #spinner>
+  <div class="d-flex justify-content-center align-items-center py-5">
+    <mat-spinner id="spinner"></mat-spinner>
+  </div>
+</ng-template>

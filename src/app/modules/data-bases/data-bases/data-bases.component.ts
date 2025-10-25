@@ -186,14 +186,16 @@ export class DataBasesComponent implements OnInit {
       })
     );
   }
-
+   
   unlock(rowKey: string | number, field: 'password' | 'connectionString' | 'username') {
     this.selectedRowKey = rowKey;
     this.selectedField = field;
     this.enteredKey = '';
     this.displayDialog = true;
   }
-
+lock(){
+  this.showDecrypted=false;
+}
   validateKey() {
     const validKey = EncryptionService.base64Key;
 

@@ -6,12 +6,16 @@ import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/cla
 import { CompaniesComponent } from './companies/companies.component';
 import { AddCompanyComponent } from './add-company/add-company.component';
 import { CompaniesRoutingModule } from './companies-routing.module';
+import { AgentsListComponent } from './agents-list/agents-list.component';
+import { InlineAddAgentComponent } from './inline-add-agent/inline-add-agent.component';
 
 
 @NgModule({
   declarations: [
     CompaniesComponent,
     AddCompanyComponent,
+    AgentsListComponent,
+    InlineAddAgentComponent,
    
   ],
   imports: [
@@ -22,6 +26,7 @@ import { CompaniesRoutingModule } from './companies-routing.module';
   ]
 })
 export class CompaniesModule { }
+
 export interface CompanyResponse extends ResponseBase {
   uuid?: string;
   companyTranslation?: { [key: string]: CompanyTranslationResponse };
@@ -70,4 +75,28 @@ export interface CompanyTranslationUpdateRequest {
   uuid?: string;
   name?: string;
   language?: string;
+}
+
+export interface AgentResponse extends ResponseBase {
+  uuid?: string;
+  phone?: string;
+  companyIDFK: string;
+  anyDeskAddress?: string;
+  password?: string;
+  agentTranslation?: { [key: string]: AgentTranslationResponse };
+  company?: CompanyResponse;
+}
+
+export interface AgentTranslationResponse {
+  uuid?: string;
+  name?: string;
+  language?: string;
+}
+
+export interface AgentSearchRequest extends SearchRequestBase {
+  uuid?: string;
+  phone?: string;
+  companyIDFK?: string;
+  anyDeskAddress?: string;
+  name?: string;
 }
