@@ -222,6 +222,9 @@
      "total_Renews":"Total Renews",
      "UnLock_card":"UnLock",
      "Lock_card":"Lock",
+     "view_Agents":"View Agents",
+     "Agents_List":"Agents List",
+     "Company_Details":"Company Details",
      "Update_Agent":"Update Agent",
      "Password_ResetPassword":"Reset Password",
      "Update_Employee":"Update Employee"

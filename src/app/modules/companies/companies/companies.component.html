@@ -128,7 +128,10 @@
               <span class="material-symbols-outlined card__actions__details">more_vert</span>
             </div>
             <mat-menu #menu="matMenu">
-              
+              <button mat-menu-item (click)="viewAgents(row)">
+                 <span class="material-symbols-outlined" id="icon">view_list</span>
+                {{ 'view_Agents' | translate }}
+              </button>
               <button mat-menu-item (click)="openAddCompany(row)">
                  <span class="material-symbols-outlined" id="icon">Edit</span>
                 {{ 'Edit_Company' | translate }}
