@@ -221,6 +221,9 @@
      "new_endDate":"New EndDate",
      "total_Renews":"Total Renews",
      "UnLock_card":"UnLock",
-     "Lock_card":"Lock"
+     "Lock_card":"Lock",
+     "view_Agents":"View Agents",
+     "Agents_List":"Agents List",
+     "Company_Details":"Company Details"
      
 }

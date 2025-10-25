@@ -222,5 +222,8 @@
     "new_endDate":"تاريخ الانتهاء الجديد",
     "total_Renews":"المجموع",
     "UnLock_card":"فك التشفير",
-    "Lock_card":"تشفير"
+    "Lock_card":"تشفير",
+    "Company_Details":"معلومات الشركة",
+    "Agents_List":"الوكلاء"
+
 }
