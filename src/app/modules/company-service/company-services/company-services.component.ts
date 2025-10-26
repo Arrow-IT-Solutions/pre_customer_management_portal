@@ -79,7 +79,6 @@ export class CompanyServicesComponent {
     };
 
     const response = (await this.provisionedService.Search(filter)) as any;
-   console.log('response',response);
     if (response.data == null || response.data.length == 0) {
       this.data = [];
       this.companyServiceTotal = 0;
@@ -290,7 +289,7 @@ export class CompanyServicesComponent {
     this.services = serviceDTO;
 
   }
-  viewDetails(row: ProvisionedServiceResponse){
+  viewDetails(row: ProvisionedServiceResponse) {
     this.provisionedService.selectedData = row;
     this.route.navigate(['layout-admin/company-services/services-details'])
   }

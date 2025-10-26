@@ -11,37 +11,37 @@ import { AddCompanyComponent } from '../add-company/add-company.component';
   selector: 'app-companies',
   templateUrl: './companies.component.html',
   styleUrls: ['./companies.component.scss'],
-  providers: [MessageService,ConfirmationService]
+  providers: [MessageService, ConfirmationService]
 })
 export class CompaniesComponent {
-      dataForm!: FormGroup;
-      loading = false;
-      pageSize: number = 12;
-      first: number = 0;
-      totalRecords: number = 0;
-      data: CompanyResponse[] = [];
-      companyTotal: number = 0;
-      doneTypingInterval = 1000;
-      typingTimer: any;
-      isResetting: boolean = false;
-      constructor(public formBuilder:FormBuilder,public layoutService: LayoutService,
-        public translate: TranslateService,public companyService:CompaniesService, public messageService: MessageService,
-        public confirmationService: ConfirmationService) {
-        this.dataForm=this.formBuilder.group({
-          name:[''],
-          primaryContact:[''],
-          email:[''],
-          phone:['']
+  dataForm!: FormGroup;
+  loading = false;
+  pageSize: number = 12;
+  first: number = 0;
+  totalRecords: number = 0;
+  data: CompanyResponse[] = [];
+  companyTotal: number = 0;
+  doneTypingInterval = 1000;
+  typingTimer: any;
+  isResetting: boolean = false;
+  constructor(public formBuilder: FormBuilder, public layoutService: LayoutService,
+    public translate: TranslateService, public companyService: CompaniesService, public messageService: MessageService,
+    public confirmationService: ConfirmationService) {
+    this.dataForm = this.formBuilder.group({
+      name: [''],
+      primaryContact: [''],
+      email: [''],
+      phone: ['']
 
-        })
+    })
 
-      this.companyService.refreshCompanies$.subscribe(() => {
+    this.companyService.refreshCompanies$.subscribe(() => {
       this.FillData();
     });
-      }
+  }
 
-      async FillData(pageIndex: number = 0) {
-  this.loading = true;
+  async FillData(pageIndex: number = 0) {
+    this.loading = true;
     this.data = [];
     this.companyTotal = 0;
     let filter: CompanySearchRequest = {
@@ -56,7 +56,6 @@ export class CompaniesComponent {
     };
 
     const response = (await this.companyService.Search(filter)) as any;
-    console.log('data',response)
     if (response.data == null || response.data.length == 0) {
       this.data = [];
       this.companyTotal = 0;
@@ -68,13 +67,13 @@ export class CompaniesComponent {
     this.totalRecords = response.totalRecords;
 
     this.loading = false;
-      }
+  }
 
-      async ngOnInit() {
+  async ngOnInit() {
 
-        await this.FillData();
+    await this.FillData();
 
-        }
+  }
 
 
   async resetform() {
@@ -89,7 +88,7 @@ export class CompaniesComponent {
     this.FillData(event.first);
 
   }
-    openAddCompany(row: CompanyResponse | null = null){
+  openAddCompany(row: CompanyResponse | null = null) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.body.style.overflow = 'hidden';
     this.companyService.SelectedData = row
@@ -103,12 +102,11 @@ export class CompaniesComponent {
       document.body.style.overflow = '';
       this.FillData();
     });
-    }
-    
+  }
 
-    confirmDelete(row: CompanyResponse) {
 
-    console.log(row)
+  confirmDelete(row: CompanyResponse) {
+
     this.confirmationService.confirm({
       message: this.translate.instant("Do_you_want_to_delete_this_record?"),
       header: this.translate.instant("Delete_Confirmation"),
@@ -125,12 +123,11 @@ export class CompaniesComponent {
         this.FillData();
 
       },
-      reject: () => {},
+      reject: () => { },
     });
   }
 
-    OnChange()
-  {
+  OnChange() {
     if (this.isResetting) { return };
 
     clearTimeout(this.typingTimer);

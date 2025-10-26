@@ -222,5 +222,7 @@
     "new_endDate":"تاريخ الانتهاء الجديد",
     "total_Renews":"المجموع",
     "UnLock_card":"فك التشفير",
-    "Lock_card":"تشفير"
+    "Lock_card":"تشفير",
+    "Create_Renew" : "انشاء",
+    "Update_Renew" : "تعديل"
 }

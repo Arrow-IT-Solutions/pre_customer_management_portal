@@ -135,7 +135,6 @@ export class AddAgentComponent {
       if (!this.agentService.SelectedData) {
         this.resetForm();
       } else {
-        console.log('HEREEEE')
 
       }
       setTimeout(() => {

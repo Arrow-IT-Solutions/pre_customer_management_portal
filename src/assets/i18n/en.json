@@ -212,7 +212,6 @@
      "appname":"App Name",
      "Create_Employee":"Create Employee",
      "service_viewDetails" : "Service",
-
      "Renew_Company":"Renew Company",
      "company_name":"Company name",
      "renew_period":"Renew Period",
@@ -221,6 +220,8 @@
      "new_endDate":"New EndDate",
      "total_Renews":"Total Renews",
      "UnLock_card":"UnLock",
-     "Lock_card":"Lock"
-     
+     "Lock_card":"Lock",
+     "Create_Renew" : "Create",
+     "Update_Renew" : "Update"
+
 }

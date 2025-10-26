@@ -114,7 +114,6 @@ export class DataBasesComponent implements OnInit {
     this.first = event.first;
     this.pageSize = event.rows;
     const pageIndex = Math.floor(event.first / event.rows);
-    console.log('pageIndex:', pageIndex, 'first:', this.first, 'pageSize:', this.pageSize);
     this.fillData(pageIndex);
   }
 
@@ -200,7 +199,7 @@ export class DataBasesComponent implements OnInit {
     if (this.enteredKey === validKey && this.selectedRowKey != null) {
       this.unlockedRows.add(this.selectedRowKey);
       this.displayDialog = false;
-      this.showDecrypted=true;
+      this.showDecrypted = true;
 
       this.messageService.add({
         key: 'toast',

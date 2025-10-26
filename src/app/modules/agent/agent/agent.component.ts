@@ -85,15 +85,11 @@ export class AgentComponent {
       value: company.uuid?.trim() ?? ''
     }));
 
-    console.log('companies response:', response);
-    console.log('mapped companiesList:', this.companiesList);
-
   }
 
 
 
   filterByCompany(companyUUID: string) {
-    console.log("company UUID ", companyUUID)
     this.dataForm.get('companyIDFK')?.setValue(companyUUID);
     this.FillData();
   }
@@ -113,7 +109,6 @@ export class AgentComponent {
       pageSize: this.pageSize.toString(),
     };
     const response = (await this.agentService.Search(filter)) as any;
-    console.log(response)
     if (response.data == null || response.data.length == 0) {
       this.data = [];
       this.totalRecords = 0;
@@ -175,8 +170,6 @@ export class AgentComponent {
   }
 
   confirmDelete(row: AgentResponse) {
-
-    console.log(row)
     this.confirmationService.confirm({
       message: this.translate.instant("Do_you_want_to_delete_this_record?"),
       header: this.translate.instant("Delete_Confirmation"),

@@ -117,6 +117,10 @@ export class ServerDetailesComponent {
     this.displayDialog = true;
   }
 
+  Lock() {
+    this.showDecrypted = false;
+  }
+
   validateKey() {
     const validKey = EncryptionService.base64Key; // since your service uses static members
 

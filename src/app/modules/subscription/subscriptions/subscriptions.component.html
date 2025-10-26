@@ -15,15 +15,16 @@
               <span>Filter By</span>
             </div>
             <div class="container">
-               <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
-                <div class="flex flex-wrap justify-content-center gap-3">
-                  <span class="p-input-icon-left p-0">
-                    <i class="pi pi-search"></i>
-                    <input class="search-field" type="text" (input)="OnChange()"
-                      placeholder="{{ 'Company_Service' | translate }}" formControlName="com_service" pInputText />
-                  </span>
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+
+                <div class="p-float-label">
+                  <p-dropdown [options]="companies" optionLabel="fullName" optionValue="uuid"
+                    formControlName="com_service" (onChange)="OnChange()" [showClear]="true" class="search-field"
+                    dir="ltr"></p-dropdown>
+                  <label id="label" for="">{{ 'Company_Service' | translate }}</label>
                 </div>
               </div>
+
               <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <div class="p-float-label">
@@ -36,23 +37,23 @@
                 </div>
 
               </div>
-               <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
+              <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
-               <div class="p-float-label">
-                <p-calendar [showIcon]="true" formControlName="startDate"></p-calendar>
-                <label>{{ 'startDate_subscription' | translate}}</label>
+                  <div class="p-float-label">
+                    <p-calendar [showIcon]="true" formControlName="startDate" (onSelect)="OnChange()"></p-calendar>
+                    <label>{{ 'startDate_subscription' | translate}}</label>
+                  </div>
+                </div>
               </div>
-              </div>
-              </div>
-               <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
+              <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
-               <div class="p-float-label">
-                <p-calendar [showIcon]="true" formControlName="endDate"></p-calendar>
-                <label>{{ 'endDate_subscription' | translate}}</label>
+                  <div class="p-float-label">
+                    <p-calendar [showIcon]="true" formControlName="endDate" (onSelect)="OnChange()"></p-calendar>
+                    <label>{{ 'endDate_subscription' | translate}}</label>
+                  </div>
+                </div>
               </div>
-              </div>
-              </div>
-             
+
 
 
             </div>
@@ -82,12 +83,11 @@
         <div class="col-3 card__contents">
           <div class="card-section__items">
             <div class="card__contents__item">
-            <div class="card-label">{{ 'Company_Service' | translate }}</div>
-            <div class="card-info">
-             {{ row.companyService.company.companyTranslation?.[layoutService.config.lang]?.name }} -
-             {{ row.companyService.service.serviceTranslation?.[layoutService.config.lang]?.name }}
-
-            </div>
+              <div class="card-label">{{ 'Company_Service' | translate }}</div>
+              <div class="card-info">
+                {{ row.companyService.company.companyTranslation?.[layoutService.config.lang]?.name }} -
+                {{ row.companyService.service.serviceTranslation?.[layoutService.config.lang]?.name }}
+              </div>
             </div>
             <div class="card__contents__item">
               <div class="card-label">{{ 'startDate_subscription' | translate }}</div>
@@ -105,7 +105,6 @@
               <div class="card-label">{{ 'price_subscription' | translate }}</div>
               <div class="card-info">{{ row.price }}</div>
             </div>
-          
           </div>
         </div>
 
@@ -115,9 +114,9 @@
           </div>
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openRenew(row)">
-                 <span class="material-symbols-outlined" id="icon">autorenew</span>
-                {{ 'Renew_Company' | translate }}
-              </button>
+              <span class="material-symbols-outlined" id="icon">autorenew</span>
+              {{ 'Renew_Company' | translate }}
+            </button>
             <button mat-menu-item (click)="openAddService(row)">
               <span class="material-symbols-outlined" id="icon">Edit</span>
               {{ 'Edit_subscription' | translate }}

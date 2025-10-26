@@ -50,6 +50,8 @@ export interface SubscriptionUpdateRequest extends RequestBase {
 export interface SubscriptionSearchRequest extends SearchRequestBase {
   uuid?: string;
   companyServiceIDFK?: string;
+  startDate: string;
+  endDate: string;
   status: string;
 
 }

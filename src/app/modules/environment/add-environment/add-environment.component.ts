@@ -35,7 +35,7 @@ export class AddEnvironmentComponent {
     private messageService: MessageService
   ) {
     this.dataForm = this.formBuilder.group({
-      companyServiceIDFK: ['' , Validators.required],
+      companyServiceIDFK: ['', Validators.required],
       nameEn: ['', Validators.required],
       nameAr: ['', Validators.required],
       url: ['', [Validators.required, Validators.pattern(/https?:\/\/.+/)]],
@@ -77,7 +77,7 @@ export class AddEnvironmentComponent {
   }
 
 
-async save() {
+  async save() {
 
     let response;
 
@@ -103,7 +103,6 @@ async save() {
         serverIDFK: this.dataForm.controls['serverIDFK'].value
 
       };
-      console.log(updateCustomer)
       response = await this.environmentService.Update(updateCustomer);
     } else {
       // add
@@ -113,8 +112,6 @@ async save() {
         companyServiceIDFK: this.dataForm.controls['companyServiceIDFK'].value,
         serverIDFK: this.dataForm.controls['serverIDFK'].value
       };
-
-      console.log('addCustomer ', addCustomer)
 
       response = await this.environmentService.Add(addCustomer);
     }
@@ -163,57 +160,51 @@ async save() {
 
     });
   }
-async retrieveServers() {
-  const filter = {
-    name: '',
-    uuid: '',
-    pageIndex: '0',
-    pageSize: '10'
-  };
-
-  const response = await this.serverService.Search(filter) as any;
-  const lang = this.layoutService.config.lang || 'en';
-
-  this.servers = (response.data || []).map((server: ServerResponse) => {
-    return {
-      label: server.hostname || server.ipAddress || '—',
-      value: server.uuid
+  async retrieveServers() {
+    const filter = {
+      name: '',
+      uuid: '',
+      pageIndex: '0',
+      pageSize: '10'
     };
-  });
-}
+
+    const response = await this.serverService.Search(filter) as any;
+    const lang = this.layoutService.config.lang || 'en';
+
+    this.servers = (response.data || []).map((server: ServerResponse) => {
+      return {
+        label: server.hostname || server.ipAddress || '—',
+        value: server.uuid
+      };
+    });
+  }
 
 
   async RetrieveCompanyServices() {
-     let filter: ProvisionedServiceSearchRequest = {
-          uuid: '',
-          companyIDFK: '',
-          serviceIDFK: '',
-          includeCompany: '1',
-          includeService: '1',
-          pageIndex: '0',
-          pageSize: '10',
+    let filter: ProvisionedServiceSearchRequest = {
+      uuid: '',
+      companyIDFK: '',
+      serviceIDFK: '',
+      includeCompany: '1',
+      includeService: '1',
+      pageIndex: '0',
+      pageSize: '10',
 
-        };
+    };
 
-        const rawResponse = (await this.provisionedService.Search(filter)) as any;
+    const rawResponse = (await this.provisionedService.Search(filter)) as any;
 
-    console.log('Raw response:', rawResponse);
+    this.companyServiceList = rawResponse.data;
 
-  this.companyServiceList = rawResponse.data;
-
-  const lang = this.layoutService.config.lang || 'en';
+    const lang = this.layoutService.config.lang || 'en';
 
 
-  this.companyServiceOptions = (rawResponse.data ?? []).map((item: any) => ({
-    label: `${item.company?.companyTranslation?.[lang]?.name ?? 'Unknown Company'} - ${item.service?.serviceTranslation?.[lang]?.name ?? 'Unknown Service'}`,
-    value: item.uuid
-  }));
+    this.companyServiceOptions = (rawResponse.data ?? []).map((item: any) => ({
+      label: `${item.company?.companyTranslation?.[lang]?.name ?? 'Unknown Company'} - ${item.service?.serviceTranslation?.[lang]?.name ?? 'Unknown Service'}`,
+      value: item.uuid
+    }));
 
-
-
-
-    console.log('Company Services Dropdown:', this.companyServiceOptions);
-}
+  }
 
 
 
@@ -241,11 +232,11 @@ async retrieveServers() {
   //     name: `${customerName} - ${serviceName}`
   //   };
   // });
-// }
+  // }
 
 
 
-  }
+}
 
 
 
