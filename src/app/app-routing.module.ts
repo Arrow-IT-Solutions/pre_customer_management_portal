@@ -6,6 +6,7 @@ import { AuthGuardService } from './Core/guard/auth-guard.service';
 import { ContentLayoutAdminComponent } from './layout/content-layout-admin/content-layout-admin.component';
 
 
+
 const routes: Routes = [
 
   {
@@ -151,7 +152,8 @@ const routes: Routes = [
           import('./modules/renews/renews.module').then(
             (m) => m.RenewsModule
           )
-      }
+      },
+ 
 
     ]
   },

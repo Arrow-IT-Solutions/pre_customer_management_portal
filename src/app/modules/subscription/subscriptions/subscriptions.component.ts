@@ -142,9 +142,9 @@ export class SubscriptionsComponent {
 
 
 
-  Search() {
-    this.FillData();
-  }
+  // Search() {
+  //   this.FillData();
+  // }
 
   OnChange() {
     if (this.isResetting) return;

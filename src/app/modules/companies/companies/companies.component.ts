@@ -6,6 +6,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { CompaniesService } from 'src/app/layout/service/companies.service';
 import { CompanyResponse, CompanySearchRequest } from '../companies.module';
 import { AddCompanyComponent } from '../add-company/add-company.component';
+import { Route, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-companies',
@@ -36,6 +38,28 @@ export class CompaniesComponent {
     })
 
     this.companyService.refreshCompanies$.subscribe(() => {
+      dataForm!: FormGroup;
+      loading = false;
+      pageSize: number = 12;
+      first: number = 0;
+      totalRecords: number = 0;
+      data: CompanyResponse[] = [];
+      companyTotal: number = 0;
+      doneTypingInterval = 1000;
+      typingTimer: any;
+      isResetting: boolean = false;
+      constructor(public formBuilder:FormBuilder,public layoutService: LayoutService,
+        public translate: TranslateService,public companyService:CompaniesService, public messageService: MessageService,
+        public confirmationService: ConfirmationService,public router: Router) {
+        this.dataForm=this.formBuilder.group({
+          name:[''],
+          primaryContact:[''],
+          email:[''],
+          phone:['']
+
+        })
+
+      this.companyService.refreshCompanies$.subscribe(() => {
       this.FillData();
     });
   }
@@ -135,5 +159,11 @@ export class CompaniesComponent {
       this.FillData();
     }, this.doneTypingInterval);
   }
+
+    viewAgents(row: CompanyResponse){
+      this.companyService.SelectedData = row;
+      localStorage.setItem('selectedCompany', JSON.stringify(row));
+      this.router.navigate(['layout-admin/companies/agents-list']);
+    }
 
 }

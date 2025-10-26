@@ -53,6 +53,9 @@ export interface SubscriptionSearchRequest extends SearchRequestBase {
   startDate: string;
   endDate: string;
   status: string;
+  companyService:string;
+  startDate:string;
+  endDate:string;
 
 }
 export interface SubscriptionResponse extends ResponseBase {

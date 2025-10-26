@@ -77,10 +77,10 @@
           <div class="col-12 mb-3">
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['companyIDFK'].errors}">
               <p-dropdown [options]="companyOptions" optionLabel="label" optionValue="value"
-                formControlName="companyIDFK" [filter]="true" [showClear]="true" filterBy="label">
+                formControlName="companyIDFK" [filter]="true" [showClear]="true" filterBy="label" dir="ltr">
               </p-dropdown>
 
-              <label [ngClass]="{'error': submitted && form['companyIDFK'].errors}">{{ 'Company_Name' | translate
+              <label id="label" [ngClass]="{'error': submitted && form['companyIDFK'].errors}">{{ 'Company_Name' | translate
                 }}</label>
               <span *ngIf="submitted && form['companyIDFK'].errors" class="error-validation">
                 {{ 'Field_Required' | translate }}

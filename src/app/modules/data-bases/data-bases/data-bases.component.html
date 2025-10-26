@@ -112,7 +112,7 @@
             </div>
           </div>
             <button *ngIf="!showDecrypted" id="lock" pButton type="button" icon="pi pi-lock-open" (click)="unlock(row.uuid || i, 'connectionString')"><span>{{'UnLock_card' | translate}}</span></button>
-          <button *ngIf="showDecrypted" id="lock" pButton type="button" icon="pi pi-lock"><span>{{'Lock_card' | translate}}</span></button>
+          <button *ngIf="showDecrypted" id="lock" pButton type="button" icon="pi pi-lock" (click)="lock()"><span>{{'Lock_card' | translate}}</span></button>
         </div>
 
         <div class="one">
