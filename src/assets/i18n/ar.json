@@ -222,5 +222,18 @@
     "new_endDate":"تاريخ الانتهاء الجديد",
     "total_Renews":"المجموع",
     "UnLock_card":"فك التشفير",
-    "Lock_card":"تشفير"
+    "Lock_card":"تشفير",
+  
+  "status_ticket": "الحالة",
+  "Search_by_Date": "تاريخ الانشاء",
+  "ticketDescription_ticket": "الوصف",
+  "ticketCreationDate_ticket": "تاريخ الانشاء",
+  "ticketClosureDate_ticket": "تاريخ الاغلاق",
+  "Edit_Ticket": "تعديل",
+  "Delete_Ticket": "حذف",
+  "totalAgents_ticket": "المجموع",
+  "select_status": "الحالة",
+  "Basic_Info_Ticket": "المعلومات الاساسية",
+  "view_AgentTickets": "عرض تذاكر الوكيل"
+
 }

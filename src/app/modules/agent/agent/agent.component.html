@@ -104,6 +104,10 @@
               <span class="material-symbols-outlined" id="icon">event</span>
               {{ 'View_CompanyAgents' | translate }}
             </button>
+            <button mat-menu-item [routerLink]="['../tickets']" [queryParams]="{ agentIDFK: agent.uuid }">
+              <span class="material-symbols-outlined" id="icon" >event</span>
+              {{ 'view_AgentTickets' | translate }}
+            </button>
           </mat-menu>
         </div>
       </div>

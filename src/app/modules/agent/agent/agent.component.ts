@@ -10,6 +10,7 @@ import { PasswordComponent } from '../../password/password/password.component';
 import { CompaniesService } from 'src/app/layout/service/companies.service';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 
+
 @Component({
   selector: 'app-agents',
   templateUrl: './agent.component.html',
@@ -198,9 +199,6 @@ export class AgentComponent {
       },
     });
   }
-
-
-
 
 
 
