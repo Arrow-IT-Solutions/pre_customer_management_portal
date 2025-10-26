@@ -28,7 +28,8 @@ export class CompaniesComponent {
   isResetting: boolean = false;
   constructor(public formBuilder: FormBuilder, public layoutService: LayoutService,
     public translate: TranslateService, public companyService: CompaniesService, public messageService: MessageService,
-    public confirmationService: ConfirmationService) {
+    public confirmationService: ConfirmationService,
+    public router: Router) {
     this.dataForm = this.formBuilder.group({
       name: [''],
       primaryContact: [''],
@@ -36,33 +37,8 @@ export class CompaniesComponent {
       phone: ['']
 
     })
-
-    this.companyService.refreshCompanies$.subscribe(() => {
-      dataForm!: FormGroup;
-      loading = false;
-      pageSize: number = 12;
-      first: number = 0;
-      totalRecords: number = 0;
-      data: CompanyResponse[] = [];
-      companyTotal: number = 0;
-      doneTypingInterval = 1000;
-      typingTimer: any;
-      isResetting: boolean = false;
-      constructor(public formBuilder:FormBuilder,public layoutService: LayoutService,
-        public translate: TranslateService,public companyService:CompaniesService, public messageService: MessageService,
-        public confirmationService: ConfirmationService,public router: Router) {
-        this.dataForm=this.formBuilder.group({
-          name:[''],
-          primaryContact:[''],
-          email:[''],
-          phone:['']
-
-        })
-
-      this.companyService.refreshCompanies$.subscribe(() => {
-      this.FillData();
-    });
   }
+
 
   async FillData(pageIndex: number = 0) {
     this.loading = true;
@@ -106,12 +82,13 @@ export class CompaniesComponent {
     await this.FillData();
     this.isResetting = false;
   }
+
   paginate(event: any) {
     this.pageSize = event.rows
     this.first = event.first
     this.FillData(event.first);
-
   }
+
   openAddCompany(row: CompanyResponse | null = null) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.body.style.overflow = 'hidden';
@@ -160,10 +137,10 @@ export class CompaniesComponent {
     }, this.doneTypingInterval);
   }
 
-    viewAgents(row: CompanyResponse){
-      this.companyService.SelectedData = row;
-      localStorage.setItem('selectedCompany', JSON.stringify(row));
-      this.router.navigate(['layout-admin/companies/agents-list']);
-    }
+  viewAgents(row: CompanyResponse) {
+    this.companyService.SelectedData = row;
+    localStorage.setItem('selectedCompany', JSON.stringify(row));
+    this.router.navigate(['layout-admin/companies/agents-list']);
+  }
 
 }
