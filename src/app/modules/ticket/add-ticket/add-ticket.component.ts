@@ -64,7 +64,6 @@ export class AddTicketComponent {
       await this.RetrieveAgent();
 
       if (this.ticketService.SelectedData != null) {
-        console.log("ticket to update: ",this.ticketService.SelectedData );
         await this.FillData();
       }
 
@@ -157,7 +156,7 @@ export class AddTicketComponent {
 
     let temp = {
       description: this.ticketService.SelectedData?.description || '',
-      agentIDFK: this.ticketService.SelectedData?.agentIDFK ?? '',
+      agentIDFK: this.ticketService.SelectedData?.agent?.uuid ?? '',
       status: this.ticketService.SelectedData?.status || '0',
     };
 

@@ -9,7 +9,7 @@
 
           <div class="col-12 mb-3">
             <div class="p-float-label" [ngClass]="{'error_border': submitted && form['description'].errors}">
-              <input pInputText type="text" formControlName="description" />
+              <textarea pInputTextarea formControlName="description" rows="4" cols="30"></textarea>
               <label [ngClass]="{'error': submitted && form['description'].errors}">{{ 'ticketDescription_ticket' | translate }}</label>
               <span *ngIf="submitted && form['description'].errors" class="error-validation">
                 {{ 'Field_Required' | translate }}

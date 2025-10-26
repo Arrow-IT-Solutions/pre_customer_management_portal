@@ -8,7 +8,6 @@ import { TicketComponent } from './ticket/ticket.component';
 import { AddTicketComponent } from './add-ticket/add-ticket.component';
 import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/class/class';
 import { AgentResponse } from '../agent/agent.module';
-import { CompanyResponse } from '../companies/companies.module';
 
 
 @NgModule({

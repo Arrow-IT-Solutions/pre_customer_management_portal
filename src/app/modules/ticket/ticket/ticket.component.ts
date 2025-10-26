@@ -4,12 +4,10 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { TicketsService } from 'src/app/Core/services/tickets.service';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { AgentsService } from 'src/app/Core/services/agents.service';
 import { TicketResponse, TicketSearchRequest } from '../ticket.module';
 import { AddTicketComponent } from '../add-ticket/add-ticket.component';
 
 import { ActivatedRoute } from '@angular/router';
-import { CompaniesService } from 'src/app/layout/service/companies.service';
 import { ConstantResponse, ConstantService } from 'src/app/Core/services/constant.service';
 
 @Component({
@@ -49,8 +47,6 @@ export class TicketComponent {
   constructor(
     public formBuilder: FormBuilder,
     public ticketsService: TicketsService,
-    public agentService: AgentsService,
-    public companyService: CompaniesService,
     public translate: TranslateService,
     public layoutService: LayoutService,
     public messageService: MessageService,
@@ -84,73 +80,13 @@ export class TicketComponent {
     const StatusResponse = await this.constantService.Search('TicketStatus') as any;
     console.log("status value: ", StatusResponse.data)
     this.status =StatusResponse.data;
-    await this.retrieveCompanies();
-    await this.retrieveAgents();
+  
 
     await this.FillData();
   });
 }
 
   Search() {
-    this.FillData();
-  }
-
-  retrieveAgentLabel(row: TicketResponse): string {
-      const agentUUID = row.agentIDFK?.trim();
-      const match = this.agentsList.find(c => c.value === agentUUID);
-      return match?.label || '-';
-    }
-  
-async retrieveAgents() {
-  const filter = {
-    name: '',
-    uuid: '',
-    pageIndex: '0',
-    pageSize: '10'
-  };
-
-  const response = await this.agentService.Search(filter) as any;
-  const agents = response?.data || [];
-  this.agentsList = agents.map((agent: any) => ({
-    label: agent.agentTranslation?.[this.layoutService.config.lang]?.name ?? '—',
-    value: agent.uuid?.trim() ?? '',
-    companyName: this.companiesList.find(c => c.value === agent.companyIDFK)?.label ?? '—'
-  }));
-
-  console.log('agents response:', response);
-  console.log('mapped agentsList:', this.agentsList);
-}
-
-retrieveCompanyName(row: TicketResponse): string {
-  const agentUUID = row.agentIDFK?.trim();
-  const match = this.agentsList.find(a => a.value === agentUUID);
-  return match?.companyName || '—';
-  }
-
-  async retrieveCompanies() {
-    const filter = {
-      name: '',
-      uuid: '',
-      pageIndex: '0',
-      pageSize: '10'
-    };
-
-    const response = await this.companyService.Search(filter) as any;
-    const companies = response?.data || [];
-
-    this.companiesList = companies.map((company: any) => ({
-      label: company.companyTranslation?.[this.layoutService.config.lang]?.name ?? '—',
-      value: company.uuid?.trim() ?? ''
-    }));
-
-    console.log('companies response:', response);
-    console.log('mapped companiesList:', this.companiesList);
-
-  }
-
-    filterByAgent(agentUUID: string) {
-    console.log("agent UUID ", agentUUID)
-    this.dataForm.get('agentIDFK')?.setValue(agentUUID);
     this.FillData();
   }
 
