@@ -15,6 +15,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   providers: [MessageService, ConfirmationService]
 })
 export class ServicesDetailsComponent implements OnInit {
+  allEnvDatabase: any[] = [];
   showDecrypted = false;
   displayDialog = false;
   selectedEnvIndex: number | null = null;
@@ -57,7 +58,6 @@ export class ServicesDetailsComponent implements OnInit {
 
   async ngOnInit() {
     this.loading = true;
-    // console.log('selecteddata', this.provisionedService.selectedData)
 
     await this.viewData()
 
@@ -69,6 +69,7 @@ export class ServicesDetailsComponent implements OnInit {
       if (this.provisionedService.selectedData) {
         this.data = this.provisionedService.selectedData;
         this.envDatabase = this.data.databases || [];
+        this.allEnvDatabase = [...this.envDatabase];
 
         for (const env of this.envDatabase) {
           env.password = env.password ? await this.decrypt(env.password) : '';
@@ -77,6 +78,7 @@ export class ServicesDetailsComponent implements OnInit {
       } else {
 
         this.envDatabase = [];
+        this.allEnvDatabase = [];
       }
 
       this.loading = false;
@@ -88,17 +90,28 @@ export class ServicesDetailsComponent implements OnInit {
 
 
 
-   OnChange() {
-    if (this.isResetting) return;
-    clearTimeout(this.typingTimer);
-    this.typingTimer = setTimeout(() => {
-      this.viewData();
-      console.log("onChange")
-    }, this.doneTypingInterval);
+  OnChange() {
+    const form = this.searchFrom.value;
+
+    const envName = (form.EnvName || '').toLowerCase();
+    const serverName = (form.server || '').toLowerCase();
+    const dbName = (form.dbName || '').toLowerCase();
+
+    this.envDatabase = this.allEnvDatabase.filter(env => {
+      const matchesEnv = !envName || env.environment?.environmentTranslation?.en?.name?.toLowerCase().includes(envName)
+        || env.environment?.environmentTranslation?.ar?.name?.toLowerCase().includes(envName);
+
+      const matchesServer = !serverName || env.environment?.server?.hostname?.toLowerCase().includes(serverName);
+
+      const matchesDb = !dbName || env.name?.toLowerCase().includes(dbName);
+
+      return matchesEnv && matchesServer && matchesDb;
+    });
   }
 
   resetSearchForm() {
     this.searchFrom.reset();
+    this.envDatabase = [...this.allEnvDatabase];
   }
 
   async paginate(event: any) {
@@ -133,11 +146,11 @@ export class ServicesDetailsComponent implements OnInit {
   }
 
   validateKey() {
-    const validKey = EncryptionService.base64Key; // since static
+    const validKey = EncryptionService.base64Key;
 
     if (this.enteredKey === validKey && this.selectedEnvIndex !== null) {
       this.unlockedEnvs.add(this.selectedEnvIndex);
-      this.showDecrypted=true;
+      this.showDecrypted = true;
       this.displayDialog = false;
       this.messageService.add({
         key: 'toast',
@@ -155,6 +168,11 @@ export class ServicesDetailsComponent implements OnInit {
     }
   }
 
+  openAlertModel() {
+    // this.alertModal.showAlert();
+
+
+  }
 
 
 

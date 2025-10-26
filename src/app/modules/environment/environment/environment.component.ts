@@ -126,7 +126,6 @@ export class EnvironmentComponent {
       }
     });
 
-    console.log('Company Services Map:', this.companyServices);
   }
 
 
@@ -148,8 +147,6 @@ export class EnvironmentComponent {
         this.servers[server.uuid.trim()] = server.hostname || '—';
       }
     });
-
-    console.log('Server Map:', this.servers);
 
 
   }

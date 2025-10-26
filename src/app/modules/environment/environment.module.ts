@@ -8,6 +8,7 @@ import { AddEnvironmentComponent } from './add-environment/add-environment.compo
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RequestBase, ResponseBase, SearchRequestBase } from 'src/app/shared/class/class';
+import { ServerResponse } from '../servers/servers.module';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ export interface EnvironmentResponse extends ResponseBase {
   url: string;
   serverIDFK: string;
   environmentTranslation: EnvironmentTranslationResponse[];
+  server: ServerResponse
 }
 
 export interface EnvironmentTranslationRequest {
