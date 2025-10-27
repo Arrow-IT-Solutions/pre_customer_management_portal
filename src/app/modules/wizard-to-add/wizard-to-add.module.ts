@@ -79,6 +79,7 @@ export interface ProvisionedServiceSearchRequest extends SearchRequestBase {
   uuid?: string;
   companyIDFK?: string;
   serviceIDFK?: string;
+  companyName?: string;
   includeCompany?: string;
   includeService?: string;
 }

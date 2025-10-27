@@ -10,6 +10,8 @@ import { ConstantResponse, ConstantService } from 'src/app/Core/services/constan
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { CompanyServiceService } from 'src/app/layout/service/companyService.service';
 import { RenewComponent } from '../renew/renew.component';
+import { RenewService } from 'src/app/Core/services/renew.service';
+import { ProvisionedServiceResponse } from '../../wizard-to-add/wizard-to-add.module';
 
 @Component({
   selector: 'app-subscriptions',
@@ -29,7 +31,7 @@ export class SubscriptionsComponent {
   doneTypingInterval = 1000;
   typingTimer: any;
   isResetting: boolean = false;
-
+  companies: ProvisionedServiceResponse[];
   constructor(
     public formBuilder: FormBuilder,
     public layoutService: LayoutService,
@@ -39,13 +41,14 @@ export class SubscriptionsComponent {
     public subscripeService: SubscriptionService,
     public companyService: CompanyServiceService,
     public messageService: MessageService,
-    public confirmationService: ConfirmationService
+    public confirmationService: ConfirmationService,
+
   ) {
     this.dataForm = this.formBuilder.group({
       status: [''],
-      com_service:[''],
-      startDate:[''],
-      endDate:['']
+      com_service: [''],
+      startDate: [''],
+      endDate: ['']
 
     });
 
@@ -68,10 +71,26 @@ export class SubscriptionsComponent {
     this.data = [];
     this.totalRecords = 0;
 
+    let fromDate
+    if (this.dataForm.controls['startDate'].value == null || this.dataForm.controls['startDate'].value == '') {
+      fromDate = '';
+    }
+    else {
+      fromDate = new Date(this.dataForm.controls['startDate'].value.toISOString())
+    }
+    let toDate
+    if (this.dataForm.controls['endDate'].value == null || this.dataForm.controls['endDate'].value == '') {
+      toDate = '';
+    } else {
+      toDate = new Date(this.dataForm.controls['endDate'].value.toISOString());
+    }
+
     const filter: SubscriptionSearchRequest = {
-      uuid: this.dataForm.get('uuid')?.value?.trim(),
-      companyServiceIDFK: '',
-      status: this.dataForm.controls['status'].value.toString(),
+      uuid: '',
+      companyServiceIDFK: this.dataForm.controls['com_service'].value,
+      status: this.dataForm.controls['status'].value == null ? '' : this.dataForm.controls['status'].value.toString(),
+      startDate: fromDate.toLocaleString(),
+      endDate: toDate.toLocaleString(),
       pageIndex: pageIndex.toString(),
       pageSize: this.pageSize.toString(),
     };
@@ -111,28 +130,21 @@ export class SubscriptionsComponent {
 
     const response = await this.provisionedService.Search(filter) as any;
     const companyService = response?.data || [];
+    this.companies = response.data
 
     this.companyServices = {};
 
     const lang = this.layoutService.config.lang || 'en';
 
-    companyService.forEach((cs: any) => {
-      if (cs.uuid) {
-        const companyName = cs.company?.companyTranslation?.[lang]?.name || 'Unknown Company';
-        const serviceName = cs.service?.serviceTranslation?.[lang]?.name || 'Unknown Service';
-        this.companyServices[cs.uuid.trim()] = `${companyName} - ${serviceName}`;
-      }
-    });
-
-    console.log('Company Services Map:', this.companyServices);
+    await this.ReWriteCompanyService();
   }
 
 
 
 
-  Search() {
-    this.FillData();
-  }
+  // Search() {
+  //   this.FillData();
+  // }
 
   OnChange() {
     if (this.isResetting) return;
@@ -176,21 +188,24 @@ export class SubscriptionsComponent {
     });
   }
 
-  openRenew(row: SubscriptionResponse | null = null){
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      document.body.style.overflow = 'hidden';
-       this.companyService.SelectedData = row
-      let content ='Renew_Company';
-      this.translate.get(content).subscribe((res: string) => {
-        content = res
-      });
-      var component = this.layoutService.OpenDialog(RenewComponent, content);
-      this.companyService.Dialog = component;
-      component.OnClose.subscribe(() => {
-        document.body.style.overflow = '';
-        this.FillData();
-      });
-      }
+  openRenew(row: SubscriptionResponse | null = null) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.style.overflow = 'hidden';
+    this.subscripeService.SelectedData = row
+
+    let content = 'Renew_Company';
+    this.translate.get(content).subscribe((res: string) => {
+      content = res
+    });
+    var component = this.layoutService.OpenDialog(RenewComponent, content);
+
+    this.companyService.Dialog = component;
+
+    component.OnClose.subscribe(() => {
+      document.body.style.overflow = '';
+      this.FillData();
+    });
+  }
 
   async confirmDelete(row: SubscriptionResponse) {
     this.confirmationService.confirm({
@@ -214,5 +229,31 @@ export class SubscriptionsComponent {
         }
       }
     });
+  }
+
+  ReWriteCompanyService(): any {
+
+    var clientDTO: any[] = []
+
+    this.companies.map(com => {
+      const comtranslation = com.company.companyTranslation?.[this.layoutService.config.lang] as any;
+      const sertranslation = com.service.serviceTranslation?.[this.layoutService.config.lang] as any;
+
+      const comp = comtranslation?.name;
+      const service = sertranslation?.name;
+
+      var obj =
+      {
+        ...com,
+        fullName: `${comp} - ${service}`.trim()
+
+      }
+
+      clientDTO.push(obj)
+
+    })
+
+    this.companies = clientDTO;
+
   }
 }

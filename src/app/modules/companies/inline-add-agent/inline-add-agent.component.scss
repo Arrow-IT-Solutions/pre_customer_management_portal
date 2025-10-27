@@ -1,0 +1,118 @@
+@import "../../../../assets/scss/varialbles.scss";
+
+.inline-add-agent {
+  margin-top: 1.5rem;
+
+  & .box-shadow {
+    border: 1px solid $lighter-gray;
+    border-radius: 6px;
+    padding: 1.7rem;
+    background-color: $white-color;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  & .side-icon {
+    background-color: $chips-color;
+    color: $blue-color;
+    border-radius: 6px;
+    padding: 0.25rem 1rem;
+    position: relative;
+    top: -1rem;
+    min-width: 220px;
+    display: flex;
+    align-items: center;
+
+    & .material-symbols-outlined {
+      margin-inline-end: 0.5rem;
+
+      &:lang(ar) {
+        margin-inline-start: 0.5rem;
+        margin-inline-end: unset;
+      }
+    }
+
+    &:lang(ar) {
+      left: unset;
+      right: -3rem;
+    }
+  }
+
+  & .p-float-label {
+    width: 100%;
+    position: relative;
+
+    input,
+    .p-dropdown {
+      width: 100%;
+    }
+
+    &.error_border input,
+    &.error_border .p-dropdown {
+      border-color: $red-color;
+    }
+
+    label.error {
+      color: $red-color;
+    }
+
+    .error-validation {
+      font-size: 0.8rem;
+      color: $red-color;
+      margin-top: 0.3rem;
+      display: block;
+    }
+  }
+
+  .pi {
+    position: absolute;
+    right: 1rem;
+    top: 0.9rem;
+    cursor: pointer;
+    color: $gray-color;
+
+    &:lang(ar) {
+      right: unset;
+      left: 1rem;
+    }
+  }
+
+  &__footer {
+    text-align: end;
+    margin-top: 1.5rem;
+
+    button {
+      background-color: $blue-color;
+      border: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    & .side-icon {
+      min-width: unset;
+      font-size: 0.9rem;
+      padding: 0.25rem 0.5rem;
+    }
+
+    & .p-float-label {
+      label {
+        font-size: 0.85rem;
+      }
+    }
+
+    &__footer {
+      text-align: center;
+    }
+  }
+
+    .row {
+    display: flex;
+    flex-direction: column; // يخلي كل input تحت الثاني
+    gap: 1rem; // مسافة بين الحقول
+  }
+
+  .col-md-6,
+  .col-12 {
+    width: 100%; // يخلي كل حقل ياخد العرض الكامل
+  }
+
+}

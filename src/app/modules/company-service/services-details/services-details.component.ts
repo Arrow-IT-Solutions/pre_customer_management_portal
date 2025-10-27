@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
-import { ProvisionedServiceResponse } from '../../wizard-to-add/wizard-to-add.module';
+import { ProvisionedServiceResponse, ProvisionedServiceSearchRequest } from '../../wizard-to-add/wizard-to-add.module';
 import { LayoutService } from 'src/app/layout/service/layout.service';
 import { EncryptionService } from 'src/app/shared/service/encryption.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +15,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   providers: [MessageService, ConfirmationService]
 })
 export class ServicesDetailsComponent implements OnInit {
+  allEnvDatabase: any[] = [];
+  showDecrypted = false;
   displayDialog = false;
   selectedEnvIndex: number | null = null;
   enteredKey = '';
@@ -23,7 +25,7 @@ export class ServicesDetailsComponent implements OnInit {
   selectedEnv: any;
   loading: boolean = false;
   searchFrom!: FormGroup;
-  dataFrom!: FormGroup;
+  dataForm!: FormGroup;
   data: ProvisionedServiceResponse;
   pageSize: number = 12;
   first: number = 0;
@@ -31,6 +33,10 @@ export class ServicesDetailsComponent implements OnInit {
   companyserviceUUID: string = '';
   envDatabase: any[] = [];
   lang: string = 'en';
+  doneTypingInterval = 1000;
+  typingTimer: any;
+  isResetting: boolean = false;
+  dataArray: ProvisionedServiceResponse[] = [];
   constructor(
     public formBuilder: FormBuilder,
     public route: ActivatedRoute,
@@ -52,7 +58,6 @@ export class ServicesDetailsComponent implements OnInit {
 
   async ngOnInit() {
     this.loading = true;
-    // console.log('selecteddata', this.provisionedService.selectedData)
 
     await this.viewData()
 
@@ -64,6 +69,7 @@ export class ServicesDetailsComponent implements OnInit {
       if (this.provisionedService.selectedData) {
         this.data = this.provisionedService.selectedData;
         this.envDatabase = this.data.databases || [];
+        this.allEnvDatabase = [...this.envDatabase];
 
         for (const env of this.envDatabase) {
           env.password = env.password ? await this.decrypt(env.password) : '';
@@ -72,6 +78,7 @@ export class ServicesDetailsComponent implements OnInit {
       } else {
 
         this.envDatabase = [];
+        this.allEnvDatabase = [];
       }
 
       this.loading = false;
@@ -84,11 +91,27 @@ export class ServicesDetailsComponent implements OnInit {
 
 
   OnChange() {
-    this.viewData();
+    const form = this.searchFrom.value;
+
+    const envName = (form.EnvName || '').toLowerCase();
+    const serverName = (form.server || '').toLowerCase();
+    const dbName = (form.dbName || '').toLowerCase();
+
+    this.envDatabase = this.allEnvDatabase.filter(env => {
+      const matchesEnv = !envName || env.environment?.environmentTranslation?.en?.name?.toLowerCase().includes(envName)
+        || env.environment?.environmentTranslation?.ar?.name?.toLowerCase().includes(envName);
+
+      const matchesServer = !serverName || env.environment?.server?.hostname?.toLowerCase().includes(serverName);
+
+      const matchesDb = !dbName || env.name?.toLowerCase().includes(dbName);
+
+      return matchesEnv && matchesServer && matchesDb;
+    });
   }
 
   resetSearchForm() {
     this.searchFrom.reset();
+    this.envDatabase = [...this.allEnvDatabase];
   }
 
   async paginate(event: any) {
@@ -112,7 +135,9 @@ export class ServicesDetailsComponent implements OnInit {
       return '[decryption failed]';
     }
   }
-
+   lock(){
+    this.showDecrypted=false;
+   }
   unlock(index: number, env: any) {
     this.selectedEnvIndex = index;
     this.selectedEnv = env;
@@ -121,10 +146,11 @@ export class ServicesDetailsComponent implements OnInit {
   }
 
   validateKey() {
-    const validKey = EncryptionService.base64Key; // since static
+    const validKey = EncryptionService.base64Key;
 
     if (this.enteredKey === validKey && this.selectedEnvIndex !== null) {
       this.unlockedEnvs.add(this.selectedEnvIndex);
+      this.showDecrypted = true;
       this.displayDialog = false;
       this.messageService.add({
         key: 'toast',
@@ -142,12 +168,12 @@ export class ServicesDetailsComponent implements OnInit {
     }
   }
 
-  
-openAlertModel(){
-  // this.alertModal.showAlert();
-  console.log("alert")
-  //console.log("alertModal",this.alertModal)
-}
+  openAlertModel() {
+    // this.alertModal.showAlert();
+
+
+  }
+
 
 
 

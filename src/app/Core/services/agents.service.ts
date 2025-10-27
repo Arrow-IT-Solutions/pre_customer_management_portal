@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class AgentsService {
+
   public SelectedData: AgentResponse | null = null;
   public Dialog: any | null = null;
   public submitted: any | null = "";
@@ -43,4 +44,9 @@ export class AgentsService {
     const apiUrl = `/api/agent/list?${this.layoutService.Filter(filter)}`;
     return await this.httpClient.get(apiUrl);
   }
+
+async getAgentsByCompanyID(uuid: string, pageIndex = 0, pageSize = 10) {
+  const apiUrl = `/api/agent/list?companyIDFK=${uuid}&pageIndex=${pageIndex}&pageSize=${pageSize}`;
+  return await this.httpClient.get(apiUrl);
+}
 }

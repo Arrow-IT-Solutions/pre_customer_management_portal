@@ -109,12 +109,19 @@ export class ServerDetailesComponent {
 
     const response = await this.applicationService.Search(filter)
     this.apps = await this.decrypt(response.data);
-    this.totalRecords = this.apps.length
+    this.totalRecords = this.apps.length;
+    this.loading=false;
   }
-
+   lock(){
+    this.showDecrypted=false;
+   }
   unlockPassword() {
     this.enteredKey = '';
     this.displayDialog = true;
+  }
+
+  Lock() {
+    this.showDecrypted = false;
   }
 
   validateKey() {

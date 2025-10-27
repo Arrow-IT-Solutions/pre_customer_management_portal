@@ -72,7 +72,6 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
-    console.log('onSubmit dataform : ', this.dataForm);
 
   }
 
@@ -101,7 +100,6 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
         await this.restoreFormFromSession();
 
       } catch (error) {
-        console.log('No existing session found, creating new one');
 
         this.session = {};
 
@@ -111,7 +109,6 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
             const parsedData = JSON.parse(savedFormData);
             this.session.currentCompanyServiceFormData = parsedData;
           } catch (parseError) {
-            console.log('Failed to parse saved company service data');
           }
         }
 
@@ -121,7 +118,6 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
             const parsedSessionData = JSON.parse(savedSessionData);
             this.session = { ...this.session, ...parsedSessionData };
           } catch (parseError) {
-            console.log('Failed to parse saved session data');
           }
         }
 
@@ -149,7 +145,6 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     try {
       this.updateSessionWithCurrentFormData();
     } catch (error) {
-      console.log('Company Service: Error saving form data:', error);
     }
   }
 
@@ -181,14 +176,12 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
 
   private updateSessionWithCurrentFormData() {
     if (this.loading || !this.dataForm) {
-      console.log('Company Service: Skipping save - form not ready or loading');
       return;
     }
 
     try {
       this.session = this.provisionedService.getSession();
     } catch (error) {
-      console.log('Company Service: Creating new session for company service data');
       this.session = {};
       try {
         const savedData = sessionStorage.getItem('currentCompanyServiceFormData');
@@ -197,7 +190,6 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
           this.session.currentCompanyServiceFormData = parsedData;
         }
       } catch (parseError) {
-        console.log('Company Service: No saved company service form data to restore');
       }
     }
 
@@ -345,7 +337,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
         existingEnvDatabases = existingSession.envDatabases;
       }
     } catch (error) {
-      console.log('No existing environments found');
+
     }
 
     const session: ProvisionedSession = {

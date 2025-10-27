@@ -20,6 +20,7 @@ import { EncryptionService } from 'src/app/shared/service/encryption.service';
   providers: [MessageService, ConfirmationService]
 })
 export class DataBasesComponent implements OnInit {
+  showDecrypted = false;
   unlockedRows: Set<string | number> = new Set();
   displayDialog = false;
   enteredKey = '';
@@ -113,7 +114,6 @@ export class DataBasesComponent implements OnInit {
     this.first = event.first;
     this.pageSize = event.rows;
     const pageIndex = Math.floor(event.first / event.rows);
-    console.log('pageIndex:', pageIndex, 'first:', this.first, 'pageSize:', this.pageSize);
     this.fillData(pageIndex);
   }
 
@@ -185,20 +185,23 @@ export class DataBasesComponent implements OnInit {
       })
     );
   }
-
+   
   unlock(rowKey: string | number, field: 'password' | 'connectionString' | 'username') {
     this.selectedRowKey = rowKey;
     this.selectedField = field;
     this.enteredKey = '';
     this.displayDialog = true;
   }
-
+lock(){
+  this.showDecrypted=false;
+}
   validateKey() {
     const validKey = EncryptionService.base64Key;
 
     if (this.enteredKey === validKey && this.selectedRowKey != null) {
       this.unlockedRows.add(this.selectedRowKey);
       this.displayDialog = false;
+      this.showDecrypted = true;
 
       this.messageService.add({
         key: 'toast',

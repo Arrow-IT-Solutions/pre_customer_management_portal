@@ -134,7 +134,6 @@ export class ServersComponent {
   viewDetails(server: ServerResponse) {
     this.serverService.ServerDetails = server;
 
-    console.log('Selected Server', server)
     this.route.navigate(['layout-admin/servers/server-details']);
   }
 }

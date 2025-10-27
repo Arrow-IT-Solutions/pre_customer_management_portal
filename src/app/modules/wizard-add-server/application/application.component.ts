@@ -163,8 +163,6 @@ export class ApplicationComponent implements OnInit, WizardStep {
     if (this.serverService.serverHelper) {
       this.serverService.serverHelper.applications = encryptedApps;
 
-      console.log('req', this.serverService.serverHelper)
-
       response = await this.serverService.AddProvisioned(this.serverService.serverHelper);
     }
 
