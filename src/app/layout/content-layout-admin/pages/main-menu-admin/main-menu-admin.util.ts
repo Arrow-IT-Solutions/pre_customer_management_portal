@@ -34,6 +34,12 @@ export const navbarData: NavbarData[] = [
         routeLink: 'agents'
       },
       {
+        label: 'Tickets',
+        labelar: '',
+        id: 'tickets',
+        routeLink: 'tickets'
+      },
+      {
         label: 'Services',
         labelar: 'الخدمات',
         id: 'services',
