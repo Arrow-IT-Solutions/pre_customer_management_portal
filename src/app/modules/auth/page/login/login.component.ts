@@ -74,6 +74,7 @@ export class LoginComponent implements AfterViewInit {
     console.log('authResponse : ', response);
 
     if (response.requestStatus == 200) {
+      
       this.layoutService.showSuccess(this.messageService, 'toast', true, response.requestMessage);
 
 
@@ -102,6 +103,9 @@ export class LoginComponent implements AfterViewInit {
         case '1':
           this.router.navigateByUrl('layout-admin/companies'); // cashier
           break;
+        case '2':
+         this.layoutService.showError(this.messageService, 'toast', true, response.requestMessage);
+          return; 
       }
 
       // this.router.navigateByUrl('merchants');

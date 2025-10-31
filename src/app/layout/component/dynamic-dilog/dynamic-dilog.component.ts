@@ -16,6 +16,7 @@ export class DynamicDilogComponent {
   @Input() componentView:any;
   @Input() adHostDynamic:any;
   @Output() OnClose: EventEmitter<void> = new EventEmitter<void>();
+  employeeService: import("c:/Users/REVERA SHAWABKEH/Desktop/pre_customer_management_portal/src/app/layout/service/companies.service").CompaniesService;
 
 
 

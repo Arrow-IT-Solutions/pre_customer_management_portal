@@ -30,3 +30,7 @@ export interface EmployeeResetPass {
   uuid?: string;
   password?: string;
 }
+export interface CompanyResetPass {
+  uuid?: string;
+  password?: string;
+}

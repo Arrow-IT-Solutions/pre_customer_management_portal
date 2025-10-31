@@ -8,6 +8,7 @@ import { AddCompanyComponent } from './add-company/add-company.component';
 import { CompaniesRoutingModule } from './companies-routing.module';
 import { AgentsListComponent } from './agents-list/agents-list.component';
 import { InlineAddAgentComponent } from './inline-add-agent/inline-add-agent.component';
+import { UserResponse } from '../auth/auth.module';
 
 
 @NgModule({
@@ -29,6 +30,9 @@ export class CompaniesModule { }
 
 export interface CompanyResponse extends ResponseBase {
   uuid?: string;
+  user: UserResponse,
+  userIDFK: string,
+  password?: string,
   companyTranslation?: { [key: string]: CompanyTranslationResponse };
   primaryContact?: string;
   phone?: string;

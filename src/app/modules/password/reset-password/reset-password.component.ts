@@ -6,7 +6,8 @@ import { ConstantService } from 'src/app/Core/services/constant.service';
 import { EmployeesService } from 'src/app/Core/services/employees.service';
 import { UserService } from 'src/app/Core/services/user.service';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { EmployeeResetPass } from '../password.module';
+import { CompanyResetPass, EmployeeResetPass } from '../password.module';
+import { CompaniesService } from 'src/app/layout/service/companies.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class ResetPasswordComponent {
   submitted: boolean = false;
   btnLoading: boolean = false;
   loading: boolean = false;
+  
   constructor(
     public formBuilder: FormBuilder,
     public layoutService: LayoutService,
@@ -27,7 +29,8 @@ export class ResetPasswordComponent {
     public constantService: ConstantService,
     public translate: TranslateService,
     public userService: UserService,
-    public messageService: MessageService
+    public messageService: MessageService,
+    public companyService: CompaniesService,
   ) {
     this.dataForm = formBuilder.group({
       password: ['', Validators.required],
@@ -78,6 +81,29 @@ export class ResetPasswordComponent {
         setTimeout(() => {
           this.employeeService.Dialog.adHostChild.viewContainerRef.clear();
           this.employeeService.Dialog.adHostDynamic.viewContainerRef.clear();
+        }, 600);
+
+      } else {
+        this.layoutService.showError(this.messageService, 'toast', true, response?.requestMessage);
+
+      }
+
+    }
+    if (this.companyService.SelectedData != null) {
+      console.log('SelectedData:', this.companyService.SelectedData);
+      
+      var company: CompanyResetPass = {
+        uuid: this.companyService.SelectedData?.uuid,
+        password: this.dataForm.controls['password'].value.toString()
+
+      };
+      console.log('Company Reset Payload:', company);
+      response = await this.userService.CompanyResetPass(company);
+      if (response?.requestStatus?.toString() == '200') {
+        this.layoutService.showSuccess(this.messageService, 'toast', true, response?.requestMessage);
+        setTimeout(() => {
+          this.companyService.Dialog.adHostChild.viewContainerRef.clear();
+          this.companyService.Dialog.adHostDynamic.viewContainerRef.clear();
         }, 600);
 
       } else {

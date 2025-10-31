@@ -12,6 +12,7 @@ export class CompaniesService {
 
 public SelectedData: CompanyResponse | null = null;
   public Dialog: any | null = null;
+   public submitted: any | null = "";
   private refreshCompaniesSubject = new Subject<void>();
 
   refreshCompanies$ = this.refreshCompaniesSubject.asObservable();
