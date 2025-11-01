@@ -4,6 +4,8 @@ import { MessageService } from 'primeng/api';
 import { CompaniesService } from 'src/app/layout/service/companies.service';
 import { LayoutService } from 'src/app/layout/service/layout.service';
 import { CompanyRequest, CompanyUpdateRequest } from '../companies.module';
+import { TranslateService } from '@ngx-translate/core';
+import { PasswordComponent } from '../../password/password/password.component';
 
 @Component({
   selector: 'app-add-company',
@@ -20,14 +22,17 @@ export class AddCompanyComponent {
     public messageService: MessageService,
     public company: CompaniesService,
     public layoutService: LayoutService,
-    public companyService: CompaniesService
+    public companyService: CompaniesService,
+    public translate: TranslateService
   ) {
     this.dataForm = this.formBuilder.group({
       nameEn: ['', Validators.required],
       nameAr: ['', Validators.required],
       primaryContact: ['', Validators.required],
       email: [''],
-      phone: ['', Validators.required]
+      phone: ['', Validators.required],
+       username: [''],  
+      password: ['']   
     })
   }
   get form(): { [key: string]: AbstractControl } {
@@ -88,6 +93,18 @@ export class AddCompanyComponent {
       };
 
       response = await this.companyService.Update(updateCompany);
+       if (response.requestStatus == "200") {
+        this.layoutService.showSuccess(this.messageService, 'toast', true, response.requestMessage);
+        this.companyService.Dialog.adHostChild.viewContainerRef.clear();
+        this.companyService.Dialog.adHostDynamic.viewContainerRef.clear();
+        setTimeout(() => {
+          this.companyService.Dialog.adHostChild.viewContainerRef.clear();
+          this.companyService.Dialog.adHostDynamic.viewContainerRef.clear();
+          this.companyService.triggerRefreshCompanies();
+        }, 600);
+      } else {
+        this.layoutService.showError(this.messageService, 'toast', true, response?.requestMessage);
+      }
     } else {
       // add
       var addCompany: CompanyRequest = {
@@ -95,31 +112,38 @@ export class AddCompanyComponent {
         primaryContact: this.dataForm.controls['primaryContact'].value == null ? null : this.dataForm.controls['primaryContact'].value.toString(),
         email: this.dataForm.controls['email'].value == null ? null : this.dataForm.controls['email'].value.toString(),
         phone: this.dataForm.controls['phone'].value == null ? null : this.dataForm.controls['phone'].value.toString(),
+        
       };
 
 
       response = await this.companyService.Add(addCompany);
+      console.log('Add Company Response:', response);
+   if (response != null) {
+        if (response.requestStatus == 200) {
+          this.layoutService.showSuccess(this.messageService, 'toast', true, response?.requestMessage);
+          this.companyService.SelectedData = {
+    ...response,
+    user: {
+        username: response.phone,  
+        password: response.password || ''  
+    }
+};
+          this.OpenInfoPage(this.companyService.SelectedData);
+          this.companyService.Dialog.close();
+          setTimeout(() => {
+            this.companyService.Dialog.adHostChild.viewContainerRef.clear();
+            this.companyService.Dialog.adHostDynamic.viewContainerRef.clear();
+            this.companyService.triggerRefreshCompanies();
+          }, 600);
+
+        } else {
+          this.layoutService.showError(this.messageService, 'toast', true, response?.requestMessage);
+        }
+  
+}
     }
 
-    if (response?.requestStatus?.toString() == '200') {
-      this.layoutService.showSuccess(this.messageService, 'toast', true, response?.requestMessage);
-      if (this.companyService.SelectedData == null) {
-        this.resetForm();
-        setTimeout(() => {
-          this.companyService.Dialog.adHostChild.viewContainerRef.clear();
-          this.companyService.Dialog.adHostDynamic.viewContainerRef.clear();
-          this.companyService.triggerRefreshCompanies();
-        }, 600);
-      } else {
-        setTimeout(() => {
-          this.companyService.Dialog.adHostChild.viewContainerRef.clear();
-          this.companyService.Dialog.adHostDynamic.viewContainerRef.clear();
-          this.companyService.triggerRefreshCompanies();
-        }, 600);
-      }
-    } else {
-      this.layoutService.showError(this.messageService, 'toast', true, response?.requestMessage);
-    }
+  
 
     this.btnLoading = false;
     this.submitted = false;
@@ -136,7 +160,33 @@ export class AddCompanyComponent {
       email: this.companyService.SelectedData?.email,
       phone: this.companyService.SelectedData?.phone,
       primaryContact: this.companyService.SelectedData?.primaryContact,
+      username: this.companyService.SelectedData?.user?.username || '',  
+      password: this.companyService.SelectedData?.password || ''       
     };
     this.dataForm.patchValue(temp);
   }
+  async OpenInfoPage(response) {
+  console.log('Data received in Info Page:', response);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.body.style.overflow = 'hidden';
+   this.companyService.SelectedData = response
+      let content = 'Info';
+      this.translate.get(content).subscribe((res: string) => {
+        content = res
+      });
+   var component = this.layoutService.OpenDialog(PasswordComponent, content);
+    this.companyService.Dialog = component;
+
+    component.OnClose.subscribe(() => {
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            this.companyService.Dialog.adHostChild.viewContainerRef.clear();
+            this.companyService.Dialog.adHostDynamic.viewContainerRef.clear();
+            this.companyService.triggerRefreshCompanies();
+        }, 600);
+        this.FillData();
+    });
+
+   
+    }
 }

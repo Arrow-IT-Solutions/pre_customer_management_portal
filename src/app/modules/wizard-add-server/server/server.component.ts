@@ -38,6 +38,7 @@ export class ServerComponent implements OnInit, WizardStep {
       username: [''],
       password: [''],
       url: [''],
+      tag: ['', Validators.required],
       fillAppsNow: [false]
     });
 
@@ -83,6 +84,7 @@ export class ServerComponent implements OnInit, WizardStep {
       username: this.dataForm.value.username,
       password: this.dataForm.value.password,
       url: this.dataForm.value.url,
+      tag: this.dataForm.value.tag,
       applications: []
     };
     this.serverService.serverHelper = h;
@@ -100,7 +102,8 @@ export class ServerComponent implements OnInit, WizardStep {
         ipAddress: this.dataForm.value.ipAddress,
         username: this.dataForm.value.username,
         password: encryptedPassword,
-        url: this.dataForm.value.url
+        url: this.dataForm.value.url,
+        tag: this.dataForm.value.tag 
       };
     }
   }
@@ -119,6 +122,7 @@ export class ServerComponent implements OnInit, WizardStep {
           username: h.username,
           password: h.password,
           url: h.url,
+          tag: h.tag,
           fillAppsNow: h.applications?.length > 0
         });
       }
@@ -154,6 +158,7 @@ export class ServerComponent implements OnInit, WizardStep {
       username: this.serverService.SelectedData?.username,
       password: plainPass,
       url: this.serverService.SelectedData?.url,
+      tag: this.serverService.SelectedData?.tag
     };
 
     this.dataForm.patchValue(temp);
@@ -181,6 +186,7 @@ export class ServerComponent implements OnInit, WizardStep {
         username: this.dataForm.controls['username'].value.toString(),
         password: encryptedPassword,
         url: this.dataForm.controls['url'].value.toString(),
+        tag: this.dataForm.controls['tag'].value.toString(),
         applications: [],
         deletedApps: []
       };

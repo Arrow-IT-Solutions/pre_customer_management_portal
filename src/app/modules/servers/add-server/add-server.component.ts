@@ -25,6 +25,7 @@ export class AddServerComponent {
     this.dataForm = this.formBuilder.group({
       hostname: ['', Validators.required],
       ipAddress: ['', Validators.required],
+      
     })
   }
   get form(): { [key: string]: AbstractControl } {
@@ -68,14 +69,16 @@ export class AddServerComponent {
       var updateServer: ServerUpdateRequest = {
         uuid: this.serverService.SelectedData?.uuid?.toString(),
         hostname: this.dataForm.controls['hostname'].value == null ? null : this.dataForm.controls['hostname'].value.toString(),
-        ipAddress: this.dataForm.controls['ipAddress'].value == null ? null : this.dataForm.controls['ipAddress'].value.toString()
+        ipAddress: this.dataForm.controls['ipAddress'].value == null ? null : this.dataForm.controls['ipAddress'].value.toString(),
+        
       };
       response = await this.serverService.Update(updateServer);
     } else {
       // add
       var addServer: ServerRequest = {
         hostname: this.dataForm.controls['hostname'].value == null ? null : this.dataForm.controls['hostname'].value.toString(),
-        ipAddress: this.dataForm.controls['ipAddress'].value == null ? null : this.dataForm.controls['ipAddress'].value.toString()
+        ipAddress: this.dataForm.controls['ipAddress'].value == null ? null : this.dataForm.controls['ipAddress'].value.toString(),
+        
       };
 
       response = await this.serverService.Add(addServer);
@@ -112,7 +115,8 @@ export class AddServerComponent {
   FillData() {
     let temp = {
       hostname: this.serverService.SelectedData?.hostname,
-      ipAddress: this.serverService.SelectedData?.ipAddress
+      ipAddress: this.serverService.SelectedData?.ipAddress,
+     
     };
 
     this.dataForm.patchValue(temp);

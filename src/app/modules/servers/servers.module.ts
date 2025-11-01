@@ -52,17 +52,20 @@ export interface ServerResponse extends ResponseBase {
   url: string,
   username: string,
   password: string,
+  tag?: string;
 }
 export interface ServerRequest extends RequestBase {
   uuid?: string;
   ipAddress?: string;
   hostname?: string;
+  tag?: string;
 }
 
 export interface ServerUpdateRequest extends RequestBase {
   uuid?: string;
   ipAddress?: string;
   hostname?: string;
+  tag?: string;
 }
 
 export interface ServerSearchRequest extends RequestBase {
@@ -82,6 +85,7 @@ export interface ProvisionedServerRequest {
   hostname?: string;
   ipAddress?: string;
   url?: string;
+  tag?: string;
   username?: string;
   password?: string;
   applications: ApplicationRequest[];

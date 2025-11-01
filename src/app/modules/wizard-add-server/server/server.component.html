@@ -60,6 +60,15 @@
               </div>
 
             </div>
+             <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['tag'].errors}">
+            <input pInputText type="text" formControlName="tag"  />
+           <label [ngClass]="{'error': submitted && form['tag'].errors}">Tag</label>
+            </div>
+          <div *ngIf="submitted && form['tag'].errors?.['required']" class="text-danger mt-1">
+               {{ 'field_required' | translate }}
+              </div>
+              </div>
 
           </div>
           <div class="col-12 mb-3 p-field-checkbox">

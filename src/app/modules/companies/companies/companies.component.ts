@@ -7,6 +7,7 @@ import { CompaniesService } from 'src/app/layout/service/companies.service';
 import { CompanyResponse, CompanySearchRequest } from '../companies.module';
 import { AddCompanyComponent } from '../add-company/add-company.component';
 import { Route, Router } from '@angular/router';
+import { ResetPasswordComponent } from '../../password/reset-password/reset-password.component';
 
 
 @Component({
@@ -137,10 +138,28 @@ export class CompaniesComponent {
     }, this.doneTypingInterval);
   }
 
-  viewAgents(row: CompanyResponse) {
-    this.companyService.SelectedData = row;
-    localStorage.setItem('selectedCompany', JSON.stringify(row));
-    this.router.navigate(['layout-admin/companies/agents-list']);
-  }
+    viewAgents(row: CompanyResponse){
+      this.companyService.SelectedData = row;
+      localStorage.setItem('selectedCompany', JSON.stringify(row));
+      this.router.navigate(['layout-admin/companies/agents-list']);
+    }
+    resetPass(row: CompanyResponse | null = null) {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.body.style.overflow = 'hidden';
+  this.companyService.SelectedData = row;
+  let content = 'ResetPassword_Company';
+  this.translate.get(content).subscribe((res: string) => {
+    content = res;
+  });
+  var component = this.layoutService.OpenDialog(ResetPasswordComponent, content);
+  this.companyService.Dialog = component;
+  component.OnClose.subscribe(() => {
+    document.body.style.overflow = '';
+    if (this.companyService.submitted == 'submitted') {
+      this.FillData();
+    }
+  });
+}
+
 
 }
