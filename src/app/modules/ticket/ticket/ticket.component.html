@@ -38,8 +38,8 @@
 
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
-                  <p-dropdown [options]="status" optionLabel="value" optionValue="key" 
-                  placeholder="{{ 'status_ticket' | translate }}" formControlName="status" (onChange)="OnChange()">
+                  <p-dropdown [options]="status" optionLabel="value" optionValue="key"
+                    placeholder="{{ 'status_ticket' | translate }}" formControlName="status" (onChange)="OnChange()">
                   </p-dropdown>
                 </div>
               </div>
@@ -47,14 +47,14 @@
               <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <label>{{'Search_by_Date'| translate}}</label>
-                      <div class="p-float-label">
-                        <p-calendar [showIcon]="true" formControlName="fromDate" (ngModelChange)="OnChange()" ></p-calendar>                          
-                        <label>From</label>
-                      </div>
-                      <div class="p-float-label">
-                        <p-calendar [showIcon]="true" formControlName="toDate" (ngModelChange)="OnChange()" ></p-calendar>
-                        <label>To</label>
-                      </div>
+                  <div class="p-float-label">
+                    <p-calendar [showIcon]="true" formControlName="fromDate" (ngModelChange)="OnChange()"></p-calendar>
+                    <label>From</label>
+                  </div>
+                  <div class="p-float-label">
+                    <p-calendar [showIcon]="true" formControlName="toDate" (ngModelChange)="OnChange()"></p-calendar>
+                    <label>To</label>
+                  </div>
                 </div>
               </div>
 
@@ -77,24 +77,24 @@
   <ng-container *ngIf="!loading; else ListView">
     <div class="box">
       <div class="card mx-0 mb-2" *ngFor="let ticket of data">
-          <div class="icon-container">
+        <div class="icon-container">
           <span class="material-symbols-outlined fill">account_box</span>
         </div>
 
         <div class="col-3 card__contents">
-          
+
           <div class="items">
             <div class="item">
               <div class="card-label">{{ 'agentName_agent' | translate }}</div>
               <div class="card-info">
-               {{ ticket.agent?.agentTranslation?.[layoutService.config.lang]?.name }}
+                {{ ticket.agent?.agentTranslation?.[layoutService.config.lang]?.name }}
               </div>
             </div>
 
             <div class="item">
               <div class="card-label">{{ 'companyName_agent' | translate }}</div>
               <div class="card-info">
-              {{ ticket.agent?.company?.companyTranslation?.[layoutService.config.lang]?.name }}            
+                {{ ticket.agent?.company?.companyTranslation?.[layoutService.config.lang]?.name }}
               </div>
             </div>
 
@@ -105,12 +105,13 @@
 
             <div class="item">
               <div class="card-label">{{ 'ticketCreationDate_ticket' | translate }}</div>
-              <div class="card-info">{{ ticket.creationDate }}</div>
+              <div class="card-info">{{ ticket.creationDate | date: 'yyyy-MM-dd'}}</div>
             </div>
-            
+
             <div class="item">
               <div class="card-label">{{ 'ticketClosureDate_ticket' | translate }}</div>
-              <div class="card-info">{{ ticket.closureDate ? (ticket.closureDate | date:'dd-MMM-yy h:mm:ss a') : 'Not yet' }} </div>
+              <div class="card-info">{{ ticket.closureDate ? (ticket.closureDate | date:'yyyy-MM-dd') : 'Not
+                yet' }} </div>
             </div>
 
             <div class="item">
@@ -119,7 +120,7 @@
                 {{ ticket.statusValue }}
                 <button pButton type="button" icon="pi pi-pencil" class="p-button-text p-0 ms-2"
                   (click)="openStatusDialog(ticket)"></button>
-                </div>
+              </div>
             </div>
 
           </div>
@@ -177,12 +178,14 @@
 <p-toast key="toast"></p-toast>
 
 
-<p-dialog header="Edit Status" [(visible)]="displayStatusDialog" [modal]="true" [style]="{ width: '400px' , height: '400px'}">
+<p-dialog header="Edit Status" [(visible)]="displayStatusDialog" [modal]="true"
+  [style]="{ width: '400px' , height: '400px'}">
   <div class="p-fluid">
     <div class="field">
       <label for="statusSelect">{{ 'select_status' | translate }}</label>
-      <p-dropdown id="statusSelect" [options]="status" optionLabel="value" optionValue="key" [(ngModel)]="selectedStatus">
-      </p-dropdown>    
+      <p-dropdown id="statusSelect" [options]="status" optionLabel="value" optionValue="key"
+        [(ngModel)]="selectedStatus">
+      </p-dropdown>
     </div>
   </div>
   <ng-template pTemplate="footer">
