@@ -72,8 +72,6 @@ export class AddServerComponent {
         ipAddress: this.dataForm.controls['ipAddress'].value == null ? null : this.dataForm.controls['ipAddress'].value.toString(),
         
       };
-
-      console.log(updateServer)
       response = await this.serverService.Update(updateServer);
     } else {
       // add

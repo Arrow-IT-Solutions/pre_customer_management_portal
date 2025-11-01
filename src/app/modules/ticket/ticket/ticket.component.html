@@ -1,0 +1,192 @@
+<div class="tickets">
+
+  <div [formGroup]="dataForm" class="row mb-4 m-0 p-0">
+    <p-accordion class="mt-5 p-0">
+      <p-accordionTab>
+        <ng-template pTemplate="header">
+          <div class="flex align-items-center">
+            <span class="material-symbols-outlined">tune</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="m-0 box2 d-flex">
+            <div class="filter-title">
+              <span class="material-symbols-outlined">filter_alt</span>
+              <span>Filter By</span>
+            </div>
+            <div class="container">
+
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center gap-3">
+                  <span class="p-input-icon-left p-0">
+                    <i class="pi pi-search"></i>
+                    <input class="search-field" type="text" (input)="OnChange()"
+                      placeholder="{{ 'agentName_agent' | translate }}" formControlName="agentName" pInputText />
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center gap-3">
+                  <span class="p-input-icon-left p-0">
+                    <i class="pi pi-search"></i>
+                    <input class="search-field" type="text" (input)="OnChange()"
+                      placeholder="{{ 'companyName_agent' | translate }}" formControlName="companyName" pInputText />
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center gap-3">
+                  <p-dropdown [options]="status" optionLabel="value" optionValue="key" 
+                  placeholder="{{ 'status_ticket' | translate }}" formControlName="status" (onChange)="OnChange()">
+                  </p-dropdown>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center gap-3">
+                  <label>{{'Search_by_Date'| translate}}</label>
+                      <div class="p-float-label">
+                        <p-calendar [showIcon]="true" formControlName="fromDate" (ngModelChange)="OnChange()" ></p-calendar>                          
+                        <label>From</label>
+                      </div>
+                      <div class="p-float-label">
+                        <p-calendar [showIcon]="true" formControlName="toDate" (ngModelChange)="OnChange()" ></p-calendar>
+                        <label>To</label>
+                      </div>
+                </div>
+              </div>
+
+
+            </div>
+
+            <div class="col result">
+              <div class="ms-2 mt-3">
+                <p-button class="reset-btn" (onClick)="resetform()">
+                  <span class="material-symbols-outlined">restart_alt</span>
+                </p-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+
+  <ng-container *ngIf="!loading; else ListView">
+    <div class="box">
+      <div class="card mx-0 mb-2" *ngFor="let ticket of data">
+          <div class="icon-container">
+          <span class="material-symbols-outlined fill">account_box</span>
+        </div>
+
+        <div class="col-3 card__contents">
+          
+          <div class="items">
+            <div class="item">
+              <div class="card-label">{{ 'agentName_agent' | translate }}</div>
+              <div class="card-info">
+               {{ ticket.agent?.agentTranslation?.[layoutService.config.lang]?.name }}
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="card-label">{{ 'companyName_agent' | translate }}</div>
+              <div class="card-info">
+              {{ ticket.agent?.company?.companyTranslation?.[layoutService.config.lang]?.name }}            
+              </div>
+            </div>
+
+            <div class="item">
+              <div class="card-label">{{ 'ticketDescription_ticket' | translate }}</div>
+              <div class="card-info">{{ ticket.description }}</div>
+            </div>
+
+            <div class="item">
+              <div class="card-label">{{ 'ticketCreationDate_ticket' | translate }}</div>
+              <div class="card-info">{{ ticket.creationDate }}</div>
+            </div>
+            
+            <div class="item">
+              <div class="card-label">{{ 'ticketClosureDate_ticket' | translate }}</div>
+              <div class="card-info">{{ ticket.closureDate ? (ticket.closureDate | date:'dd-MMM-yy h:mm:ss a') : 'Not yet' }} </div>
+            </div>
+
+            <div class="item">
+              <div class="card-label">{{ 'status_ticket' | translate }}</div>
+              <div class="card-info">
+                {{ ticket.statusValue }}
+                <button pButton type="button" icon="pi pi-pencil" class="p-button-text p-0 ms-2"
+                  (click)="openStatusDialog(ticket)"></button>
+                </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="one">
+          <div [matMenuTriggerFor]="menu" class="card__actions">
+            <span class="material-symbols-outlined card__actions__details">more_vert</span>
+          </div>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openAddTicket(ticket)">
+              <span class="material-symbols-outlined" id="icon">edit</span>
+              {{ 'Edit_Ticket' | translate }}
+            </button>
+            <button mat-menu-item (click)="confirmDelete(ticket)">
+              <span class="material-symbols-outlined" id="icon">delete</span>
+              {{ 'Delete_Ticket' | translate }}
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+    </div>
+
+    <div class="all d-flex">
+      <div class="total">
+        {{ 'totalAgents_ticket' | translate }}: {{ totalRecords }}
+      </div>
+    </div>
+
+    <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
+      [first]="first" (onPageChange)="paginate($event)"></p-paginator>
+    <button class="add-button" (click)="openAddTicket()">
+      <span class="material-symbols-outlined">add</span>
+    </button>
+
+
+  </ng-container>
+
+  <ng-template #ListView>
+    <div class="row">
+      <div *ngFor="let list of [1, 2, 3]" class="row mx-0 mt-2">
+        <p-skeleton height="10rem"></p-skeleton>
+      </div>
+    </div>
+  </ng-template>
+  <p-confirmDialog #confirmDialog key="positionDialog" position="bottom" [baseZIndex]="10000" onHide="true">
+    <ng-template pTemplate="footer">
+      <button type="button" pButton icon="pi pi-times" label="{{ 'No' | translate }}"
+        (click)="confirmDialog.reject()"></button>
+      <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}"
+        (click)="confirmDialog.accept()"></button>
+    </ng-template>
+  </p-confirmDialog>
+</div>
+<p-toast key="toast"></p-toast>
+
+
+<p-dialog header="Edit Status" [(visible)]="displayStatusDialog" [modal]="true" [style]="{ width: '400px' , height: '400px'}">
+  <div class="p-fluid">
+    <div class="field">
+      <label for="statusSelect">{{ 'select_status' | translate }}</label>
+      <p-dropdown id="statusSelect" [options]="status" optionLabel="value" optionValue="key" [(ngModel)]="selectedStatus">
+      </p-dropdown>    
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="{{ 'cancel' | translate }}" icon="pi pi-times" (onClick)="displayStatusDialog = false"></p-button>
+    <p-button label="{{ 'save' | translate }}" icon="pi pi-check" (onClick)="saveStatusChange()"></p-button>
+  </ng-template>
+</p-dialog>

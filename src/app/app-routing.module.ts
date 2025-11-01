@@ -50,7 +50,7 @@ const routes: Routes = [
             (m) => m.ServicesModule
           )
       },
-       {
+      {
       path: 'environments',
       loadChildren: () =>
         import('./modules/environment/environment.module').then(
@@ -78,14 +78,14 @@ const routes: Routes = [
             (m) => m.CompaniesModule
           )
       },
-       {
+      {
         path: 'ports',
         loadChildren: () =>
           import('./modules/ports/port.module').then(
             (m) => m.PortModule
           )
       },
-       {
+      {
         path: 'applications',
         loadChildren: () =>
           import('./modules/applications/application.module').then(
@@ -122,7 +122,7 @@ const routes: Routes = [
           )
       },
 
-       {
+      {
         path: 'add-server',
         loadChildren: () =>
           import('./modules/wizard-add-server/wizard-add-server.module').then(
@@ -130,14 +130,20 @@ const routes: Routes = [
           )
       },
 
-       {
+      {
         path: 'employees',
         loadChildren: () =>
           import('./modules/employees/employees.module').then(
             (m) => m.EmployeesModule
           )
       },
-
+      {
+        path: 'tickets',
+        loadChildren: () =>
+          import('./modules/ticket/ticket.module').then(
+            (m) => m.TicketModule
+          )
+      },
 
       {
         path: 'settings',
@@ -146,7 +152,7 @@ const routes: Routes = [
             (m) => m.SettingsModule
           )
       },
-       {
+      {
         path: 'renews',
         loadChildren: () =>
           import('./modules/renews/renews.module').then(

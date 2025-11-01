@@ -1,0 +1,52 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="add-ticket">
+  <div class="add-ticket">
+    <div class="box-shadow mb-3">
+      <div class="row">
+        <div class="col-12 side-icon">
+          <span class="material-symbols-outlined">info</span>
+          <span>{{ 'Basic_Info_Ticket' | translate }}</span>
+        </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['description'].errors}">
+              <textarea pInputTextarea formControlName="description" rows="4" cols="30"></textarea>
+              <label [ngClass]="{'error': submitted && form['description'].errors}">{{ 'ticketDescription_ticket' | translate }}</label>
+              <span *ngIf="submitted && form['description'].errors" class="error-validation">
+                {{ 'Field_Required' | translate }}
+              </span>
+            </div>
+            <div *ngIf="submitted && form['description'].errors?.['required']" class="text-danger mt-1">
+              {{ 'field_required' | translate }}
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="p-float-label" [ngClass]="{'error_border': submitted && form['agentIDFK'].errors}">
+              <p-dropdown [options]="agentOptions" optionLabel="label" optionValue="value"
+                formControlName="agentIDFK" [filter]="true" [showClear]="true" filterBy="label" [disabled]="dataForm.get('agentIDFK')?.disabled ?? false">
+              </p-dropdown>
+
+              <label [ngClass]="{'error': submitted && form['agentIDFK'].errors}">{{ 'agentName_agent' | translate
+                }}</label>
+              <span *ngIf="submitted && form['agentIDFK'].errors" class="error-validation">
+                {{ 'Field_Required' | translate }}
+              </span>
+            </div>
+            <div *ngIf="submitted && form['agentIDFK'].errors?.['required']" class="text-danger mt-1">
+              {{ 'field_required' | translate }}
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 text-end mt-4">
+      <p-button type="submit" class="btn-primary" [loading]="btnLoading">
+        {{ 'save' | translate }}
+      </p-button>
+    </div>
+</form>
+
+<p-toast key="toast"></p-toast>

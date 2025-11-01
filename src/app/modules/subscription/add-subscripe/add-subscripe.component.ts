@@ -70,21 +70,20 @@ export class AddSubscripeComponent {
   }
 
   async onSubmit() {
-      this.submitted = true;
+    this.submitted = true;
 
     if (this.dataForm.invalid) {
       this.layoutService.showError(this.messageService, 'toast', true, 'Please fill all required fields');
       return;
     }
     try {
-       console.log(' onSubmit triggered');
       this.btnLoading = true;
 
-    if (this.dataForm.invalid) {
-  console.warn('Form is invalid:', this.dataForm.value);
-  this.submitted = true;
-  return;
-}
+      if (this.dataForm.invalid) {
+        console.warn('Form is invalid:', this.dataForm.value);
+        this.submitted = true;
+        return;
+      }
 
 
       await this.Save();
@@ -96,7 +95,7 @@ export class AddSubscripeComponent {
   }
 
 
-async Save() {
+  async Save() {
 
     let response;
 
@@ -117,14 +116,13 @@ async Save() {
     } else {
       // add
       var addSubscripe: SubscriptionRequest = {
-         startDate: new Date(this.dataForm.value.startDate).toISOString(),
+        startDate: new Date(this.dataForm.value.startDate).toISOString(),
         endDate: new Date(this.dataForm.value.endDate).toISOString(),
         price: this.dataForm.controls['price'].value.toString(),
         companyServiceIDFK: this.dataForm.controls['companyServiceIDFK'].value,
-        status: this.dataForm.controls['status'].value.toString() ,
+        status: this.dataForm.controls['status'].value.toString(),
 
       };
-     console.log(addSubscripe);
 
       response = await this.subscripeService.Add(addSubscripe);
     }
@@ -147,7 +145,7 @@ async Save() {
         }, 600);
       }
     } else {
-        console.error('Error response:', response);
+      console.error('Error response:', response);
       this.layoutService.showError(this.messageService, 'toast', true, response?.requestMessage);
     }
 
@@ -161,14 +159,14 @@ async Save() {
   async FillData() {
 
     const temp = {
-    startDate: this.subscripeService.SelectedData?.startDate ? new Date(this.subscripeService.SelectedData.startDate) : null,
-    endDate: this.subscripeService.SelectedData?.endDate ? new Date(this.subscripeService.SelectedData.endDate) : null,
-    price: this.subscripeService.SelectedData?.price,
-    status: Number(this.subscripeService.SelectedData?.status),
-    companyServiceIDFK: this.subscripeService.SelectedData?.companyServiceIDFK ?? ''
+      startDate: this.subscripeService.SelectedData?.startDate ? new Date(this.subscripeService.SelectedData.startDate) : null,
+      endDate: this.subscripeService.SelectedData?.endDate ? new Date(this.subscripeService.SelectedData.endDate) : null,
+      price: this.subscripeService.SelectedData?.price,
+      status: Number(this.subscripeService.SelectedData?.status),
+      companyServiceIDFK: this.subscripeService.SelectedData?.companyService.uuid ?? ''
 
     };
-    console.log('Patch values:', temp);
+
     this.dataForm.patchValue(temp);
   }
 
@@ -176,62 +174,58 @@ async Save() {
     return this.layoutService.config.lang == 'ar' ? 'nameAr' : 'nameEn';
   }
   getCompanyServiceLabel(): string {
-  return this.layoutService.config.lang === 'ar' ? 'nameAr' : 'nameEn';
-}
+    return this.layoutService.config.lang === 'ar' ? 'nameAr' : 'nameEn';
+  }
 
 
- async RetrieveCompanyServices() {
-     let filter: ProvisionedServiceSearchRequest = {
-          uuid: '',
-          companyIDFK: '',
-          serviceIDFK: '',
-          includeCompany: '1',
-          includeService: '1',
-          pageIndex: '0',
-          pageSize: '10',
+  async RetrieveCompanyServices() {
+    let filter: ProvisionedServiceSearchRequest = {
+      uuid: '',
+      companyIDFK: '',
+      serviceIDFK: '',
+      includeCompany: '1',
+      includeService: '1',
+      pageIndex: '0',
+      pageSize: '10',
 
-        };
+    };
 
-        const rawResponse = (await this.provisionedService.Search(filter)) as any;
-
-    console.log('Raw response:', rawResponse);
-
-  this.companyServiceList = rawResponse.data;
-
-  const lang = this.layoutService.config.lang || 'en';
-
-
-  this.companyServiceOptions = (rawResponse.data ?? []).map((item: any) => ({
-    label: `${item.company?.companyTranslation?.[lang]?.name ?? 'Unknown Company'} - ${item.service?.serviceTranslation?.[lang]?.name ?? 'Unknown Service'}`,
-    value: item.uuid
-  }));
+    const rawResponse = (await this.provisionedService.Search(filter)) as any;
 
 
 
+    this.companyServiceList = rawResponse.data;
 
-    console.log('Company Services Dropdown:', this.companyServiceOptions);
-}
+    const lang = this.layoutService.config.lang || 'en';
+
+
+    this.companyServiceOptions = (rawResponse.data ?? []).map((item: any) => ({
+      label: `${item.company?.companyTranslation?.[lang]?.name ?? 'Unknown Company'} - ${item.service?.serviceTranslation?.[lang]?.name ?? 'Unknown Service'}`,
+      value: item.uuid
+    }));
+
+  }
 
 
 
 
 
-//   async filterCustomerServices(event: any) {
-//   const filterInput = event?.filter || '';
-//   const filter: CustomerSearchRequest = { name: filterInput, uuid: '', pageIndex: '', pageSize: '10' };
-//   const response = await this.customerService.Search(filter) as any;
-//   const lang = this.layoutService.config.lang || 'en';
+  //   async filterCustomerServices(event: any) {
+  //   const filterInput = event?.filter || '';
+  //   const filter: CustomerSearchRequest = { name: filterInput, uuid: '', pageIndex: '', pageSize: '10' };
+  //   const response = await this.customerService.Search(filter) as any;
+  //   const lang = this.layoutService.config.lang || 'en';
 
-//   this.customerServices = response.data.map((item: any) => {
-//     const customerName = item.customer?.customerTranslation?.[lang]?.name || '—';
-//     const serviceName = item.service?.serviceTranslation?.[lang]?.name || '—';
+  //   this.customerServices = response.data.map((item: any) => {
+  //     const customerName = item.customer?.customerTranslation?.[lang]?.name || '—';
+  //     const serviceName = item.service?.serviceTranslation?.[lang]?.name || '—';
 
-//     return {
-//       ...item,
-//       name: `${customerName} - ${serviceName}`
-//     };
-//   });
-// }
+  //     return {
+  //       ...item,
+  //       name: `${customerName} - ${serviceName}`
+  //     };
+  //   });
+  // }
 
 
 }

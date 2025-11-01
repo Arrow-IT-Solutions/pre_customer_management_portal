@@ -21,7 +21,7 @@ export class WizardComponent implements OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private provisionedService: ProvisionedService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.items = [
@@ -31,7 +31,7 @@ export class WizardComponent implements OnDestroy {
       },
 
       {
-        label: this.isAr() ? 'البيئة': 'Environment',
+        label: this.isAr() ? 'البيئة' : 'Environment',
         command: (event) => this.onStepClick(1, 'environment')
       },
     ];
@@ -99,7 +99,6 @@ export class WizardComponent implements OnDestroy {
   private async saveCurrentPageData() {
     try {
       const currentPath = this.router.url;
-      console.log('Wizard: Current path:', currentPath);
       if (currentPath.includes('environment')) {
         this.provisionedService.triggerSaveEnvironmentData();
       } else if (currentPath.includes('company-service')) {

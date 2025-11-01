@@ -15,10 +15,13 @@
               <span>Filter By</span>
             </div>
             <div class="container">
-             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
+              <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <div class="p-float-label">
-                    <input pInputText type="text" formControlName="com_name" (input)="OnChange()" placeholder="{{ 'company_name' | translate }}" />
+                    <p-dropdown [options]="companies" optionLabel="name" optionValue="uuid" (onChange)="Search()"
+                      formControlName="com_name" dir="ltr" [filter]="true" [showClear]="true" filterBy="name"
+                      (onFilter)="FillCompany($event)">
+                    </p-dropdown>
                     <label id="label">{{ 'company_name' | translate }}</label>
 
                   </div>
@@ -27,27 +30,25 @@
               </div>
               <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
-               <div class="p-float-label">
-                <p-calendar [showIcon]="true" formControlName="startDate" (onSelect)="OnChange()">
-                </p-calendar>
-                <label>{{ 'startDate_subscription' | translate}}</label>
+                  <div class="p-float-label">
+                    <p-calendar [showIcon]="true" formControlName="startDate" (onSelect)="OnChange()"></p-calendar>
+                    <label>{{ 'startDate_subscription' | translate}}</label>
+                  </div>
+                </div>
               </div>
-              </div>
-              </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
-                <div class="flex flex-wrap justify-content-center gap-3">
-               <div class="p-float-label">
-                <p-calendar [showIcon]="true" formControlName="endDate" (onSelect)="OnChange()">
-                </p-calendar>
-                <label>{{ 'endDate_subscription' | translate}}</label>
-              </div>
-              </div>
-              </div>
-               <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
+              <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
                 <div class="flex flex-wrap justify-content-center gap-3">
                   <div class="p-float-label">
-                    <p-dropdown [options]="durationTypeList" optionLabel="value" optionValue="key"
-                      formControlName="type_period" dir="ltr" [showClear]="true" (onChange)="OnChange()">
+                    <p-calendar [showIcon]="true" formControlName="endDate" (onSelect)="OnChange()"></p-calendar>
+                    <label>{{ 'endDate_subscription' | translate}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mt-3">
+                <div class="flex flex-wrap justify-content-center gap-3">
+                  <div class="p-float-label">
+                    <p-dropdown [options]="durationTypeList" optionLabel="value" optionValue="key" (onChange)="Search()"
+                      formControlName="type_period" dir="ltr" [showClear]="true">
                     </p-dropdown>
                     <label id="label">{{ 'type_period' | translate }}</label>
 
@@ -55,7 +56,7 @@
                 </div>
 
               </div>
-              
+
 
 
 
@@ -77,8 +78,8 @@
   </div>
   <ng-container *ngIf="!loading; else ListView">
     <div class="box">
-      <div *ngFor="let row of data"class="card mx-0 mb-2">
-      
+      <div *ngFor="let row of data" class="card mx-0 mb-2">
+
         <div class="icon-container">
           <span class="material-symbols-outlined fill">autorenew</span>
         </div>
@@ -88,7 +89,8 @@
             <div class="card__contents__item">
               <div class="card-label">{{ 'company_name' | translate }}</div>
               <div class="card-info">
-               {{ row.companyService?.company?.companyTranslation?.[layoutService.config.lang]?.name }}
+                {{ row.companyService?.company?.companyTranslation?.[layoutService.config.lang]?.name }} -
+                {{row.companyService?.service?.serviceTranslation?.[layoutService.config.lang]?.name}}
               </div>
             </div>
             <div class="card__contents__item">
@@ -97,10 +99,10 @@
                 {{ row.durationValue }} {{ row.durationTypeValue }}
               </div>
             </div>
-             <div class="card__contents__item">
+            <div class="card__contents__item">
               <div class="card-label">{{ 'new_endDate' | translate }}</div>
               <div class="card-info">
-                  {{ row.newEndDate | date: 'yyyy-MM-dd' }}
+                {{ row.newEndDate | date: 'yyyy-MM-dd' }}
               </div>
             </div>
           </div>
@@ -110,7 +112,7 @@
           <div [matMenuTriggerFor]="menu" class="card__actions">
             <span class="material-symbols-outlined card__actions__details">more_vert</span>
           </div>
-          
+
           <mat-menu #menu="matMenu">
             <ng-template matMenuContent>
               <button mat-menu-item (click)="openDialog(row)">
@@ -140,7 +142,7 @@
     </div>
     <p-paginator class="mt-2" [rows]="pageSize" [totalRecords]="totalRecords" [rowsPerPageOptions]="[4, 12, 20, 30]"
       [first]="first" (onPageChange)="paginate($event)"></p-paginator>
-   
+
 
 
   </ng-container>
@@ -170,8 +172,7 @@
       <button type="button" pButton icon="pi pi-check" label="{{ 'Yes' | translate }}"
         (click)="confirmDialog.accept()"></button>
     </ng-template>
-  </p-confirmDialog> 
+  </p-confirmDialog>
 </div>
 
 <p-toast key="toast"></p-toast>
-

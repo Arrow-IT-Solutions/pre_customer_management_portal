@@ -212,7 +212,6 @@
      "appname":"App Name",
      "Create_Employee":"Create Employee",
      "service_viewDetails" : "Service",
-
      "Renew_Company":"Renew Company",
      "company_name":"Company name",
      "renew_period":"Renew Period",
@@ -222,6 +221,19 @@
      "total_Renews":"Total Renews",
      "UnLock_card":"UnLock",
      "Lock_card":"Lock",
+   "status_ticket": "Status",
+   "Search_by_Date": "Creation Date",
+   "ticketDescription_ticket": "Description",
+   "ticketCreationDate_ticket": "Creation Date",
+   "ticketClosureDate_ticket": "Closure Date",
+   "Edit_Ticket": "Edit",
+   "Delete_Ticket": "Delete",
+   "totalAgents_ticket": "Total Tickets",
+   "select_status": "Select Status",
+   "Basic_Info_Ticket": "Basic Info",
+   "view_AgentTickets": "view Agent Tickets",
+     "Create_Renew" : "Create",
+     "Update_Renew" : "Update",
      "view_Agents":"View Agents",
      "Agents_List":"Agents List",
      "Company_Details":"Company Details",
@@ -229,5 +241,4 @@
      "Password_ResetPassword":"Reset Password",
      "Update_Employee":"Update Employee"
     
-     
 }
