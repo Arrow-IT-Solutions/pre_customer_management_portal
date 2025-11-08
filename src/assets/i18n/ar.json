@@ -222,7 +222,6 @@
     "new_endDate":"تاريخ الانتهاء الجديد",
     "total_Renews":"المجموع",
     "UnLock_card":"فك التشفير",
-    "Lock_card":"تشفير",
   "status_ticket": "الحالة",
   "Search_by_Date": "تاريخ الانشاء",
   "ticketDescription_ticket": "الوصف",
@@ -241,5 +240,14 @@
     "Agents_List":"الوكلاء",
     "Update_Agent":"تعديل الوكيل",
     "Password_ResetPassword":"إعادة تعيين كلمة المرور",
-    "Update_Employee":"تعديل الموظف"
+    "Update_Employee":"تعديل الموظف",
+    "tag_subscription" : "Tag",
+    "tag_viewDetails" : "Service Tag",
+    "ResetPassword_Company" : "تغيير كلمة السر",
+     "FirstNameAr_Password" : "الاسم الاول بالعربية",
+     "LastNameAr_Password" : "الاسم الاخير بالعربية",
+     "FirstNameEn_Password" : "الاسم الاول بالانجليزية",
+     "LastNameEn_Password" : "الاسم الاخير بالانجليزية",
+     "Password_Username" : "اسم المستخدم",
+     "Password_Password" : "كلمة السر"
 }

@@ -54,7 +54,9 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       status: ['', Validators.required],
-      price: ['', Validators.required]
+      price: ['', Validators.required],
+      tag: ['', Validators.required],
+
 
     });
 
@@ -94,6 +96,8 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
 
       try {
         this.session = this.provisionedService.getSession();
+
+
 
         const fromBack = this.route.snapshot.queryParams['fromBack'];
 
@@ -199,7 +203,8 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
       startDate: this.dataForm.controls['startDate'].value || '',
       endDate: this.dataForm.controls['endDate'].value || '',
       status: this.dataForm.controls['status'].value !== null && this.dataForm.controls['status'].value !== undefined ? this.dataForm.controls['status'].value : '',
-      price: this.dataForm.controls['price'].value || ''
+      price: this.dataForm.controls['price'].value || '',
+      tag: this.dataForm.controls['tag'].value || ''
     };
 
     this.session.currentCompanyServiceFormData = currentFormData;
@@ -210,6 +215,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     const sessionDataToSave = {
       companyIDFK: this.session.companyIDFK,
       serviceIDFK: this.session.serviceIDFK,
+      tag: this.session.tag,
       subscription: this.session.subscription,
       envDatabases: this.session.envDatabases,
       currentCompanyServiceFormData: currentFormData
@@ -219,6 +225,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
   }
 
   private async restoreFormFromSessionData() {
+
     if (this.session?.currentCompanyServiceFormData) {
       const formData = this.session.currentCompanyServiceFormData;
       this.loading = true;
@@ -246,7 +253,8 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
         startDate: formData.startDate ? new Date(formData.startDate) : '',
         endDate: formData.endDate ? new Date(formData.endDate) : '',
         status: statusToRestore,
-        price: formData.price || ''
+        price: formData.price || '',
+        tag: formData.tag || ''
       });
 
       setTimeout(() => {
@@ -287,8 +295,11 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
           startDate: this.session.subscription?.startDate ? new Date(this.session.subscription.startDate) : '',
           endDate: this.session.subscription?.endDate ? new Date(this.session.subscription.endDate) : '',
           status: statusToSet,
-          price: this.session.subscription?.price || ''
+          price: this.session.subscription?.price || '',
+          tag: this.session.tag || ''
         });
+
+        console.log('HERE')
       }
     } else {
       this.resetForm();
@@ -325,7 +336,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
       startDate: new Date(this.dataForm.value.startDate).toISOString(),
       endDate: new Date(this.dataForm.value.endDate).toISOString(),
       price: this.dataForm.controls['price'].value.toString(),
-      companyServiceIDFK: 'af7ac44a-bbef-48be-8cde-bbcfe3b9a3ff',
+      companyServiceIDFK: '1',
       status: this.dataForm.controls['status'].value.toString(),
 
     };
@@ -343,6 +354,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     const session: ProvisionedSession = {
       companyIDFK: this.dataForm.controls['companyName'].value.toString(),
       serviceIDFK: this.dataForm.controls['service'].value.toString(),
+      tag: this.dataForm.controls['tag'].value.toString(),
       subscription: addSubscripe,
       envDatabases: existingEnvDatabases
     };
@@ -352,6 +364,7 @@ export class DefinitionsComponent implements OnInit, OnDestroy {
     const currentFormData = {
       companyName: this.dataForm.controls['companyName'].value || '',
       service: this.dataForm.controls['service'].value || '',
+      tag: this.dataForm.controls['tag'].value || '',
       startDate: this.dataForm.controls['startDate'].value || '',
       endDate: this.dataForm.controls['endDate'].value || '',
       status: this.dataForm.controls['status'].value !== null && this.dataForm.controls['status'].value !== undefined ? this.dataForm.controls['status'].value : '',

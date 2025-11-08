@@ -73,8 +73,8 @@ export class LoginComponent implements AfterViewInit {
 
     console.log('authResponse : ', response);
 
-    if (response.requestStatus == 200) {
-      
+    if (response.requestStatus == 200 && response.userType != '2') {
+
       this.layoutService.showSuccess(this.messageService, 'toast', true, response.requestMessage);
 
 
@@ -104,15 +104,15 @@ export class LoginComponent implements AfterViewInit {
           this.router.navigateByUrl('layout-admin/companies'); // cashier
           break;
         case '2':
-         this.layoutService.showError(this.messageService, 'toast', true, response.requestMessage);
-          return; 
+          this.layoutService.showError(this.messageService, 'toast', true, "Unauthorized");
+          return;
       }
 
       // this.router.navigateByUrl('merchants');
     } else {
       console.log('errrrror');
 
-      this.layoutService.showError(this.messageService, 'toast', true, response.requestMessage);
+      this.layoutService.showError(this.messageService, 'toast', true, "Unauthorized");
     }
 
     this.submitted = false;

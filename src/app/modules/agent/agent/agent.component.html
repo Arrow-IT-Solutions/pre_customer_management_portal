@@ -79,7 +79,7 @@
 
             <div class="item">
               <div class="card-label">{{ 'companyName_agent' | translate }}</div>
-              <div class="card-info">{{ retrieveCompanyLabel(agent) }}</div>
+              <div class="card-info">{{ agent.company?.companyTranslation?.[layoutService.config.lang]?.name }}</div>
             </div>
 
 
@@ -100,12 +100,8 @@
               <span class="material-symbols-outlined" id="icon">delete</span>
               {{ 'Delete_Agent' | translate }}
             </button>
-            <button mat-menu-item (click)="filterByCompany(agent.companyIDFK)">
-              <span class="material-symbols-outlined" id="icon">event</span>
-              {{ 'View_CompanyAgents' | translate }}
-            </button>
             <button mat-menu-item [routerLink]="['../tickets']" [queryParams]="{ agentIDFK: agent.uuid }">
-              <span class="material-symbols-outlined" id="icon" >event</span>
+              <span class="material-symbols-outlined" id="icon">event</span>
               {{ 'view_AgentTickets' | translate }}
             </button>
           </mat-menu>

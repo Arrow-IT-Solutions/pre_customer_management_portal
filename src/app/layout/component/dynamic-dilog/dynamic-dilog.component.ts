@@ -12,30 +12,29 @@ export class DynamicDilogComponent {
 
   @ViewChild(AdhostDirective, { static: true }) adHostChild!: AdhostDirective;
 
-  @Input() componentName:string="componet Name";
-  @Input() componentView:any;
-  @Input() adHostDynamic:any;
+  @Input() componentName: string = "componet Name";
+  @Input() componentView: any;
+  @Input() adHostDynamic: any;
   @Output() OnClose: EventEmitter<void> = new EventEmitter<void>();
-  employeeService: import("c:/Users/REVERA SHAWABKEH/Desktop/pre_customer_management_portal/src/app/layout/service/companies.service").CompaniesService;
+
 
 
 
   ngOnInit(): void {
- 
+
     this.adHostChild.viewContainerRef.clear();
     this.adHostChild.createMyComponent(this.componentView);
-    
+
   }
 
-  Close()
-  {
-    
-  
+  Close() {
+
+
     this.OnClose.emit();
     this.adHostChild.viewContainerRef.clear();
     this.adHostDynamic.viewContainerRef.clear();
-   //this.component.destroy();
-   //this.componentView.clear();
+    //this.component.destroy();
+    //this.componentView.clear();
 
   }
 

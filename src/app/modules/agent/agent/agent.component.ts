@@ -110,6 +110,7 @@ export class AgentComponent {
       pageSize: this.pageSize.toString(),
     };
     const response = (await this.agentService.Search(filter)) as any;
+    console.log('res ', response)
     if (response.data == null || response.data.length == 0) {
       this.data = [];
       this.totalRecords = 0;
