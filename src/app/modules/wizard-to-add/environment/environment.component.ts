@@ -6,7 +6,7 @@ import { Dropdown } from 'primeng/dropdown';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { LayoutService } from 'src/app/layout/service/layout.service';
-import { EnvDatabase, ProvisionedServiceRequest, ProvisionedSession, ProvisionedServiceUpdateRequest } from '../wizard-to-add.module';
+import { EnvDatabase, ProvisionedServiceRequest, ProvisionedSession, ProvisionedServiceUpdateRequest, EnvDatabaseRequest } from '../wizard-to-add.module';
 import { ServersService } from 'src/app/layout/service/servers.service';
 import { ProvisionedService } from 'src/app/layout/service/provisioned.service';
 import { ServerResponse, ServerSearchRequest } from '../../servers/servers.module';
@@ -33,6 +33,8 @@ export class EnvironmentComponent implements OnDestroy {
   private isNavigatingWithinWizard: boolean = false;
   session!: ProvisionedSession;
   envDatabase: EnvDatabase[] = [];
+  envDatabaseRequest: EnvDatabaseRequest[] = [];
+
   filteredEnvDatabase: EnvDatabase[] = [];
   private isNavigatingToCompanyService = false;
   isEditMode: boolean = false;
@@ -228,6 +230,7 @@ export class EnvironmentComponent implements OnDestroy {
     const sessionDataToSave = {
       companyIDFK: this.session.companyIDFK,
       serviceIDFK: this.session.serviceIDFK,
+      tag: this.session.tag,
       subscription: this.session.subscription,
       envDatabases: this.session.envDatabases,
       currentEnvironmentFormData: currentFormData
@@ -284,6 +287,7 @@ export class EnvironmentComponent implements OnDestroy {
         uuid: this.editingServiceId,
         companyIDFK: this.session.companyIDFK,
         serviceIDFK: this.session.serviceIDFK,
+        tag: this.session.tag
       };
 
 
@@ -307,7 +311,7 @@ export class EnvironmentComponent implements OnDestroy {
         }
       }
 
-      const envs: EnvDatabase[] = await Promise.all(
+      const envs: EnvDatabaseRequest[] = await Promise.all(
         this.envDatabase.map(async ({
           url,
           serverIDFK,
@@ -340,7 +344,7 @@ export class EnvironmentComponent implements OnDestroy {
             dbUserName,
             dbPassword: encryptedPass,
             ...(envTranslations.length && { environmentTranslation: envTranslations })
-          } as EnvDatabase;
+          } as EnvDatabaseRequest;
         })
       );
 
@@ -348,17 +352,21 @@ export class EnvironmentComponent implements OnDestroy {
       response = await this.provisionedService.Update(updateProvisioned);
 
     } else {
-      const encryptedEnvDatabases = await this.encryptEnvDatabases(this.envDatabase);
+      const encryptedEnvDatabases = await this.encryptEnvDatabases(this.envDatabaseRequest);
 
       const addProvisioned: ProvisionedServiceRequest = {
         subscription: this.session.subscription,
         companyIDFK: this.session.companyIDFK,
         serviceIDFK: this.session.serviceIDFK,
+        tag: this.session.tag,
         envDatabases: encryptedEnvDatabases
       };
 
+      console.log('add', addProvisioned)
+
 
       response = await this.provisionedService.Add(addProvisioned);
+
     }
     if (response?.requestStatus?.toString() == '200') {
       const successMessage = this.isEditMode ?
@@ -404,7 +412,7 @@ export class EnvironmentComponent implements OnDestroy {
     }
   }
 
-  private async encryptEnvDatabases(data: EnvDatabase[]): Promise<EnvDatabase[]> {
+  private async encryptEnvDatabases(data: EnvDatabaseRequest[]): Promise<EnvDatabaseRequest[]> {
     return await Promise.all(
       data.map(async (item) => {
         try {
@@ -603,7 +611,17 @@ export class EnvironmentComponent implements OnDestroy {
 
     const selectedServer = this.servers.find(s => s.uuid === serverValue);
 
-    const newEnvDatabase: EnvDatabase = {
+    const newEnvDatabase: EnvDatabaseRequest = {
+      url: this.dataForm.controls['urlEnv'].value,
+      serverIDFK: serverValue,
+      environmentTranslation: environmentTranslations,
+      dbName: this.dataForm.controls['databaseName'].value,
+      connectionString: connectionString,
+      dbUserName: this.dataForm.controls['userName'].value,
+      dbPassword: this.dataForm.controls['password'].value
+    };
+
+    const envDatabase: EnvDatabase = {
       url: this.dataForm.controls['urlEnv'].value,
       serverIDFK: serverValue,
       environmentTranslation: environmentTranslations,
@@ -614,10 +632,12 @@ export class EnvironmentComponent implements OnDestroy {
     };
 
     if (selectedServer) {
-      (newEnvDatabase as any).server = selectedServer;
+      (envDatabase as any).server = selectedServer;
     }
 
-    this.envDatabase.push(newEnvDatabase);
+    this.envDatabaseRequest.push(newEnvDatabase);
+    this.envDatabase.push(envDatabase);
+
     this.applyFilters();
     this.updateSessionWithCurrentFormData();
     this.clearSavedFormData();

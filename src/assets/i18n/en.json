@@ -239,6 +239,15 @@
      "Company_Details":"Company Details",
      "Update_Agent":"Update Agent",
      "Password_ResetPassword":"Reset Password",
-     "Update_Employee":"Update Employee"
-    
+     "Update_Employee":"Update Employee",
+     "tag_subscription" : "Tag",
+     "tag_viewDetails" : "Service Tag",
+     "ResetPassword_Company" : "Reset Password",
+     "FirstNameAr_Password" : "Arabic First Name",
+     "LastNameAr_Password" : "Arabic Last Name",
+     "FirstNameEn_Password" : "English First Name",
+     "LastNameEn_Password" : "English Last Name",
+     "Password_Username" : "Username",
+     "Password_Password" : "Password"
+
 }

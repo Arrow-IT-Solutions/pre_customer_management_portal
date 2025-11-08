@@ -79,6 +79,8 @@ export class CompanyServicesComponent {
     };
 
     const response = (await this.provisionedService.Search(filter)) as any;
+
+    console.log('res', response)
     if (response.data == null || response.data.length == 0) {
       this.data = [];
       this.companyServiceTotal = 0;
@@ -162,6 +164,7 @@ export class CompanyServicesComponent {
     const editSession: ProvisionedSession = {
       companyIDFK: row.company.uuid,
       serviceIDFK: row.service.uuid,
+      tag: row.tag,
       subscription: {
         uuid: row.subscription.uuid || row.uuid,
         startDate: row.subscription.startDate.toString(),

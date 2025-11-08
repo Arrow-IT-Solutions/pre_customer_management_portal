@@ -35,6 +35,7 @@ export class WizardToAddModule { }
 export interface ProvisionedSession {
   companyIDFK?: string;
   serviceIDFK?: string;
+  tag?: string,
   subscription?: SubscriptionRequest;
   envDatabases?: EnvDatabase[];
   subscriptionUpdate?: SubscriptionUpdateRequest;
@@ -55,13 +56,15 @@ export interface ProvisionedSession {
     endDate?: string;
     status?: string;
     price?: string;
+    tag?: string
   };
 }
 export interface ProvisionedServiceRequest extends RequestBase {
   companyIDFK?: string;
   serviceIDFK?: string;
+  tag?: string;
   subscription?: SubscriptionRequest;
-  envDatabases?: EnvDatabase[];
+  envDatabases?: EnvDatabaseRequest[];
 }
 
 export interface EnvDatabase {
@@ -73,6 +76,16 @@ export interface EnvDatabase {
   dbUserName: string;
   dbPassword: string;
   server?: ServerResponse
+}
+
+export interface EnvDatabaseRequest {
+  url: string;
+  serverIDFK: string;
+  environmentTranslation: EnvironmentTranslationRequest[];
+  dbName: string;
+  connectionString: string;
+  dbUserName: string;
+  dbPassword: string;
 }
 
 export interface ProvisionedServiceSearchRequest extends SearchRequestBase {
@@ -88,6 +101,7 @@ export interface ProvisionedServiceResponse extends ResponseBase {
   uuid: string;
   company: CompanyResponse;
   service: ServiceResponse;
+  tag?: string,
   subscription: SubscriptionResponse;
   environments: EnvironmentResponse[];
   databases: DatabaseResponse[];
@@ -100,6 +114,7 @@ export interface ProvisionedServiceUpdateRequest extends RequestBase {
   serviceIDFK?: string;
   subscription?: SubscriptionUpdateRequest;
   envDatabases?: UpdateEnvDatabase[];
+  tag?: string,
 }
 
 export interface UpdateEnvDatabase {
@@ -117,6 +132,7 @@ export interface CompanyServiceResponse extends ResponseBase {
   uuid: string;
   companyIDFK: string;
   serviceIDFK: string;
+  tag?: string,
   company: CompanyResponse;
   service: ServiceResponse;
 }
